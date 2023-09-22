@@ -79,9 +79,9 @@ php artisan queue:restart
 # Optimizes PSR0 and PSR4 packages to be loaded with classmaps too, good for production.
 composer dump-autoload -o
 
-chmod -R 777 storage
+#sudo chmod -R 777 storage
 
-chmod -R 777 bootstrap
+#sudo chmod -R 777 bootstrap
 
 # Bring the application out of maintenance mode
 php artisan up
