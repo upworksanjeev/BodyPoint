@@ -63,8 +63,8 @@ php artisan view:cache
 
 #NPM install and run for production
 # npm install --only=prod
-npm ci
-npm run production
+#npm ci
+#npm run production
 
 # YARN Install and Run for the production
 # yarn --production=true
