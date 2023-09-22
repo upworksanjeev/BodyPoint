@@ -163,7 +163,7 @@ return [
     */
 
     'brand' => [
-        'logo' => resource_path('/img/bodypoint.svg'),
+ //       'logo' => resource_path('/img/bodypoint.svg'),
 
         'colors' => [
             "400" => "11, 145, 159, 0.5",
