@@ -1,21 +1,43 @@
-name: Laravel
+name: Deploy Laravel to AWS EC2
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Connecting server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{secrets.SSH_HOST}} # IP address of the server you wish to ssh into
-          key: ${{secrets.SSH_KEY}}
-          username: ${{ secrets.SSH_USERNAME }} # User of the server you want to ssh
-          script: "cd /var/www/html/app && chmod 770 deploy/deployer.sh && ./deploy/deployer.sh"
-      - name: Checkout master branch
+      - name: Checkout code
         uses: actions/checkout@v2
         with:
           submodules: recursive
+
+      - name: Upload code to AWS EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{secrets.SSH_USERNAME}}
+          script: |
+            # Navigate to the directory where you want to upload the code on the EC2 server
+            cd /var/www/html/app
+
+            # Securely copy the code from the GitHub Actions runner to the EC2 server
+            scp -r ./* ${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/var/www/html/app
+
+      - name: Install dependencies and run Laravel commands on AWS EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{secrets.SSH_USERNAME}}
+          script: |
+            # Navigate to the Laravel project directory on the EC2 server
+            cd /var/www/html/app
+
+            # Install Composer dependencies (no-dev) and run Laravel commands
+            composer install --no-dev
+            php artisan migrate --force
+            php artisan optimize
