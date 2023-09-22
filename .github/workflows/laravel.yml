@@ -25,7 +25,7 @@ jobs:
             cd /var/www/html/app
 
             # Securely copy the code from the GitHub Actions runner to the EC2 server
-            scp -r ./* ${{secrets.SSH_USERNAME}}@${{secrets.SSH_HOST}}:/var/www/html/app
+            git pull
 
       - name: Install dependencies and run Laravel commands on AWS EC2
         uses: appleboy/ssh-action@master
