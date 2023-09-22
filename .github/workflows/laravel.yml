@@ -41,3 +41,4 @@ jobs:
             composer install --no-dev
             php artisan migrate --force
             php artisan optimize
+            php artisan route:clear
