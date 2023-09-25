@@ -40,5 +40,6 @@ jobs:
             # Install Composer dependencies (no-dev) and run Laravel commands
             composer install --no-dev
             php artisan migrate --force
+            php artisan nova:publish
             php artisan optimize
             php artisan route:clear
