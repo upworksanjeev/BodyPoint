@@ -22,7 +22,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             # Navigate to the directory where you want to upload the code on the EC2 server
-            cd /var/www/html/app
+            cd /var/www
 
             # Securely copy the code from the GitHub Actions runner to the EC2 server
             git pull
@@ -35,7 +35,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             # Navigate to the Laravel project directory on the EC2 server
-            cd /var/www/html/app
+            cd /var/www
 
             # Install Composer dependencies (no-dev) and run Laravel commands
             composer install --no-dev
