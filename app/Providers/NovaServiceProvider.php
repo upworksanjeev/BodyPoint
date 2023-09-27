@@ -12,6 +12,7 @@ use App\Nova\User;
 use Sereny\NovaPermissions\Nova\Role;
 use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -32,7 +33,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuSection::make('Roles & Permissions', [
                     MenuItem::resource(Role::class),
                     MenuItem::resource(Permission::class)
-                ])->icon('shield-check')->collapsable()
+                ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
+                    return $request->user()->isSuperAdmin();
+                })
             ];
         });
 
