@@ -13,6 +13,7 @@ use Sereny\NovaPermissions\Nova\Role;
 use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Support\Facades\Blade;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -24,6 +25,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::initialPath('/resources/users');
 
         Nova::mainMenu(function (Request $request) {
             return [
@@ -48,6 +51,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             );
 
             return $menu;
+        });
+
+        Nova::footer(function ($request) {
+            return Blade::render('<p align="center">&#169; 2023. Bodypoint</p>');
         });
     }
 
