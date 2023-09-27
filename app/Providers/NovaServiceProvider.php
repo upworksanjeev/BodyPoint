@@ -3,7 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Menu\Menu;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
+use App\Nova\User;
+use Sereny\NovaPermissions\Nova\Role;
+use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -16,6 +23,29 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::mainMenu(function (Request $request) {
+            return [
+                MenuSection::make('Users', [
+                    MenuItem::resource(User::class),
+                ])->icon('user-group')->collapsable(),
+                MenuSection::make('Roles & Permissions', [
+                    MenuItem::resource(Role::class),
+                    MenuItem::resource(Permission::class)
+                ])->icon('shield-check')->collapsable()
+            ];
+        });
+
+        Nova::userMenu(function (Request $request, Menu $menu) {
+            $menu->prepend(
+                MenuItem::make(
+                    'My Profile',
+                    "/resources/users/{$request->user()->getKey()}"
+                )
+            );
+
+            return $menu;
+        });
     }
 
     /**
