@@ -7,6 +7,7 @@ use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\MorphToMany;
@@ -36,6 +37,16 @@ class User extends Resource
         'id', 'name', 'email',
     ];
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if($request->user()->isSuperAdmin())
+            return $query;
+         else
+             return $query->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'super-admin');
+            });
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -64,7 +75,31 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
+            Select::make('Role')
+                ->options(function () {
+                    return \Spatie\Permission\Models\Role::where('name', '<>', 'super-admin')->pluck('name')->mapWithKeys(function ($value) {
+                        return [$value => $value];
+                    });
+                })
+                ->fillUsing(function ($request, $model, $attribute) {
+                    // After the user is saved, syncRoles will be called with the selected role(s)
+                    $model::saved(function ($model) use ($request, $attribute) {
+                        $roles = $request->{$attribute};
+                        if (is_array($roles)) {
+                            $model->syncRoles($roles); // synchronize roles
+                        } else {
+                            $model->syncRoles([$roles]); // if only one role is selected, wrap it in an array
+                        }
+                    });
+                })->hideFromIndex()->resolveUsing(function ($request, $model) {
+                    return $model->getRoleNames();
+                })->rules('required')->canSee(function ($request) {
+                   return (!$request->user()->isSuperAdmin());
+                }
+            ),
+
             MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
+            //MorphToMany::make('Roles', 'roles', \App\Nova\CustomRole::class),
             MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
         ];
     }
@@ -112,4 +147,5 @@ class User extends Resource
     {
         return [];
     }
+
 }
