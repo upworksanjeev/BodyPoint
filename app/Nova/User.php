@@ -94,12 +94,11 @@ class User extends Resource
                 })->hideFromIndex()->resolveUsing(function ($request, $model) {
                     return $model->getRoleNames();
                 })->rules('required')->canSee(function ($request) {
-                   return (!$request->user()->isSuperAdmin());
+                   return ($request->user()->isAdmin());
                 }
             ),
 
             MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
-            //MorphToMany::make('Roles', 'roles', \App\Nova\CustomRole::class),
             MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
         ];
     }
