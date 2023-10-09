@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    //return view('home');
+    // if (Auth::check())  {
+    //     return redirect('/dashboard');
+    // }
+    return view('main');
 });
 
 Route::get('/dashboard', function () {
