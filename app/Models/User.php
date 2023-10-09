@@ -53,4 +53,16 @@ class User extends Authenticatable
     {
         return $this->hasRole('admin');
     }
+
+    /**
+     * Determine if the user has an admin role.
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute()
+    {
+        $adminRoles = ['super-admin', 'admin', 'Editor'];
+
+        return $this->hasAnyRole($adminRoles);
+    }
 }
