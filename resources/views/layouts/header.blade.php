@@ -18,6 +18,6 @@
         </div>
     </div>
     <div class="container mx-auto px-2 xl:px-10">
-    <x-main-nav />
+       <x-main-nav />
     </div>
 </header>
