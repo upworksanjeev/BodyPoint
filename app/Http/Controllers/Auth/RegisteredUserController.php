@@ -15,6 +15,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\Country;
 use Validator;
+use App\Http\Requests\StorePostRequest;
+
 
 class RegisteredUserController extends Controller
 {
@@ -34,56 +36,43 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StorePostRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'primary_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'alternate_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'shipping_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'billing_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'shipping_zip' => 'required|regex:/\b\d{5}\b/',
-            'billing_zip' => 'required|regex:/\b\d{5}\b/'
-            
-        ]);
-
+       
+        $validated = $request->validated();
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        
-
        
         Auth::login($user);
-        
-
+    
         if($user){
 
             UserDetails::create([
                 "user_id" => $user->id,
-                'primary_phone' => $request->input('primary_phone'),
-                'alternate_phone' => $request->input('alternate_phone'),
-                'customer_number' => $request->input('customer_number'),
-                'shipping_user_name' => $request->input('shipping_user_name'),
-                'shipping_last_name' => $request->input('shipping_last_name'),
-                'shipping_address' => $request->input('shipping_address'),
-                'shipping_city' => $request->input('shipping_city'),
-                'shipping_state' => $request->input('shipping_state'),
-                'shipping_zip' => $request->input('shipping_zip'),
-                'shipping_country' => $request->input('shipping_country'),
-                'shipping_phone' => $request->input('shipping_phone'),
-                'billing_user_name' => $request->input('billing_user_name'),
-                'billing_last_name' => $request->input('billing_last_name'),
-                'billing_address' => $request->input('billing_address'),
-                'billing_city' => $request->input('billing_city'),
-                'billing_state' => $request->input('billing_state'),
-                'billing_zip' => $request->input('billing_zip'),
-                'billing_country' => $request->input('billing_country'),
-                'billing_phone' => $request->input('billing_phone'),
+                'primary_phone' => $request->primary_phone,
+                'alternate_phone' => $request->alternate_phone,
+                'customer_number' => $request->customer_number,
+                'shipping_user_name' => $request->shipping_user_name,
+                'shipping_last_name' => $request->shipping_last_name,
+                'shipping_address' => $request->shipping_address,
+                'shipping_city' => $request->shipping_city,
+                'shipping_state' => $request->shipping_state,
+                'shipping_zip' => $request->shipping_zip,
+                'shipping_country' => $request->shipping_country,
+                'shipping_phone' => $request->shipping_phone,
+                'billing_user_name' => $request->billing_user_name,
+                'billing_last_name' => $request->billing_last_name,
+                'billing_address' => $request->billing_address,
+                'billing_city' => $request->billing_city,
+                'billing_state' => $request->billing_state,
+                'billing_zip' => $request->billing_zip,
+                'billing_country' => $request->billing_country,
+                'billing_phone' => $request->billing_phone,
 
             ] );
 
