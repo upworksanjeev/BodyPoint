@@ -27,12 +27,27 @@ class StorePostRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'primary_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'alternate_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'shipping_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'billing_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'primary_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
+            'alternate_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
+            'shipping_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
+            'billing_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
             'shipping_zip' => 'required|regex:/\b\d{5}\b/',
             'billing_zip' => 'required|regex:/\b\d{5}\b/'
+        ];
+    }
+
+
+
+     /**
+     * @return array|string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'primary_phone' => 'please enter 10 digit primary number',
+            'alternate_phone' => 'please enter 10 digit alternate number',
+            'shipping_phone' => 'please enter 10 digit shipping number',
+            'billing_phone' => 'please enter 10 digit billing number',
         ];
     }
 }

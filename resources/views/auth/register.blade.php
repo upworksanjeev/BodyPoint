@@ -43,7 +43,7 @@
 
                     <x-text-input id="password_confirmation" class="block mt-1 w-full"
                                     type="password"
-                                    name="password_confirmation" required autocomplete="new-password" required />
+                                    name="password_confirmation" required autocomplete="new-password" required  />
 
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
@@ -54,7 +54,7 @@
 
                     <x-text-input id="primary_phone" class="block mt-1 w-full"
                                     type="number"
-                                    name="primary_phone"  />
+                                    name="primary_phone"  :value="old('primary_phone')"  autofocus autocomplete="primary_phone" />
 
                     <x-input-error :messages="$errors->get('primary_phone')" class="mt-2" />
                 </div>
@@ -65,7 +65,7 @@
 
                     <x-text-input id="alternate_phone" class="block mt-1 w-full"
                                     type="number"
-                                    name="alternate_phone" />
+                                    name="alternate_phone" :value="old('alternate_phone')"  autofocus autocomplete="alternate_phone"/>
 
                     <x-input-error :messages="$errors->get('alternate_phone')" class="mt-2" />
                 </div>
@@ -213,7 +213,7 @@
 
         <div class="mt-4">
             <x-input-label for="billing_phone" :value="__('Phone')" />
-            <x-text-input id="billing_phone" data-parsley-group="step-3" class="block mt-1 w-full" type="number" name="billing_phone" :value="old('billing_phone')"  autofocus autocomplete="billing_phone"    />
+            <x-text-input id="billing_phone" data-parsley-group="step-3" class="block mt-1 w-full" type="number" name="billing_phone" :value="old('billing_phone')" autofocus autocomplete="billing_phone"    />
             <x-input-error :messages="$errors->get('billing_phone')" class="mt-2" />
         </div>
     
@@ -228,7 +228,7 @@
     
     </div>
     <div class="flex items-center justify-center mt-4">
-    <a class="underline text-sm text-[#008c99] hover:text-[#008c99] rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+    <a class="underline text-sm text-[#008c99] hover:text-[#008c99] rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-0" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
     </div>
@@ -236,8 +236,6 @@
     </form>
 
     <script>
-
-        
     $(document).ready(function () {
     const $form = $('#registrationForm');
     const $steps = $form.find('.step');
