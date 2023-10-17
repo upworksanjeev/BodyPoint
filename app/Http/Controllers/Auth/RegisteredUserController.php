@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Country;
+use Validator;
 
 class RegisteredUserController extends Controller
 {
@@ -23,7 +25,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $countries = Country::all();
+        return view('auth.register' ,compact('countries'));
     }
 
     /**
@@ -36,7 +39,14 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()]
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'primary_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'alternate_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'shipping_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'billing_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'shipping_zip' => 'required|regex:/\b\d{5}\b/',
+            'billing_zip' => 'required|regex:/\b\d{5}\b/'
+            
         ]);
 
         $user = User::create([
@@ -45,18 +55,16 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        
 
        
         Auth::login($user);
         
 
         if($user){
-           $id = $user->id;
 
-            // die;
             UserDetails::create([
-                "user_id" => $id,
+                "user_id" => $user->id,
                 'primary_phone' => $request->input('primary_phone'),
                 'alternate_phone' => $request->input('alternate_phone'),
                 'customer_number' => $request->input('customer_number'),
@@ -79,7 +87,7 @@ class RegisteredUserController extends Controller
 
             ] );
 
-          
+            event(new Registered($user));    
             return redirect(RouteServiceProvider::HOME);
         }
 

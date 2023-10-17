@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
-            $table->integer("user_id")->nullable();;
+            $table->unsignedBigInteger("user_id");
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unique('user_id');
             $table->string('primary_phone');
             $table->string('alternate_phone');
-            $table->string('customer_number')->nullable();
+            $table->integer('customer_number');
             $table->string('shipping_user_name')->nullable();
             $table->string('shipping_last_name')->nullable();
             $table->string('shipping_address')->nullable();
@@ -33,8 +35,6 @@ return new class extends Migration
             $table->string('billing_zip')->nullable();
             $table->string('billing_country')->nullable();
             $table->string('billing_phone')->nullable();
-            
-            
             $table->timestamps();
         });
     }
