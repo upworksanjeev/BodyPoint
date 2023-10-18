@@ -27,10 +27,10 @@ class StorePostRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'primary_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
-            'alternate_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
-            'shipping_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
-            'billing_phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:10',
+            'primary_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'alternate_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'shipping_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'billing_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
             'shipping_zip' => 'required|regex:/\b\d{5}\b/',
             'billing_zip' => 'required|regex:/\b\d{5}\b/'
         ];
