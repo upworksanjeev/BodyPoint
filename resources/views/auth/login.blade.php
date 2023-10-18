@@ -1,9 +1,9 @@
 <x-mainpage-layout>
     <!-- Session Status -->
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-10 pb-10 mt-4 sm:pt-0 bg-[#F8F8F8] ">
+    <div class="h-[65vh] sm:h-[62.5vh]  p-5 flex  sm:justify-center items-center  mt-4 sm:pt-0 ">
 
    
-    <div class="w-full  sm:max-w-xl mt-6 px-6 py-4 bg-white shadow-lg overflow-hidden sm:rounded-lg">
+    <div class="w-full  sm:max-w-xl  px-10 py-10 shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]  ">
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}">
@@ -31,19 +31,19 @@
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 " name="remember">
                 <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center sm:justify-end  justify-center mt-4 ">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-0" href="{{ route('password.request') }}">
+                <a class="text-[#008c99] underline text-xs sm:text-sm  rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-0" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ml-3">
+            <x-primary-button class="ml-3 text-xs">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
