@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('/resources/fonts/AvenirLTStd-Roman.woff2') format('woff2'),
+        url('/resources/fonts/AvenirLTStd-Roman.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('/resources/fonts/Avenir-Black.woff2') format('woff2'),
+        url('/resources/fonts/Avenir-Black.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('/resources/fonts/AvenirLTStd-Black.woff2') format('woff2'),
+        url('/resources/fonts/AvenirLTStd-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('/resources/fonts/AvenirLTStd-Book.woff2') format('woff2'),
+        url('/resources/fonts/AvenirLTStd-Book.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'Avenir';
+ }

@@ -1,4 +1,8 @@
-<x-guest-layout>
+<x-mainpage-layout>
+    <!-- Session Status -->
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-10 pb-10 mt-4 sm:pt-0 bg-[#F8F8F8] ">
+   
+    <div class="w-full  sm:max-w-xl mt-6 px-6 py-4 bg-white shadow-lg overflow-hidden sm:rounded-lg">
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
     </div>
@@ -28,4 +32,6 @@
             </button>
         </form>
     </div>
-</x-guest-layout>
+</div>
+</div>
+</x-mainpage-layout>
