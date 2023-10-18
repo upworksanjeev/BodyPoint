@@ -55,7 +55,7 @@
     <div class="bg-[#008c99] py-3">
         <x-copyrights>
         <x-slot name="content">
-        {{_('© Copyrights 2023 - 2024. bodypoint. All Rights Reserved.')}}
+         © Copyrights {{ date('Y') }}. bodypoint. All Rights Reserved.
         </x-slot>
         </x-copyrights>
     </div>
