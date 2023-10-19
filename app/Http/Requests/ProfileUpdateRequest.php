@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -18,6 +19,28 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['string', 'max:255'],
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'primary_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'alternate_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'shipping_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'billing_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            'shipping_zip' => 'required|regex:/\b\d{5}\b/',
+            'billing_zip' => 'required|regex:/\b\d{5}\b/'
+        ];
+    }
+
+
+
+     /**
+     * @return array|string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'primary_phone' => 'please enter 10 digit primary number',
+            'alternate_phone' => 'please enter 10 digit alternate number',
+            'shipping_phone' => 'please enter 10 digit shipping number',
+            'billing_phone' => 'please enter 10 digit billing number',
         ];
     }
 }

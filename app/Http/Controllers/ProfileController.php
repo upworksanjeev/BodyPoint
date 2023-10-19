@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\StorePostRequest; 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Country;
+use App\Models\UserDetails;
+use App\Models\user;
 
 class ProfileController extends Controller
 {
@@ -16,8 +20,10 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $countries = Country::all();
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $request->user()->with('getUserDetails')->first(),
+            'countries' => $countries
         ]);
     }
 
@@ -25,7 +31,7 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
+    {   
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -33,6 +39,29 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        
+        UserDetails::where('user_id',$request->user()->id)->update(array(
+            'primary_phone' => $request->primary_phone,
+            'alternate_phone' => $request->alternate_phone,
+            'customer_number' => $request->customer_number,
+            'shipping_user_name' => $request->shipping_user_name,
+            'shipping_last_name' => $request->shipping_last_name,
+            'shipping_address' => $request->shipping_address,
+            'shipping_city' => $request->shipping_city,
+            'shipping_state' => $request->shipping_state,
+            'shipping_zip' => $request->shipping_zip,
+            'shipping_country' => $request->shipping_country,
+            'shipping_phone' => $request->shipping_phone,
+            'billing_user_name' => $request->billing_user_name,
+            'billing_last_name' => $request->billing_last_name,
+            'billing_address' => $request->billing_address,
+            'billing_city' => $request->billing_city,
+            'billing_state' => $request->billing_state,
+            'billing_zip' => $request->billing_zip,
+            'billing_country' => $request->billing_country,
+            'billing_phone' => $request->billing_phone,
+        ));
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
