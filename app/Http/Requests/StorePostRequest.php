@@ -31,8 +31,8 @@ class StorePostRequest extends FormRequest
             'alternate_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
             'shipping_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
             'billing_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
-            'shipping_zip' => 'required|regex:/\b\d{5}\b/',
-            'billing_zip' => 'required|regex:/\b\d{5}\b/'
+            'shipping_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/',
+            'billing_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/'
         ];
     }
 

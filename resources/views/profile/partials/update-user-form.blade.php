@@ -135,7 +135,7 @@
 
                     <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4">
                         <x-input-label for="shipping_zip" :value="__('Zip')" />
-                        <x-text-input id="shipping_zip" required onBlur="formatZip();" class="block mt-1 w-full" type="number" name="shipping_zip" :value="old('shipping_zip' , $user->getUserDetails->shipping_zip)"  autofocus autocomplete="shipping_zip"   />
+                        <x-text-input id="shipping_zip" required onBlur="formatZip();" class="block mt-1 w-full" type="text" name="shipping_zip" :value="old('shipping_zip' , $user->getUserDetails->shipping_zip)"  autofocus autocomplete="shipping_zip"   />
                         <div id="output" class="text-red-500"></div>
                         <x-input-error :messages="$errors->get('shipping_zip')" class="mt-2" />
                     </div>
@@ -207,13 +207,13 @@
 
                     <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4">
                         <x-input-label for="billing_zip" :value="__('Zip')" />
-                        <x-text-input id="billing_zip"  onBlur="formatZip();" required   class="block mt-1 w-full" type="number" name="billing_zip" :value="old('billing_zip' , $user->getUserDetails->billing_zip)"   autofocus autocomplete="billing_zip"   />
+                        <x-text-input id="billing_zip"  onBlur="formatZip();" required   class="block mt-1 w-full" type="text" name="billing_zip" :value="old('billing_zip' , $user->getUserDetails->billing_zip)"   autofocus autocomplete="billing_zip"   />
                         <div id="billing_output" class="text-red-500"></div>
                         <x-input-error :messages="$errors->get('billing_zip')" class="mt-2" />
                     </div>
 
                     <div class="w-full md:w-2/4  pr-0 md:pr-2  mt-4">
-                        <x-input-label for="shipping_country" :value="__('Country')" />
+                        <x-input-label for="billing_country" :value="__('Country')" />
                         <x-select id="billing_country"   name="billing_country" :value="old('billing_country')">
                             <x-slot name="content">
                             <option selected>Select Country</option>

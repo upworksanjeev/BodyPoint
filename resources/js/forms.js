@@ -19,7 +19,10 @@ $(document).ready(function () {
                 if ($(this).val().trim() === '') {
                     isValid = false;
                     $field.addClass('border-red-600');
+                    $field.removeClass('border-gray-300');
                 }else{
+                    isValid = true;
+                    $field.addClass('border-gray-300 ');
                     $field.removeClass('border-red-600');
                 }
             });
@@ -77,6 +80,15 @@ $(document).ready(function () {
                
             }
         });
+
+        $('.submit-button').click(function (e) {
+            e.preventDefault();
+            if (validateStep()) {
+                $form.submit();
+            }else{
+                return false;
+            }
+        })
         // Assuming you have a checkbox element with the id "myCheckbox"
             const myCheckbox = document.getElementById('shipping_details');
 
@@ -111,28 +123,29 @@ $(document).ready(function () {
 });
 
 
- 
- $("#shipping_zip ,#billing_zip").keypress(function (e){
-        const regex = /(\d{5})(\d{4})/;
-        let val ="#"+ e.currentTarget.id
-        let  input =e.currentTarget.value;
-        if($('#output').length > 0 ){
-            $('#output').remove();
-        }
-        if ( input.length === 4  ) {
-            $(val).after('<div id="output" class="text-red-500">Valid 5-digit zipcode.</div>');
-        } else if ( input.length === 9 ) {
-            $(val).after('<div id="output" class="text-red-500">$1-$2 is a valid zipcode.</div>');
-            // Replace contents of text field
-            document.getElementById(val).value = input.replace(/(\d{5})(\d{4})/, "$1-$2");
-                  $(val).after('<div id="output" class="text-red-500">Please enter a valid zipcode.</div>');
-        } else  {
-          
-            $(val).after('<div id="output" class="text-red-500">Please enter a valid zipcode.</div>');
-        } 
 
+function validateUSZipCode(zipCode) {
+    // US ZIP code format (5 digits or 5+4 digits)
+    var usZipRegex = /^\d{5}([ \-]\d{4})?$/;
+    return usZipRegex.test(zipCode);
+}
+ 
+
+// Validate ZIP code on input blur (for the United States)
+$('#shipping_zip ,#billing_zip').on('blur', function(e) {
+    var zipCode = $(this).val();
+    let val ="#"+ e.currentTarget.id
+    if($('#output').length > 0 ){
+        $('#output').remove();   
+    }
+    if (validateUSZipCode(zipCode)) {
+        $("button.inline-flex").attr("disabled",false);
+    } else {
+        $(val).after('<div id="output" class="text-red-500">Please enter a valid zipcode.</div>');
+        $("button.inline-flex").attr("disabled",true);
+    }
 });
-       
+
 
 $("#primary_phone , #alternate_phone ,#shipping_phone ,#billing_phone").keypress(function (e) {
         let val ="#"+ e.currentTarget.id
@@ -140,11 +153,12 @@ $("#primary_phone , #alternate_phone ,#shipping_phone ,#billing_phone").keypress
         $('#output').remove();   
     }
     if ($(val).val().length > 9 ){
-        $(val).after('<div id="output" class="text-red-500">Must be 10 Digits</div>');
+        $(val).after('<div id="output" class="text-red-500">Please enter a valid phone number.</div>');
         }
 });
     
-        
+
+
 $('input[type="text"],textarea').keydown(function (e) {
     if(e.keyCode == 13){
         e.preventDefault();

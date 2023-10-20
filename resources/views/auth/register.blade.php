@@ -1,6 +1,6 @@
 <x-mainpage-layout>
     <!-- Session Status -->
-    <div class="min-h-[65vh]  flex flex-col sm:justify-center items-center pt-10 pb-10 mt-4 sm:pt-0  ">
+    <div class="min-h-[65vh]  flex flex-col sm:justify-center items-center pt-10 pb-10 mt-4 sm:pt-0 ">
 
    
     <div class="w-full  sm:max-w-xl mt-0 md:mt-10 px-5 md:px-10 py-6 shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]">
@@ -82,7 +82,7 @@
             
                 <div class="mt-4">
                     <x-input-label for="customer_number" :value="__('Customer Number')" />
-                    <x-text-input id="customer_number" class="block mt-1 w-full"  name="customer_number" :value="old('customer_number')" required autofocus autocomplete="customer_number"  />
+                    <x-text-input id="customer_number" class="block mt-1 w-full "  name="customer_number" :value="old('customer_number')" required autofocus autocomplete="customer_number"  />
                     <x-input-error :messages="$errors->get('customer_number')" class="mt-2" />
                 </div>
                 <!-- Other fields for step 2 -->
@@ -127,7 +127,7 @@
 
             <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4">
                 <x-input-label for="shipping_zip" :value="__('Zip')" />
-                <x-text-input id="shipping_zip" required  class="block mt-1 w-full" type="number" name="shipping_zip" :value="old('shipping_zip')"  autofocus autocomplete="shipping_zip"   />
+                <x-text-input id="shipping_zip" required  class="block mt-1 w-full" type="text" name="shipping_zip" :value="old('shipping_zip')"  autofocus autocomplete="shipping_zip"   />
                 <div id="output" class="text-red-500"></div>
                 <x-input-error :messages="$errors->get('shipping_zip')" class="mt-2" />
             </div>
@@ -136,7 +136,7 @@
                 <x-input-label for="shipping_country" :value="__('Country')" />
                 <x-select id="shipping_country"  name="shipping_country" :value="old('shipping_country')" autofocus autocomplete="shipping_country" >
                 <x-slot name="content">
-                <option selected>Select Country</option>
+                <option >Select Country</option>
                     @foreach ($countries as $country)
                                     <option value="{{lcfirst($country->name)}}"  class="block mt-1 w-full"  @selected(old('shipping_country') == lcfirst($country->name))>{{$country->name}}</option>
                                 @endforeach
@@ -199,16 +199,16 @@
 
             <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4">
                 <x-input-label for="billing_zip" :value="__('Zip')" />
-                <x-text-input id="billing_zip"   required   class="block mt-1 w-full" type="number" name="billing_zip" :value="old('billing_zip')"   autofocus autocomplete="billing_zip"   />
+                <x-text-input id="billing_zip"   required   class="block mt-1 w-full" type="text" name="billing_zip" :value="old('billing_zip')"   autofocus autocomplete="billing_zip"   />
                 <div id="billing_output" class="text-red-500"></div>
                 <x-input-error :messages="$errors->get('billing_zip')" class="mt-2" />
             </div>
 
             <div class="w-full md:w-2/4  pr-0 md:pr-2  mt-4">
-                <x-input-label for="shipping_country" :value="__('Country')" />
+                <x-input-label for="billing_country" :value="__('Country')" />
                 <x-select id="billing_country"   name="billing_country" :value="old('billing_country')">
                     <x-slot name="content">
-                    <option selected>Select Country</option>
+                    <option>Select Country</option>
                     @foreach ($countries as $country)
                                     <option value="{{lcfirst($country->name)}}"  class="block mt-1 w-full"  @selected(old('shipping_country') == lcfirst($country->name))>{{$country->name}}</option>
                                 @endforeach

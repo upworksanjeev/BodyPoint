@@ -20,9 +20,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+    
+        $userID = $request->user()->id;
         $countries = Country::all();
         return view('profile.edit', [
-            'user' => $request->user()->with('getUserDetails')->first(),
+            'user' => User::where('id',$userID)->with('getUserDetails')->first(),
             'countries' => $countries
         ]);
     }
