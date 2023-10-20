@@ -43,3 +43,4 @@ jobs:
             php artisan nova:publish
             php artisan optimize
             php artisan route:clear
+            npm run build
