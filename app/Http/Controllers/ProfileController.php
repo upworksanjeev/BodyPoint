@@ -40,8 +40,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        
-        UserDetails::where('user_id',$request->user()->id)->update(array(
+         UserDetails::updateOrCreate(['user_id' =>  $request->user()->id],[
             'primary_phone' => $request->primary_phone,
             'alternate_phone' => $request->alternate_phone,
             'customer_number' => $request->customer_number,
@@ -61,7 +60,7 @@ class ProfileController extends Controller
             'billing_zip' => $request->billing_zip,
             'billing_country' => $request->billing_country,
             'billing_phone' => $request->billing_phone,
-        ));
+        ]);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
