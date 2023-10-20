@@ -3,7 +3,7 @@
     <div class="min-h-[65vh]  flex flex-col sm:justify-center items-center pt-10 pb-10 mt-4 sm:pt-0  ">
 
    
-    <div class="w-full  sm:max-w-xl mt-0 md:mt-10 px-5 md:px-10 py-6 bg-white shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]">
+    <div class="w-full  sm:max-w-xl mt-0 md:mt-10 px-5 md:px-10 py-6 shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]">
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <form id="registrationForm" method="POST" action="{{ route('register') }}">
         @csrf
@@ -55,7 +55,7 @@
 
                         <x-text-input id="primary_phone" class="block mt-1 w-full"
                                         type="number"
-                                        name="primary_phone"  :value="old('primary_phone')"  autofocus autocomplete="primary_phone" />
+                                        name="primary_phone"  :value="old('primary_phone')"  autofocus autocomplete="primary_phone"  />
 
                         <x-input-error :messages="$errors->get('primary_phone')" class="mt-2" />
                     </div>
@@ -82,7 +82,7 @@
             
                 <div class="mt-4">
                     <x-input-label for="customer_number" :value="__('Customer Number')" />
-                    <x-text-input id="customer_number" class="block mt-1 w-full" type="number" name="customer_number" :value="old('customer_number')" required autofocus autocomplete="customer_number"  />
+                    <x-text-input id="customer_number" class="block mt-1 w-full"  name="customer_number" :value="old('customer_number')" required autofocus autocomplete="customer_number"  />
                     <x-input-error :messages="$errors->get('customer_number')" class="mt-2" />
                 </div>
                 <!-- Other fields for step 2 -->
@@ -127,7 +127,7 @@
 
             <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4">
                 <x-input-label for="shipping_zip" :value="__('Zip')" />
-                <x-text-input id="shipping_zip" required onBlur="formatZip();" class="block mt-1 w-full" type="number" name="shipping_zip" :value="old('shipping_zip')"  autofocus autocomplete="shipping_zip"   />
+                <x-text-input id="shipping_zip" required  class="block mt-1 w-full" type="number" name="shipping_zip" :value="old('shipping_zip')"  autofocus autocomplete="shipping_zip"   />
                 <div id="output" class="text-red-500"></div>
                 <x-input-error :messages="$errors->get('shipping_zip')" class="mt-2" />
             </div>
@@ -199,7 +199,7 @@
 
             <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4">
                 <x-input-label for="billing_zip" :value="__('Zip')" />
-                <x-text-input id="billing_zip"  onBlur="formatZip();" required   class="block mt-1 w-full" type="number" name="billing_zip" :value="old('billing_zip')"   autofocus autocomplete="billing_zip"   />
+                <x-text-input id="billing_zip"   required   class="block mt-1 w-full" type="number" name="billing_zip" :value="old('billing_zip')"   autofocus autocomplete="billing_zip"   />
                 <div id="billing_output" class="text-red-500"></div>
                 <x-input-error :messages="$errors->get('billing_zip')" class="mt-2" />
             </div>
@@ -240,146 +240,6 @@
     </div>
 
     </form>
-
-    <script>
-    $(document).ready(function () {
-    const $form = $('#registrationForm');
-    const $steps = $form.find('.step');
-    const $prevButton = $form.find('.prev-button');
-    const $nextButton = $form.find('.next-button');
-
-    let currentStep = 1;
-     const totalSteps = $steps.length; // Pass the total steps from your controller
-     
-
-        // Function to validate the current step
-        function validateStep() {
-            const $currentStep = $steps.filter(':visible');
-            const $requiredFields = $currentStep.find('[required]');
-            let isValid = true;
-
-            $requiredFields.each(function () {
-                var $field = $(this);
-                if ($(this).val().trim() === '') {
-                    isValid = false;
-                    $field.addClass('border-red-600');
-                }else{
-                    $field.removeClass('border-red-600');
-                }
-            });
-
-            return isValid;
-        }
-    $steps.not(':first').hide();
-
-    if(currentStep === 1){
-        $prevButton.hide();  
-        $('.submit-button').hide();
-    }
-    
-    $nextButton.click(function (e) {
-            e.preventDefault();
-
-            // Check if the current step is valid
-            if (validateStep()) {
-                const $currentStep = $steps.filter(':visible');
-                const $nextStep = $currentStep.next('.step');
-                $currentStep.hide();
-                $prevButton.show();
-                $nextStep.show();
-                currentStep++;
-                
-                // Hide "Next" button on the last step and display "Register"
-                if (currentStep === totalSteps) {
-                    $nextButton.hide();
-                    $('.submit-button').show();
-                }
-            } else {
-        
-            }
-        });
-
-        $prevButton.click(function (e) {
-            e.preventDefault();
-            const $currentStep = $steps.filter(':visible');
-            const $prevStep = $currentStep.prev('.step');
-            $currentStep.hide();
-            $prevStep.show();
-            currentStep--;
-
-            // Show "Next" button when moving back to a previous step
-            if (currentStep < totalSteps) {
-
-                if(currentStep === 1){
-                console.log(currentStep)
-                $prevButton.hide();
-                }else{
-                    $nextButton.show();
-                $prevButton.show();
-                $('.submit-button').hide();
-                }
-               
-            }
-        });
-
-      
-        // Assuming you have a checkbox element with the id "myCheckbox"
-            const myCheckbox = document.getElementById('shipping_details');
-
-            if (myCheckbox.checked) {
-       
-            } else {
-                const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
-                $billingFields.val('');
-            }
-
-        
-        $('#shipping_details').change(function () {
-
-            const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
-            const $shippingFields = $('.step[data-step="3"]').find('[name^="shipping_"]');
-
-            if (this.checked) {
-                // Checkbox is checked, copy values from Shipping Information to Billing Information
-                $billingFields.each(function (index, element) {
-                    const billingFieldName = $(element).attr('name').replace('billing_', '');
-                    const shippingField = $shippingFields.filter('[name="shipping_' + billingFieldName + '"]');
-                    $(element).val(shippingField.val());
-                });
-            } else {
-                // Checkbox is unchecked, clear Billing Information fields
-                $billingFields.val('');
-            }
-        });
-
-       
-    
-});
-    formatZip = () => {
-    let inputshipping = document.getElementById('shipping_zip').value;
-    let outputshipping = document.getElementById('output');
-    let inputbilling = document.getElementById('billing_zip').value;
-    let  outputbilling = document.getElementById('billing_output');
-
-    let input = (inputshipping) ?  inputshipping :  outputshipping;
-    let output = (inputshipping) ?  outputshipping :  outputbilling;
-    
-    const regex = /(\d{5})(\d{4})/;
-        
- 
-        if ( input.length === 5  ) {
-            output.innerHTML = "Valid 5-digit zipcode."
-        } else if ( input.length === 9 ) {
-            output.innerHTML = input.replace(regex, "$1-$2 is a valid zipcode.");
-            // Replace contents of text field
-            document.getElementById('shipping_zip').value = input.replace(/(\d{5})(\d{4})/, "$1-$2");
-        } else  {
-            output.innerHTML = "Please enter a valid zipcode."
-        } 
-    
-    }
-
- </script>
 </div>
 </div>
 

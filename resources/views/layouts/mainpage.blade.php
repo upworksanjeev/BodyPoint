@@ -18,7 +18,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-avenir antialiased">
+<body class="font-['Avenir'] antialiased">
     <div class="container mx-auto px-2 xl:px-0">
         
         @include('layouts.header')

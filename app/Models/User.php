@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\UserDetails;
 
 class User extends Authenticatable
 {
@@ -64,5 +65,12 @@ class User extends Authenticatable
         $adminRoles = ['super-admin', 'admin', 'Editor'];
 
         return $this->hasAnyRole($adminRoles);
+    }
+
+
+    public function getUserDetails()
+    {
+        return $this->hasOne(UserDetails::class, 'user_id' ,"id");
+
     }
 }

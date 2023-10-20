@@ -17,4 +17,6 @@ class UserDetails extends Model
         'shipping_phone', 'billing_user_name', 'billing_last_name', 'billing_address', 'billing_city',
         'billing_state', 'billing_zip', 'billing_country', 'billing_phone'
     ];
+
+    
 }
