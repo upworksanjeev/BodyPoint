@@ -4,7 +4,7 @@
             <div class="w-3/4 h-8  flex items-center text-sm xl:text-base text-[#717171]">
                 <x-welcome>
                     <x-slot name="content">
-                        {{ _("Welcome to bodypoint. We provides comfort and function of children and adults who use wheelchairs and other mobility devices.") }}
+                        {{ __("Welcome to bodypoint. We provides comfort and function of children and adults who use wheelchairs and other mobility devices.") }}
                     </x-slot>
                 </x-welcome>
 
@@ -12,7 +12,7 @@
             <div class="w-1/4 h-8 flex justify-end text-[#717171]">
 
                 <x-phone-icon :phoneNumber="__('800.547.5716')" />
-                
+
                 <x-login-nav />
             </div>
         </div>
