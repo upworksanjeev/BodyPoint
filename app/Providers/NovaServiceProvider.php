@@ -9,6 +9,7 @@ use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use App\Nova\User;
+use App\Nova\Category;
 use Sereny\NovaPermissions\Nova\Role;
 use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -27,18 +28,23 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::initialPath('/resources/users');
+        
 
         Nova::mainMenu(function (Request $request) {
             return [
                 MenuSection::make('Users', [
                     MenuItem::resource(User::class),
                 ])->icon('user-group')->collapsable(),
+				
                 MenuSection::make('Roles & Permissions', [
                     MenuItem::resource(Role::class),
                     MenuItem::resource(Permission::class)
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
-                })
+                }),
+				MenuSection::make('Category', [
+                MenuItem::resource(Category::class),
+                ])->icon('view-grid')->collapsable(),
             ];
         });
 
