@@ -7,11 +7,13 @@ use Illuminate\Http\UploadedFile;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
 use Illuminate\Support\Facades\Storage;
-use App\Nova\Category;
 use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\BelongsTo;
+
 
 class Category extends Resource
 {
@@ -48,23 +50,26 @@ class Category extends Resource
     {
         return [
             ID::make()->sortable(),
-			 Text::make('Name')
+			
+			Text::make('Name','name')
                 ->sortable()
 				->required(true)
                 ->rules('required', 'max:255'),
-			 Text::make('Description')
-                ->sortable()
-				->required(true)
-                ->rules('required', 'max:255'),
-			Image::make('Image')->disk('category_uploads')->disableDownload()->preview(function ($value, $disk) {
-					return $value
-                    ? Storage::disk($disk)->url($value)
-                    : null;
-			}),
+				
+			Textarea::make('Description','description')->maxlength(300)->alwaysShow(),
 			
-			Select::make('Parent Category','parent_cat_id')->searchable()->options(\App\Models\Category::pluck('name', 'id')),
+			Image::make('Category Image','image')->disk('public')->disableDownload(),
 			
-
+			BelongsTo::make('Parent Category', 'category', \App\Nova\Category::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			
+			Select::make('Parent Category','parent_cat_id')->searchable()->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
+			
+			
+				
+			Text::make('Description','description')->displayUsing(function($id) {
+				$part = strip_tags(substr($id, 0, 20));
+				return $part . "...";
+				})->onlyOnIndex(),
         ];
     }
 
@@ -111,4 +116,6 @@ class Category extends Resource
     {
         return [];
     }
+	
+	
 }
