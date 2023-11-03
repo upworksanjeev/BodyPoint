@@ -10,6 +10,7 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use App\Nova\User;
 use App\Nova\Category;
+use App\Nova\Product;
 use Sereny\NovaPermissions\Nova\Role;
 use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -42,9 +43,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
                 }),
-				MenuSection::make('Category', [
+				MenuSection::make('Categories', [
                 MenuItem::resource(Category::class),
                 ])->icon('view-grid')->collapsable(),
+				MenuSection::make('Products', [
+                MenuItem::resource(Product::class),
+                ])->icon('collection')->collapsable(),
             ];
         });
 

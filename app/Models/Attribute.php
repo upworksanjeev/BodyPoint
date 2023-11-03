@@ -4,23 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
+use App\Models\AttributeCategory;
 
-class Category extends Model
+class Attribute extends Model
 {
     use HasFactory;
 	
 	 protected $fillable = [
-        'name', 'parent_cat_id'
-    ];
-   protected $attributes = [
-       'parent_cat_id' => 0,
+        'att_cat_id', 'attribute'
     ];
 	
 	public function category()
     {
        
-		return $this->belongsTo('Category', 'parent_cat_id', 'id');
+		return $this->belongsTo('AttributeCategory', 'att_cat_id', 'id');
 
     }
 }
