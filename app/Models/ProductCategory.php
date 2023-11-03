@@ -17,11 +17,11 @@ class ProductCategory extends Model
 	
 		public function category()
 		{
-			return $this->belongsTo('App\Models\Category', 'cat_id', 'id');
+			return $this->belongsTo('Category', 'cat_id', 'id');
 		}
 		
 		public function product()
 		{
-			return $this->belongsTo('App\Models\Product', 'prod_id', 'id');
+			return $this->belongsTo('Product', 'prod_id', 'id');
 		}
 }

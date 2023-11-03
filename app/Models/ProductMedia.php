@@ -16,6 +16,6 @@ class ProductMedia extends Model
 	
 	public function product()
     {
-		return $this->belongsTo('App\Models\Product', 'prod_id', 'id');
+		return $this->belongsTo('Product', 'prod_id', 'id');
     }
 }

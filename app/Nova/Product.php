@@ -59,10 +59,10 @@ class Product extends Resource
 				return $part . "...";
 				})->onlyOnIndex(),
 				
-			Trix::make('Description','description')->hideFromIndex(),
-			Trix::make('Sizing','sizing')->hideFromIndex(),
-			Trix::make('Instruction of use','instruction_of_use')->hideFromIndex(),
-			Trix::make('Warranty','warranty')->hideFromIndex(),
+			Trix::make('Description','description')->hideFromIndex()->alwaysShow(),
+			Trix::make('Sizing','sizing')->hideFromIndex()->alwaysShow(),
+			Trix::make('Instruction of use','instruction_of_use')->hideFromIndex()->alwaysShow(),
+			Trix::make('Warranty','warranty')->hideFromIndex()->alwaysShow(),
 	
 			Select::make('Product Type')->options([
 				'Single' => 'Single',

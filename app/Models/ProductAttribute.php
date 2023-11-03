@@ -20,12 +20,12 @@ class ProductAttribute extends Model
 	
 	public function product()
     {
-		return $this->belongsTo('App\Models\Product', 'prod_id', 'id');
+		return $this->belongsTo('Product', 'prod_id', 'id');
     }
 	
     public function Attribute()
     {
-		return $this->belongsTo('App\Models\Attribute', 'attr_id', 'id');
+		return $this->belongsTo('Attribute', 'attr_id', 'id');
 
     }
 }
