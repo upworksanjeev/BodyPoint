@@ -16,21 +16,21 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Trix;
 
 
-class Category extends Resource
+class Product extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Category>
+     * @var class-string<\App\Models\Product>
      */
-    public static $model = \App\Models\Category::class;
+    public static $model = \App\Models\Product::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -38,7 +38,7 @@ class Category extends Resource
      * @var array
      */
     public static $search = [
-        'id','name','description'
+        'id',
     ];
 
     /**
@@ -51,26 +51,28 @@ class Category extends Resource
     {
         return [
             ID::make()->sortable(),
-			
-			Text::make('Name','name')
-                ->sortable()
-				->required(true)
-                ->rules('required', 'max:255'),
+			Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
 				
-			Trix::make('Description','description')->maxlength(300)->alwaysShow(),
-			
-			Image::make('Category Image','image')->disk('public')->disableDownload(),
-			
-			BelongsTo::make('Parent Category', 'category', \App\Nova\Category::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			
-			Select::make('Parent Category','parent_cat_id')->searchable()->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
-			
-			
-				
-			Text::make('Description','description')->displayUsing(function($id) {
+			Text::make('Tagline','small_description')->maxlength(255)->hideFromIndex(),
+			Text::make('Tagline','small_description')->displayUsing(function($id) {
 				$part = strip_tags(substr($id, 0, 20));
 				return $part . "...";
 				})->onlyOnIndex(),
+				
+			Trix::make('Description','description')->hideFromIndex(),
+			Trix::make('Sizing','sizing')->hideFromIndex(),
+			Trix::make('Instruction of use','instruction_of_use')->hideFromIndex(),
+			Trix::make('Warranty','warranty')->hideFromIndex(),
+	
+			Select::make('Product Type')->options([
+				'Single' => 'Single',
+				'Option' => 'Option',
+			]),
+			/*Image::make('Category Image','image')->disk('public')->disableDownload(),
+			BelongsTo::make('Parent Category', 'category', \App\Nova\Category::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			
+			Select::make('Parent Category','parent_cat_id')->searchable()->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),*/
+			
         ];
     }
 
@@ -117,6 +119,4 @@ class Category extends Resource
     {
         return [];
     }
-	
-	
 }
