@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Trix;
+//use  App\Nova\Category;
 
 
 class Category extends Resource
@@ -57,7 +58,7 @@ class Category extends Resource
 				->required(true)
                 ->rules('required', 'max:255'),
 				
-			Trix::make('Description','description')->maxlength(300)->alwaysShow(),
+			Trix::make('Description','description')->hideFromIndex()->alwaysShow(),
 			
 			Image::make('Category Image','image')->disk('public')->disableDownload(),
 			

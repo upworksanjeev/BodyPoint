@@ -10,8 +10,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\MultiSelect;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Trix;
 
@@ -68,10 +70,10 @@ class Product extends Resource
 				'Single' => 'Single',
 				'Option' => 'Option',
 			]),
-			/*Image::make('Category Image','image')->disk('public')->disableDownload(),
-			BelongsTo::make('Parent Category', 'category', \App\Nova\Category::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			
-			Select::make('Parent Category','parent_cat_id')->searchable()->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),*/
+			/*Image::make('Category Image','image')->disk('public')->disableDownload(),*/
+			//BelongsTo::make('Category', 'cat_id', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			/*HasMany::make('Category'),
+			MultiSelect::make('Category','cat_id')->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),*/
 			
         ];
     }

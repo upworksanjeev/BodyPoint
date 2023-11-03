@@ -17,7 +17,7 @@ class Attribute extends Model
 	public function category()
     {
        
-		return $this->belongsTo('AttributeCategory', 'att_cat_id', 'id');
+		return $this->belongsTo(AttributeCategory::class, 'att_cat_id', 'id');
 
     }
 }
