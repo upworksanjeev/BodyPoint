@@ -25,7 +25,7 @@ class ProductAttribute extends Model
 	
     public function Attribute()
     {
-		return $this->belongsTo('Attribute', 'attr_id', 'id');
+		return $this->belongsTo(Attribute::class, 'attr_id', 'id');
 
     }
 }
