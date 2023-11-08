@@ -11,11 +11,17 @@ use Laravel\Nova\Menu\MenuSection;
 use App\Nova\User;
 use App\Nova\Category;
 use App\Nova\Product;
+use App\Nova\ProductAttribute;
 use Sereny\NovaPermissions\Nova\Role;
 use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Blade;
+use App\Models\Product as ProductModel;
+use App\Models\ProductAttribute as ProductAttributeModel;
+use Laravel\Nova\Observable;
+use App\Observers\ProductObserver;
+use App\Observers\ProductAttributeObserver;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -26,11 +32,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function boot()
     {
+		
         parent::boot();
 
         Nova::initialPath('/resources/users');
         
-
+		
+		Observable::make(ProductModel::class, ProductObserver::class);
+		Observable::make(ProductAttributeModel::class, ProductAttributeObserver::class);
         Nova::mainMenu(function (Request $request) {
             return [
                 MenuSection::make('Users', [
@@ -48,6 +57,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])->icon('view-grid')->collapsable(),
 				MenuSection::make('Products', [
                 MenuItem::resource(Product::class),
+				MenuItem::resource(ProductAttribute::class),
                 ])->icon('collection')->collapsable(),
             ];
         });

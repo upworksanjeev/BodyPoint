@@ -22,4 +22,15 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'cat_id', 'id');
 
     }
+	
+	/*public static function create(array $attributes = [])
+	{
+		echo print_r($attributes);
+		die;
+		$model = new static($attributes);
+
+		$model->save();
+
+		return $model;
+	}*/
 }

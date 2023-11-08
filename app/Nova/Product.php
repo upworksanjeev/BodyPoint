@@ -16,6 +16,7 @@ use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Fields\MorphToMany;
 
 
 class Product extends Resource
@@ -51,6 +52,9 @@ class Product extends Resource
      */
     public function fields(NovaRequest $request)
     {
+		//$contragentCompanyField = BelongsTo::make("cat_id", 'category', Category::class);
+		//$contragentCompanyField = HasMany::make('Category');
+		$contragentCompanyField = BelongsTo::make('Category');
         return [
             ID::make()->sortable(),
 			Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
@@ -70,13 +74,39 @@ class Product extends Resource
 				'Single' => 'Single',
 				'Option' => 'Option',
 			]),
+		//	$contragentCompanyField,
+			
 			/*Image::make('Category Image','image')->disk('public')->disableDownload(),*/
 			//BelongsTo::make('Category', 'cat_id', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			/*HasMany::make('Category'),
-			MultiSelect::make('Category','cat_id')->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),*/
+			HasMany::make('Category','cat_id', \App\Nova\Category::class)->fillUsing(function ($request, $model, $attribute) {
+                    // After the user is saved, syncRoles will be called with the selected role(s)
+                    $model::saved(function ($model) use ($request, $attribute) {
+                        $roles = $request->{$attribute};
+                       
+                    });
+                })->hideFromIndex(),
+			//MultiSelect::make('Category','cat_id')->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
+			
+			
+			/*$contragentCompanyField->displayUsing(function ($contragentCompany) use ($contragent){
+                return $contragentCompany->title() . " (".($contragent == 'toCompany' ? 'Outgoing' : "Incoming").')';
+            });*/
+        
 			
         ];
     }
+	
+	/**
+     * Register a callback to be called after the resource is created.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+/*	 public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        //$model->sendEmailVerificationNotification();
+    }*/
 
     /**
      * Get the cards available for the request.

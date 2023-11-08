@@ -20,10 +20,10 @@ class ProductAttribute extends Model
 	
 	public function product()
     {
-		return $this->belongsTo('Product', 'prod_id', 'id');
+		return $this->belongsTo(Product::class, 'prod_id', 'id');
     }
 	
-    public function Attribute()
+    public function attribute()
     {
 		return $this->belongsTo(Attribute::class, 'attr_id', 'id');
 
