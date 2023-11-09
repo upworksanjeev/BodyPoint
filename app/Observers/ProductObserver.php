@@ -28,12 +28,16 @@ class ProductObserver
     {
         Nova::whenServing(function (NovaRequest $request) use ($model) {
             // Only invoked during Nova requests...
+			
+			//$arr=Product::where('name', $request->name)->where('small_description', $request->small_description)->where('sizing', $request->sizing)->where('product_type', $request->product_type)->pluck('name', 'id');
+			/*$id=Product::where('name', $request->name)->where('small_description', $request->small_description)->where('sizing', $request->sizing)->where('product_type', $request->product_type)->pluck('id');
+			
+
+			
+			$attributes['prod_id']=1;
 			$attributes['cat_id']=8;
-			$this->product_id = $model->id;
-			$this->product_id = $request->id;
-			$attributes['prod_id']=$this->product_id;
 			$abc = new ProductCategory($attributes);
-			$abc->save();
+			$abc->save();*/
 		
         }, function (Request $request) use ($model) {
             // Invoked for non-Nova requests...

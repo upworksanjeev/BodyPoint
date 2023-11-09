@@ -52,9 +52,8 @@ class Product extends Resource
      */
     public function fields(NovaRequest $request)
     {
-		//$contragentCompanyField = BelongsTo::make("cat_id", 'category', Category::class);
-		//$contragentCompanyField = HasMany::make('Category');
-		$contragentCompanyField = BelongsTo::make('Category');
+		
+		//$contragentCompanyField = BelongsTo::make('Category');
         return [
             ID::make()->sortable(),
 			Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
@@ -75,22 +74,15 @@ class Product extends Resource
 				'Option' => 'Option',
 			]),
 		//	$contragentCompanyField,
-			
-			/*Image::make('Category Image','image')->disk('public')->disableDownload(),*/
-			//BelongsTo::make('Category', 'cat_id', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			HasMany::make('Category','cat_id', \App\Nova\Category::class)->fillUsing(function ($request, $model, $attribute) {
+
+				HasOne::make('Category','category', \App\Nova\ProductCategory::class)->/*fillUsing(function ($request, $model, $attribute) {
                     // After the user is saved, syncRoles will be called with the selected role(s)
                     $model::saved(function ($model) use ($request, $attribute) {
                         $roles = $request->{$attribute};
                        
                     });
-                })->hideFromIndex(),
-			//MultiSelect::make('Category','cat_id')->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
-			
-			
-			/*$contragentCompanyField->displayUsing(function ($contragentCompany) use ($contragent){
-                return $contragentCompany->title() . " (".($contragent == 'toCompany' ? 'Outgoing' : "Incoming").')';
-            });*/
+                })->*/hideFromIndex(),
+		
         
 			
         ];
