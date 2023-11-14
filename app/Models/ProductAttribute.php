@@ -10,22 +10,22 @@ use App\Models\Attribute;
 class ProductAttribute extends Model
 {
     use HasFactory;
-	
+	protected $primaryKey = 'id';
 	 protected $fillable = [
         'prod_id', 'attr_id','attr_order'
     ];
    protected $attributes = [
-       'attr_order' => 0,
+       'attr_order' => 1,
     ];
 	
 	public function product()
-    {
-		return $this->belongsTo(Product::class, 'prod_id', 'id');
-    }
+	{
+		return $this->BelongsTo(Product::class,'prod_id','id');
+	}
 	
     public function attribute()
     {
-		return $this->belongsTo(Attribute::class, 'attr_id', 'id');
+		return $this->BelongsTo(Attribute::class, 'attr_id', 'id');
 
     }
 }

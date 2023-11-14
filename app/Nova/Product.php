@@ -69,21 +69,25 @@ class Product extends Resource
 			Trix::make('Instruction of use','instruction_of_use')->hideFromIndex()->alwaysShow(),
 			Trix::make('Warranty','warranty')->hideFromIndex()->alwaysShow(),
 	
-			Select::make('Product Type')->options([
+			Select::make('Product Type','product_type')->options([
 				'Single' => 'Single',
 				'Option' => 'Option',
 			]),
 		//	$contragentCompanyField,
 
-				HasOne::make('Category','category', \App\Nova\ProductCategory::class)->/*fillUsing(function ($request, $model, $attribute) {
-                    // After the user is saved, syncRoles will be called with the selected role(s)
-                    $model::saved(function ($model) use ($request, $attribute) {
-                        $roles = $request->{$attribute};
-                       
-                    });
-                })->*/hideFromIndex(),
-		
-        
+				HasMany::make('Category','category', \App\Nova\CategoryProduct::class)->hideFromIndex(),
+				HasMany::make('Media','media', \App\Nova\ProductMedia::class)->hideFromIndex(),
+				HasMany::make('Attribute','attribute',\App\Nova\ProductAttribute::class)->hideFromIndex(),/*->hideWhenUpdating()->hideFromDetail()->hideWhenCreating()->dependsOn(
+					['product_type'],
+					function (Text $field, NovaRequest $request, FormData $formData) {
+						if ($formData->product_type === 'Option') {
+							$field->showOnDetail()->showOnCreating()->showOnDetail()->showOnUpdating();
+						}
+					}
+				),*/
+	
+	
+				//HasMany::make('Attribute','attribute', \App\Nova\ProductAttribute::class)->hideFromIndex(),
 			
         ];
     }

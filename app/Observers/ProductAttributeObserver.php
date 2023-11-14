@@ -21,8 +21,8 @@ class ProductAttributeObserver
 			$arr=json_decode($request->input('attr_id'));
 			foreach($arr as $k => $v){
 				if($v==true){
-					$model[]->prod_id = $request->input('prod_id');
-					$model[]->attr_id = $k;
+					$model->prod_id = $request->input('prod_id');
+					$model->attr_id = $k;
 					//$model->save();
 				}
 				

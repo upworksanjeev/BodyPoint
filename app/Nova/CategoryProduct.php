@@ -10,19 +10,18 @@ use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\URL;
+use Laravel\Nova\Fields\HasMany;
 
 
-class ProductAttribute extends Resource
+class CategoryProduct extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\ProductAttribute>
+     * @var class-string<\App\Models\CategoryProduct>
      */
-    public static $model = \App\Models\ProductAttribute::class;
+    public static $model = \App\Models\CategoryProduct::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -48,38 +47,17 @@ class ProductAttribute extends Resource
      */
     public function fields(NovaRequest $request)
     {
-		$data=\App\Models\Product::where('id', $request->viaResourceId)->pluck('product_type', 'id');
-		if($data[$request->viaResourceId]=="Option"){
         return [
-            ID::make()->sortable(),
-			Select::make('Product','prod_id')->options(\App\Models\Product::where('id', $request->viaResourceId)->pluck('name', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
-		
+            ID::make()->sortable(),	
+			Select::make('Product','product_id')->options(\App\Models\Product::where('id', $request->viaResourceId)->pluck('name', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
+			Select::make('Category','category_id')->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
 			
-			Select::make('Attribute Category','attr_cat')->searchable()->options(\App\Models\AttributeCategory::pluck('category', 'id'))->hideFromIndex()->hideFromDetail()->fillUsing(function(NovaRequest $request, $model, $attribute, $requestAttribute) {
-                return null;
-            }),
 			
-		
-			Select::make('Attribute','attr_id')->dependsOn(
-				['attr_cat'],
-				function (Select $field, NovaRequest $request, FormData $formData) {
-					$field->options(\App\Models\Attribute::where('att_cat_id', $formData->attr_cat)->pluck('attribute', 'id'));
-				})->hideFromIndex()->hideFromDetail(),
+			BelongsTo::make('Product','product', \App\Nova\Product::class)->hideWhenCreating()->hideWhenUpdating(),
+			BelongsTo::make('Category','category', \App\Nova\Category::class)->hideWhenCreating()->hideWhenUpdating(),
 				
-				
-			BelongsTo::make('Product', 'product', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-		    BelongsTo::make('Attribute', 'attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-
+			
         ];
-		}else{
-			
-			return [
-
-			Text::make("Message")->default("This Product is not Option Type, So products don't have any attributes!")->readonly()->hideFromIndex()->hideFromDetail()->fillUsing(function(NovaRequest $request, $model, $attribute, $requestAttribute) {
-                return null;
-            }),
-			];
-		}
     }
 
     /**
@@ -101,7 +79,7 @@ class ProductAttribute extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [ ];
+        return [];
     }
 
     /**
