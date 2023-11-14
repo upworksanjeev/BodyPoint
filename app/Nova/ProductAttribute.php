@@ -49,7 +49,7 @@ class ProductAttribute extends Resource
     public function fields(NovaRequest $request)
     {
 		$data=\App\Models\Product::where('id', $request->viaResourceId)->pluck('product_type', 'id');
-		if($data[$request->viaResourceId]=="Option"){
+		if(!isset($request->viaResourceId) || $data[$request->viaResourceId]=="Option"){
         return [
             ID::make()->sortable(),
 			Select::make('Product','prod_id')->options(\App\Models\Product::where('id', $request->viaResourceId)->pluck('name', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
