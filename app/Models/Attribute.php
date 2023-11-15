@@ -13,11 +13,10 @@ class Attribute extends Model
 	 protected $fillable = [
         'att_cat_id', 'attribute'
     ];
+	public $timestamps=false;
 	
 	public function category()
     {
-       
-		return $this->belongsTo(AttributeCategory::class, 'att_cat_id', 'id');
-
+		return $this->BelongsTo(AttributeCategory::class, 'att_cat_id', 'id');
     }
 }

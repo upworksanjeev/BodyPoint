@@ -13,9 +13,11 @@ class ProductMedia extends Model
 	 protected $fillable = [
         'prod_id', 'media'
     ];
-	
-	public function product()
-    {
-		return $this->belongsTo(Product::class, 'prod_id', 'id');
-    }
+	protected $attributes = [
+       'media_type' => 'Image',
+    ];		
+		public function product()
+		{
+			return $this->BelongsTo(Product::class,'prod_id','id');
+		}
 }

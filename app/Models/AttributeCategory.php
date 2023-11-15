@@ -12,5 +12,6 @@ class AttributeCategory extends Model
 	 protected $fillable = [
         'category'
     ];
+	public $timestamps=false;
    
 }
