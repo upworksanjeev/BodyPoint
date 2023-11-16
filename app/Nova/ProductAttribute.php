@@ -68,7 +68,9 @@ class ProductAttribute extends Resource
 				
 				
 			BelongsTo::make('Product', 'product', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-		    BelongsTo::make('Attribute', 'attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			//BelongsTo::make('Attribute Category', 'attributecategory', \App\Nova\AttributeCategory::class)->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			BelongsTo::make('Attribute', 'attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+		    
 
         ];
 		}else{

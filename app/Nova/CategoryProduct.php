@@ -50,9 +50,10 @@ class CategoryProduct extends Resource
         return [
             ID::make()->sortable(),	
 			Select::make('Product','product_id')->options(\App\Models\Product::where('id', $request->viaResourceId)->pluck('name', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
+
 			Select::make('Category','category_id')->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
 			
-			
+		   
 			BelongsTo::make('Product','product', \App\Nova\Product::class)->hideWhenCreating()->hideWhenUpdating(),
 			BelongsTo::make('Category','category', \App\Nova\Category::class)->hideWhenCreating()->hideWhenUpdating(),
 				

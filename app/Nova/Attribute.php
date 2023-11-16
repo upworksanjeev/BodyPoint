@@ -31,7 +31,7 @@ class Attribute extends Resource
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'attribute';
 
     /**
      * The columns that should be searched.
@@ -39,7 +39,7 @@ class Attribute extends Resource
      * @var array
      */
     public static $search = [
-        'id'
+        'id','attribute'
     ];
 
     /**
