@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\Attribute;
+use App\Models\AttributeCategory;
 
 class ProductAttribute extends Model
 {
@@ -26,6 +27,11 @@ class ProductAttribute extends Model
     public function attribute()
     {
 		return $this->BelongsTo(Attribute::class, 'attr_id', 'id');
+
+    } 
+	public function attributecategory()
+    {
+		return $this->BelongsTo(AttributeCategory::class, 'att_cat_id', 'id');
 
     }
 }
