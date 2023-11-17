@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOneThrough;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\URL;
 
@@ -63,12 +64,15 @@ class ProductAttribute extends Resource
 			Select::make('Attribute','attr_id')->dependsOn(
 				['attr_cat'],
 				function (Select $field, NovaRequest $request, FormData $formData) {
-					$field->options(\App\Models\Attribute::where('att_cat_id', $formData->attr_cat)->pluck('attribute', 'id'));
+					$field->options(\App\Models\Attribute::whereNotIn('id',\App\Models\ProductAttribute::where('prod_id', $request->viaResourceId)->pluck('attr_id'))->where('att_cat_id', $formData->attr_cat)->pluck('attribute', 'id'));
 				})->hideFromIndex()->hideFromDetail(),
 				
 				
+			
+		
 			BelongsTo::make('Product', 'product', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			//BelongsTo::make('Attribute Category', 'attributecategory', \App\Nova\AttributeCategory::class)->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			//HasOneThrough::make('AttributeCategory', 'productattribute', \App\Nova\AttributeCategory::class)->sortable()->hideWhenCreating()->hideWhenUpdating(),
+			//HasOneThrough::make('AttributeCategory')->sortable()->hideWhenCreating()->hideWhenUpdating(),
 			BelongsTo::make('Attribute', 'attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
 		    
 
