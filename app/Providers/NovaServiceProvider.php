@@ -35,7 +35,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function boot()
     {
-		
+
         parent::boot();
 
         Nova::initialPath('/resources/users');
@@ -47,22 +47,20 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuSection::make('Users', [
                     MenuItem::resource(User::class),
                 ])->icon('user-group')->collapsable(),
-				
+
                 MenuSection::make('Roles & Permissions', [
                     MenuItem::resource(Role::class),
                     MenuItem::resource(Permission::class)
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
                 }),
-				MenuSection::make('Categories', [
-                MenuItem::resource(Category::class),
-                ])->icon('view-grid')->collapsable(),
-				MenuSection::make('Products', [
+				MenuSection::make('Ecommerce', [
                 MenuItem::resource(Product::class),
+                MenuItem::resource(Category::class),
 				MenuItem::resource(AttributeCategory::class),
 				MenuItem::resource(Attribute::class),
                 ])->icon('list')->collapsable(),
-				
+
             ];
         });
 

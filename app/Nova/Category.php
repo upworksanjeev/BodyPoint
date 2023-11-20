@@ -52,22 +52,22 @@ class Category extends Resource
     {
         return [
             ID::make()->sortable(),
-			
+
 			Text::make('Name','name')
                 ->sortable()
 				->required(true)
                 ->rules('required', 'max:255'),
-				
+
 			Trix::make('Description','description')->hideFromIndex()->alwaysShow(),
-			
+
 			Image::make('Category Image','image')->disk('public')->disableDownload(),
-			
+
 			BelongsTo::make('Parent Category', 'category', \App\Nova\Category::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			
+
 			Select::make('Parent Category','parent_cat_id')->searchable()->options(\App\Models\Category::pluck('name', 'id'))->hideFromIndex()->hideFromDetail(),
-			
-			
-				
+
+
+
 			Text::make('Description','description')->displayUsing(function($id) {
 				$part = strip_tags(substr($id, 0, 20));
 				return $part . "...";
@@ -118,6 +118,6 @@ class Category extends Resource
     {
         return [];
     }
-	
-	
+
+
 }
