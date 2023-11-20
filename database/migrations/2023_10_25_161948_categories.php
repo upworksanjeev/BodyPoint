@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
 			$table->id();
 			$table->string('name');
-			$table->text('description');
+			$table->text('description')->nullable();
 			$table->string('image')->nullable();
 			$table->integer('parent_cat_id')->default(0);
 			$table->enum('is_deleted',['0','1'])->default(0);

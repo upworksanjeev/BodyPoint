@@ -10,13 +10,14 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\MultiSelect;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\MorphToMany;
+use App\Models\Category;
+use Outl1ne\MultiselectField\Multiselect;
 
 
 class Product extends Resource
@@ -52,46 +53,32 @@ class Product extends Resource
      */
     public function fields(NovaRequest $request)
     {
-		
-		//$contragentCompanyField = BelongsTo::make('Category');
+
         return [
             ID::make()->sortable(),
 			Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
-				
+
 			Text::make('Tagline','small_description')->maxlength(255)->hideFromIndex(),
 			Text::make('Tagline','small_description')->displayUsing(function($id) {
 				$part = strip_tags(substr($id, 0, 20));
 				return $part . "...";
 				})->onlyOnIndex(),
-				
+
 			Trix::make('Description','description')->hideFromIndex()->alwaysShow(),
 			Trix::make('Sizing','sizing')->hideFromIndex()->alwaysShow(),
 			Trix::make('Instruction of use','instruction_of_use')->hideFromIndex()->alwaysShow(),
 			Trix::make('Warranty','warranty')->hideFromIndex()->alwaysShow(),
-	
+
 			Select::make('Product Type','product_type')->options([
 				'Single' => 'Single',
 				'Option' => 'Option',
 			]),
-		//	$contragentCompanyField,
 
-				HasMany::make('Category','category', \App\Nova\CategoryProduct::class)->hideFromIndex(),
-				HasMany::make('Media','media', \App\Nova\ProductMedia::class)->hideFromIndex(),
-				HasMany::make('Attribute','attribute',\App\Nova\ProductAttribute::class)->hideFromIndex(),/*->hideWhenUpdating()->hideFromDetail()->hideWhenCreating()->dependsOn(
-					['product_type'],
-					function (Text $field, NovaRequest $request, FormData $formData) {
-						if ($formData->product_type === 'Option') {
-							$field->showOnDetail()->showOnCreating()->showOnDetail()->showOnUpdating();
-						}
-					}
-				),*/
-	
-	
-				//HasMany::make('Attribute','attribute', \App\Nova\ProductAttribute::class)->hideFromIndex(),
-			
+            Multiselect::make('Categories', 'categories')->belongsToMany(\App\Nova\Category::class, false),
+            HasMany::make('Attribute','attribute',\App\Nova\ProductAttribute::class)->hideFromIndex(),
         ];
     }
-	
+
 	/**
      * Register a callback to be called after the resource is created.
      *
