@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CategoryProduct;
-use App\Models\ProductMedia;
 use App\Models\ProductAttribute;
 use App\Models\Category;
 
@@ -19,11 +18,6 @@ class Product extends Model
 	protected $attributes = [
        'product_type' => 'Single',
     ];
-
-	public function media()
-    {
-        return $this->hasMany(ProductMedia::class, 'prod_id', 'id');
-    }
 
 	public function attribute()
     {
