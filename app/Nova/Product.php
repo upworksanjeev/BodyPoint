@@ -57,7 +57,7 @@ class Product extends Resource
         return [
             ID::make()->sortable(),
 			Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
-
+            Multiselect::make('Categories', 'categories')->belongsToMany(\App\Nova\Category::class, false),
 			Text::make('Tagline','small_description')->maxlength(255)->hideFromIndex(),
 			Text::make('Tagline','small_description')->displayUsing(function($id) {
 				$part = strip_tags(substr($id, 0, 20));
@@ -74,7 +74,6 @@ class Product extends Resource
 				'Option' => 'Option',
 			]),
 
-            Multiselect::make('Categories', 'categories')->belongsToMany(\App\Nova\Category::class, false),
             HasMany::make('Attribute','attribute',\App\Nova\ProductAttribute::class)->hideFromIndex(),
         ];
     }
