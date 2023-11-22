@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->hasRole('admin');
+        return $this->hasRole('Admin');
     }
 
     /**
@@ -62,7 +62,7 @@ class User extends Authenticatable
      */
     public function getIsAdminAttribute()
     {
-        $adminRoles = ['super-admin', 'admin', 'Editor'];
+        $adminRoles = ['super-admin', 'Admin', 'Editor'];
 
         return $this->hasAnyRole($adminRoles);
     }
