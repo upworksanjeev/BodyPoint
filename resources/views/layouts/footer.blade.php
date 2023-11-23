@@ -1,7 +1,9 @@
-<footer>
+<footer class="footer">
+
     <div class="container mx-auto px-2 py-5 xl:px-10">
         <div class="block lg:flex  items-center ">
             <div class="w-full lg:w-3/4">
+				    <h2 class="footer-heading-title">More Information</h2>
                 <div class="flex flex-wrap lg:block  justify-center mb-5 lg:mb-0">
                 <x-nav-link-custom href="#"  classes="text-base pr-4">
                     {{ __('Home')}}
