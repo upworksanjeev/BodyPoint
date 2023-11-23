@@ -80,19 +80,24 @@ class Product extends Resource
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
-                    NovaTinyMCE::make('Description','description')->hideFromIndex()->alwaysShow(),
+                    NovaTinyMCE::make('Description','description')->hideFromIndex()->alwaysShow()->options([
+                        'use_lfm' => true
+                        ]),
                 ]),
                 Tab::make('Sizing', [
                     NovaTinyMCE::make('Sizing','sizing')->hideFromIndex()->alwaysShow()->options([
-                        'width' => '100%',
                         'use_lfm' => true
                         ]),
                 ]),
                 Tab::make('Instruction of use', [
-                    NovaTinyMCE::make('Instruction of use','instruction_of_use')->hideFromIndex()->alwaysShow(),
+                    NovaTinyMCE::make('Instruction of use','instruction_of_use')->hideFromIndex()->alwaysShow()->options([
+                        'use_lfm' => true
+                        ]),
                 ]),
                 Tab::make('Warranty', [
-                    NovaTinyMCE::make('Warranty','warranty')->hideFromIndex()->alwaysShow(),
+                    NovaTinyMCE::make('Warranty','warranty')->hideFromIndex()->alwaysShow()->options([
+                        'use_lfm' => true
+                        ]),
                 ]),
                 Tab::make('Product Attributes', [
                     Select::make('Product Type','product_type')->options([
