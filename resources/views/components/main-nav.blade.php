@@ -1,19 +1,19 @@
- <nav class="">
-       
+ <nav class="" x-data="{ open: false }">
             <div class="ctm-pt relative flex flex-wrap items-center justify-between pb-5">
-              <div
-                class="inset-y-0 left-0 flex items-center lg:hidden justify-end lg:justify-start w-6/12 md:w-1/12 lg:w-1/12 xl:w-1/12"
-              >
-                <!-- Mobile menu button-->
-                <button
-                  type="button"
-                  class="relative openbtn inline-flex items-center justify-center rounded-md p-2 text-white  hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white text-[40px]"
-                  aria-controls="mobile-menu"
-                  aria-expanded="false"
-                  onclick="openNav()"
-                >
-                <i class="fa fa-bars text-white"></i>
-                </button>
+             
+			   <div
+                  class="inset-y-0 left-0 flex items-center xl:hidden justify-end lg:justify-start w-6/12 lg:w-1/12 xl:w-1/12">
+                  <!-- Mobile menu button-->
+                  <button @click="open = ! open"
+                      class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition duration-150 ease-in-out text-[40px]">
+                      <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                          <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16" />
+                          <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                  </button>
               </div>
               <div
                 class="flex flex-1 items-center justify-start order-first lg:order-none lg:justify-between shift-logo w-6/12 lg:w-6/12 xl:w-9/12 pb-1"
@@ -32,8 +32,7 @@
                         <a
                           href="#"
                           class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
-                          aria-current="page"
-                          >Products <i class="fa fa-chevron-down text-[14px]"></i></a
+                          aria-current="page">Products <i class="fa fa-chevron-down text-[14px]"></i></a
                         >
                         <div class="dropdown-content">
                            <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">Product</h5>
@@ -402,27 +401,27 @@
 				
               </div>
             </div>
-        
-          <div class="mobileLeft-Sidebar lg:hidden" id="mySidepanel">
-            <div class="pt-[60px] pb-[20px] px-[15px]">
-            <a href="javascript:void(0)" class="closebtn text-[#333] text-[32px] absolute top-[15px] right-[15px]" onclick="closeNav()">×</a>
-              <div class="mobile-dropdown">
-              <a
-                href="#"
-                class="text-[#333] hover:text-[#fe7300] transition duration-150 ease-in-out block py-2 text-[18px] font-[300] flex justify-between items-center"
-                aria-current="page"
-                >Product <i class="fa fa-caret-down"></i></a
-              >
-              <div class="mobile-dropdown-content">
-                <h5 class="ctmH2 text-[22px] text-[#008C99] mb-5 font-[500]">Product</h5>
-                <div class="ctm-grd-one">
+          
+      <!-- Responsive Navigation Menu -->
+      <div :class="{ 'block': open, 'hidden': !open }" class="hidden lg:hidden">
+
+
+          <!-- Responsive Settings Options -->
+          <div class="pt-4 pb-1 border-t border-gray-200">
+              <div class="space-y-1 px-2 pb-3 pt-2">
+			 
+				<div class="mobile-dropdown" x-data="{ open: false, toggle() { this.open = ! this.open } }">
+                  <x-nav-link-custom @click="toggle()"
+                      classes="transition duration-150 ease-in-out text-white block rounded-md px-3 py-2 text-base font-medium"
+                      aria-current="page">
+                      {{ __('Product') }} <i class="fa fa-caret-down"></i>
+                      </x-responsive-nave-link>
+					<div class="mobile-dropdown-content" x-show="open">
+               
+                <div  class="ctm-grd-one">
                   <div class="ctm-grd-two">
                   <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img
-          class=""
-          src="{{ asset('img/menu-1.png') }}"
-          alt="Your Company"
-        />
+                    <img class="" src="{{ asset('img/menu-1.png') }}" alt="Your Company"/>
                   </div>
                   <div class="prd-cntnt">
                     <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
@@ -433,107 +432,55 @@
                 </div>
                 <div class="ctm-grd-two">
                   <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img
-          class=""
-          src="{{ asset('img/menu-1.png') }}"
-          alt="Your Company"
-        />
+                    <img class="" src="{{ asset('img/Image-4.png') }}" alt="Your Company" />
                   </div>
                   <div class="prd-cntnt">
-                    <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
-                    <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Options</p>
-                  </div>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Pelvic Positioning</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Hip Belts</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Leg Harness</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Essentials Hip Belt</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Options</p>
+                            </div>
                 </div>
-                <div class="ctm-grd-two">
-                  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img
-          class=""
-          src="{{ asset('img/menu-1.png') }}"
-          alt="Your Company"
-        />
-                  </div>
-                  <div class="prd-cntnt">
-                    <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
-                    <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Options</p>
-                  </div>
-                </div>
-                <div class="ctm-grd-two">
-                  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img
-          class=""
-          src="{{ asset('img/menu-1.png') }}"
-          alt="Your Company"
-        />
-                  </div>
-                  <div class="prd-cntnt">
-                    <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
-                    <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Options</p>
-                  </div>
-                </div>
-                <div class="ctm-grd-two">
-                  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img
-          class=""
-          src="{{ asset('img/menu-1.png') }}"
-          alt="Your Company"
-        />
-                  </div>
-                  <div class="prd-cntnt">
-                    <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
-                    <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Options</p>
-                  </div>
-                </div>
-                <div class="ctm-grd-two">
-                  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img
-          class=""
-          src="{{ asset('img/menu-1.png') }}"
-          alt="Your Company"
-        />
-                  </div>
-                  <div class="prd-cntnt">
-                    <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
-                    <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Options</p>
-                  </div>
-                </div>
-                </div>
+                
+				</div>
+				</div>
+				</div>
+                      <x-nav-link-custom href="#"
+                          classes="transition duration-150 ease-in-out text-white block rounded-md px-3 py-2 text-base font-medium">
+                          {{ __('Wheelchair Positioning') }}
+                          </x-responsive-nave-link>
+                          <x-nav-link-custom href="#"
+                              classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                              {{ __('How to Buy') }}
+                              </x-responsive-nave-link>
+                              <x-nav-link-custom href="#"
+                                  classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                                  {{ __('Resources') }}
+                                  </x-responsive-nave-link>
+                                  <x-nav-link-custom href="#"
+                                      classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                                      {{ __('About Us') }}
+                                      </x-responsive-nave-link>
+                                      <x-nav-link-custom href="#"
+                                          classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                                          {{ __('Partners') }}
+                                          </x-responsive-nave-link>
+
+                                          <x-nav-link-custom :href="route('login')"
+                                              classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                                              {{ __(' Sign In') }}
+
+                                              </x-responsive-nav-link>
+
+                                              <x-nav-link-custom :href="route('register')"
+                                                  classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+
+                                                  {{ __('Register') }}
+
+                                                  </x-responsive-nav-link>
               </div>
-              </div>
-              <a
-                href="#"
-                class="text-[#333] hover:text-[#fe7300] transition duration-150 ease-in-out block py-2 text-[18px] font-[300] flex justify-between items-center"
-                >Wheelchair Positioning
-              </a>
-              <a
-                href="#"
-                class="text-[#333] hover:text-[#fe7300] transition duration-150 ease-in-out block py-2 text-[18px] font-[300] flex justify-between items-center"
-                >How to Buy</a
-              >
-              <a
-                href="#"
-                class="text-[#333] hover:text-[#fe7300] transition duration-150 ease-in-out block py-2 text-[18px] font-[300] flex justify-between items-center"
-                >Resources</a
-              >
-              <a
-                href="#"
-                class="text-[#333] hover:text-[#fe7300] transition duration-150 ease-in-out block py-2 text-[18px] font-[300] flex justify-between items-center"
-                >About Us</a
-              >
-              <a
-                href="#"
-                class="text-[#333] hover:text-[#fe7300] transition duration-150 ease-in-out block py-2 text-[18px] font-[300] flex justify-between items-center"
-                >Partners</a
-              >
-            </div>
-          </div>
+			  
+			  
+
         </nav>
