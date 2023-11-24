@@ -88,18 +88,14 @@
         </div>
     @else
         <x-responsive-nav-link :href="route('login')">
-            <button class="rounded-lg px-5 py-2 flex items-center text-sm">
-                <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17"
-                    fill="none">
-                    <path
-                        d="M12.9697 6.5C13.3864 6.5 13.7406 6.64583 14.0322 6.9375C14.3239 7.22917 14.4697 7.58333 14.4697 8V15C14.4697 15.4167 14.3239 15.7708 14.0322 16.0625C13.7406 16.3542 13.3864 16.5 12.9697 16.5H1.96973C1.55306 16.5 1.19889 16.3542 0.907227 16.0625C0.61556 15.7708 0.469727 15.4167 0.469727 15V8C0.469727 7.58333 0.61556 7.22917 0.907227 6.9375C1.19889 6.64583 1.55306 6.5 1.96973 6.5H2.96973V5C2.96973 3.75 3.41243 2.6875 4.29785 1.8125C5.18327 0.9375 6.24577 0.5 7.48535 0.5C8.72493 0.5 9.78223 0.947917 10.6572 1.84375C11.5322 2.73958 11.9697 3.80208 11.9697 5.03125V6.5H12.9697ZM4.46973 5V6.5H10.4697V5C10.4697 4.16667 10.1781 3.45833 9.59473 2.875C9.01139 2.29167 8.30306 2 7.46973 2C6.63639 2 5.92806 2.29167 5.34473 2.875C4.76139 3.45833 4.46973 4.16667 4.46973 5ZM12.9697 15V8H1.96973V15H12.9697Z"
-                        fill="#9B9B9B" />
-                </svg> {{ __(' Sign In') }}
+            <button  class="rounded-lg px-5 py-1 flex  text-sm text-[#fff] text-[15px] hover:text-[#fe7300] transition duration-150 ease-in-out">
+               
+                            <i class="fa fa-lock  pr-2 text-[18px]"></i> {{ __(' Sign In') }}
             </button>
         </x-responsive-nav-link>
         @if(Route::has('register'))
             <x-responsive-nav-link :href="route('register')">
-                <button class="rounded-lg px-5 py-2 flex items-center text-sm">
+                <button class="rounded-lg px-5 py-1 flex  text-sm text-[#fff] text-[15px] hover:text-[#fe7300] transition duration-150 ease-in-out">
                     {{ __('Register') }}
                 </button>
             </x-responsive-nav-link>
