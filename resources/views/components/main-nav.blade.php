@@ -14,7 +14,7 @@
                 class="flex flex-1 items-center justify-start order-first lg:order-none lg:justify-between shift-logo w-6/12 lg:w-6/12 xl:w-9/12 pb-1"
               >
                 <div class="flex flex-shrink-0 items-center">
-                 <a href="https://bodypoint.dev">  <img 
+                 <a href="{{ config('bodypoint.home_url') }}">  <img 
                     class="h-14 w-auto"
                     src="{{ asset('img/logo-1.png') }}"
                     alt="Body Point"
@@ -161,7 +161,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/why-positioning-matters/">Why Positioning Matters</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/why-positioning-matters/">Why Positioning Matters</a>
                               <p class="text-[14px] text-[#333] font-[400]">We improve users' safety, comfort and function.</p>
                             
                             </div>
@@ -175,7 +175,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/standards/">Wheelchair Seating Standards</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/standards/">Wheelchair Seating Standards</a>
                               <p class="text-[14px] text-[#333] font-[400]">Standards illuminate the performance of our products.</p>
                             </div>
                           </div>
@@ -188,7 +188,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/success-stories/">Success Stories</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/success-stories/">Success Stories</a>
                               <p class="text-[14px] text-[#333] font-[400]">Our postural supports change lives.</p>
                              
                             </div>
@@ -202,7 +202,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/advocacy/">Advocacy</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/advocacy/">Advocacy</a>
                               <p class="text-[14px] text-[#333] font-[400]">Bodypoint interacts with the industry, community and users.</p>
                               
                  
@@ -234,7 +234,7 @@
                             </div>
 						
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/literature/">Literature</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/literature/">Literature</a>
                               <p class="text-[14px] text-[#333] font-[400]">Catalog and clinical information</p>
                              
                             </div>
@@ -262,7 +262,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/faqs/">FAQs</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/faqs/">FAQs</a>
                               <p class="text-[14px] text-[#333] font-[400]">Product and ordering questions</p>
                             </div>
                           </div>
@@ -275,7 +275,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/terms-conditions/">Terms & Conditions</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/terms-conditions/">Terms & Conditions</a>
                               <p class="text-[14px] text-[#333] font-[400]">BP trademarks, warranty, and policies</p>
                           
                             </div>
@@ -289,7 +289,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/contact-us/">Contact Us</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/contact-us/">Contact Us</a>
                               <p class="text-[14px] text-[#333] font-[400]">How can we help?</p>
                              
                             </div>
@@ -319,7 +319,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/company-overview/">Overview</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-overview/">Overview</a>
                               <p class="text-[14px] text-[#333] font-[400]">Every wheeler deserves all the safety, comfort and function we can provide.</p>
                              
                             </div>
@@ -333,7 +333,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/quality-policy/">Quality Policy</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/quality-policy/">Quality Policy</a>
                               <p class="text-[14px] text-[#333] font-[400]">Our supports are tested to ANSI/RESNA, EN and ISO standards.</p>
                        
                             </div>
@@ -347,7 +347,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/company-culture/">Culture</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-culture/">Culture</a>
                               <p class="text-[14px] text-[#333] font-[400]">We celebrate innovation, while fostering consistency.</p>
                             
                             </div>
@@ -361,7 +361,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/newsletter/">Newsletter</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/newsletter/">Newsletter</a>
                               <p class="text-[14px] text-[#333] font-[400]">To the Point - News that supports you!</p>
                             </div>
                           </div>
@@ -374,7 +374,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/events/">Events</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/events/">Events</a>
                               <p class="text-[14px] text-[#333] font-[400]">Stop by and chat!</p>
                             </div>
                           </div>
@@ -548,7 +548,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/why-positioning-matters/">Why Positioning Matters</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/why-positioning-matters/">Why Positioning Matters</a>
                               <p class="text-[14px] text-[#333] font-[400]">We improve users' safety, comfort and function.</p>
                             
                             </div>
@@ -562,7 +562,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/standards/">Wheelchair Seating Standards</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/standards/">Wheelchair Seating Standards</a>
                               <p class="text-[14px] text-[#333] font-[400]">Standards illuminate the performance of our products.</p>
                             </div>
                           </div>
@@ -575,7 +575,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/success-stories/">Success Stories</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/success-stories/">Success Stories</a>
                               <p class="text-[14px] text-[#333] font-[400]">Our postural supports change lives.</p>
                              
                             </div>
@@ -589,7 +589,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/advocacy/">Advocacy</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/advocacy/">Advocacy</a>
                               <p class="text-[14px] text-[#333] font-[400]">Bodypoint interacts with the industry, community and users.</p>
                               
                  
@@ -620,7 +620,7 @@
                             </div>
 						
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/literature/">Literature</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/literature/">Literature</a>
                               <p class="text-[14px] text-[#333] font-[400]">Catalog and clinical information</p>
                              
                             </div>
@@ -648,7 +648,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/faqs/">FAQs</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/faqs/">FAQs</a>
                               <p class="text-[14px] text-[#333] font-[400]">Product and ordering questions</p>
                             </div>
                           </div>
@@ -661,7 +661,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/terms-conditions/">Terms & Conditions</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/terms-conditions/">Terms & Conditions</a>
                               <p class="text-[14px] text-[#333] font-[400]">BP trademarks, warranty, and policies</p>
                           
                             </div>
@@ -675,7 +675,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/contact-us/">Contact Us</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/contact-us/">Contact Us</a>
                               <p class="text-[14px] text-[#333] font-[400]">How can we help?</p>
                              
                             </div>
@@ -705,7 +705,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/company-overview/">Overview</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-overview/">Overview</a>
                               <p class="text-[14px] text-[#333] font-[400]">Every wheeler deserves all the safety, comfort and function we can provide.</p>
                              
                             </div>
@@ -719,7 +719,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/quality-policy/">Quality Policy</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/quality-policy/">Quality Policy</a>
                               <p class="text-[14px] text-[#333] font-[400]">Our supports are tested to ANSI/RESNA, EN and ISO standards.</p>
                        
                             </div>
@@ -733,7 +733,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/company-culture/">Culture</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-culture/">Culture</a>
                               <p class="text-[14px] text-[#333] font-[400]">We celebrate innovation, while fostering consistency.</p>
                             
                             </div>
@@ -747,7 +747,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/newsletter/">Newsletter</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/newsletter/">Newsletter</a>
                               <p class="text-[14px] text-[#333] font-[400]">To the Point - News that supports you!</p>
                             </div>
                           </div>
@@ -760,7 +760,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://bodypoint.dev/events/">Events</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/events/">Events</a>
                               <p class="text-[14px] text-[#333] font-[400]">Stop by and chat!</p>
                             </div>
                           </div>

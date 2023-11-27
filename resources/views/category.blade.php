@@ -12,7 +12,7 @@
           </div>
           <div class="prodct-Category mt-[15px] md:mt-[30px]">
             <div>
-              <div class="bg-[#fff] px-5 pt-5 pb-7 border border-[#ECECEC] rounded-[15px] mb-10"  x-data="{ open: true, toggle() { this.open = ! this.open } , redirectcat($cat) {  window.location = '{{ url('/category/') }}'.$cat;  } }" >
+              <div class="bg-[#fff] px-5 pt-5 pb-7 border border-[#ECECEC] rounded-[15px] mb-10"  x-data="{ open: true, toggle() { this.open = ! this.open }, redirectcat(cate) { window.location = '{{ url('/category/') }}/'+cate ; }   }" >
                 <a @click="toggle()" class="text-[#333] text-[24px] font-[400] flex justify-between items-center pb-5 mb-7 border-b-2 border-[#ECECEC]">Categories <i class="fa fa-chevron-down text-[16px]"></i></a>
                 <div class="filter" x-show="open">
 				@foreach ($categories as $cat)
@@ -27,9 +27,11 @@
                 <a @click="toggle()" class="text-[#333] text-[24px] font-[400] flex justify-between items-center pb-5 mb-7 border-b-2 border-[#ECECEC]">Products <i class="fa fa-chevron-down text-[16px]"></i></a>
                 <div class="filter" x-show="open">
 				@foreach ($products as $prod)
+				
                   <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
-                    <input type="radio" id="{{ $prod['id'] ?? '' }}" name="fav_language" value="{{ $prod['name'] ?? '' }}" @click="redirectcat('{{ $cat['name'] ?? '' }}')"><label for="{{ $prod['id'] ?? '' }}">{{ $prod['name'] ?? '' }}</label>
+                    <input type="radio" id="{{ $prod['product']['id'] ?? '' }}" name="fav_language" value="{{ $prod['product']['name'] ?? '' }}" @click="redirectcat('{{ $cat['name'] ?? '' }}')"><label for="{{ $prod['product']['id'] ?? '' }}">{{ $prod['product']['name'] ?? '' }}</label>
                   </div>
+					
 				 @endforeach
                   
                 </div>
@@ -42,9 +44,9 @@
 			  @foreach ($products as $prod)
                 <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto]">
                   <img src="{{ asset('img/small-logo.png') }}"  class="absolute top-[8px] right-[8px] h-[40px] max-w-[40px] " alt="">
-                  <img src="<?php  echo url('storage/'.$prod['media_id'].'/'.$prod['file_name']); ?>"  class="mx-auto " alt="">
-                  <h6 class="text-[18px] text-[#253D4E] mb-2 mt-3 font-[600]">{{ $prod['name'] ?? '' }}</h6>
-                  <p class="text-[14px] text-[#ADADAD] leading-[20px]">{{ substr(($category[0]['description']), 0, 100) ?? '' }}.....
+                  <img src="<?php  echo url('storage/'.$prod['product']['media'][0]['id'].'/'.$prod['product']['media'][0]['file_name']); ?>"  class="mx-auto " alt="">
+                  <h6 class="text-[18px] text-[#253D4E] mb-2 mt-3 font-[600]">{{ $prod['product']['name'] ?? '' }}</h6>
+                  <p class="text-[14px] text-[#ADADAD] leading-[20px]"><?php echo substr(htmlspecialchars_decode(str_replace('</div>','',str_replace('<div>','',$prod['product']['description']))), 0, 100) ?? '' ; ?>.....
 				  </p>
                 </div>
 				 @endforeach

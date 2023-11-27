@@ -90,7 +90,7 @@
         <x-responsive-nav-link :href="route('login')">
             <button  class="rounded-lg px-5 py-1 flex text-sm text-[#fff] text-[15px] hover:text-[#fe7300] transition duration-150 ease-in-out">
                
-                            <i class="fa fa-lock pr-2 text-[18px]"></i> {{ __(' Partner Login') }}
+                            <i class="fa fa-lock pr-2 text-[18px]"></i> {{ __('Partner Login') }}
             </button>
         </x-responsive-nav-link>
         
