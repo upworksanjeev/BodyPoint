@@ -4,7 +4,7 @@
 
 
 @font-face {
-    font-family: 'Avenir';
+   font-family: "Avenir LT", Sans-serif!important;
     src: url('/resources/fonts/AvenirLTStd-Roman.woff2') format('woff2'),
         url('/resources/fonts/AvenirLTStd-Roman.woff') format('woff');
     font-weight: 500;
@@ -13,7 +13,7 @@
 }
 
 @font-face {
-    font-family: 'Avenir';
+    font-family: "Avenir LT", Sans-serif!important;
     src: url('/resources/fonts/Avenir-Black.woff2') format('woff2'),
         url('/resources/fonts/Avenir-Black.woff') format('woff');
     font-weight: 800;
@@ -22,7 +22,7 @@
 }
 
 @font-face {
-    font-family: 'Avenir';
+    font-family: "Avenir LT", Sans-serif!important;
     src: url('/resources/fonts/AvenirLTStd-Black.woff2') format('woff2'),
         url('/resources/fonts/AvenirLTStd-Black.woff') format('woff');
     font-weight: 900;
@@ -31,7 +31,7 @@
 }
 
 @font-face {
-    font-family: 'Avenir';
+    font-family: "Avenir LT", Sans-serif!important;
     src: url('/resources/fonts/AvenirLTStd-Book.woff2') format('woff2'),
         url('/resources/fonts/AvenirLTStd-Book.woff') format('woff');
     font-weight: 300;
@@ -40,25 +40,15 @@
 }
 
 body {
-    font-family: 'Avenir';
+    font-family: "Avenir LT", Sans-serif!important;
+	 font-weight: normal;
  }
 
 
-  @font-face {
-    font-family: 'Avenir';
-    src: url('fonts/Avenir-Black.woff2') format('woff2'),
-        url('fonts/Avenir-Black.woff') format('woff');
-    font-weight: 800;
-    font-style: normal;
-    font-display: swap;
-}
-      body {
-        font-family: "Avenir";
-        font-weight: normal;
-      }
+ 
 	  
 	  .footer-heading-title{
-		  color: #333;
+   color: #333;
   font-family: "Avenir LT", Sans-serif;
   font-weight: 600;
   font-size: 20px;
@@ -109,7 +99,6 @@ body {
 }
 
 .mobileLeft-Sidebar {
-  width: 0;
   position: fixed;
   z-index: 1;
   height: 100vh;
@@ -121,6 +110,8 @@ body {
   overflow-x: hidden;
   transition: 0.5s;
   overflow-y: auto;
+  width: 350px;
+  border-radius: 0px 0px 0px 0px;
 }
 
 .mobile-dropdown-content {
