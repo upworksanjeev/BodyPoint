@@ -30,17 +30,11 @@ class CategoryController extends Controller
     {		
 	  
         $categories = Category::all();
-        $category = Category::where('name',$name)->get();
+        $category = Category::where('name',$name)->first();
 		
-		if(count($category)>0){
+		if(isset($category['id'])){
 			
-			$products = CategoryProduct::with(['product.media'])->where('category_id',$category[0]['id'])->get();
-			/*echo "<pre>";
-			foreach($products as $prodcat){
-				echo($prodcat['product']['name']);
-				echo $prodcat['product']['media'][0]['file_name'] ?? $prodcat['product']['media'][0]['file_name'];
-			}
-			die;*/
+			$products = CategoryProduct::with(['product.media'])->where('category_id',$category['id'])->get();
 			return view('category', array(
 				'categories' => $categories,
 				'category' => $category,

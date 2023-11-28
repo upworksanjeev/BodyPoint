@@ -7,8 +7,8 @@
 
           <div class="ctm-prd-one py-[30px] lg:py-[50px] px-[20px] lg:px-[70px] relative bg-[url('<?php echo url('storage/LKszt8SRjWuBPHXOFUcJNcgA0rRStdGDKtk8wZQz.png'); ?>')] bg-no-repeat bg-center bg-cover h-[auto] md:h-[400px] flex justify-center rounded-[20px]" style="background-image: url('<?php echo url('storage/LKszt8SRjWuBPHXOFUcJNcgA0rRStdGDKtk8wZQz.png'); ?>')">
             <img src="{{ asset('img/small-logo.png') }}"  class="h-[55px] max-w-[55px] contain absolute right-[10px] top-[10px]" alt="">
-            <h3 class="text-[#333] text-[30px] md:text-[65px] uppercase font-[800] leading-[30px] md:leading-[72px]">{{ $category[0]['name'] ?? '' }}</h3>
-            <div class="mt-[10px] text-[18px] text-[#233049] max-w-[670px]"><?php echo htmlspecialchars_decode(htmlspecialchars($category[0]['description'])); ?></div>
+            <h3 class="text-[#333] text-[30px] md:text-[65px] uppercase font-[800] leading-[30px] md:leading-[72px]">{{ $category['name'] ?? '' }}</h3>
+            <div class="mt-[10px] text-[18px] text-[#233049] max-w-[670px]"><?php echo htmlspecialchars_decode(htmlspecialchars($category['description'])); ?></div>
           </div>
           <div class="prodct-Category mt-[15px] md:mt-[30px]">
             <div>
@@ -39,7 +39,7 @@
               <button class="p-2 bg-[#fe7300] hover:bg-[#e96a00] text-white text-[20px] font-[500] w-[100%] rounded-[10px]">Reset</button>
             </div>
             <div>
-              <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">{{ $category[0]['name'] ?? '' }} Products</h5>
+              <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">{{ $category['name'] ?? '' }} Products</h5>
               <div class="product-grid-three">
 			  @foreach ($products as $prod)
                 <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto]">
