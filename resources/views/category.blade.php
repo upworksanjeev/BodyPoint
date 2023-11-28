@@ -5,7 +5,7 @@
 	<?php if(isset($error)){ echo $error; }else{ ?>
 	
 
-          <div class="ctm-prd-one py-[30px] lg:py-[50px] px-[20px] lg:px-[70px] relative bg-[url('<?php echo url('storage/LKszt8SRjWuBPHXOFUcJNcgA0rRStdGDKtk8wZQz.png'); ?>')] bg-no-repeat bg-center bg-cover h-[auto] md:h-[400px] flex justify-center rounded-[20px]" style="background-image: url('<?php echo url('storage/LKszt8SRjWuBPHXOFUcJNcgA0rRStdGDKtk8wZQz.png'); ?>')">
+          <div class="ctm-prd-one py-[30px] lg:py-[50px] px-[20px] lg:px-[70px] relative bg-no-repeat bg-center bg-cover h-[auto] md:h-[400px] flex justify-center rounded-[20px]" style="background-image: url('<?php echo url('storage/'.$category['image']); ?>')">
             <img src="{{ asset('img/small-logo.png') }}"  class="h-[55px] max-w-[55px] contain absolute right-[10px] top-[10px]" alt="">
             <h3 class="text-[#333] text-[30px] md:text-[65px] uppercase font-[800] leading-[30px] md:leading-[72px]">{{ $category['name'] ?? '' }}</h3>
             <div class="mt-[10px] text-[18px] text-[#233049] max-w-[670px]"><?php echo htmlspecialchars_decode(htmlspecialchars($category['description'])); ?></div>
