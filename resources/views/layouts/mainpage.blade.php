@@ -19,7 +19,7 @@
 </head>
 
 <body class="font-['Avenir'] antialiased">
-    <div class="container mx-auto px-2 xl:px-0 border-red-600">
+    
         
         @include('layouts.header')
 
@@ -29,7 +29,7 @@
 
         @include('layouts.footer')
  
-    </div>
+    
 </body>
 
 </html>

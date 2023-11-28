@@ -6,24 +6,19 @@
                   <!-- Mobile menu button-->
                   <button @click="open = ! open"
                       class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition duration-150 ease-in-out text-[40px]">
-                      <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                          <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16" />
-                          <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                              stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
+					  <i aria-hidden="true" class="fa fa-align-right"></i>
+                    
                   </button>
               </div>
               <div
                 class="flex flex-1 items-center justify-start order-first lg:order-none lg:justify-between shift-logo w-6/12 lg:w-6/12 xl:w-9/12 pb-1"
               >
                 <div class="flex flex-shrink-0 items-center">
-                  <img 
+                 <a href="{{ config('bodypoint.home_url') }}">  <img 
                     class="h-14 w-auto"
                     src="{{ asset('img/logo-1.png') }}"
                     alt="Body Point"
-                  />
+                  /> </a>
                 </div>
                 <div class="hidden sm:ml-6 lg:block">
                   <div class="flex space-x-4 nav-links mr-5 ">
@@ -47,7 +42,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Upper Body'); ?>">Upper Body</a>
                               <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
                               <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
                               <p class="text-[14px] text-[#333] font-[400]">Options</p>
@@ -62,7 +57,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Pelvic Positioning</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Pelvic Positioning'); ?>">Pelvic Positioning</a>
                               <p class="text-[14px] text-[#333] font-[400]">Hip Belts</p>
                               <p class="text-[14px] text-[#333] font-[400]">Leg Harness</p>
                               <p class="text-[14px] text-[#333] font-[400]">Essentials Hip Belt</p>
@@ -78,7 +73,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Specialty</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Specialty'); ?>">Specialty</a>
                               <p class="text-[14px] text-[#333] font-[400]">Shower</p>
                               <p class="text-[14px] text-[#333] font-[400]">Pediatric</p>
                               <p class="text-[14px] text-[#333] font-[400]">Sports and Active Users</p>
@@ -93,7 +88,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Power Chair Components</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Power Chair Components'); ?>">Power Chair Components</a>
                               <p class="text-[14px] text-[#333] font-[400]">Midline Joystick Mounting</p>
                               <p class="text-[14px] text-[#333] font-[400]">Joystick Handles</p>
                             </div>
@@ -107,7 +102,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Hardware</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Hardware'); ?>">Hardware</a>
                               <p class="text-[14px] text-[#333] font-[400]">Clamps</p>
                               <p class="text-[14px] text-[#333] font-[400]">Mounting Attachments</p>
                               <p class="text-[14px] text-[#333] font-[400]">Options</p>
@@ -122,7 +117,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Lower Body</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Lower Body'); ?>">Lower Body</a>
                               <p class="text-[14px] text-[#333] font-[400]">Ankle Huggers®</p>
                               <p class="text-[14px] text-[#333] font-[400]">Calf Supports</p>
                               <p class="text-[14px] text-[#333] font-[400]">Universal Elastic Strap</p>
@@ -138,7 +133,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Dealer Tools & Accessories</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Dealer Tools & Accessories'); ?>">Dealer Tools & Accessories</a>
                               <p class="text-[14px] text-[#333] font-[400]">All Tools</p>
                             
                             </div>
@@ -166,7 +161,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Why Positioning Matters</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/why-positioning-matters/">Why Positioning Matters</a>
                               <p class="text-[14px] text-[#333] font-[400]">We improve users' safety, comfort and function.</p>
                             
                             </div>
@@ -180,7 +175,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Wheelchair Seating Standards</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/standards/">Wheelchair Seating Standards</a>
                               <p class="text-[14px] text-[#333] font-[400]">Standards illuminate the performance of our products.</p>
                             </div>
                           </div>
@@ -193,7 +188,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Success Stories</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/success-stories/">Success Stories</a>
                               <p class="text-[14px] text-[#333] font-[400]">Our postural supports change lives.</p>
                              
                             </div>
@@ -207,7 +202,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Advocacy</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/advocacy/">Advocacy</a>
                               <p class="text-[14px] text-[#333] font-[400]">Bodypoint interacts with the industry, community and users.</p>
                               
                  
@@ -239,7 +234,7 @@
                             </div>
 						
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Literature</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/literature/">Literature</a>
                               <p class="text-[14px] text-[#333] font-[400]">Catalog and clinical information</p>
                              
                             </div>
@@ -253,7 +248,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Training</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://www.youtube.com/user/BodypointInc">Training</a>
                               <p class="text-[14px] text-[#333] font-[400]">Product and how-to videos</p>
                              
                             </div>
@@ -267,7 +262,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">FAQs</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/faqs/">FAQs</a>
                               <p class="text-[14px] text-[#333] font-[400]">Product and ordering questions</p>
                             </div>
                           </div>
@@ -280,7 +275,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Terms & Conditions</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/terms-conditions/">Terms & Conditions</a>
                               <p class="text-[14px] text-[#333] font-[400]">BP trademarks, warranty, and policies</p>
                           
                             </div>
@@ -294,7 +289,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Contact Us</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/contact-us/">Contact Us</a>
                               <p class="text-[14px] text-[#333] font-[400]">How can we help?</p>
                              
                             </div>
@@ -324,7 +319,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Overview</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-overview/">Overview</a>
                               <p class="text-[14px] text-[#333] font-[400]">Every wheeler deserves all the safety, comfort and function we can provide.</p>
                              
                             </div>
@@ -338,7 +333,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Quality Policy</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/quality-policy/">Quality Policy</a>
                               <p class="text-[14px] text-[#333] font-[400]">Our supports are tested to ANSI/RESNA, EN and ISO standards.</p>
                        
                             </div>
@@ -352,7 +347,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Culture</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-culture/">Culture</a>
                               <p class="text-[14px] text-[#333] font-[400]">We celebrate innovation, while fostering consistency.</p>
                             
                             </div>
@@ -366,7 +361,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Newsletter</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/newsletter/">Newsletter</a>
                               <p class="text-[14px] text-[#333] font-[400]">To the Point - News that supports you!</p>
                             </div>
                           </div>
@@ -379,7 +374,7 @@
                   />
                             </div>
                             <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Events</a>
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/events/">Events</a>
                               <p class="text-[14px] text-[#333] font-[400]">Stop by and chat!</p>
                             </div>
                           </div>
@@ -417,68 +412,374 @@
                       {{ __('Product') }} <i class="fa fa-caret-down"></i>
                       </x-responsive-nave-link>
 					<div class="mobile-dropdown-content" x-show="open">
-               
-                <div  class="ctm-grd-one">
-                  <div class="ctm-grd-two">
-                  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img class="" src="{{ asset('img/menu-1.png') }}" alt="Your Company"/>
-                  </div>
-                  <div class="prd-cntnt">
-                    <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Upper Body</a>
-                    <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
-                    <p class="text-[14px] text-[#333] font-[400]">Options</p>
-                  </div>
-                </div>
-                <div class="ctm-grd-two">
-                  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
-                    <img class="" src="{{ asset('img/Image-4.png') }}" alt="Your Company" />
-                  </div>
-                  <div class="prd-cntnt">
-                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="">Pelvic Positioning</a>
+					
+                
+                          <div class="ctm-grd-one">
+                            <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/menu-1.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Upper Body'); ?>">Upper Body</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Shoulder Harness</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Chest Support</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Options</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/Image-4.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Pelvic Positioning'); ?>">Pelvic Positioning</a>
                               <p class="text-[14px] text-[#333] font-[400]">Hip Belts</p>
                               <p class="text-[14px] text-[#333] font-[400]">Leg Harness</p>
                               <p class="text-[14px] text-[#333] font-[400]">Essentials Hip Belt</p>
                               <p class="text-[14px] text-[#333] font-[400]">Options</p>
                             </div>
-                </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/Image-5.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Specialty'); ?>">Specialty</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Shower</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Pediatric</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Sports and Active Users</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/Image-6.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Power Chair Components'); ?>">Power Chair Components</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Midline Joystick Mounting</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Joystick Handles</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/Image-7.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Hardware'); ?>">Hardware</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Clamps</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Mounting Attachments</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Options</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/Image-8.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Lower Body'); ?>">Lower Body</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Ankle Huggers®</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Calf Supports</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Universal Elastic Strap</p>
+                              <p class="text-[14px] text-[#333] font-[400]">Options</p>
+                            </div>
+                          </div> 
+						  <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/Image-9.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/Dealer Tools & Accessories'); ?>">Dealer Tools & Accessories</a>
+                              <p class="text-[14px] text-[#333] font-[400]">All Tools</p>
+                            
+                            </div>
+                          </div>
+                          </div>
+   			
+				</div>
+				
+				</div>
+				
+                   	<div class="mobile-dropdown" x-data="{ open: false, toggle() { this.open = ! this.open } }">
+                  <x-nav-link-custom @click="toggle()"
+                      classes="transition duration-150 ease-in-out text-white block rounded-md px-3 py-2 text-base font-medium"
+                      aria-current="page">
+                      {{ __('Wheelchair Positing') }} <i class="fa fa-caret-down"></i>
+                      </x-responsive-nave-link>
+					<div class="mobile-dropdown-content" x-show="open">
+					
                 
+                        
+                           <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">Positions Are Personal</h5>
+                          <p class="text-[#333] pt-[5px] text-[16px] mb-5">One person, one chair, one position.</p>
+                          <div class="ctm-grd-one">
+                            <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/wheelchair-positioning-removebg-preview-1.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/why-positioning-matters/">Why Positioning Matters</a>
+                              <p class="text-[14px] text-[#333] font-[400]">We improve users' safety, comfort and function.</p>
+                            
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/wheelchair-standards-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/standards/">Wheelchair Seating Standards</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Standards illuminate the performance of our products.</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/success-stories-removebg-preview-1.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/success-stories/">Success Stories</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Our postural supports change lives.</p>
+                             
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/advocacy-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/advocacy/">Advocacy</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Bodypoint interacts with the industry, community and users.</p>
+                              
+                 
+                            </div>
+                          </div>
+                         
+                         
+                          </div>
 				</div>
 				</div>
+                        	<div class="mobile-dropdown" x-data="{ open: false, toggle() { this.open = ! this.open } }">
+                  <x-nav-link-custom @click="toggle()"
+                      classes="transition duration-150 ease-in-out text-white block rounded-md px-3 py-2 text-base font-medium"
+                      aria-current="page">
+                      {{ __('Resources') }} <i class="fa fa-caret-down"></i>
+                      </x-responsive-nave-link>
+					<div class="mobile-dropdown-content" x-show="open">
+					 <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">Learn about Bodypoint and postural support</h5>
+                          <p class="text-[#333] pt-[5px] text-[16px] mb-5">Improve the independence, comfort and safety of children and adults who use wheelchairs and other mobility devices.</p>
+                          <div class="ctm-grd-one">
+                            <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/literature-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+						
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/literature/">Literature</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Catalog and clinical information</p>
+                             
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/customer-service-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="https://www.youtube.com/user/BodypointInc">Training</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Product and how-to videos</p>
+                             
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/faq-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/faqs/">FAQs</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Product and ordering questions</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/terms-and-conditions-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/terms-conditions/">Terms & Conditions</a>
+                              <p class="text-[14px] text-[#333] font-[400]">BP trademarks, warranty, and policies</p>
+                          
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/contact-us-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/contact-us/">Contact Us</a>
+                              <p class="text-[14px] text-[#333] font-[400]">How can we help?</p>
+                             
+                            </div>
+                          </div>
+                         
+                          </div>
+                     
 				</div>
-                      <x-nav-link-custom href="#"
-                          classes="transition duration-150 ease-in-out text-white block rounded-md px-3 py-2 text-base font-medium">
-                          {{ __('Wheelchair Positioning') }}
-                          </x-responsive-nave-link>
-                          <x-nav-link-custom href="#"
-                              classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-                              {{ __('How to Buy') }}
-                              </x-responsive-nave-link>
-                              <x-nav-link-custom href="#"
-                                  classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-                                  {{ __('Resources') }}
-                                  </x-responsive-nave-link>
-                                  <x-nav-link-custom href="#"
-                                      classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-                                      {{ __('About Us') }}
-                                      </x-responsive-nave-link>
-                                      <x-nav-link-custom href="#"
-                                          classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-                                          {{ __('Partners') }}
-                                          </x-responsive-nave-link>
+				</div>
+					<div class="mobile-dropdown" x-data="{ open: false, toggle() { this.open = ! this.open } }">
+                  <x-nav-link-custom @click="toggle()"
+                      classes="transition duration-150 ease-in-out text-white block rounded-md px-3 py-2 text-base font-medium"
+                      aria-current="page">
+                      {{ __('About Us') }} <i class="fa fa-caret-down"></i>
+                      </x-responsive-nave-link>
+					<div class="mobile-dropdown-content" x-show="open">
+					  <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">About Us</h5>
+                          <p class="text-[#333] pt-[5px] text-[16px] mb-5">“At Bodypoint, we work every day to better understand the capabilities and aspirations of people who use wheelchairs. As we imagine, design and manufacture our products, we strive to bridge the gap between the hard and the soft, the inanimate and the living, to create a better connection between wheelchairs and people.”
+– David Hintzman, Co-Founder	</p>
+                          <div class="ctm-grd-one">
+                            <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/company-overview-removebg-preview-1.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-overview/">Overview</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Every wheeler deserves all the safety, comfort and function we can provide.</p>
+                             
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/quality-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/quality-policy/">Quality Policy</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Our supports are tested to ANSI/RESNA, EN and ISO standards.</p>
+                       
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/company-culture-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/company-culture/">Culture</a>
+                              <p class="text-[14px] text-[#333] font-[400]">We celebrate innovation, while fostering consistency.</p>
+                            
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/news-removebg-preview-copy.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/newsletter/">Newsletter</a>
+                              <p class="text-[14px] text-[#333] font-[400]">To the Point - News that supports you!</p>
+                            </div>
+                          </div>
+                          <div class="ctm-grd-two">
+                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+                              <img
+                    class=""
+                    src="{{ asset('img/events-removebg-preview.png') }}"
+                    alt="Your Company"
+                  />
+                            </div>
+                            <div class="prd-cntnt">
+                              <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="{{ config('bodypoint.home_url') }}/events/">Events</a>
+                              <p class="text-[14px] text-[#333] font-[400]">Stop by and chat!</p>
+                            </div>
+                          </div>
+                         
+                          </div>
+                        </div>
+                    </div>
+					
+					
+                       
+                
+                    </ul>
+                  </div>
+				</div>
+				
+				</div>
+                                      
 
-                                          <x-nav-link-custom :href="route('login')"
-                                              classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-                                              {{ __(' Sign In') }}
-
-                                              </x-responsive-nav-link>
-
-                                              <x-nav-link-custom :href="route('register')"
-                                                  classes=" text-white hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
-
-                                                  {{ __('Register') }}
-
-                                                  </x-responsive-nav-link>
+                                                 
               </div>
 			  
 			  

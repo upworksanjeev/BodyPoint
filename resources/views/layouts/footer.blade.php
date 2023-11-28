@@ -5,16 +5,14 @@
             <div class="w-full lg:w-3/4">
 				    <h2 class="footer-heading-title">More Information</h2>
                 <div class="flex flex-wrap lg:block  justify-center mb-5 lg:mb-0">
-                <x-nav-link-custom href="#"  classes="text-base pr-4">
+                <x-nav-link-custom href="{{ config('bodypoint.home_url') }}"  classes="text-base pr-4">
                     {{ __('Home')}}
                  </x-responsive-nave-link>
-                 <x-nav-link-custom href="#"  classes="text-base pr-4">
-                    {{ __('Categories')}}
-                 </x-responsive-nave-link>
-                 <x-nav-link-custom href="#"  classes="text-base pr-4">
+                
+                 <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/why-positioning-matters/"  classes="text-base pr-4">
                     {{ __('Wheelchair positioning')}}
                  </x-responsive-nave-link>
-                 <x-nav-link-custom href="#"  classes="text-base pr-4">
+                 <x-nav-link-custom href="{{ config('bodypoint.home_url') }}company-overview/"  classes="text-base pr-4">
                     {{ __('About Us')}}
                  </x-responsive-nave-link>
                 </div>
@@ -44,9 +42,7 @@
                 </div>
                 <div  class="flex justify-center lg:justify-end py-1">
 
-                <x-nav-link-custom href="#!"  classes="text-base">
-                     {{ __('800.547.5716')}}
-                 </x-responsive-nave-link>
+               
                  <x-nav-link-custom href="#!"  classes="text-base pl-3">
                      {{ __('sales@bodypoint.com')}}
                  </x-responsive-nave-link>
