@@ -1,7 +1,9 @@
 <?php
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,19 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    //return view('home');
-    // if (Auth::check())  {
-    //     return redirect('/dashboard');
-    // }
-    return view('main');
-});
 
-
-
-
-
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/category/{name}', [CategoryController::class, 'index']);
+Route::get('/product/{name}', [ProductController::class, 'index']);
 
 
 
