@@ -28,7 +28,7 @@ class CategoryController extends Controller
      */
     public function index($name,Request $request)
     {		
-	  
+	    $name=ucwords(str_replace('-',' ',$name));
         $categories = Category::all();
         $category = Category::where('name',$name)->first();
 		

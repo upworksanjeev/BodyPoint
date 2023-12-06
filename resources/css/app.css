@@ -70,7 +70,7 @@ body {
   background-color: #fff;
   width: 100%;
   left: 0;
-  z-index: 1;
+  z-index: 2;
   top: 52px;
   border-radius: 20px;
   border-top: 1px solid  #ECECEC;

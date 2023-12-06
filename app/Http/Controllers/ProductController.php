@@ -21,10 +21,14 @@ class ProductController extends Controller
      */
     public function index($name,Request $request)
     {		
-	  
+	   $name=ucwords(str_replace('-',' ',str_replace('-tm','™',$name)));
         $categories = Category::all();
         $product = Product::with(['media'])->where('name',$name)->first();
-		$productattr = AttributeCategory::select(				
+		
+		if(isset($product['id'])){
+			
+			$products = CategoryProduct::with(['category'])->where('product_id',$product['id'])->get();
+			$productattr = AttributeCategory::select(				
 					'category',
 					'attribute',
 				)
@@ -34,22 +38,18 @@ class ProductController extends Controller
 				$i=0;
 				$category=[];
 				$attribute=[];
-		/* attributes and their categories name for this product */
-		foreach($productattr as $k => $v){
-			if(in_array($v['category'],$category)){
-				$key = array_search($v['category'],$category); 
-				$attribute[$key][]=$v['attribute'];
-			}else{
-				$category[$i]=$v['category'];
-				$attribute[$i][]=$v['attribute'];
-				$i++;
+			/* attributes and their categories name for this product */
+			foreach($productattr as $k => $v){
+				if(in_array($v['category'],$category)){
+					$key = array_search($v['category'],$category); 
+					$attribute[$key][]=$v['attribute'];
+				}else{
+					$category[$i]=$v['category'];
+					$attribute[$i][]=$v['attribute'];
+					$i++;
+				}
+				
 			}
-			
-		}
-		if(isset($product['id'])){
-			
-			$products = CategoryProduct::with(['category'])->where('product_id',$product['id'])->get();
-			
 			return view('product', array(
 				'categories' => $categories,
 				'category' => $category,
