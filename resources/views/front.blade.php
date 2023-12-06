@@ -23,7 +23,7 @@
 				@foreach ($products as $prod)
 				
                   <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
-                    <input type="radio" id="prod{{ $prod['product']['id'] ?? '' }}" name="fav_language" value="{{ $prod['product']['name'] ?? '' }}" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',$prod['product']['name'])))); ?>')"><label for="prod{{ $prod['product']['id'] ?? '' }}">{{ $prod['product']['name'] ?? '' }}</label>
+                    <input type="radio" id="prod{{ $prod['product']['id'] ?? '' }}" name="fav_language" value="{{ $prod['product']['name'] ?? '' }}" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',str_replace('®','-R',$prod['product']['name']))))); ?>')"><label for="prod{{ $prod['product']['id'] ?? '' }}">{{ $prod['product']['name'] ?? '' }}</label>
                   </div>
 					
 				 @endforeach
