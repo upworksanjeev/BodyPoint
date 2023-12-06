@@ -42,7 +42,7 @@
               <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">{{ $category['name'] ?? '' }} Products</h5>
               <div class="product-grid-three" x-data="{ redirectprod(prod) {  window.location = '{{ url('/product/') }}/'+prod;   } }">
 			  @foreach ($products as $prod)
-                <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto]" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',$prod['product']['name'])))); ?>')">
+                <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto]" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',str_replace('®','-R',$prod['product']['name']))))); ?>')">
                   <img src="{{ asset('img/small-logo.png') }}"  class="absolute top-[8px] right-[8px] h-[40px] max-w-[40px] " alt="">
                   <img src="<?php  echo url('storage/'.$prod['product']['media'][0]['id'].'/'.$prod['product']['media'][0]['file_name']); ?>"  class="mx-auto " alt="">
                   <h6 class="text-[18px] text-[#253D4E] mb-2 mt-3 font-[600]">{{ $prod['product']['name'] ?? '' }}</h6>
