@@ -35,84 +35,34 @@
             <div class="md:flex-1 px-5 ctm-mobile-mrgn">
               <h2 class="text-[#333] text-[30px] font-[700]">{{ $product['name'] ?? '' }}</h2>
               <p class="text-[#008C99] text-[18px] ">{{ $product['small_description'] ?? '' }}</p>
+			  @foreach ($category as $k=>$v)
               <div class="relative py-[15px] linediv">
-              <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select Harness Style</h6>
+              <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select {{ $v }}</h6>
             </div>
             <div class="grid-four pb-[10px]">
+			 @foreach ($attribute[$k] as $v1)
                 <div class="grid-five">
                   <div class="five-g-img">
                     <img src="/img/standard-img.png" alt="">
                   </div>
                   <div class="five-content p-[10px]">
-                    <h6 class="text-[16px] text-[#008C99] font-[700]">Standard</h6>
+                    <h6 class="text-[16px] text-[#008C99] font-[700]">{{ $v1 }}</h6>
                     <p class="text-[14px] text-[#6A6D73]">Comfortable with a controlled amount of stretch</p>
                   </div>
                 </div>
-                <div class="grid-five">
-                  <div class="five-g-img">
-                    <img src="/img/standard-img.png" alt="">
-                  </div>
-                  <div class="five-content p-[10px]">
-                    <h6 class="text-[16px] text-[#008C99] font-[700]">Narrow</h6>
-                    <p class="text-[14px] text-[#6A6D73]">Designed to more comfortably fit women and users with smaller frames</p>
-                  </div>
-                </div>
+               @endforeach
             </div>
-            <div class="relative py-[15px] linediv">
+				  @endforeach
+            <!--div class="relative py-[15px] linediv">
             <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select Harness Size <span class="text-[#008C99] text-[14px]">(See Sizing tab for size guide)</span></h6></div>
             <div class="size-button mb-[10px]">
               <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">S</a>
               <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">M</a>
               <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">L</a>
               <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">XL</a>
-            </div>
-            <div class="relative py-[15px] linediv">
-              <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select Zipper</h6>
-            </div>
-            <div class="grid-four pb-[10px]">
-              <div class="grid-five">
-                <div class="five-g-img">
-                  <img src="/img/standard-img.png" alt="">
-                </div>
-                <div class="five-content p-[10px]">
-                  <h6 class="text-[16px] text-[#008C99] font-[700]">With Zipper</h6>
-                  <p class="text-[14px] text-[#6A6D73]">Front zipper makes for easier removal</p>
-                </div>
-              </div>
-              <div class="grid-five">
-                <div class="five-g-img">
-                  <img src="/img/standard-img.png" alt="">
-                </div>
-                <div class="five-content p-[10px]">
-                  <h6 class="text-[16px] text-[#008C99] font-[700]">Without Zipper</h6>
-                  <p class="text-[14px] text-[#6A6D73]">For users with high-tone spasticity, or users with a tendency to fiddle with zippers</p>
-                </div>
-              </div>
-          </div>
-          <div class="relative py-[15px] linediv">
-            <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select Attachments</h6>
-          </div>
-          <div class="grid-four pb-[10px]">
-            <div class="grid-five">
-              <div class="five-g-img">
-                <img src="/img/standard-img.png" alt="">
-              </div>
-              <div class="five-content p-[10px]">
-                <h6 class="text-[16px] text-[#008C99] font-[700]">Plastic Flat-Mount (-B5)</h6>
-                <p class="text-[14px] text-[#6A6D73]">Versatile, plastic, low-profile for tight spaces</p>
-              </div>
-            </div>
-            <div class="grid-five">
-              <div class="five-g-img">
-                <img src="/img/standard-img.png" alt="">
-              </div>
-              <div class="five-content p-[10px]">
-                <h6 class="text-[16px] text-[#008C99] font-[700]">Plastic Cinch-Mount 
-                  (-B6)</h6>
-                <p class="text-[14px] text-[#6A6D73]">Secure, plastic, easily adjust & saves time</p>
-              </div>
-            </div>
-        </div>
+            </div-->
+          
+           
         <div class="ctm-price mt-[30px]">
           <div class="left-price">
             <p class="text-[14px] text-[#6A6D73]">MSRP</p>
