@@ -29,14 +29,22 @@ class CategoryController extends Controller
     public function index($name,Request $request)
     {		
 	    $name=ucwords(str_replace('-',' ',$name));
-        $categories = Category::all();
+        $categories = Category::where('parent_cat_id',0)->get();
         $category = Category::where('name',$name)->first();
+       
 		
 		if(isset($category['id'])){
-			
-			$products = CategoryProduct::with(['product.media'])->where('category_id',$category['id'])->get();
+			$cat[]=$category['id'];
+			$subcategory = Category::where('parent_cat_id',$category['id'])->select('id','name')->get();
+			if(count($subcategory) > 0){
+				foreach($subcategory as $k=>$v){
+					$cat[]=$v['id'];
+				}
+			}
+			$products = CategoryProduct::with(['product.media'])->whereIn('category_id',$cat)->get();
 			return view('category', array(
 				'categories' => $categories,
+				'subcategory' => $subcategory,
 				'category' => $category,
 				'products' => $products,
 			));
