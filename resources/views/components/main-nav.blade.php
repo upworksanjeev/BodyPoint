@@ -33,8 +33,9 @@
                            <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">Product</h5>
                           
                           <div class="ctm-grd-one">
-                            <div class="ctm-grd-two">
-                            <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
+						
+							<div class="ctm-grd-two">
+						  <div class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC]">
                               <img
                     class=""
                     src="{{ asset('img/menu-1.png') }}"
@@ -43,9 +44,9 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/upper-body'); ?>">Upper Body</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harness</a></p>
-                              <p><a class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
-                              <p><a class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harness</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -58,10 +59,10 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/pelvic-positioning'); ?>">Pelvic Positioning</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/hip-belts'); ?>">Hip Belts</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/leg-harness'); ?>">Leg Harness</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belt</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/hip-belts'); ?>">Hip Belts</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/leg-harness'); ?>">Leg Harness</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belt</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -74,9 +75,9 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/specialty'); ?>">Specialty</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/shower'); ?>">Shower</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/pediatric'); ?>">Pediatric</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/sports-and-active-users'); ?>">Sports and Active Users</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/shower'); ?>">Shower</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/pediatric'); ?>">Pediatric</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/sports-and-active-users'); ?>">Sports and Active Users</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -89,8 +90,8 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/power-chair-components'); ?>">Power Chair Components</a>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -103,9 +104,9 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/hardware'); ?>">Hardware</a>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -118,10 +119,10 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/lower-body'); ?>">Lower Body</a>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/universal-elastic-strap'); ?>">Universal Elastic Strap</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/universal-elastic-strap'); ?>">Universal Elastic Strap</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div> 
 						  <div class="ctm-grd-two">
@@ -134,7 +135,7 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">Dealer Tools & Accessories</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
                             
                             </div>
                           </div>
@@ -429,9 +430,9 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/upper-body'); ?>">Upper Body</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harness</a></p>
-                              <p><a class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
-                              <p><a class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harness</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/options'); ?>">Options</a></p>
                            </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -444,10 +445,10 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/pelvic-positioning'); ?>">Pelvic Positioning</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/hip-belts'); ?>">Hip Belts</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/leg-harness'); ?>">Leg Harness</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belt</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]" href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/hip-belts'); ?>">Hip Belts</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/leg-harness'); ?>">Leg Harness</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belt</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]" href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -460,9 +461,9 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/specialty'); ?>">Specialty</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/shower'); ?>">Shower</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/pediatric'); ?>">Pediatric</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/sports-and-active-users'); ?>">Sports and Active Users</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/shower'); ?>">Shower</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/pediatric'); ?>">Pediatric</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/sports-and-active-users'); ?>">Sports and Active Users</a></p>
                             
                             </div>
                           </div>
@@ -476,8 +477,8 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/power-chair-components'); ?>">Power Chair Components</a>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -490,9 +491,9 @@
                             </div>
                             <div class="prd-cntnt">
                                <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/hardware'); ?>">Hardware</a>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div>
                           <div class="ctm-grd-two">
@@ -505,10 +506,10 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/lower-body'); ?>">Lower Body</a>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/universal-elastic-strap'); ?>">Universal Elastic Strap</a></p>
-                              <p><a  class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/universal-elastic-strap'); ?>">Universal Elastic Strap</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/options'); ?>">Options</a></p>
                             </div>
                           </div> 
 						  <div class="ctm-grd-two">
@@ -521,7 +522,7 @@
                             </div>
                             <div class="prd-cntnt">
                               <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">Dealer Tools & Accessories</a>
-                              <p><a class="text-[14px] text-[#333] font-[400]"  href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
+                              <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"  href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
                             
                             
                             </div>

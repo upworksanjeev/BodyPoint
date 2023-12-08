@@ -2,6 +2,7 @@
 
  <section class="py-3">
       <div class="ctm-container">
+	
 	<?php if(isset($error)){ echo $error; }else{ ?>
 	
 
@@ -17,7 +18,7 @@
                 <div class="filter" x-show="open">
 				@foreach ($categories as $cat)
                   <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
-                    <input type="radio" id="{{ $cat['id'] ?? '' }}" name="fav_language" value="{{ $cat['name'] ?? '' }}"  @click="redirectcat('<?php echo str_replace(' ','-',strtolower(strip_tags($cat['name']))); ?>')"><label for="{{ $cat['id'] ?? '' }}">{{ $cat['name'] ?? '' }}</label>
+                    <input type="radio" id="{{ $cat['id'] ?? '' }}" class="cursor-pointer" name="fav_language" value="{{ $cat['name'] ?? '' }}"  @click="redirectcat('<?php echo str_replace(' ','-',strtolower(strip_tags($cat['name']))); ?>')"><label for="{{ $cat['id'] ?? '' }}" class="cursor-pointer">{{ $cat['name'] ?? '' }}</label>
                   </div>
 				  @endforeach
                  
@@ -28,7 +29,7 @@
                 <div class="filter" x-show="open">
 				@foreach ($subcategory as $cat)
                   <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
-                    <input type="radio" id="{{ $cat['id'] ?? '' }}" name="fav_language" value="{{ $cat['name'] ?? '' }}"  @click="redirectcat('<?php echo str_replace(' ','-',strtolower(strip_tags($cat['name']))); ?>')"><label for="{{ $cat['id'] ?? '' }}">{{ $cat['name'] ?? '' }}</label>
+                    <input class="cursor-pointer" type="radio" id="{{ $cat['id'] ?? '' }}" name="fav_language" value="{{ $cat['name'] ?? '' }}"  @click="redirectcat('<?php echo str_replace(' ','-',strtolower(strip_tags($cat['name']))); ?>')"><label for="{{ $cat['id'] ?? '' }}" class="cursor-pointer">{{ $cat['name'] ?? '' }}</label>
                   </div>
 				  @endforeach
                  
@@ -40,7 +41,7 @@
 				@foreach ($products as $prod)
 				
                   <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
-                    <input type="radio" id="prod{{ $prod['product']['id'] ?? '' }}" name="fav_language" value="{{ $prod['product']['name'] ?? '' }}" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',$prod['product']['name'])))); ?>')"><label for="prod{{ $prod['product']['id'] ?? '' }}">{{ $prod['product']['name'] ?? '' }}</label>
+                    <input type="radio" id="prod{{ $prod['product']['id'] ?? '' }}" name="fav_language" value="{{ $prod['product']['name'] ?? '' }}" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',str_replace('®','-r',str_replace('-','_',$prod['product']['name'])))))); ?>')" class="cursor-pointer"><label for="prod{{ $prod['product']['id'] ?? '' }}" class="cursor-pointer">{{ $prod['product']['name'] ?? '' }}</label>
                   </div>
 					
 				 @endforeach
@@ -53,7 +54,7 @@
               <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">{{ $category['name'] ?? '' }} Products</h5>
               <div class="product-grid-three" x-data="{ redirectprod(prod) {  window.location = '{{ url('/product/') }}/'+prod;   } }">
 			  @foreach ($products as $prod)
-                <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto]" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',str_replace('®','-R',$prod['product']['name']))))); ?>')">
+                <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto] cursor-pointer" @click="redirectprod('<?php echo str_replace(' ','-',strtolower(strip_tags(str_replace('™','-tm',str_replace('®','-r',str_replace('-','_',$prod['product']['name'])))))); ?>')">
                   <img src="{{ asset('img/small-logo.png') }}"  class="absolute top-[8px] right-[8px] h-[40px] max-w-[40px] " alt="">
                   <img src="<?php  echo url('storage/'.$prod['product']['media'][0]['id'].'/'.$prod['product']['media'][0]['file_name']); ?>"  class="mx-auto " alt="">
                   <h6 class="text-[18px] text-[#253D4E] mb-2 mt-3 font-[600]">{{ $prod['product']['name'] ?? '' }}</h6>
