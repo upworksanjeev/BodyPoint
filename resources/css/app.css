@@ -301,7 +301,7 @@ body {
     gap: 40px;
 }
 
-.chest-img img {
+.chest-img iframe {
     width: 100%;
 }
 
