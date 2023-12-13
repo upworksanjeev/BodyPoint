@@ -65,6 +65,7 @@ class Product extends Resource
                     ID::make()->sortable(),
                     Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
                     Text::make('Tagline','small_description')->maxlength(255)->hideFromIndex(),
+                    Textarea::make('Description','description')->rows(3)->hideFromIndex(),
                     Multiselect::make('Categories', 'categories')->belongsToMany(\App\Nova\Category::class, false),
                     ImageGalleryField::make('Images')
                         ->rules('mimes:jpeg,png,jpg,gif', 'dimensions:min_width=150,min_height=150', 'max:5000')
@@ -75,16 +76,25 @@ class Product extends Resource
                         ])
                         ->help('Min size 150 x 150. Max filesize 5MB.')
                         ->showOnIndex(),
-
+					Text::make('Video Link','video')->maxlength(255)->hideFromIndex(),
                     Text::make('Tagline','small_description')->displayUsing(function($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
-                    NovaTinyMCE::make('Description','description')->hideFromIndex()->alwaysShow()->options([
+						
+     				Text::make('Description','description')->displayUsing(function($id) {
+                        $part = strip_tags(substr($id, 0, 20));
+                        return $part . "...";
+                        })->onlyOnIndex(),
+						
+                  
+                ]),
+                Tab::make('Overview', [
+                    NovaTinyMCE::make('Overview','overview')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
                         ]),
-                ]),
-                Tab::make('Sizing', [
+                ]),  
+				Tab::make('Sizing', [
                     NovaTinyMCE::make('Sizing','sizing')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
                         ]),
