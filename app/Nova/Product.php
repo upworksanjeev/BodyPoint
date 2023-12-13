@@ -76,18 +76,15 @@ class Product extends Resource
                         ])
                         ->help('Min size 150 x 150. Max filesize 5MB.')
                         ->showOnIndex(),
-					Text::make('Video Link','video')->maxlength(255)->hideFromIndex(),
+					           Text::make('Video Link','video')->maxlength(255)->hideFromIndex(),
                     Text::make('Tagline','small_description')->displayUsing(function($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
-						
      				Text::make('Description','description')->displayUsing(function($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
-						
-                  
                 ]),
                 Tab::make('Overview', [
                     NovaTinyMCE::make('Overview','overview')->hideFromIndex()->alwaysShow()->options([
@@ -95,6 +92,12 @@ class Product extends Resource
                         ]),
                 ]),  
 				Tab::make('Sizing', [
+
+                    NovaTinyMCE::make('Description','description')->hideFromIndex()->alwaysShow()->options([
+                        'use_lfm' => true
+                        ]),
+                ]),
+                Tab::make('Sizing', [
                     NovaTinyMCE::make('Sizing','sizing')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
                         ]),

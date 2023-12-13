@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67c810ab5777d60954d45f6e01802435",
+    "content-hash": "b46e21cc32f06a9b45691167fa7d355b",
     "packages": [
         {
             "name": "ardenthq/nova-image-gallery-field",
@@ -890,6 +890,114 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
+        },
+        {
+            "name": "emilianotisato/nova-tinymce",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emilianotisato/nova-tinymce.git",
+                "reference": "2e640a2e62e9d5f5bb3976ace0245126fbf95fe8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emilianotisato/nova-tinymce/zipball/2e640a2e62e9d5f5bb3976ace0245126fbf95fe8",
+                "reference": "2e640a2e62e9d5f5bb3976ace0245126fbf95fe8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Emilianotisato\\NovaTinyMCE\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Emilianotisato\\NovaTinyMCE\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This Nova package allow you to use TinyMCE editor for text areas.You can customize the editor options and... you can upload images to your server and put them rigth there on the text without leaving the text editor!",
+            "keywords": [
+                "editor",
+                "laravel",
+                "nova",
+                "tiny"
+            ],
+            "support": {
+                "issues": "https://github.com/emilianotisato/nova-tinymce/issues",
+                "source": "https://github.com/emilianotisato/nova-tinymce/tree/2.0.1"
+            },
+            "time": "2023-06-29T15:23:55+00:00"
+        },
+        {
+            "name": "eminiarts/nova-tabs",
+            "version": "2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eminiarts/nova-tabs.git",
+                "reference": "c9091cf6e8646dfb07cae5dd7fa7ba718f6e1433"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eminiarts/nova-tabs/zipball/c9091cf6e8646dfb07cae5dd7fa7ba718f6e1433",
+                "reference": "c9091cf6e8646dfb07cae5dd7fa7ba718f6e1433",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/nova": "^4.12",
+                "nova-kit/nova-packages-tool": "^1.3",
+                "php": "^7.4|^8"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2",
+                "orchestra/testbench": "^6",
+                "roave/security-advisories": "dev-latest"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Eminiarts\\Tabs\\TabsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Eminiarts\\Tabs\\": "src/",
+                    "Eminiarts\\Tabs\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emini Arts GmbH",
+                    "email": "support@eminiarts.ch",
+                    "homepage": "https://eminiarts.ch"
+                }
+            ],
+            "description": "Laravel Nova - Tabs.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/eminiarts/nova-tabs/issues",
+                "source": "https://github.com/eminiarts/nova-tabs/tree/2.2.3"
+            },
+            "time": "2022-10-25T19:58:02+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -7303,6 +7411,85 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.6"
             },
             "time": "2023-01-03T09:29:04+00:00"
+        },
+        {
+            "name": "unisharp/laravel-filemanager",
+            "version": "v2.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UniSharp/laravel-filemanager.git",
+                "reference": "3bf53c9aae09d11235304e9305cd16bc27e6424a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/3bf53c9aae09d11235304e9305cd16bc27e6424a",
+                "reference": "3bf53c9aae09d11235304e9305cd16bc27e6424a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-exif": "*",
+                "ext-fileinfo": "*",
+                "illuminate/config": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/container": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/filesystem": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/http": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/support": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "intervention/image": "2.*",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.9",
+                "phpunit/phpunit": "^6.2",
+                "squizlabs/php_codesniffer": "^3.1"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "UniSharp\\LaravelFilemanager\\LaravelFilemanagerServiceProvider"
+                    ],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "UniSharp\\LaravelFilemanager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Trevor Sawler",
+                    "email": "trevor.sawler@gmail.com"
+                },
+                {
+                    "name": "UniSharp Ltd.",
+                    "email": "opensource@unisharp.com"
+                }
+            ],
+            "description": "A file upload/editor intended for use with Laravel 5 to 10 and CKEditor / TinyMCE",
+            "keywords": [
+                "CKEditor",
+                "file",
+                "filemanager",
+                "image",
+                "laravel",
+                "manager",
+                "tinymce",
+                "upload"
+            ],
+            "support": {
+                "issues": "https://github.com/UniSharp/laravel-filemanager/issues",
+                "source": "https://github.com/UniSharp/laravel-filemanager/tree/v2.6.3"
+            },
+            "time": "2023-11-22T08:33:54+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
