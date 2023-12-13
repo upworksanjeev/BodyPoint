@@ -94,7 +94,7 @@
     <div class="ctm-container-three py-[30px] md:py-[80px]">
       <div class="chest-support">
         <div class="chest-img">
-          <img src="/img/chest.png" alt="">
+          <iframe src="{{ $product['video'] ?? '' }}" width="718" height="422"></iframe>
         </div>
         <div class="chest-content">
           <h6 class="text-[#333] text-[20px] md:text-[30px] font-[600]">{{ $product['small_description'] ?? '' }}</h6>
@@ -107,11 +107,11 @@
       <div class="accordion">
         <div class="accordion-item">
           <div class="accordion-item-header">
-            Description
+            Overview
           </div><!-- /.accordion-item-header -->
           <div class="accordion-item-body">
             <div class="accordion-item-body-content">
-             <?php echo htmlspecialchars_decode(htmlspecialchars($product['description'])); ?>
+             <?php echo htmlspecialchars_decode(htmlspecialchars($product['overview'])); ?>
             </div>
           </div><!-- /.accordion-item-body -->
         </div><!-- /.accordion-item -->
