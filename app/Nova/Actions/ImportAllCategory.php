@@ -44,7 +44,7 @@ class ImportAllCategory extends Action
     public function fields(NovaRequest $request)
     {
         return [
-		File::make('Excel File','csvfile')->disk('public'),
-    ];
+			File::make('Excel File','csvfile')->disk('public')->acceptedTypes('.xls,.xlsx'),
+		];
     }
 }
