@@ -70,9 +70,9 @@ class ImportCategory implements ToModel
 		   for($i=6;$i<52;$i++){
 		   if(isset($row[$i])){
 			   if(str_contains($row[$i],'Attributes/')){
-				   //check Category-product relation exist or not
+				   //check attribute category exist or not
 					$attribute_cat=AttributeCategory::where('category',str_replace('Attributes/','',$row[$i]))->first();
-					if(!isset($catprod['id'])){				
+					if(!isset($attribute_cat['id'])){				
 						$attribute_cat=AttributeCategory::create(['category' => str_replace('Attributes/','',$row[$i])]);
 					}
 			   }
