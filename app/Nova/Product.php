@@ -163,6 +163,7 @@ class Product extends Resource
      */
     public function actions(NovaRequest $request)
     {
+		ini_set('max_execution_time', '600');
         return [
 			   /*ExportAsCsv::make()->nameable()->withFormat(function ($model) {
 				return [
