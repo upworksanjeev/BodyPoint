@@ -21,7 +21,14 @@ class ProductController extends Controller
      */
     public function index($name,Request $request)
     {		
-	   $name=ucwords(str_replace('_','-',str_replace('-',' ',str_replace('-tm','™',str_replace('-r','®',$name)))));
+		 if(str_contains($name,'-r-')){
+			 $name=str_replace('-r-','®-',$name);
+		 }
+		 if(str_contains($name,'-tm-')){
+			 $name=str_replace('-tm-','™-',$name);
+		 }
+	   $name=ucwords(str_replace('_','-',str_replace('-',' ',$name)));
+	  
         $categories = Category::all();
         $product = Product::with(['media'])->where('name',$name)->first();
 		

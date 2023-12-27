@@ -23,6 +23,7 @@ use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 
 class Product extends Resource
@@ -76,15 +77,18 @@ class Product extends Resource
                         ])
                         ->help('Min size 150 x 150. Max filesize 5MB.')
                         ->showOnIndex(),
-					           Text::make('Video Link','video')->maxlength(255)->hideFromIndex(),
+					Text::make('Video Link','video')->maxlength(255)->hideFromIndex(),
                     Text::make('Tagline','small_description')->displayUsing(function($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
+						
      				Text::make('Description','description')->displayUsing(function($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
+						
+                  
                 ]),
                 Tab::make('Overview', [
                     NovaTinyMCE::make('Overview','overview')->hideFromIndex()->alwaysShow()->options([
@@ -92,12 +96,6 @@ class Product extends Resource
                         ]),
                 ]),  
 				Tab::make('Sizing', [
-
-                    NovaTinyMCE::make('Description','description')->hideFromIndex()->alwaysShow()->options([
-                        'use_lfm' => true
-                        ]),
-                ]),
-                Tab::make('Sizing', [
                     NovaTinyMCE::make('Sizing','sizing')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
                         ]),
@@ -125,18 +123,6 @@ class Product extends Resource
     }
 
 	/**
-     * Register a callback to be called after the resource is created.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
-     */
-/*	 public static function afterCreate(NovaRequest $request, Model $model)
-    {
-        //$model->sendEmailVerificationNotification();
-    }*/
-
-    /**
      * Get the cards available for the request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -166,7 +152,7 @@ class Product extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [  /*Lenses\ImportCSV::make(),*/ ];
     }
 
     /**
@@ -177,6 +163,17 @@ class Product extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+		ini_set('max_execution_time', '600');
+        return [
+			   /*ExportAsCsv::make()->nameable()->withFormat(function ($model) {
+				return [
+					'ID' => $model->id(),
+					'Name' => $model->name,
+				];
+			}),*/
+			Actions\ImportAllCategory::make(),
+			Actions\ExportAllCategory::make(),
+			
+		];
     }
 }
