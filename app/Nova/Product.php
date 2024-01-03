@@ -24,6 +24,7 @@ use Eminiarts\Tabs\Traits\HasTabs;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 
 class Product extends Resource
@@ -165,14 +166,9 @@ class Product extends Resource
     {
 		ini_set('max_execution_time', '600');
         return [
-			   /*ExportAsCsv::make()->nameable()->withFormat(function ($model) {
-				return [
-					'ID' => $model->id(),
-					'Name' => $model->name,
-				];
-			}),*/
-			Actions\ImportAllCategory::make(),
-			Actions\ExportAllCategory::make(),
+			  (new DownloadExcel)->withFilename('Product-' . time() . '.xlsx')->allFields()->withHeadings("ID","Item_Name","Tagline","Description","Product Overview/Overview","Product Sizing/Sizing","Product Instructions/Instructions for Use","warranty","Item_Type","Categories")->except("video","is_deleted","created_at","updated_at","Images"),
+			  Actions\ImportAllCategory::make(),
+			//Actions\ExportAllCategory::make(),
 			
 		];
     }
