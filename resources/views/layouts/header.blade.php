@@ -7,7 +7,7 @@
     </div>
 </header>
 <header class="bg-[#008C99]">
-    <div class="ctm-container mx-auto px-4 xl:px-8">
+    <div class="ctm-container mx-auto px-4 xl:px-8 lg:block hidden">
         <div class="grid grid-cols-12 py-2 mb-5 border-b-[1px]">
             <div class="col-span-6">
                 <div class="slick-slider">
