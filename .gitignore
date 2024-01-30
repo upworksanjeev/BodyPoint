@@ -20,3 +20,6 @@ yarn-error.log
 /public/vendor
 /lang/vendor/nova
 /html
+package.json
+composer.json
+composer.lock
