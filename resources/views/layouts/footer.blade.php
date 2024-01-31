@@ -52,7 +52,7 @@
                         {{ __('sales@bodypoint.com') }}
                         </x-responsive-nave-link>
                 </div>
-                <div class="relative flex justify-center mt-3">
+                <div class="relative flex lg:justify-end justify-center mt-3">
                     <img src="{{ asset('img/small-logo.png') }}" class="" alt="">
                 </div>
             </div>

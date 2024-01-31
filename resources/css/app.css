@@ -469,4 +469,28 @@ body {
     .product-details p {
         text-align: center;
     }
+    .prd-img {
+        border-style: solid;
+        border-width: 1px 1px 1px 1px;
+        border-color: #ececec;
+        border-radius: 5px 5px 5px 5px;
+        box-shadow: 0px 0px 4px 0px #ececec;
+        padding: 10px;
+        min-height: 80px;
+    }
+    .ctm-grd-two {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        border-bottom: 1px solid #f5f5f7;
+        padding: 10px 0;
+    }
+    .prd-cntnt {
+        flex: 1;
+    }
+    .prd-img img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+    }
 }
