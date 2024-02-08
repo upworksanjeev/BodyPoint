@@ -635,7 +635,7 @@
                      <x-nav-link-custom @click="toggle()"
                          classes="transition duration-150 ease-in-out rounded-md px-3 font-light text-[#333] hover:text-[#fe7300] block py-2 text-[18px] font-[300] flex justify-between items-center cursor-pointer"
                          aria-current="page">
-                         {{ __('Wheelchair Positing') }} <i class="fa fa-caret-down"></i>
+                         {{ __('Positing') }} <i class="fa fa-caret-down"></i>
                          </x-responsive-nave-link>
                          <div class="mobile-dropdown-content" x-show="open">
 
@@ -803,7 +803,7 @@
                      <x-nav-link-custom @click="toggle()"
                          classes="transition duration-150 ease-in-out rounded-md px-3 font-light text-[#333] hover:text-[#fe7300] block py-2 text-[18px] font-[300] flex justify-between items-center cursor-pointer"
                          aria-current="page">
-                         {{ __('About Us') }} <i class="fa fa-caret-down"></i>
+                         {{ __('About') }} <i class="fa fa-caret-down"></i>
                          </x-responsive-nave-link>
                          <div class="mobile-dropdown-content" x-show="open">
                              <h5 class="ctmH2 text-[22px] text-[#008C99] mb-5 font-[500]">About Us</h5>
