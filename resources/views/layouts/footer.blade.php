@@ -11,11 +11,11 @@
 
                         <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/why-positioning-matters/"
                             classes="text-base pr-4">
-                            {{ __('Wheelchair positioning') }}
+                            {{ __('Positioning') }}
                             </x-responsive-nave-link>
                             <x-nav-link-custom href="{{ config('bodypoint.home_url') }}company-overview/"
                                 classes="text-base pr-4">
-                                {{ __('About Us') }}
+                                {{ __('About') }}
                                 </x-responsive-nave-link>
                 </div>
             </div>
