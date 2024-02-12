@@ -69,11 +69,19 @@
                                 <div class="left-price">
                                     <p class="text-[14px] text-[#6A6D73]">MSRP</p>
                                     <h6 class="text-[16px] text-[#000] font-[500]">YOUR PRICE</h6>
+									 @if ($product['discount']>0)
+									<p class="text-[14px] text-[#6A6D73]">Discounted Price</p>
+									<p class="text-[14px] text-[#6A6D73]">Discount</p>
+									@endif
                                 </div>
                                 <div class="right-price">
                                     <div class="text-set">
-                                        <p class="text-[14px] text-[#6A6D73]">MSRP</p>
-                                        <h6 class="text-[16px] text-[#000] font-[500]">YOUR PRICE</h6>
+                                        <p class="text-[14px] text-[#6A6D73]">@if (isset($product['msrp'])) ${{ $product['msrp'] ?? '' }} EA @endif</p>
+                                        <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['price'])) ${{ $product['price'] ?? '' }} EA @endif</h6>
+										 @if ($product['discount']>0)
+										<p class="text-[14px] text-[#6A6D73]">${{ $product['discount_price'] ?? '' }} EA</p>
+										<p class="text-[14px] text-[#6A6D73]">${{ $product['discount_in_price'] ?? '' }} ({{ $product['discount'] ?? '' }}% Off)</p>
+										@endif
                                     </div>
                                     <button
                                         class="bg-[#fe7300] hover:bg-[#e96a00] py-[10px] px-[25px] text-[16px] text-[#fff]">Add
