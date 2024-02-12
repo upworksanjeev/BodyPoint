@@ -1,20 +1,17 @@
-<footer class="footer">
-
-    <div class="container mx-auto px-2 py-5 xl:px-10">
-        <div class="block lg:flex items-center ">
+<footer class="footer pt-5">
+    <div class="ctm-container mx-auto">
+        <div class="block lg:flex items-center pb-5">
             <div class="w-full lg:w-3/4">
                 <h2 class="footer-heading-title lg:text-left text-center">More Information</h2>
                 <div class="flex flex-wrap lg:block  justify-center mb-5 lg:mb-0">
-                    <x-nav-link-custom href="{{ config('bodypoint.home_url') }}" classes="text-base pr-4">
+                    <x-nav-link-custom href="{{ config('bodypoint.home_url') }}" classes="text-sm pr-4">
                         {{ __('Home') }}
                         </x-responsive-nave-link>
 
-                        <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/why-positioning-matters/"
-                            classes="text-base pr-4">
+                        <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/why-positioning-matters/" classes="text-sm pr-4">
                             {{ __('Positioning') }}
                             </x-responsive-nave-link>
-                            <x-nav-link-custom href="{{ config('bodypoint.home_url') }}company-overview/"
-                                classes="text-base pr-4">
+                            <x-nav-link-custom href="{{ config('bodypoint.home_url') }}company-overview/" classes="text-sm pr-4">
                                 {{ __('About') }}
                                 </x-responsive-nave-link>
                 </div>
@@ -22,27 +19,22 @@
             <div class="w-full lg:w-1/4">
                 <div class=" flex justify-center lg:justify-end  gap-2">
 
-                    <x-nav-link-custom href="#!"
-                        classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
+                    <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
                         <i class="text-white text-xs fa fa-facebook" aria-hidden="true"></i>
                         </x-responsive-nave-link>
-                        <x-nav-link-custom href="#!"
-                            classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
+                        <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
                             <i class="text-white text-xs fa fa-linkedin" aria-hidden="true"></i>
                             </x-responsive-nave-link>
 
-                            <x-nav-link-custom href="#!"
-                                classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
+                            <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
                                 <i class="text-white text-xs fa fa-instagram" aria-hidden="true"></i>
                                 </x-responsive-nave-link>
 
-                                <x-nav-link-custom href="#!"
-                                    classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
+                                <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
                                     <i class="text-white text-xs fa fa-twitter" aria-hidden="true"></i>
                                     </x-responsive-nave-link>
 
-                                    <x-nav-link-custom href="#!"
-                                        classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
+                                    <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
                                         <i class="text-white text-xs fa fa-pinterest" aria-hidden="true"></i>
                                         </x-responsive-nave-link>
 
@@ -58,10 +50,10 @@
             </div>
         </div>
     </div>
-    <div class="bg-[#008c99] py-3">
+    <div class="bg-[#008c99] py-[20px]">
         <x-copyrights>
             <x-slot name="content">
-                © Copyrights {{ date('Y') }}. Bodypoint. All Rights Reserved.
+                ©Copyright {{ date('Y') }}. Bodypoint. All Rights Reserved.
             </x-slot>
         </x-copyrights>
     </div>
