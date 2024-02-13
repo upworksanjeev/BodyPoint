@@ -50,10 +50,9 @@
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Products <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
-                             <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">Product</h5>
+                             <h5 class="ctmH2 text-[22px] text-[#008C99] font-[500] mb-4">Product</h5>
 
                              <div class="ctm-grd-one">
-
                                  <div class="ctm-grd-two">
                                      <a class="" href="<?php echo url('/category/upper-body'); ?>">
                                          <div
@@ -174,7 +173,7 @@
                                      <a class="" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">
                                          <div
                                              class="prd-img py-5 px-2 rounded flex items-center justify-center min-h-[120px] border border-[#ECECEC] bg-[#fff]">
-                                             <img class="" src="{{ asset('img/c-three.png') }}"
+                                             <img class="" src="{{ asset('img/dealer-tools-accessories.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
@@ -194,7 +193,7 @@
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Positioning <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
-                             <h5 class="ctmH2 text-[22px] text-[#008C99]  font-[500]">Positions Are Personal</h5>
+                             <h5 class="ctmH2 text-[22px] text-[#008C99] font-[500] mb-4">Positions Are Personal</h5>
                              <p class="text-[#333] pt-[5px] text-[16px] mb-5">One person, one chair, one position.</p>
                              <div class="ctm-grd-one">
                                  <div class="ctm-grd-two">
