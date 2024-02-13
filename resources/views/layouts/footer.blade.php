@@ -20,25 +20,25 @@
                 </div>
             </div>
             <div class="w-full lg:w-1/4">
-                <div class=" flex justify-center lg:justify-end  gap-2">
+                <div class=" flex justify-center lg:justify-end  gap-3">
 
-                    <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
-                        <i class="text-white text-xs fa fa-facebook" aria-hidden="true"></i>
+                    <x-nav-link-custom href="#!" classes="flex items-center justify-center">
+                        <i class="text-[#333] text-[22px] fa fa-facebook" aria-hidden="true"></i>
                         </x-responsive-nave-link>
-                        <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
-                            <i class="text-white text-xs fa fa-linkedin" aria-hidden="true"></i>
+                        <x-nav-link-custom href="#!" classes="flex items-center justify-center">
+                            <i class="text-[#333] text-[22px] fa fa-linkedin" aria-hidden="true"></i>
                             </x-responsive-nave-link>
 
-                            <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
-                                <i class="text-white text-xs fa fa-instagram" aria-hidden="true"></i>
+                            <x-nav-link-custom href="#!" classes="flex items-center justify-center">
+                                <i class="text-[#333] text-[22px] fa fa-instagram" aria-hidden="true"></i>
                                 </x-responsive-nave-link>
 
-                                <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
-                                    <i class="text-white text-xs fa fa-twitter" aria-hidden="true"></i>
+                                <x-nav-link-custom href="#!" classes="flex items-center justify-center">
+                                    <i class="text-[#333] text-[22px] fa fa-twitter" aria-hidden="true"></i>
                                     </x-responsive-nave-link>
 
-                                    <x-nav-link-custom href="#!" classes="bg-black flex items-center justify-center w-5 h-5 rounded-full">
-                                        <i class="text-white text-xs fa fa-pinterest" aria-hidden="true"></i>
+                                    <x-nav-link-custom href="#!" classes="flex items-center justify-center">
+                                        <i class="text-[#333] text-[22px] fa fa-pinterest" aria-hidden="true"></i>
                                         </x-responsive-nave-link>
 
                 </div>
@@ -47,7 +47,7 @@
                         {{ __('sales@bodypoint.com') }}
                         </x-responsive-nave-link>
                 </div>
-                <div class="relative flex lg:justify-end justify-center mt-3">
+                <div class="relative flex lg:justify-end justify-center">
                     <img src="{{ asset('img/small-logo.png') }}" class="" alt="">
                 </div>
             </div>
