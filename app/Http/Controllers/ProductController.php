@@ -21,6 +21,7 @@ class ProductController extends Controller
      */
     public function index($name,Request $request)
     {		
+		
 		 if(str_contains($name,'-r-')){
 			 $name=str_replace('-r-','®-',$name);
 		 }elseif(str_contains($name,'-r') && strrpos($name, '-r', 0)==strlen($name)-2){

@@ -83,9 +83,15 @@
 										<p class="text-[14px] text-[#6A6D73]">${{ $product['discount_in_price'] ?? '' }} ({{ $product['discount'] ?? '' }}% Off)</p>
 										@endif
                                     </div>
-                                    <button
-                                        class="bg-[#fe7300] hover:bg-[#e96a00] py-[10px] px-[25px] text-[16px] text-[#fff]">Add
-                                        To Cart</button>
+									<form name="addtocart" method="POST" action="{{ url('/cart') }}">
+									 @csrf
+									<input type="hidden" name="price" value="{{ $product['price'] ?? '' }}">
+									<input type="hidden" name="discount_price" value="{{ $product['discount_price'] ?? '' }}">
+									<input type="hidden" name="discount" value="{{ $product['discount'] ?? '' }}">
+									<input type="hidden" name="product_id" value="{{ $product['id'] ?? '' }}">
+									<input type="hidden" name="product_attributes[]" value="">
+                                    <button type="submit" class="bg-[#fe7300] hover:bg-[#e96a00] py-[10px] px-[25px] text-[16px] text-[#fff]">Add To Cart</button>
+									</form>
                                 </div>
                             </div>
                             <div class="detactor">
