@@ -32,7 +32,9 @@
             </div>
             <div class="col-span-6 text-right">
                 <div class="h-8 flex justify-end text-[#fff] text-[15px] font-normal">
+				
                     <x-login-nav />
+					<div>Cart <sup>{{ FunHelper::getCartCount() }}</sup></div>
                 </div>
             </div>
         </div>

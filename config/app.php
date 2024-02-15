@@ -185,7 +185,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-		//'FunHelper' => App\Helpers\FunHelper::class,
+		'FunHelper' => App\Helpers\FunHelper::class,
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 

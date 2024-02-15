@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
@@ -111,6 +112,14 @@ class Product extends Resource
                         'use_lfm' => true
                         ]),
                 ]),
+				Tab::make('Price', [
+                     Text::make('SKU','sku')->sortable()->maxlength(255),
+                     
+					 Number::make('MSRP','msrp')->min(1)->max(999999)->step(0.01)->sortable()->hideFromIndex(),
+					 Number::make('Price','price')->min(1)->max(999999)->step(0.01)->sortable(),
+					 Number::make('Discount (in %)','discount')->min(1)->max(100)->step('any')->hideFromIndex(),
+                   
+                ]),  
                 Tab::make('Product Attributes', [
                     Select::make('Product Type','product_type')->options([
                         'Single' => 'Single',
