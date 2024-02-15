@@ -61,7 +61,7 @@
                                 <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
                                     <input type="radio" id="prod{{ $prod['product']['id'] ?? '' }}"
                                         name="fav_language" value="{{ $prod['product']['name'] ?? '' }}"
-                                        @click="redirectprod('<?php echo str_replace(' ', '-', strtolower(strip_tags(str_replace('w/', 'with', str_replace('w/o', 'without', str_replace('™', '-tm', str_replace('®', '-r', str_replace('-', '_', $prod['product']['name'])))))))); ?>')" class="cursor-pointer"><label
+                                        @click="redirectprod('{{ $prod['product']['slug'] }}')" class="cursor-pointer"><label
                                         for="prod{{ $prod['product']['id'] ?? '' }}"
                                         class="cursor-pointer">{{ $prod['product']['name'] ?? '' }}</label>
                                 </div>
@@ -78,7 +78,7 @@
                     <div class="product-grid-three" x-data="{ redirectprod(prod) { window.location = '{{ url('/product/') }}/' + prod; } }">
                         @foreach ($products as $prod)
                             <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto] cursor-pointer"
-                                @click="redirectprod('<?php echo str_replace(' ', '-', strtolower(strip_tags(str_replace('w/', 'with', str_replace('w/o', 'without', str_replace('™', '-tm', str_replace('®', '-r', str_replace('-', '_', $prod['product']['name'])))))))); ?>')">
+                                @click="redirectprod('{{ $prod['product']['slug'] }}')">
                                 <img src="{{ asset('img/small-logo.png') }}"
                                     class="absolute top-[8px] right-[8px] h-[40px] max-w-[40px] " alt="">
                                 <img src="<?php if (isset($prod['product']['media'][0])) {

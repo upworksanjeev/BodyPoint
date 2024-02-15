@@ -10,6 +10,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
+use Illuminate\Support\Str;
 use Auth;
 
 
@@ -48,8 +49,8 @@ class CartController extends Controller
 			}
 		}
 	
-		$cart=Cart::with('User','CartItem.Product','CartItem.CartAttribute.ProductAttribute')->where('user_id', $user->id)->get();
-		
+		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
+	
 
 		return view('cart', array(
 				'cart' => $cart,
