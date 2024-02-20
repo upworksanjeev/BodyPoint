@@ -61,15 +61,17 @@
                         </h5>
                         <div class="product-grid-three" x-data="{ redirectprod(prod) { window.location = '{{ url('/product/') }}/' + prod; } }">
                             @foreach ($products as $prod)
-                            <div class="relative bg-[#fff] rounded-[15px] p-5 border border-[#ECECEC] h-[auto] cursor-pointer" @click="redirectprod('<?php echo str_replace(' ', '-', strtolower(strip_tags(str_replace('w/', 'with', str_replace('w/o', 'without', str_replace('™', '-tm', str_replace('®', '-r', str_replace('-', '_', $prod['product']['name'])))))))); ?>')">
+                            <div class="relative bg-gradient-to-t from-[#008C99] via-[#008C99] to-transparent rounded-[15px] border border-solid border-[#ECECEC] h-[auto] cursor-pointer overflow-hidden" @click="redirectprod('<?php echo str_replace(' ', '-', strtolower(strip_tags(str_replace('w/', 'with', str_replace('w/o', 'without', str_replace('™', '-tm', str_replace('®', '-r', str_replace('-', '_', $prod['product']['name'])))))))); ?>')">
+                            <div class="bg-white p-5">
                                 <img src="{{ asset('img/small-logo-white.png') }}" class="absolute top-[8px] right-[8px] h-[40px] max-w-[40px] " alt="">
                                 <img src="<?php if (isset($prod['product']['media'][0])) {
                                                 echo url('storage/' . $prod['product']['media'][0]['id'] . '/' . $prod['product']['media'][0]['file_name']);
                                             } else {
                                                 echo url('img/logo.png');
-                                            } ?>" class="mx-auto min-h-[150px] max-h-[150px] object-contain" alt="">
-                                <div class="product-card-content">
-                                    <h6 class="text-[18px] text-[#008C99] mb-2 mt-3 font-[600] lg:text-left text-center lg:min-h-[54px] lg:max-h-[54px]">
+                                            } ?>" class="mx-auto min-h-[150px] max-h-[150px] object-contain" alt="" />
+                            </div>
+                                <div class="product-card-content p-5">
+                                    <h6 class="text-[18px] text-[#fff] mb-2 mt-3 font-[600] lg:text-left text-center lg:min-h-[54px] lg:max-h-[54px]">
                                         {{ $prod['product']['name'] ?? '' }}
                                     </h6>
                                     <p class="text-[14px] text-[#ADADAD] leading-[20px] lg:text-left text-center">
