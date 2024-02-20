@@ -93,6 +93,7 @@
                                 <p class="text-[14px] text-[#ADADAD] leading-[20px] lg:text-left text-center">
                                     <?php echo substr(htmlspecialchars_decode(str_replace('</div>', '', str_replace('<div>', '', $prod['product']['description']))), 0, 100) ?? ''; ?>.....
                                 </p>
+
                             </div>
                         @endforeach
 

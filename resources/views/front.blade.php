@@ -32,6 +32,7 @@
               </div>
               
             </div>
+
             <div>
               <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">All Products</h5>
                  <div class="product-grid-three" x-data="{ open: true, redirectprod(prod) {   window.location = '{{ url('/product/') }}/'+prod;  } }">
@@ -42,6 +43,7 @@
                   <h6 class="text-[18px] text-[#253D4E] mb-2 mt-3 font-[600]">{{ $prod['product']['name'] ?? '' }}</h6>
                   <p class="text-[14px] text-[#ADADAD] leading-[20px]"><?php echo substr(htmlspecialchars_decode(str_replace('</div>','',str_replace('<div>','',$prod['product']['description']))), 0, 100) ?? '' ; ?>.....
 				  </p>
+
                 </div>
 				 @endforeach
             
