@@ -138,7 +138,7 @@
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
                     <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
-						<x-svg name="eye" />
+						<x-icons.eye />
                             
                         </span>
                         Overview
@@ -152,7 +152,7 @@
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
                     <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
-                           <x-svg name="sizing" />
+                           <x-icons.sizing />
                         </span>
                         Sizing
                     </div><!-- /.accordion-item-header -->
@@ -165,7 +165,7 @@
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
                     <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
-						<x-svg name="instruction" />
+						<x-icons.instruction />
 
                         </span>
                         Instructions For Use
@@ -179,7 +179,7 @@
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
                     <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
-						<x-svg name="faq" />
+						<x-icons.faq />
 
                         </span>
                         FAQ's
@@ -193,7 +193,7 @@
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
                     <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
-						<x-svg name="setting" />
+						<x-icons.setting />
                            
                         </span>
                         Warranty

@@ -92,7 +92,7 @@
                       class="relative flex items-center max-w-[8rem] border border-solid border-[#C5C5C5] rounded-full">
                       <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input"
                         class="border-e border-gray-300 rounded-s-lg p-2 h-7 focus:ring-gray-100 focus:ring-2 focus:outline-none">
-                       <x-svg name="minus" /> 
+                       <x-icons.minus /> 
                         
                       </button>
                       <input type="text" id="quantity-input" data-input-counter
@@ -101,7 +101,7 @@
                         placeholder="1" required value="{{ $cartitem['quantity'] }}" />
                       <button type="button" id="increment-button" data-input-counter-increment="quantity-input"
                         class="border-s border-gray-300 rounded-e-lg p-2 h-7 focus:ring-gray-100 focus:ring-2 focus:outline-none">
-                        <x-svg name="plus" />
+                        <x-icons.plus />
                         
                       </button>
                     </div>
@@ -118,7 +118,7 @@
                 </td>
                 <td class="px-4 py-4">
                   <div class="bg-[#E8E7E7] w-[35px] h-[35px] rounded-full flex items-center justify-center">
-                  <x-svg name="delete" />
+                  <x-icons.delete />
                   </div>
                 </td>
               </tr>
@@ -137,8 +137,8 @@
                 class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="w-4 p-4" colspan="5">
                   <div class="flex items-center gap-2">
-                    <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"><x-svg name="delete" /> Clear Cart</button>
-                    <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"> <x-svg name="heart" /> Save Cart</button>
+                    <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"><x-icons.delete /> Clear Cart</button>
+                    <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"> <x-icons.heart /> Save Cart</button>
                   </div>
                 </td>                
                 <td class="w-4 p-4" colspan="6">
@@ -155,7 +155,7 @@
                   <div class="">
                     <a href="{{ route('cart') }}"
                       class="py-2.5 px-5 text-base font-normal text-[#00707B] focus:outline-none bg-white rounded-full border border-[#008C9A] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
-                      Go to shopping cart   <x-svg name="next-arrow" /></a>
+                      Go to shopping cart   <x-icons.next-arrow /></a>
                   </div>
                 </td>
                 <td class="w-4 p-4" colspan="10">

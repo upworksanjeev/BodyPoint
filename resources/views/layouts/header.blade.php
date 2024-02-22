@@ -37,7 +37,7 @@
               <div class="relative">
                 <div class="w-[20px] h-[20px]">
                 
-				  <x-svg name="basket" />
+				  <x-icons.basket />
                 </div>
                 <div class="absolute top-[-6px] right-[-6px]">
                   <span

@@ -6,7 +6,7 @@
              <!-- Mobile menu button-->
              <button @click="open = ! open"
                  class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition ease-in-out duration-150 text-[40px]">
-				 <x-svg name="mobile-menu" />
+				 <x-icons.mobile-menu />
                  
 
              </button>

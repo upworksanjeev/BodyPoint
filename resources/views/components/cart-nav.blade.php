@@ -36,13 +36,13 @@
                     class="block p-2.5 w-full z-20 text-sm text-[#070707] bg-white rounded-s-lg border border border-[#000] focus:ring-blue-500 focus:border-blue-500 placeholder:text-[#070707] border-e-0"
                     placeholder="10245566 - Numotion" required />
                   <button type="submit"
-                    class="p-2.5 text-sm font-medium text-[#070707] border-s-0 border border border-[#000]"><x-svg name="search" />
+                    class="p-2.5 text-sm font-medium text-[#070707] border-s-0 border border border-[#000]"><x-icons.search />
                    
                     <span class="sr-only">Search</span>
                   </button>
                   <button id="dropdown-button" data-dropdown-toggle="dropdown"
                     class="flex-shrink-0 z-10 inline-flex items-center py-2.5 pe-4 text-sm font-medium text-center text-white bg-[#494949] rounded-e-lg"
-                    type="button"><x-svg name="down-arrow" /></button>
+                    type="button"><x-icons.down-arrow /></button>
                   <div id="dropdown"
                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">

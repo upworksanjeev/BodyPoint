@@ -17,7 +17,7 @@
          
         </div>
         <div class="py-6 text-right">
-          <a href="" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2 block">Continue Shopping <x-svg name="next-arrow" /></a>
+          <a href="" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2 block">Continue Shopping <x-icons.next-arrow /></a>
         </div>
         <div class="bg-white p-6 rounded-[10px]">
           <p class="text-[13px] font-[300] text-[#1A1A1A] leading-[23px]"><span class="text-[#004A52]">Note:</span> By selecting "Save A Quote", you will be prompted to select the shipping address, select a shipping method, confirm payment method, and confirm your quote. <br class="lg:block hidden"/>

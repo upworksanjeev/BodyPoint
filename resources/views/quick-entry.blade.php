@@ -22,7 +22,7 @@
             <form class="">
               <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-				 <x-svg name="search" />
+				 <x-icons.search />
                  
                 </div>
                 <input type="search" id="default-search"
@@ -43,7 +43,7 @@
             <button type="button"
               class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#008C99] rounded-full border border-[#027480] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
               <div class="w-[20px] h-[20px]">
-              <x-svg name="basket" />
+              <x-icons.basket />
               </div>
               Check Out
             </button>
