@@ -9,18 +9,28 @@ use App\Models\ProductAttribute;
 use App\Models\Category;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Support\Str;
 
 class Product extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
 	 protected $fillable = [
-        'name', 'sku', 'msrp', 'price', 'discount', 'product_type','small_description','description','overview','sizing','instruction_of_use','warranty','video'
+        'name','slug', 'sku', 'msrp', 'price', 'discount', 'product_type','small_description','description','overview','sizing','instruction_of_use','warranty','video'
     ];
 	protected $attributes = [
        'product_type' => 'Single',
+     
     ];
 
+	protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($question) {
+            $question->slug = Str::slug($question->name);
+        });
+    }
+	
 	public function attribute()
     {
         return $this->hasMany(ProductAttribute::class, 'prod_id', 'id');
