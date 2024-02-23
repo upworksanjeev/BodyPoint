@@ -1,5 +1,5 @@
 <x-mainpage-layout>
-
+@if(isset($product))
     <section class="py-[30px] md:py-[60px]">
         <div class="ctm-container">
             <?php if(isset($error)){ echo $error; }else{ ?>
@@ -207,7 +207,9 @@
             </div>
         </div>
     </section>
-
+@else
+	<p>No Product Found</p>
+@endif
 
     <script>
         const imgs = document.querySelectorAll('.img-select a');

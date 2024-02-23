@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{name}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{name}', [ProductController::class, 'index'])->name('product');
 
@@ -35,6 +36,12 @@ Route::middleware('auth')->group(function () {
 	Route::get('/cart', [CartController::class, 'index'])->name('cart');
 	Route::post('/quick-entry', [CartController::class, 'quickEntry'])->name('quick-entry');
 	Route::get('/quick-entry', [CartController::class, 'quickEntry'])->name('quick-entry.edit');
+	Route::post('/update-cart-item', [CartController::class, 'updateCartItem'])->name('update-cart-item');
+	Route::post('/delete-cart', [CartController::class, 'deleteCart'])->name('delete-cart');
+	Route::post('/search-product', [CartController::class, 'searchProduct'])->name('search-product');
+	Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+	Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
+	Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 });
 
 require __DIR__.'/auth.php';
