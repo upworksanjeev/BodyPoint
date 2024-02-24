@@ -111,6 +111,21 @@ class CartController extends Controller
 		echo view('components.cart.product-list ', ['page' => 'cart','cart' => $cart]);
 	} 
 	
+	
+	/**
+     * update cart item marked_for details
+     */
+    public function updateCartItemMarked(Request $request)
+    {
+		if($request->has('cart_item_id')){
+			$cartitems=CartItem::where('id', $request->cart_item_id)->first();
+			if($cartitems){
+				$cartitems->update(['marked_for' => $request->marked_for]);
+			}
+		}
+		echo 1;
+	} 
+	
 	/**
      * Delete all cart items
      **/
@@ -131,7 +146,6 @@ class CartController extends Controller
 			}
 		}				
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		
 		echo view('components.cart.product-list ', ['page' =>  'cart','cart' => $cart]);
 	} 
 	

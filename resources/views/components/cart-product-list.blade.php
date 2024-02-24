@@ -105,5 +105,24 @@
                 }
             });
   }
+  
+  /* update cart item details */
+  function updateCartItem(cart_item_id){
+	   $.ajax({
+                url: "{{ route('update-cart-item-marked') }}",
+                type: 'POST',
+                data: {
+					"_token": "{{ csrf_token() }}",
+                    cart_item_id: cart_item_id,
+                    marked_for: $('#marked_for_'+cart_item_id).val(),
+                },
+                success: function(response) {
+					
+                },
+                error: function(xhr) {
+                  
+                }
+            });
+  }
 </script>
 @endpush

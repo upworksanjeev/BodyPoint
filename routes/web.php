@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/quick-entry', [CartController::class, 'quickEntry'])->name('quick-entry');
 	Route::get('/quick-entry', [CartController::class, 'quickEntry'])->name('quick-entry.edit');
 	Route::post('/update-cart-item', [CartController::class, 'updateCartItem'])->name('update-cart-item');
+	Route::post('/update-cart-item-marked', [CartController::class, 'updateCartItemMarked'])->name('update-cart-item-marked');
 	Route::post('/delete-cart', [CartController::class, 'deleteCart'])->name('delete-cart');
 	Route::post('/search-product', [CartController::class, 'searchProduct'])->name('search-product');
 	Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
