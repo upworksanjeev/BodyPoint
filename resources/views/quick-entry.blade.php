@@ -90,12 +90,18 @@ function chooseProduct(sku,product_id){
 }
 function addToCart(sku,product_id){
 	if($('#selected_product_id').val()==''){
-		alert("Enter Stock Code");
-		$('#selected_product_id').focus();
+		$('#myInput').addClass('focus:ring-red-500 focus:border-red-500');
+		$('#myInput').removeClass('focus:ring-blue-500 focus:border-blue-500');
+		$('#myInput').focus();
 	}else if($('#qty').val()==''){
-		alert("Enter Quantity");
+		$('#qty').addClass('focus:ring-red-300');
+		$('#qty').removeClass('focus:ring-blue-300');
 		$('#qty').focus();
 	}else{
+		$('#myInput').removeClass('focus:ring-red-500 focus:border-red-500');
+		$('#myInput').addClass('focus:ring-blue-500 focus:border-blue-500');
+		$('#qty').removeClass('focus:ring-red-300');
+		$('#qty').addClass('focus:ring-blue-300');
 	$.ajax({
                 url: "{{ route('add-to-cart') }}",
                 type: 'POST',
