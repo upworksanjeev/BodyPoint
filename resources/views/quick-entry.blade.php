@@ -19,33 +19,33 @@
         </div>
         <div class="flex items-center lg:flex-row flex-col gap-4 justify-start mb-6">
           <div class="lg:w-[35%] w-full">
-            <form class="">
+            
               <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
 				 <x-icons.search />
                  
                 </div>
-                <input type="search" id="default-search"
+                <input type="search" id="myInput" onkeyup="myFunction()"
                   class="block w-full p-3 pe-0 ps-10 text-sm text-[#000] border border-[#000] rounded-full bg-white focus:ring-blue-500 focus:border-blue-500 placeholder:text-[#000]"
-                  placeholder="Enter Stock Code" required />
-                <button type="submit"
-                  class="text-white absolute end-2.5 top-0 bottom-0 right-0 bg-[#2F2F2F] hover:bg-[#000] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-e-full text-sm px-5 py-3">Clear</button>
+                  placeholder="Enter Stock Code" required/>
+				  <table id="myTable"></table>			 
+                <button type="button"
+                  class="text-white absolute end-2.5 top-0 bottom-0 right-0 bg-[#2F2F2F] hover:bg-[#000] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-e-full text-sm px-5 py-3" onclick="clearStock()">Clear</button>
               </div>
-            </form>
+			  <input id="selected_product_id" type="hidden">
+          
           </div>
           <div class="flex items-center gap-3">
             <label class="text-sm font-normal text-[#000] leading-[18px]">Qty</label>
-            <input type="text"
-              class="block w-full p-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center"
-              placeholder="01" />
+            <input type="number" id="qty" class="block w-full p-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center" placeholder="01" />
           </div>
           <div>
-            <button type="button"
+            <button type="button" onclick="addToCart()"
               class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#008C99] rounded-full border border-[#027480] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
               <div class="w-[20px] h-[20px]">
               <x-icons.basket />
               </div>
-              Check Out
+              Add To Cart
             </button>
           </div>
         </div>
@@ -57,6 +57,78 @@
       </div>
     </div>
   </section>
-
+@push('other-scripts')
+<script>
+function myFunction() {
+			$("#myTable").css("display","none")
+			$.ajax({
+                url: "{{ route('search-product') }}",
+                type: 'POST',
+                data: {
+					"_token": "{{ csrf_token() }}",
+                    keys: $('#myInput').val(),
+                },
+                success: function(response) {
+					$('#myTable').html(response);
+					if(response!=''){
+						$("#myTable").css("display","block");
+					}
+                }
+            });
+}
+function clearStock(){
+	$("#myTable").css("display","none");
+	$('#myInput').val('');
+	$('#selected_product_id').val('');
+	$('#qty').val('');
+}
+function chooseProduct(sku,product_id){
+	$("#myTable").css("display","none");
+	$('#myInput').val(sku);
+	$('#selected_product_id').val(product_id);
+	$('#qty').val(1);
+}
+function addToCart(sku,product_id){
+	if($('#selected_product_id').val()==''){
+		$('#myInput').addClass('focus:ring-red-500 focus:border-red-500');
+		$('#myInput').removeClass('focus:ring-blue-500 focus:border-blue-500');
+		$('#myInput').focus();
+	}else if($('#qty').val()==''){
+		$('#qty').addClass('focus:ring-red-300');
+		$('#qty').removeClass('focus:ring-blue-300');
+		$('#qty').focus();
+	}else{
+		$('#myInput').removeClass('focus:ring-red-500 focus:border-red-500');
+		$('#myInput').addClass('focus:ring-blue-500 focus:border-blue-500');
+		$('#qty').removeClass('focus:ring-red-300');
+		$('#qty').addClass('focus:ring-blue-300');
+	$.ajax({
+                url: "{{ route('add-to-cart') }}",
+                type: 'POST',
+                data: {
+					"_token": "{{ csrf_token() }}",
+                    product_id: $('#selected_product_id').val(),
+                    qty: $('#qty').val(),
+                },
+                success: function(response) {
+					$('#tbody_data').html(response);
+					/* update header cart count*/
+					$.ajax({
+						url: "{{ route('get-cart-count') }}",
+						type: 'GET',
+						success: function(response) {
+							$('#cart_count_div').html(response);
+						}
+						});
+					
+					$('#myInput').val('');
+					$('#selected_product_id').val('');
+					$('#qty').val('');
+                }
+            });
+	}
+}
+</script>
+@endpush
   
 </x-mainpage-layout>

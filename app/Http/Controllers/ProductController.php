@@ -53,6 +53,8 @@ class ProductController extends Controller
 			if($product['discount']!='' && $product['discount']>0){
 				$product['discount_in_price']=round(($product['price']*$product['discount'])/100,2);
 				$product['discount_price']=($product['price']-$product['discount_in_price']);
+			}else{
+				$product['discount_price']=$product['price'];
 			}
 			
 			return view('product', array(

@@ -12,8 +12,7 @@
               </li>
               <li class="me-2">
                 <a href="{{ route('quick-entry') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('quick-entry')){ echo "text-[#000] border-b-[3px] active border-[#008C99]  dark:text-blue-500 dark:border-blue-500"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"; } ?>" >Quick
-                  Order Entry</a>
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('quick-entry')){ echo "text-[#000] border-b-[3px] active border-[#008C99]  dark:text-blue-500 dark:border-blue-500"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"; } ?>" >Quick Order Entry</a>
               </li>
               <li class="me-2">
                 <a href="#"
