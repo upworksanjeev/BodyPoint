@@ -50,9 +50,6 @@ class CartController extends Controller
 			}
 		}
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		/*echo "<pre>";
-		print_r($cart);
-		die;*/
 		return view('cart', array(
 				'cart' => $cart,
 			));
@@ -106,9 +103,7 @@ class CartController extends Controller
 				}
 		}
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		
-
-		echo view('components.cart.product-list ', ['page' => 'cart','cart' => $cart]);
+		return view('components.cart.product-list ', ['page' => 'cart','cart' => $cart]);
 	} 
 	
 	
@@ -123,7 +118,6 @@ class CartController extends Controller
 				$cartitems->update(['marked_for' => $request->marked_for]);
 			}
 		}
-		echo 1;
 	} 
 	
 	/**
@@ -146,7 +140,7 @@ class CartController extends Controller
 			}
 		}				
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		echo view('components.cart.product-list ', ['page' =>  'cart','cart' => $cart]);
+		return view('components.cart.product-list ', ['page' =>  'cart','cart' => $cart]);
 	} 
 	
 	/**
@@ -154,7 +148,7 @@ class CartController extends Controller
      */
     public function getCartCount(Request $request)
     {
-		echo view('components.cart.cart-count');
+		return view('components.cart.cart-count');
 	} 
 	
 	/**
@@ -171,7 +165,7 @@ class CartController extends Controller
 			}
 			$data.='</tbody>';
 		}
-		echo $data;
+		return $data;
 	} 
 	
 	
@@ -214,6 +208,6 @@ class CartController extends Controller
 		}
 	
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		echo view('components.cart.product-list ', ['page' => 'quick-entry','cart' => $cart]);
+		return view('components.cart.product-list ', ['page' => 'quick-entry','cart' => $cart]);
 	} 
 }
