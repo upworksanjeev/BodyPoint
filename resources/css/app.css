@@ -352,29 +352,37 @@ body {
     background-color: #31BA32;
   }
   #myTable {
-	border-collapse: collapse;
-	  width: auto;
+	    border-collapse: collapse;
+	  width: 100%;
 	  border: 1px solid #ddd;
 	  font-size: 14px;
 	  position: absolute;
 	  z-index: 9999;
-	  background: whitesmoke;
 	  display: none;
 
 	}
+    #myTable thead {
+        position: sticky;
+        background: #008c99;
+    }
 
+	#myTable th {
+      font-size: 13px;
+	}
 	#myTable th, #myTable td {
 	  text-align: left;
 	  padding: 12px;
+      font-size: 12px;
+      font-weight: 500;
 	}
 
 	#myTable tr {
 	  border-bottom: 1px solid #ddd;
 	}
 
-	#myTable tr.header, #myTable tr:hover {
+	/* #myTable tr.header, #myTable tr:hover {
 	  background-color: #f1f1f1;
-	}
+	} */
 /* .accordion-item-header svg path {
     fill: #008c99;
 } */

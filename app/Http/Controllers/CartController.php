@@ -159,7 +159,7 @@ class CartController extends Controller
 		$product=Product::where('sku', 'like', '%'.$request->keys.'%')->orWhere('name', 'like', '%'.$request->keys.'%')->get();
 		$data='';
 		if($product){
-			$data='<thead class="header"><tr><th style="width:60%;">Stock Code</th><th style="width:40%;">Name</th></tr></thead><tbody>';
+			$data='<thead class="header top-0"><tr><th scope="col" style="width: 30%;" class="text-white">Stock Code</th><th scope="col" style="width: 70%;" class="text-white">Name</th></tr></thead><tbody>';
 			foreach($product as $k=>$v){
 				$data.='<tr class="cursor-pointer" onclick="chooseProduct(\''.$v->sku.'\','.$v->id.')"><td>'.$v->sku.'</td><td>'.$v->name.'</td></tr>';
 			}
