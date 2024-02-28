@@ -1,6 +1,6 @@
 
  <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-sm font-normal text-white bg-[#2F2F2F]">
+            <thead class="bg-[#2F2F2F] font-semibold text-sm text-[#008c99]">
               <tr>
                 <!--th scope="col" class="p-4 pe-0">
                   <div class="flex items-center">
@@ -9,32 +9,32 @@
                     <label for="checkbox-all-search" class="sr-only">checkbox</label>
                   </div>
                 </th-->
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   Product name
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal whitespace-nowrap">
+                <th scope="col" class="px-4 py-3 font-bold whitespace-nowrap">
                   Stock Code
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   MSRP
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   Primary Discount
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   Net price
                   after secondy
                   discount
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   Qty.
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   Net price
                   after all known
                   discount
                 </th>
-                <th scope="col" class="px-4 py-3 font-normal">
+                <th scope="col" class="px-4 py-3 font-bold">
                   Unit
                 </th>
                 <th scope="col" class="px-4 py-3 font-bold whitespace-nowrap">

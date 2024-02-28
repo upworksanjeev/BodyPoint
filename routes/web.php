@@ -42,7 +42,9 @@ Route::middleware('auth')->group(function () {
 	Route::post('/search-product', [CartController::class, 'searchProduct'])->name('search-product');
 	Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 	Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
-	Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+	Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+	Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
+	Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
 });
 
 require __DIR__.'/auth.php';

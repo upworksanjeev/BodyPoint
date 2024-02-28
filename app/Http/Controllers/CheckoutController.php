@@ -16,9 +16,35 @@ use Auth;
 class CheckoutController extends Controller
 {
      /**
-     * checkout page cart details.
+     *  Shipping details.
      */
     public function index(Request $request)
+    {
+		$user = Auth::user();
+		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
+	
+		return view('shipping', array(
+				'cart' => $cart,
+			));
+	} 
+	
+	/**
+     * Payment select page.
+     */
+    public function payment(Request $request)
+    {
+		$user = Auth::user();
+		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
+	
+		return view('payment', array(
+				'cart' => $cart,
+			));
+	}
+
+	/**
+     * checkout page cart details.
+     */
+    public function checkout(Request $request)
     {
 		$user = Auth::user();
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
