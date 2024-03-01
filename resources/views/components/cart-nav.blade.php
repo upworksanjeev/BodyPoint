@@ -1,6 +1,6 @@
 @if (Route::has('login'))
     @auth
-         <section class="bg-white border-b border-solid border-[#E0E0E0]">
+    <section class="bg-white border-b border-solid border-[#E0E0E0]">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="flex items-center justify-between">
@@ -8,7 +8,7 @@
             <ul class="flex flex-wrap -mb-px">
               <li class="me-2">
                 <a href="{{ route('cart') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('cart')){ echo "text-[#000] border-b-[3px] active border-[#008C99]  dark:text-blue-500 dark:border-blue-500"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"; } ?>" aria-current="page">Shopping Cart</a>
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('cart')){ echo "text-[#000] border-b-[3px] active border-[#008C99] dark:text-blue-500 dark:border-blue-500"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"; } ?>" aria-current="page">Shopping Cart</a>
               </li>
               <li class="me-2">
                 <a href="{{ route('quick-entry') }}"
@@ -20,9 +20,8 @@
                   Lookup</a>
               </li>
               <li class="me-2">
-                <a href="#"
-                  class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">My
-                  Account</a>
+                <a href="{{ route('profile.edit') }}"
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('profile')){ echo "text-[#000] border-b-[3px] active border-[#008C99]  dark:text-blue-500 dark:border-blue-500"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"; } ?>">My Account</a>
               </li>
             </ul>
           </div>
