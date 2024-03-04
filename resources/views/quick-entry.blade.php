@@ -26,18 +26,27 @@
 
               </div>
               <input type="search" id="myInput" onkeyup="myFunction()" class="block w-full p-3 pe-0 ps-10 text-sm text-[#000] border border-[#000] rounded-full bg-white focus:ring-blue-500 focus:border-blue-500 placeholder:text-[#000]" placeholder="Enter Stock Code" required />
-              <table id="myTable" class="rounded-xl shadow-lg h-full min-h-[360px] max-h-[360px] overflow-y-auto bg-white"></table>
+             
               <button type="button" class="text-white absolute end-2.5 top-0 bottom-0 right-0 bg-[#2F2F2F] hover:bg-[#000] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-e-full text-sm px-5 py-3" onclick="clearStock()">Clear</button>
+			   <div id="stock_search_div" class="hidden">
+			  <table id="myTable" class="rounded-xl shadow-lg h-full min-h-[360px] max-h-[360px] overflow-y-auto bg-white">
+			  <thead class="header top-0"><tr><th scope="col" style="width: 30%;" class="text-white">Stock Code</th><th scope="col" style="width: 70%;" class="text-white">Name</th></tr></thead>
+			  <tbody id="stock_search_table">
+			  </tbody>
+			  
+			  </table>
+			  </div>
             </div>
             <input id="selected_product_id" type="hidden">
 
           </div>
+		  
           <div class="flex items-center gap-3">
             <label class="text-sm font-normal text-[#000] leading-[18px]">Qty</label>
             <input type="number" id="qty" class="block w-full p-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center" placeholder="01" />
           </div>
           <div>
-            <button type="button" onclick="addToCart()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#008C99] rounded-full border border-[#027480] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
+            <button type="button" onclick="addToCart()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 justify-center w-[160px]">
               <div class="w-[20px] h-[20px]">
                 <x-icons.basket />
               </div>
@@ -56,7 +65,8 @@
   @push('other-scripts')
   <script>
     function myFunction() {
-      $("#myTable").css("display", "none")
+      $("#stock_search_div").addClass("hidden");
+      $("#stock_search_div").removeClass("block");
       $.ajax({
         url: "{{ route('search-product') }}",
         type: 'POST',
@@ -65,23 +75,26 @@
           keys: $('#myInput').val(),
         },
         success: function(response) {
-          $('#myTable').html(response);
+          $('#stock_search_table').html(response);
           if (response != '') {
-            $("#myTable").css("display", "block");
+			 $("#stock_search_div").addClass("block");
+			$("#stock_search_div").removeClass("hidden");
           }
         }
       });
     }
 
     function clearStock() {
-      $("#myTable").css("display", "none");
+       $("#stock_search_div").addClass("hidden");
+      $("#stock_search_div").removeClass("block");
       $('#myInput').val('');
       $('#selected_product_id').val('');
       $('#qty').val('');
     }
 
     function chooseProduct(sku, product_id) {
-      $("#myTable").css("display", "none");
+       $("#stock_search_div").addClass("hidden");
+      $("#stock_search_div").removeClass("block");
       $('#myInput').val(sku);
       $('#selected_product_id').val(product_id);
       $('#qty').val(1);

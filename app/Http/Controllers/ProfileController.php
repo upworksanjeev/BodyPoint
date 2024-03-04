@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StorePostRequest; 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Country;
 use App\Models\UserDetails;
-use App\Models\user;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -39,8 +40,10 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
-
+		$image=Storage::disk('public')->put('user_profile',$request->file('profile_img'));
+		
          UserDetails::updateOrCreate(['user_id' =>  $request->user()->id],[
+            'profile_img' => $image,
             'primary_phone' => $request->primary_phone,
             'alternate_phone' => $request->alternate_phone,
             'customer_number' => $request->customer_number,
@@ -61,7 +64,11 @@ class ProfileController extends Controller
             'billing_country' => $request->billing_country,
             'billing_phone' => $request->billing_phone,
         ]);
-
+		/*Auth::loginUsingId($request->user()->id);
+	    $request->merge([
+				'profile_img' => $profile_img,
+		]);*/
+		
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
