@@ -12,7 +12,7 @@ class UserDetails extends Model
 
 
     protected $fillable = [
-        'user_id',
+        'user_id','profile_img',
         'primary_phone', 'alternate_phone', 'customer_number', 'shipping_user_name', 'shipping_last_name',
         'shipping_address', 'shipping_city', 'shipping_state', 'shipping_zip', 'shipping_country',
         'shipping_phone', 'billing_user_name', 'billing_last_name', 'billing_address', 'billing_city',

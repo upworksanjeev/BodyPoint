@@ -1,9 +1,5 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-[#008c99] leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+<x-mainpage-layout>
+    <x-cart-nav />
 
     <div class="">
         <div class="sm:px-6 lg:px-8 space-y-6">
@@ -15,4 +11,4 @@
 
     </div>
 
-</x-app-layout>
+</x-mainpage-layout>

@@ -2,6 +2,7 @@
 namespace App\Helpers;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\UserDetails;
 use Auth;
 
 class FunHelper
@@ -17,6 +18,14 @@ class FunHelper
 		if(isset($user->id)){
 		$cart_count=Cart::where('user_id', $user->id)->select('total_items')->first(); }
 		return $cart_count->total_items??'';
+	 }
+	 
+	 public static function getUserProfile()
+     { 
+		$user = Auth::user();
+		if(isset($user->id)){
+		$user_detail=UserDetails::where('user_id', $user->id)->select('profile_img')->first(); }
+		return $user_detail->profile_img??'';
 	 }
 	 
 	 public static function getMenu()
