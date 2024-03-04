@@ -13,7 +13,7 @@
         <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
-            <form id="registrationForm"  method="post" action="{{ route('profile.update') }}">
+            <form id="registrationForm"  method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
                 <div class="step" data-step="1" >
@@ -23,14 +23,14 @@
                             <!-- Name -->
                             <div class="w-full md:w-2/4  pr-0 md:pr-2">
                                 <x-input-label for="name" :value="__('Name')" />
-                                <x-text-input id="name" required class="block mt-1 w-full" type="text" name="name" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+                                <x-text-input id="name" required class="block mt-1 w-full" type="text" name="name" :value="old('name', $user->name)"  autofocus autocomplete="name" />
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
 
                             <!-- Email Address -->
                             <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4 md:mt-0">
                                 <x-input-label for="email" :value="__('Email')" />
-                                <x-text-input id="email" required class="block mt-1 w-full" type="email" name="email" :value="old('email', $user->email)" required autocomplete="email" />
+                                <x-text-input id="email" required class="block mt-1 w-full" type="email" name="email" :value="old('email', $user->email)"  autocomplete="email" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
@@ -41,7 +41,7 @@
                                 <x-text-input id="password" class="block mt-1 w-full"
                                                 type="password"
                                                 name="password"
-                                                required autocomplete="new-password" required />
+                                                 autocomplete="new-password"  />
 
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
@@ -52,7 +52,7 @@
 
                                 <x-text-input id="password_confirmation" class="block mt-1 w-full"
                                                 type="password"
-                                                name="password_confirmation" required autocomplete="new-password" required  />
+                                                name="password_confirmation"  autocomplete="new-password"   />
 
                                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                             </div>
@@ -77,6 +77,14 @@
                                                 name="alternate_phone" :value="old('alternate_phone' , $user->getUserDetails->alternate_phone)"  autofocus autocomplete="alternate_phone"/>
 
                                 <x-input-error :messages="$errors->get('alternate_phone')" class="mt-2" />
+                            </div>
+							
+							<div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
+                                <x-input-label for="profile_img" :value="__('Profile Image')" />
+
+                                <x-text-input type="file" id="profile_img" class="block mt-1 w-full" name="profile_img"  autofocus autocomplete="profile_img" />
+
+                                <x-input-error :messages="$errors->get('profile_img')" class="mt-2" />
                             </div>
                         </div>
                 
