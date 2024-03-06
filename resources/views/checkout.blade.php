@@ -55,7 +55,7 @@
         <div class="grid grid-cols-2 gap-9">
           <div class="">
             <div
-              class="card bg-white border border-gray-200 rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700 mb-4">
+              class="card bg-white border border-gray-200 rounded-2xl shadow mb-4">
               <div class="card-header px-6 py-4 flex items-center justify-between border-b ">
                 <h4>Shipping Information</h4>
                 <button
@@ -69,7 +69,7 @@
                 </button>
               </div>
               <div class="card-body p-6">
-                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Ship To:</span>
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Test Customer</span>
@@ -87,12 +87,12 @@
                 </ul>
               </div>
             </div>
-            <div class="card bg-white border border-gray-200 rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="card bg-white border border-gray-200 rounded-2xl shadow">
               <div class="card-header px-6 py-4 flex items-center justify-between border-b">
                 <h4>Billing Information</h4>
               </div>
               <div class="card-body p-6">
-                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Ship To:</span>
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Test Customer</span>
