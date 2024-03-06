@@ -25,18 +25,18 @@
                       </div>
                     </div>
                   </div>
-                </th>
+                </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E]">
                   {{ $cartitem['Product']['sku'] }}
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-                  ${{ $cartitem['Product']['msrp']??0 }}
+                  ${{ $cartitem['Product']['msrp']?number_format($cartitem['Product']['msrp'], 2, '.', ''):0 }}
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-                  ${{ $cartitem['price']??0 }}
+                  ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ''):0 }}
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-                 ${{ $cartitem['discount_price']??0 }}
+                 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ''):0 }}
                 </td>
                 <td class="px-4 py-4">
                   <form class="max-w-xs mx-auto">
@@ -56,13 +56,13 @@
                   </form>
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-                ${{ $cartitem['discount_price']??0 }}
+                ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ''):0 }}
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000] uppercase">
                   EA
                 </td>
                 <td class="px-4 py-4 text-base font-bold leading-[18px] text-[#000] uppercase" id="item_total_{{ $cartitem['id'] }}">
-                  ${{ $cartitem['discount_price']?$cartitem['discount_price']*$cartitem['quantity']:0 }}
+                  ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ''):0 }}
                 </td>
                 <td class="px-4 py-4">
                   <div class="bg-[#E8E7E7] w-[35px] h-[35px] rounded-full flex items-center justify-center"><button onclick="updateProduct('delete',{{ $cartitem['id'] }})">
@@ -79,7 +79,7 @@
                 class="odd:bg-white even:bg-gray-50 border-b">
                 <td class="w-4 p-4" colspan="11">
                   <div class="text-right">
-                    <h3 class="text-3xl	font-normal text-[#000]" id="subtotal"><span class="text-xl">Subtotal:</span>  ${{ $subtotal }}</h3>
+                    <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                   </div>
                 </td>                
               </tr>
@@ -87,34 +87,17 @@
                 class="odd:bg-white even:bg-gray-50 border-b">
                 <td class="w-4 p-4" colspan="5">
                   <div class="flex items-center gap-2">
-                    <button type="button"  onclick="clearCart({{ $cart[0]['id'] }})" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"><x-icons.delete /> Clear Cart</button>
-                    <!--button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"> <x-icons.heart /> Save Cart</button-->
+                    <button type="button"  onclick="clearCart({{ $cart[0]['id'] }})" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"><x-icons.delete /> Clear Cart</button>
                   </div>
                 </td>                
                 <td class="w-4 p-4" colspan="6">
                   <div class="flex items-center justify-end gap-2">
-                    <a  href="{{ route('checkout') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"> Save a Quote</a>
-                    <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#008C99] rounded-full border border-[#027480] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center" href="{{ route('checkout') }}"> Check Out</a>
+                    <a  href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                    <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
                   </div>
                 </td>                
               </tr>
-			  @elseif($page=='quick-entry')
-			   <tr
-                class="odd:bg-white even:bg-gray-50 border-b">
-                <td class="w-4 p-4" colspan="2">
-                  <div class="">
-                    <a href="{{ route('cart') }}"
-                      class="py-2.5 px-5 text-base font-normal text-[#00707B] focus:outline-none bg-white rounded-full border border-[#008C9A] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
-                      Go to shopping cart   <x-icons.next-arrow /></a>
-                  </div>
-                </td>
-                <td class="w-4 p-4" colspan="10">
-                  <div class="text-right">
-                    <h3 class="text-3xl	font-normal text-[#000]" id="subtotal"><span class="text-xl">Subtotal:</span>  ${{ $subtotal }}</h3>
-                  </div>
-                </td>
-              </tr>
-			  @endif
+			 
 			  @endif
 			  
              

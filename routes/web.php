@@ -33,16 +33,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 	Route::post('/cart', [CartController::class, 'index'])->name('cart.save');
-	Route::get('/cart', [CartController::class, 'index'])->name('cart');
-	Route::post('/quick-entry', [CartController::class, 'quickEntry'])->name('quick-entry');
-	Route::get('/quick-entry', [CartController::class, 'quickEntry'])->name('quick-entry.edit');
+	Route::get('/cart', [CartController::class, 'quickEntry'])->name('cart');
 	Route::post('/update-cart-item', [CartController::class, 'updateCartItem'])->name('update-cart-item');
 	Route::post('/update-cart-item-marked', [CartController::class, 'updateCartItemMarked'])->name('update-cart-item-marked');
 	Route::post('/delete-cart', [CartController::class, 'deleteCart'])->name('delete-cart');
 	Route::post('/search-product', [CartController::class, 'searchProduct'])->name('search-product');
 	Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 	Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
-	Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+	Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+	Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');
+	Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
+	Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
+	Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
 });
 
 require __DIR__.'/auth.php';

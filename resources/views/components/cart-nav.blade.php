@@ -1,6 +1,6 @@
 @if (Route::has('login'))
     @auth
-         <section class="bg-white border-b border-solid border-[#E0E0E0]">
+    <section class="bg-white border-b border-solid border-[#E0E0E0]">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="flex items-center justify-between">

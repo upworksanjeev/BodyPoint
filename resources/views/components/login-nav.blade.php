@@ -4,11 +4,16 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
+			<div class="rounded-full h-[40x] w-[40px]">
+			<img src="{{ FunHelper::getUserProfile()?url('storage/'.FunHelper::getUserProfile()):asset('img/profile.png') }}" class="h-[40x] w-[40px]" alt="">
+			</div>
                 <x-dropdown align="right" width="48">
+				     
                     <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+					
+                        <button class="inline-flex items-center px-2 rounded-md focus:outline-none transition ease-in-out duration-150 text-lg font-normal">
+							
+                            <div> {{ Auth::user()->name }}</div>
 
                             <div class="ml-1">
 							<x-icons.down-arrow />
@@ -19,7 +24,10 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Edit My Account') }}
+                        </x-dropdown-link> 
+						<x-dropdown-link>
+                            {{ __('My Orders') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
