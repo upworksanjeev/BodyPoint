@@ -16,7 +16,7 @@
        
 		
 
-        <div class="relative overflow-x-auto">
+        <div class="relative overflow-x-auto rounded-2xl">
 		<x-cart.order-list :order="$order" />
          
         </div>
