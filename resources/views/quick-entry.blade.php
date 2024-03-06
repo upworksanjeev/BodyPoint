@@ -57,7 +57,7 @@
 
         <div class="relative overflow-x-auto shadow-md rounded-2xl">
 
-          <x-cart-product-list page="quick-entry" :cart="$cart" />
+          <x-cart-product-list page="cart" :cart="$cart" />
         </div>
       </div>
     </div>

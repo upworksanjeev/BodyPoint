@@ -90,7 +90,7 @@
 									<input type="hidden" name="discount" value="{{ $product['discount'] ?? '' }}">
 									<input type="hidden" name="product_id" value="{{ $product['id'] ?? '' }}">
 									<input type="hidden" name="product_attributes[]" value="">
-                                    <button type="submit" class="bg-[#fe7300] hover:bg-[#e96a00] py-[10px] px-[25px] text-[16px] text-[#fff]">Add To Cart</button>
+                                    <button type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 justify-center w-[160px]">Add To Cart</button>
 									</form>
                                 </div>
                             </div>

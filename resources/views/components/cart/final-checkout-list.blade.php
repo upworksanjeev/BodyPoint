@@ -91,10 +91,10 @@
               </div>
               <div class="col-span-3 sm:col-span-1">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">
-                  <span class="font-bold">${{ number_format($subtotal, 2, '.', '') }}</span><br>
+                  <span class="font-bold">${{ number_format($subtotal, 2, '.', ',') }}</span><br>
                   <span>${{ $tax }}</span><br>
                   <span>TBD </span><br>
-                  <span class="font-bold"> ${{ $subtotal+$tax }}</span>
+                  <span class="font-bold"> ${{ number_format($subtotal+$tax, 2, '.', ',') }}</span>
                 </span>
               </div>
             </div>
