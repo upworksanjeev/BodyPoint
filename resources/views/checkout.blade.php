@@ -11,7 +11,7 @@
         </div>
 
         <div
-          class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700 mb-4">
+          class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
           <div class="card-header px-6 py-2 bg-[#2F2F2F] rounded-t-xl">
             <h4 class="text-[#fff]">Order Information</h4>
           </div>
