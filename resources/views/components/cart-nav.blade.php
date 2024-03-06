@@ -9,11 +9,7 @@
               <li class="me-2">
                 <a href="{{ route('cart') }}"
                   class="inline-block p-4 rounded-t-lg <?php if(Request::is('cart')){ echo "text-[#000] border-b-[3px] active border-[#008C99]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>" aria-current="page">Shopping Cart</a>
-              </li>
-              <li class="me-2">
-                <a href="{{ route('quick-entry') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('quick-entry')){ echo "text-[#000] border-b-[3px] active border-[#008C99]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>" >Quick Order Entry</a>
-              </li>
+              </li>              
               <li class="me-2">
                 <a href="#"
                   class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Order
