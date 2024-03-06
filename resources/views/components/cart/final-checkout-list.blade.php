@@ -1,5 +1,5 @@
    <div class="card-body p-0 md:p-6">
-            <div class="relative overflow-x-auto shadow-md sm:rounded-2xl">
+            <div class="relative overflow-x-auto shadow-md rounded-2xl">
 			<table class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="bg-[#008C99] font-semibold text-sm text-white">
                   <tr class="whitespace-nowrap">
