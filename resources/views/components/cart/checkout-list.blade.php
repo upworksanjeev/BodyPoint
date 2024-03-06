@@ -1,5 +1,5 @@
  <div class="">
-            <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
+            <div class="card bg-white border border-gray-200 rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700 relative overflow-hidden">
               <div class="card-header px-6 py-4 flex items-center justify-between border-b">
                 <h4><a href="{{ route('cart') }}" class="text-[#00707B]">Edit your order</a></h4>
                 <!--p><a href="{{ route('cart') }}" class="text-sm font-normal leading-[18px] text-[#00707B]">Edit your order</a></p-->
