@@ -78,7 +78,7 @@
                 </td>
                 <td class="w-4 p-4" colspan="8">
                   <div class="text-right">
-                    <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span>  ${{ number_format($subtotal, 2, '.', '') }}</h3>
+                    <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span>  ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                   </div>
                 </td>
               </tr>

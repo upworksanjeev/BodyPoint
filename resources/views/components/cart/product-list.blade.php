@@ -74,11 +74,11 @@
 			  <?php $subtotal+=$cartitem['discount_price']*$cartitem['quantity']; ?>
               @endforeach
 			  
-			  @if($page=='cart')
+			  
               <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="w-4 p-4" colspan="10">
                   <div class="text-right">
-                    <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span>  ${{ number_format($subtotal, 2, '.', '') }}</h3>
+                    <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                   </div>
                 </td>                
               </tr>
@@ -87,7 +87,6 @@
                 <td class="w-4 p-4" colspan="5">
                   <div class="flex items-center gap-2">
                     <button type="button"  onclick="clearCart({{ $cart[0]['id'] }})" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"><x-icons.delete /> Clear Cart</button>
-                    <!--button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center"> <x-icons.heart /> Save Cart</button-->
                   </div>
                 </td>                
                 <td class="w-4 p-4" colspan="6">
@@ -97,23 +96,7 @@
                   </div>
                 </td>                
               </tr>
-			  @elseif($page=='quick-entry')
-			   <tr
-                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                <td class="w-4 p-4" colspan="2">
-                  <div class="">
-                    <a href="{{ route('cart') }}"
-                      class="py-2.5 px-5 text-base font-normal text-[#00707B] focus:outline-none bg-white rounded-full border border-[#008C9A] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[250px]">
-                      Go to shopping cart   <x-icons.next-arrow /></a>
-                  </div>
-                </td>
-                <td class="w-4 p-4" colspan="8">
-                  <div class="text-right">
-                    <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span>  ${{ number_format($subtotal, 2, '.', '') }}</h3>
-                  </div>
-                </td>
-              </tr>
-			  @endif
+			 
 			  @endif
 			  
              
