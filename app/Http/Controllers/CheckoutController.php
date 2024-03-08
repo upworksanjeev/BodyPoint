@@ -131,14 +131,10 @@ class CheckoutController extends Controller
 	
 	public function pdfDownload() {
 		set_time_limit(3600);
-		 $data = [
-			[
-				'quantity' => 1,
-				'description' => '1 Year Subscription',
-				'price' => '129.00'
-			]
-		];
-		$pdf = Pdf::loadView('pdf', ['data' => $data]);
+		$user = Auth::user();
+		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
+		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail]);
 		return $pdf->download();
 	}
 	 
