@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Cart;
+use App\Models\UserDetails;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\CartItem;
@@ -14,6 +15,7 @@ use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
 use App\Models\OrderAttribute;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Auth;
 
 class CheckoutController extends Controller
@@ -51,9 +53,26 @@ class CheckoutController extends Controller
     {
 		$user = Auth::user();
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-	
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
 		return view('checkout', array(
 				'cart' => $cart,
+				'user' => $user,
+				'user_detail' => $user_detail,
+			));
+	} 
+	
+	/**
+     * quote page cart details.
+     */
+    public function quote(Request $request)
+    {
+		$user = Auth::user();
+		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
+		return view('quote', array(
+				'cart' => $cart,
+				'user' => $user,
+				'user_detail' => $user_detail,
 			));
 	} 
 
@@ -109,6 +128,19 @@ class CheckoutController extends Controller
 				'order' => $order,
 			));
 	} 
+	
+	public function pdfDownload() {
+		set_time_limit(3600);
+		 $data = [
+			[
+				'quantity' => 1,
+				'description' => '1 Year Subscription',
+				'price' => '129.00'
+			]
+		];
+		$pdf = Pdf::loadView('pdf', ['data' => $data]);
+		return $pdf->download();
+	}
 	 
 	
 }
