@@ -26,7 +26,7 @@
                         </td>                       
                         <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] text-right">
 
-						 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ''):0 }}
+						 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
                         </td>
                       </tr>
 					  <?php $subtotal+=$cartitem['discount_price']*$cartitem['quantity']; ?>

@@ -352,13 +352,12 @@ body {
     background-color: #31BA32;
   }
   #myTable {
-	    border-collapse: collapse;
+	  border-collapse: collapse;
 	  width: 100%;
 	  border: 1px solid #ddd;
 	  font-size: 14px;
 	  position: absolute;
 	  z-index: 9999;
-	  display: none;
 
 	}
     #myTable thead {
