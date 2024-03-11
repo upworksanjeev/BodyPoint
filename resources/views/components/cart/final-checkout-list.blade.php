@@ -2,7 +2,7 @@
             <div class="relative overflow-x-auto shadow-md sm:rounded-2xl">
 			<table class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="bg-[#008C99] font-semibold text-sm text-white">
-                  <tr>
+                  <tr class="whitespace-nowrap">
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                       Product name  
                     </th>
