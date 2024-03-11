@@ -40,10 +40,16 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
-		$image=Storage::disk('public')->put('user_profile',$request->file('profile_img'));
-		
+		if($request->has('profile_img')){
+			$image=Storage::disk('public')->put('user_profile',$request->file('profile_img'));
+		}else{
+			$user_detail=UserDetails::where('user_id', $request->user()->id)->first();
+			if($user_detail){
+				$image=$user_detail->profile_img;
+			}
+		}
          UserDetails::updateOrCreate(['user_id' =>  $request->user()->id],[
-            'profile_img' => $image,
+            'profile_img' => $image??'',
             'primary_phone' => $request->primary_phone,
             'alternate_phone' => $request->alternate_phone,
             'customer_number' => $request->customer_number,
@@ -63,12 +69,7 @@ class ProfileController extends Controller
             'billing_zip' => $request->billing_zip,
             'billing_country' => $request->billing_country,
             'billing_phone' => $request->billing_phone,
-        ]);
-		/*Auth::loginUsingId($request->user()->id);
-	    $request->merge([
-				'profile_img' => $profile_img,
-		]);*/
-		
+        ]);		
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
