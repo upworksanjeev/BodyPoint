@@ -5,7 +5,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
 			<div class="rounded-full h-[40x] w-[40px]">
-			<img src="{{ FunHelper::getUserProfile()?url('storage/'.FunHelper::getUserProfile()):asset('img/profile.png') }}" class="h-[40x] w-[40px]" alt="">
+			<img src="{{ FunHelper::getUserProfile()?url('storage/'.FunHelper::getUserProfile()):asset('img/profile.png') }}" class="h-[40x] w-[40px] rounded-full object-cover" alt="">
 			</div>
                 <x-dropdown align="right" width="48">
 				     
