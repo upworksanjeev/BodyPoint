@@ -1,7 +1,7 @@
 <?php $subtotal=0; ?>
 			@if(isset($cart[0]))
 			  @foreach ($cart[0]['CartItem'] as $cartitem)
-              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" id="tr_{{ $cartitem['id'] }}">
+              <tr class="odd:bg-white even:bg-gray-50 border-b" id="tr_{{ $cartitem['id'] }}">
                 <!--td class="w-4 p-4 pe-0">
                   <div class="flex items-center">
                     <input id="checkbox-table-search-1" type="checkbox"
@@ -9,7 +9,7 @@
                     <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                   </div>
                 </td-->
-                <td scope="row" class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td scope="row" class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
                   <div class="flex items-center gap-2">
                     <div class=""><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
                       <img src="<?php if(isset($cartitem['Product']['Media'][0]['id'])){ echo url('storage/' . $cartitem['Product']['Media'][0]['id'] . '/' .$cartitem['Product']['Media'][0]['file_name']); }else{ echo "/img/standard-img.png"; } ?>" alt="product-img" class="w-[48px] h-[48px] object-cover" /></a>
@@ -75,7 +75,7 @@
               @endforeach
 			  
 			  
-              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+              <tr class="odd:bg-white even:bg-gray-50 border-b">
                 <td class="w-4 p-4" colspan="10">
                   <div class="text-right">
                     <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
@@ -83,7 +83,7 @@
                 </td>                
               </tr>
 			   <tr
-                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                class="odd:bg-white even:bg-gray-50 border-b">
                 <td class="w-4 p-4" colspan="5">
                   <div class="flex items-center gap-2">
                     <button type="button"  onclick="clearCart({{ $cart[0]['id'] }})" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"><x-icons.delete /> Clear Cart</button>
@@ -92,7 +92,7 @@
                 <td class="w-4 p-4" colspan="6">
                   <div class="flex items-center justify-end gap-2">
                     <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
-                    <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
+                    <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
                   </div>
                 </td>                
               </tr>

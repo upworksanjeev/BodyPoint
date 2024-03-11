@@ -16,7 +16,7 @@
             <h4 class="text-[#fff]">Order Information</h4>
           </div>
           <div class="card-body p-6">
-            <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
               <li class="flex items-start gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Account</span>
                 <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $user->email }}</span>
@@ -33,30 +33,30 @@
         
            </div>
            <form action="{{ route('pdf-download') }}" method="post">
-          <div class="card-body p-6 border-t dark:border-gray-700">
-			<h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Choose PDF Option</h3>
-			<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+          <div class="card-body p-6 border-t">
+			<h3 class="mb-4 font-semibold text-gray-900">Choose PDF Option</h3>
+			<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
+				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
 					<div class="flex items-center ps-3">
-						<input id="all_price" type="radio" value="all_price" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" selected>
-						<label for="all_price" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">All Price</label>
+						<input id="all_price" type="radio" value="all_price" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2" selected>
+						<label for="all_price" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">All Price</label>
 					</div>
 				</li>
-				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
 					<div class="flex items-center ps-3">
-						<input id="msrp_primary" type="radio" value="msrp_primary" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-						<label for="msrp_primary" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">MSRP and Primary</label>
+						<input id="msrp_primary" type="radio" value="msrp_primary" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+						<label for="msrp_primary" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">MSRP and Primary</label>
 					</div>
 				</li>
-				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
 					<div class="flex items-center ps-3">
-						<input id="msrp_only" type="radio" value="msrp_only" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-						<label for="msrp_only" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">MSRP Only</label>
+						<input id="msrp_only" type="radio" value="msrp_only" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+						<label for="msrp_only" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">MSRP Only</label>
 					</div>
 				</li>
 			</ul>
 		  </div>		  
-          <div class="card-body p-6 border-t dark:border-gray-700">
+          <div class="card-body p-6 border-t">
             <div class="flex items-center justify-end gap-2">
               <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
 			  
@@ -64,7 +64,7 @@
 			   <input type="hidden" value="<?= csrf_token() ?>" name="_token">
 			  <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}">
 			         
-			  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 justify-center w-[160px]">Save a Quote</button>
+			  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Save a Quote</button>
 			  </form>
 			  
               
