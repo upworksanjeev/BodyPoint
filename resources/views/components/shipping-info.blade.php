@@ -4,7 +4,7 @@
                   <h4 class="text-[#fff]">Ship to information:</h4>
               </div>
               <div class="card-body p-6">
-                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
                     <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span>
@@ -29,7 +29,7 @@
                   <h4 class="text-[#fff]">Bill to information:</h4>
               </div>
               <div class="card-body p-6">
-                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+                <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
                     <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
@@ -54,7 +54,7 @@
             <h4 class="text-[#fff]">Payment Method</h4>
           </div>
           <div class="card-body p-6">
-            <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
               <li class="flex items-start gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Invoice -30</span>
               </li>
@@ -64,7 +64,7 @@
             <h4 class="text-[#fff]">Shipping options</h4>
           </div>
           <div class="card-body p-6">
-            <ul class="space-y-5 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <ul class="space-y-5 text-gray-500 list-disc list-inside">
               <li class="flex items-start gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Special <br>instruction:</span>
               </li>

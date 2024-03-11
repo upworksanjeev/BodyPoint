@@ -38,11 +38,11 @@
 				<?php $subtotal=0; $tax=0.00; ?>
 					@if(isset($cart[0]))
 					  @foreach ($cart[0]['CartItem'] as $cartitem)
-                  <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e dark:border-gray-700">
+                  <tr class="odd:bg-white even:bg-gray-50 border-b">
+                    <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e">
                       {{ $cartitem['Product']['name'] }}
                     </td>
-                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e dark:border-gray-700">
+                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                       {{ $cartitem['Product']['sku'] }}
                     </td>
 
@@ -56,7 +56,7 @@
                       ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
 
                     </td>
-					 <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e dark:border-gray-700">
+					 <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                       {{ $cartitem['quantity'] }}
                     </td>
 
@@ -65,7 +65,7 @@
 
                     </td>                  
                    
-                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e dark:border-gray-700">
+                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                       EA
                     </td>
                     <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
