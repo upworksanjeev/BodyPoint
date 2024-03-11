@@ -1,5 +1,5 @@
  <div class="">
-            <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
+            <div class="card bg-white border border-gray-200 rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700 relative overflow-hidden">
               <div class="card-header px-6 py-4 flex items-center justify-between border-b">
                 <h4><a href="{{ route('cart') }}" class="text-[#00707B]">Edit your order</a></h4>
                 <!--p><a href="{{ route('cart') }}" class="text-sm font-normal leading-[18px] text-[#00707B]">Edit your order</a></p-->
@@ -32,7 +32,7 @@
 					  <?php $subtotal+=$cartitem['discount_price']*$cartitem['quantity']; ?>
 			  @endforeach
 			  @endif
-			   <tr class="odd:bg-white even:bg-gray-50 border-b">
+			   <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="w-4 p-4" colspan="2">
                   <div class="text-right">
                     <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span>  ${{ number_format($subtotal, 2, '.', ',') }}</h3>

@@ -1,7 +1,7 @@
 <?php $subtotal=0; ?>
 			@if(isset($cart[0]))
 			  @foreach ($cart[0]['CartItem'] as $cartitem)
-              <tr class="odd:bg-white even:bg-gray-50 border-b" id="tr_{{ $cartitem['id'] }}">
+              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700" id="tr_{{ $cartitem['id'] }}">
                 <!--td class="w-4 p-4 pe-0">
                   <div class="flex items-center">
                     <input id="checkbox-table-search-1" type="checkbox"
@@ -11,7 +11,7 @@
                 </td-->
                 <td scope="row" class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   <div class="flex items-center gap-2">
-                    <div class="min-w-[48px]"><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
+                    <div class=""><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
                       <img src="<?php if(isset($cartitem['Product']['Media'][0]['id'])){ echo url('storage/' . $cartitem['Product']['Media'][0]['id'] . '/' .$cartitem['Product']['Media'][0]['file_name']); }else{ echo "/img/standard-img.png"; } ?>" alt="product-img" class="w-[48px] h-[48px] object-cover" /></a>
                     </div>
                     <div class="flex-1">
@@ -46,7 +46,7 @@
                        <x-icons.minus /> 
                         
                       </button>
-                      <input type="text" id="quantity_input_{{ $cartitem['id'] }}" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-0 border-gray-300 h-7 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 "
+                      <input type="text" id="quantity_input_{{ $cartitem['id'] }}" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-7 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 "
                         placeholder="1" required value="{{ $cartitem['quantity'] }}" />
                       <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="border-s border-gray-300 rounded-e-lg p-2 h-7 focus:ring-gray-100 focus:ring-2 focus:outline-none" onclick="updateProduct('increment',{{ $cartitem['id'] }})">
                         <x-icons.plus />
@@ -75,7 +75,7 @@
               @endforeach
 			  
 			  
-              <tr class="odd:bg-white even:bg-gray-50 border-b">
+              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="w-4 p-4" colspan="10">
                   <div class="text-right">
                     <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
@@ -83,7 +83,7 @@
                 </td>                
               </tr>
 			   <tr
-               class="odd:bg-white even:bg-gray-50 border-b">
+                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <td class="w-4 p-4" colspan="5">
                   <div class="flex items-center gap-2">
                     <button type="button"  onclick="clearCart({{ $cart[0]['id'] }})" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"><x-icons.delete /> Clear Cart</button>

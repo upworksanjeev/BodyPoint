@@ -128,7 +128,8 @@ class CheckoutController extends Controller
 				'order' => $order,
 			));
 	} 
-	
+  
+  
 	public function pdfDownload(Request $request) {
 		set_time_limit(3600);
 		$user = Auth::user();
@@ -140,6 +141,5 @@ class CheckoutController extends Controller
 		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail,'priceOption' => $price_option]);
 		return $pdf->download();
 	}
-	 
-	
+
 }

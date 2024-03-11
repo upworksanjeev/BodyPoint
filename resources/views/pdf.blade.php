@@ -90,6 +90,7 @@
         </table>
 		
 		
+
         <div style="background-color: #2f2f2f; padding: 8px 24px;">
           <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Payment Method</h4>
         </div>
@@ -168,6 +169,7 @@
                   <td style="padding: 16px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                      ${{ $cartitem['Product']['msrp']?number_format($cartitem['Product']['msrp'], 2, '.', ','):0 }}
                   </td>
+
 				   @if($priceOption=='msrp_only') 
 						   <td style="padding: 16px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
 							{{ $cartitem['quantity'] }}
@@ -213,12 +215,14 @@
 						   <?php $subtotal+=$cartitem['discount_price']*$cartitem['quantity']; ?>
 				  @endif
                 </tr>
+
               @endforeach
 			  @endif
                  </tbody>
             </table>
         </div>
         </div>
+
 		<div style="padding: 24px;">
             <table style="width: 100%;
             border-collapse: collapse; border-spacing: 0px;">
@@ -233,18 +237,22 @@
                 <tr>
                     <td>
         
+
                 <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">Sub Total: </div>
                 <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">Tax: </div>
                 <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">Shipping: </div>
                 <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">Total: </div>
+
          
         </td>
         <td align="right">
            
+
                 <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">${{ number_format($subtotal, 2, '.', ',') }}</div>
                 <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">${{ $tax }}</div>
                 <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">TBD </div>
                 <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;"> ${{ number_format($subtotal+$tax, 2, '.', ',') }}</div>
+
            
         </td>
         </tr>
@@ -257,6 +265,7 @@
         
     </table>
         </div>        
+
        
       </div>
 
