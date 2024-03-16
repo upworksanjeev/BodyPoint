@@ -179,10 +179,10 @@
                 {{ $cartitem['Product']['name'] }}
               </td>
               <td style="padding: 16px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                {{ $cartitem['Product']['sku'] }}
+                {{ $cartitem['sku'] }}
               </td>
               <td style="padding: 16px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['Product']['msrp']?number_format($cartitem['Product']['msrp'], 2, '.', ','):0 }}
+                ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
               </td>
 
               @if($priceOption=='msrp_only')
@@ -193,7 +193,7 @@
                 EA
               </td>
               <td style="padding: 16px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['Product']['msrp']?number_format($cartitem['Product']['msrp']*$cartitem['quantity'], 2, '.', ','):0 }}
+                ${{ $cartitem['msrp']?number_format($cartitem['msrp']*$cartitem['quantity'], 2, '.', ','):0 }}
               </td>
               <?php $subtotal += $cartitem['Product']['msrp'] * $cartitem['quantity']; ?>
               @elseif($priceOption=='msrp_primary')

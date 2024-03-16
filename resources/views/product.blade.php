@@ -34,66 +34,18 @@
                         <div class="md:flex-1 lg:px-5 ctm-mobile-mrgn">
                             <h2 class="text-[#333] text-[30px] font-[700]">{{ $product['name'] ?? '' }}</h2>
                             <p class="text-[#008C99] text-[18px] ">{{ $product['small_description'] ?? '' }}</p>
-                            @foreach ($category as $k => $v)
-                                <div class="relative py-[15px] linediv">
-                                    <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">
-                                        Select {{ $v }}</h6>
-                                </div>
-                                <div class="grid-four pb-[10px]">
-                                    @foreach ($attribute[$k] as $v1)
-                                        <div class="grid-five">
-                                            <div class="five-g-img">
-                                                <img src="/img/standard-img.png" alt="">
-                                            </div>
-                                            <div class="five-content p-[10px]">
-                                                <h6 class="text-[16px] text-[#008C99] font-[700]">{{ $v1 }}
-                                                </h6>
-                                                <p class="text-[14px] text-[#6A6D73]">Comfortable with a controlled
-                                                    amount of stretch</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endforeach
-                            <!--div class="relative py-[15px] linediv">
-            <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select Harness Size <span class="text-[#008C99] text-[14px]">(See Sizing tab for size guide)</span></h6></div>
-            <div class="size-button mb-[10px]">
-              <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">S</a>
-              <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">M</a>
-              <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">L</a>
-              <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">XL</a>
-            </div-->
-
-
-                            <div class="ctm-price mt-[30px]">
-                                <div class="left-price">
-                                    <p class="text-[14px] text-[#6A6D73]">MSRP</p>
-                                    <h6 class="text-[16px] text-[#000] font-[500]">YOUR PRICE</h6>
-									 @if ($product['discount']>0)
-									<p class="text-[14px] text-[#6A6D73]">Discounted Price</p>
-									<p class="text-[14px] text-[#6A6D73]">Discount</p>
-									@endif
-                                </div>
-                                <div class="right-price">
-                                    <div class="text-set">
-                                        <p class="text-[14px] text-[#6A6D73]">@if (isset($product['msrp'])) ${{ number_format($product['msrp'], 2, '.', ',') }} EA @endif</p>
-                                        <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['price'])) ${{ number_format($product['price'], 2, '.', ',')  }} EA @endif</h6>
-										 @if ($product['discount']>0)
-										<p class="text-[14px] text-[#6A6D73]">${{ number_format($product['discount_price'], 2, '.', ',') }} EA</p>
-										<p class="text-[14px] text-[#6A6D73]">${{ $product['discount_in_price'] ?? '' }} ({{ number_format($product['discount'], 2, '.', ',')  }}% Off)</p>
-										@endif
-                                    </div>
-									<form name="addtocart" method="POST" action="{{ route('cart.save') }}">
-									 @csrf
-									<input type="hidden" name="price" value="{{ $product['price'] ?? '' }}">
-									<input type="hidden" name="discount_price" value="{{ $product['discount_price'] ?? '' }}">
-									<input type="hidden" name="discount" value="{{ $product['discount'] ?? '' }}">
-									<input type="hidden" name="product_id" value="{{ $product['id'] ?? '' }}">
-									<input type="hidden" name="product_attributes[]" value="">
-                                    <button type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Add To Cart</button>
-									</form>
-                                </div>
-                            </div>
+							<form name="addtocart" id="addtocart" method="POST" action="{{ route('cart.save') }}">
+								@csrf
+						  <input type="hidden" name="product_id" id="product_id" value="{{ $product['id'] ?? '' }}">								
+                           <x-attribute index="0" :attribute="$attribute" :category="$category" :product="$product"  />
+						   <div id="variation_price_div">
+								@if($product['product_type']!="Option") 
+									<x-product-price :product="$product" />
+								@endif
+							</div>
+							</form>
+							
+                            
                             <div class="detactor">
                                 <div class="detactor-left">
                                     <p class="text-[#000] flex items-center gap-[10px]"><i

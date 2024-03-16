@@ -35,14 +35,17 @@ class CartController extends Controller
 				'total_items' => 1,
 			]);
 		}
-		$cartitems=CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->first();
+		$cartitems=CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->where('variation_id', $request->variation_id)->first();
 		if($cartitems){
 			$cartitems->update(['quantity' => $cartitems->quantity+1,'price' => $request->price,'discount' => $request->discount,'discount_price' => $request->discount_price]);
 		}else{
 			$cartitem=CartItem::create([
 					'cart_id' => $cart->id,
 					'product_id' => $request->product_id,
+					'variation_id' => $request->variation_id??'',
+					'sku' => $request->sku??'',
 					'price' => $request->price,
+					'msrp' => $request->msrp,
 					'discount' => $request->discount,
 					'discount_price' => $request->discount_price,
 					'quantity' => 1,
@@ -185,7 +188,7 @@ class CartController extends Controller
 				'total_items' => $request->qty,
 			]);
 		}
-		$cartitems=CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->first();
+		$cartitems=CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->where('variation_id', $request->variation_id)->first();
 		if($cartitems){
 			$cartitems->update(['quantity' => $cartitems->quantity+$request->qty]);
 		}else{
@@ -199,6 +202,9 @@ class CartController extends Controller
 			$cartitem=CartItem::create([
 					'cart_id' => $cart->id,
 					'product_id' => $request->product_id,
+					'variation_id' => $request->variation_id??'',
+					'sku' => $request->sku??'',
+					'msrp' => $request->msrp??'',
 					'price' => $product->price,
 					'discount' => $product['discount_in_price']??0,
 					'discount_price' => $product['discount_price'],
@@ -208,6 +214,6 @@ class CartController extends Controller
 		}
 	
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		return view('components.cart.product-list ', ['page' => 'quick-entry','cart' => $cart]);
+		return view('components.cart.product-list', ['page' => 'quick-entry','cart' => $cart]);
 	} 
 }

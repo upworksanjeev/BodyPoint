@@ -27,10 +27,10 @@
                   </div>
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E]">
-                  {{ $cartitem['Product']['sku'] }}
+                  {{ $cartitem['sku'] }}
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-                  ${{ $cartitem['Product']['msrp']?number_format($cartitem['Product']['msrp'], 2, '.', ','):0 }}
+                  ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
                 </td>
                 <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
                   ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}
