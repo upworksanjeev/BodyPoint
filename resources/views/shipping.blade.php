@@ -1,8 +1,5 @@
-<x-mainpage-layout>
-
-   
+<x-mainpage-layout>  
   <x-cart-nav />
-
   <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
@@ -24,18 +21,15 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside mb-8">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Ship To:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">Test Customer</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]"> {{ $userDetail->shipping_user_name??'' }} {{ $userDetail->shipping_last_name??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">558 Occidential St Seattle,<br>
-					  Suite 400, <br>
-                      Seattle, WA 98104
-                      USA</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address??'' }} <br>{{ $userDetail->shipping_city??'' }} {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }} {{ $userDetail->shipping_country??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 800 444 4444</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]"> +1 {{ $userDetail->shipping_phone??'' }}</span>
                   </li>
                 </ul>
 				<div class="flex items-center mb-4">
@@ -51,19 +45,16 @@
               <div class="card-body p-6">
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">Ship To:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">Test Customer</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">Name:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_user_name??'' }} {{ $userDetail->billing_last_name??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">558 Occidential St Seattle,<br>
-					  Suite 400, <br>
-                      Seattle, WA 98104
-                      USA</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }} {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }} {{ $userDetail->billing_country??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 800 444 4444</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->billing_phone??'' }}</span>
                   </li>
                 </ul>
               </div>

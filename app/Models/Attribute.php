@@ -11,7 +11,7 @@ class Attribute extends Model
     use HasFactory;
 	
 	 protected $fillable = [
-        'att_cat_id', 'attribute'
+        'att_cat_id', 'attribute','image','small_description'
     ];
 	public $timestamps=false;
 	

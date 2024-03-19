@@ -27,9 +27,11 @@ class CheckoutController extends Controller
     {
 		$user = Auth::user();
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-	
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
 		return view('shipping', array(
 				'cart' => $cart,
+				'user' => $user,
+				'userDetail' => $user_detail,
 			));
 	} 
 	
@@ -97,7 +99,10 @@ class CheckoutController extends Controller
 				$order_item=OrderItem::create([
 						'order_id' => $order->id,
 						'product_id' => $v->product_id,
+						'variation_id' => $v->variation_id,
 						'marked_for' => $v->marked_for,
+						'msrp' => $v->msrp,
+						'sku' => $v->sku,
 						'price' => $v->price,
 						'discount' => $v->discount,
 						'discount_price' => $v->discount_price,
@@ -128,8 +133,7 @@ class CheckoutController extends Controller
 				'order' => $order,
 			));
 	} 
-  
-  
+	
 	public function pdfDownload(Request $request) {
 		set_time_limit(3600);
 		$user = Auth::user();
@@ -141,5 +145,6 @@ class CheckoutController extends Controller
 		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail,'priceOption' => $price_option]);
 		return $pdf->download();
 	}
-
+	 
+	
 }

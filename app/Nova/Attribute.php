@@ -55,6 +55,11 @@ class Attribute extends Resource
 			BelongsTo::make('Attribute Category','category', \App\Nova\AttributeCategory::class)->hideWhenCreating()->hideWhenUpdating(),
 			Text::make('Attribute','attribute'),
 			Select::make('Attribute Category','att_cat_id')->options(\App\Models\AttributeCategory::pluck('category', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
+			Text::make('Small Description','small_description')
+                ->sortable()
+                ->rules('max:255'),
+
+			Image::make('Attribute Image','image')->disk('public')->disableDownload(),
 			
         ];
     }

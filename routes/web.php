@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{name}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{name}', [ProductController::class, 'index'])->name('product');
+Route::post('/getNextAttribute', [ProductController::class, 'getNextAttribute'])->name('product-next-attribute');
+Route::post('/getVariationPrice', [ProductController::class, 'getVariationPrice'])->name('get-variation-price');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -48,6 +50,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
 	Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
 	Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
+	
 });
 
 require __DIR__.'/auth.php';

@@ -7,19 +7,19 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_user_name??'' }} {{ $userDetail->shipping_last_name??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }} {{ $userDetail->shipping_country }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address??'' }} <br>{{ $userDetail->shipping_city??'' }} {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }} {{ $userDetail->shipping_country??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_country }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_country??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->shipping_phone }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->shipping_phone??'' }}</span>
                   </li>
                 </ul>
               </div>
@@ -32,19 +32,19 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_user_name??'' }} {{ $userDetail->billing_last_name??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }} {{ $userDetail->billing_country }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }} {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }} {{ $userDetail->billing_country??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_country }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_country??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->billing_phone }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->billing_phone??'' }}</span>
                   </li>
                 </ul>
               </div>
