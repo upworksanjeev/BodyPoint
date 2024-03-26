@@ -16,15 +16,13 @@
                       Primary Discount
                     </th>
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-                      Net price <br>
-                      after secondary 
-                      discount
+                      After Secondary Discount
                     </th>
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                       Qty.
                     </th>
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-                       	Net price <br> after all known discount 
+                       	Net Price 
                     </th>
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                       Unit

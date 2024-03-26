@@ -16,6 +16,8 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\URL;
 
 
+
+
 class ProductAttribute extends Resource
 {
     /**
@@ -67,14 +69,10 @@ class ProductAttribute extends Resource
 					$field->options(\App\Models\Attribute::whereNotIn('id',\App\Models\ProductAttribute::where('prod_id', $request->viaResourceId)->pluck('attr_id'))->where('att_cat_id', $formData->attr_cat)->pluck('attribute', 'id'));
 				})->hideFromIndex()->hideFromDetail(),
 				
-				
-			
-		
 			BelongsTo::make('Product', 'product', \App\Nova\Product::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			//HasOneThrough::make('AttributeCategory', 'productattribute', \App\Nova\AttributeCategory::class)->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			//HasOneThrough::make('AttributeCategory')->sortable()->hideWhenCreating()->hideWhenUpdating(),
-			BelongsTo::make('Attribute', 'attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
-		    
+			
+			BelongsTo::make('AttributeCategory','attributecategory', \App\Nova\AttributeCategory::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+		    BelongsTo::make('Attribute', 'attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
 
         ];
 		}else{

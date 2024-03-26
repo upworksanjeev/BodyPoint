@@ -3,35 +3,36 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
-use Illuminate\Support\Facades\Storage;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\MultiSelect;
+use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Trix;
-//use  App\Nova\Category;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOneThrough;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\URL;
+use Laravel\Nova\Fields\Repeater;
+use App\Nova\Repeater\VariationAttributeField;
 
 
-class Attribute extends Resource
+class VariationAttribute extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Attribute>
+     * @var class-string<\App\Models\VariationAttribute>
      */
-    public static $model = \App\Models\Attribute::class;
+    public static $model = \App\Models\VariationAttribute::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'attribute';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -39,7 +40,7 @@ class Attribute extends Resource
      * @var array
      */
     public static $search = [
-        'id','attribute'
+        'id',
     ];
 
     /**
@@ -50,16 +51,20 @@ class Attribute extends Resource
      */
     public function fields(NovaRequest $request)
     {
+		
         return [
             ID::make()->sortable(),
-			BelongsTo::make('Attribute Category','category', \App\Nova\AttributeCategory::class)->hideWhenCreating()->hideWhenUpdating(),
-			Text::make('Attribute','attribute'),
-			Select::make('Attribute Category','att_cat_id')->options(\App\Models\AttributeCategory::pluck('category', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
-			Text::make('Small Description','small_description')
-                ->sortable()
-                ->rules('max:255'),
-			Image::make('Attribute Image','image')->disk('public')->disableDownload(),
+			Select::make('Variation','variation_id')->options(\App\Models\Variation::where('id', $request->viaResourceId)->pluck('name', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
+			/*Repeater::make('Attributes','product_attribute_id')
+				->repeatables([
+					VariationAttributeField::make(),
+				])->asHasMany(),*/
+			
+			BelongsTo::make('Attribute','attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
+		   
+
         ];
+		
     }
 
     /**
@@ -81,7 +86,7 @@ class Attribute extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [ ];
     }
 
     /**
@@ -105,6 +110,4 @@ class Attribute extends Resource
     {
         return [];
     }
-	
-	
 }

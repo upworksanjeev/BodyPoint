@@ -127,6 +127,7 @@ class Product extends Resource
                     ]),
 
                     HasMany::make('Attribute','attribute',\App\Nova\ProductAttribute::class)->hideFromIndex(),
+                    HasMany::make('Variation','variation',\App\Nova\Variation::class)->hideFromIndex(),
                 ]),
             ]),
         ];

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\Attribute;
 use App\Models\AttributeCategory;
+use App\Models\variationAttribute;
 
 class ProductAttribute extends Model
 {
@@ -31,7 +32,13 @@ class ProductAttribute extends Model
     } 
 	public function attributecategory()
     {
-		return $this->BelongsTo(AttributeCategory::class, 'att_cat_id', 'id');
-
+		return $this->hasOneThrough(AttributeCategory::class, Attribute::class,'id', 'id', 'attr_id', 'att_cat_id');
     }
+	
+	public function variationAttribute()
+    {
+		return $this->BelongsTo(variationAttribute::class, 'attr_id', 'id');
+
+    } 
+	
 }
