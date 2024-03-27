@@ -11,7 +11,7 @@
         </div>
 
         <div class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
-          <div class="card-header px-6 py-2 bg-[#2F2F2F] rounded-t-xl">
+          <div class="card-header px-6 py-2 bg-[#008c99] rounded-t-xl">
             <h4 class="text-[#fff]">Order Information</h4>
           </div>
           <div class="card-body p-6">
@@ -22,7 +22,7 @@
               </li>
               <li class="flex items-center gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Purchase Order #:</span>
-                <span class="py-[2px] px-5 text-sm font-medium text-white focus:outline-none bg-[#31BA32] rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center font-bold">123</span>
+                <input class="py-[2px] px-5 text-sm font-medium focus:outline-none rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center font-bold" value="{{ $purchase_order_no }}" name="purchase_no" id="purchase_no" onchange="changePurchaseNo({{ $cart[0]['id'] }})">
               </li>
             </ul>
           </div>
@@ -37,7 +37,7 @@
               <form action="{{ route('confirm-order') }}" method="post">
                 <input type="hidden" value="<?= csrf_token() ?>" name="_token">
                 <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}">
-                <input type="hidden" name="purchase_order_no" value="1234">
+                <input type="hidden" name="purchase_order_no" value="{{ $purchase_order_no }}">
                 <button type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Confirm Order</button>
               </form>
             </div>
@@ -46,6 +46,26 @@
       </div>
     </div>
   </section>
-
+@push('other-scripts')
+  <script>
+  function changePurchaseNo(cart_id)
+  {
+	  var p_num=$("#purchase_no").val();
+	  $("#purchase_order_no").val(p_num);
+	  $.ajax({
+        url: "{{ route('update-purchase-no') }}",
+        type: 'POST',
+        data: {
+          "_token": "{{ csrf_token() }}",
+          cart_id: cart_id,
+          purchase_order_no: p_num,
+        },
+        success: function(response) {
+         
+        }
+      });
+  }
+  </script>
+@endpush
 
 </x-mainpage-layout>

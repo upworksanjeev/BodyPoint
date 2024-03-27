@@ -60,7 +60,15 @@ body {
       </div>
       <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Purchase Order #:</span>
-        <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
+        <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">{{ $order['purchase_order_no'] }}</span>
+      </div>
+	  <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
+        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Order Date:</span>
+        <span style= "line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ date('d M, Y',strtotime($order['created_at'])) }}</span>
+      </div>
+	  <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
+        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">BP Number:</span>
+        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">12345</span>
       </div>
     </div>
 
@@ -168,34 +176,22 @@ body {
         <table style="border-radius: 20px 20px 0px 0px; border: 1px solid rgb(104 104 104 / 28%); border-collapse: collapse;">
           <thead style="background-color: #008c99;">
             <tr style="white-space:nowrap;">
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);">
                 Product name
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);">
                 Stock Code
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                MSRP
+              <th scope="col" style="padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);">
+                 Net Price
               </th>
-              @if($priceOption=='msrp_primary')
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                Primary Discount
-              </th>
-              @elseif($priceOption=='all_price')
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                Primary Discount
-              </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                 After Secondary Discount
-              </th>
-              @endif
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);">
                 Qty.
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);">
                 Unit
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);">
                 Total
               </th>
             </tr>
@@ -203,63 +199,31 @@ body {
           <tbody>
             <?php $subtotal = 0;
             $tax = 0.00; ?>
-            @if(isset($cart[0]))
-            @foreach ($cart[0]['CartItem'] as $cartitem)
+            @if(isset($order))
+            @foreach ($order['OrderItem'] as $cartitem)
             <tr>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #3e3e3e; border: 1px solid rgb(104 104 104 / 28%);">
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #3e3e3e; border: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['Product']['name'] }}
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['sku'] }}
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
-              </td>
-
-              @if($priceOption=='msrp_only')
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                {{ $cartitem['quantity'] }}
-              </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                EA
-              </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['msrp']?number_format($cartitem['msrp']*$cartitem['quantity'], 2, '.', ','):0 }}
-              </td>
-              <?php $subtotal += $cartitem['Product']['msrp'] * $cartitem['quantity']; ?>
-              @elseif($priceOption=='msrp_primary')
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}
-              </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                {{ $cartitem['quantity'] }}
-              </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                EA
-              </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['price']?number_format($cartitem['price']*$cartitem['quantity'], 2, '.', ','):0 }}
-              </td>
-              <?php $subtotal += $cartitem['price'] * $cartitem['quantity']; ?>
-              @elseif($priceOption=='all_price')
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}
-              </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+             
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
               </td>
 
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['quantity'] }}
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                 EA
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
               </td>
               <?php $subtotal += $cartitem['discount_price'] * $cartitem['quantity']; ?>
-              @endif
+              
             </tr>
 
             @endforeach
@@ -311,13 +275,6 @@ body {
 
       </table>
 	  
-	  <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px;text-align: center;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;  margin-top: 100px;margin-bottom: 4px;">QUOTES EXPIRE AFTER 90 DAYS</div>
-	<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 4px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-	<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;margin-bottom: 30px;">The amount shown as TOTAL BEFORE FREIGHT is net of the Primary and any Secondary Discounts shown above . Other discounts may apply. All
-	discounts known on the date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found
-	at 42 CFR 1001.952(h). Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and
-	accepts that it is solely responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer
-	to which Customer submits claims for reimbursement.</div>
 	   </div>
   </div>
 </body>

@@ -55,12 +55,19 @@ class CheckoutController extends Controller
     {
 		$user = Auth::user();
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
+		if(isset($cart[0])){
 		$user_detail=UserDetails::where('user_id', $user->id)->first();
+		$string = uniqid(rand());
+		$purchase_order_no = $cart[0]['purchase_order_no']?$cart[0]['purchase_order_no']:substr($string, 0, 10);
 		return view('checkout', array(
 				'cart' => $cart,
 				'user' => $user,
 				'user_detail' => $user_detail,
+				'purchase_order_no' => $purchase_order_no,
 			));
+		}
+		return redirect()->route('cart');
+		
 	} 
 	
 	/**
@@ -89,7 +96,7 @@ class CheckoutController extends Controller
 		if($cart){
 			$order=Order::create([
 				'user_id' => $cart->user_id,
-				'purchase_order_no' => $request->purchase_order_no?$request->purchase_order_no:rand(5,10),
+				'purchase_order_no' => $request->purchase_order_no,
 				'total_items' => $cart->total_items,
 			]);
 			
@@ -114,11 +121,12 @@ class CheckoutController extends Controller
 		CartItem::where('cart_id', $cart->id)->delete();
 		$cart->delete();
 		}
-		}
-		$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->get();
+		$order=Order::with('User','OrderItem.Product.Media')->where('id', $order->id)->first();
 		return view('order-thank-you', array(
 				'order' => $order,
 			));
+		}
+		return redirect()->route('cart');		
 			
 	} 
 	 
@@ -134,7 +142,10 @@ class CheckoutController extends Controller
 			));
 	} 
 	
-	public function pdfDownload(Request $request) {
+	/**
+	*  PDF download for save quote
+	*/
+	public function pdfDownload(Request $request){
 		set_time_limit(3600);
 		$user = Auth::user();
 		$price_option="all_price";
@@ -145,6 +156,29 @@ class CheckoutController extends Controller
 		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail,'priceOption' => $price_option]);
 		return $pdf->download();
 	}
-	 
 	
+	/**
+	*  receipt download for orders
+	*/
+	public function receiptDownload(Request $request){
+		set_time_limit(3600);
+		$user = Auth::user();
+		$order=Order::with('User','OrderItem.Product.Media')->where('id', $request->order_id)->first();
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
+		/*return view('order-receipt', array(
+				'order' => $order,'user' => $user,'userDetail' => $user_detail
+			));*/
+		$pdf = Pdf::loadView('order-receipt', ['order' => $order,'user' => $user,'userDetail' => $user_detail]);
+		return $pdf->download();
+	}
+	 
+	 /**
+     * Update Purchase No in cart table
+     **/
+    public function updatePurchaseNo(Request $request)
+    {
+		if($request->has('cart_id')){
+			Cart::where('id', $request->cart_id)->update(['purchase_order_no' => $request->purchase_order_no]);
+		}
+	}
 }

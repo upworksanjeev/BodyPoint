@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
 	Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
 	Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
+	Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');
+	Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
 	
 });
 

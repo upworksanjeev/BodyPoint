@@ -1,6 +1,6 @@
  <div class="grid lg:grid-cols-2">
             <div>
-              <div class="card-header px-6 py-2 bg-[#2F2F2F]">
+              <div class="card-header px-6 py-2 bg-[#008c99]">
                   <h4 class="text-[#fff]">Ship to information:</h4>
               </div>
               <div class="card-body p-6">
@@ -25,7 +25,7 @@
               </div>
             </div>
             <div>
-              <div class="card-header px-6 py-2 bg-[#2F2F2F]">
+              <div class="card-header px-6 py-2 bg-[#008c99]">
                   <h4 class="text-[#fff]">Bill to information:</h4>
               </div>
               <div class="card-body p-6">
@@ -50,7 +50,7 @@
               </div>
             </div>
           </div>
-          <div class="card-header px-6 py-2 bg-[#2F2F2F]">
+          <div class="card-header px-6 py-2 bg-[#008c99]">
             <h4 class="text-[#fff]">Payment Method</h4>
           </div>
           <div class="card-body p-6">
@@ -60,7 +60,7 @@
               </li>
             </ul>
           </div>
-          <div class="card-header px-6 py-2 bg-[#2F2F2F]">
+          <div class="card-header px-6 py-2 bg-[#008c99]">
             <h4 class="text-[#fff]">Shipping options</h4>
           </div>
           <div class="card-body p-6">

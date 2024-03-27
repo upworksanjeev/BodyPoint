@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\VariationAttribute;
+use App\Models\Attribute;
+use App\Models\AttributeCategory;
 
 
 class Variation extends Model
@@ -26,6 +28,11 @@ class Variation extends Model
     {
         return $this->hasMany(VariationAttribute::class);
     }
+	
+	public function attribute()
+    {
+		return $this->hasOneThrough(Attribute::class, ProductAttribute::class,'prod_id','id','product_id','attr_id');
+	}
 
 
 }

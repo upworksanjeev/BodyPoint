@@ -14,24 +14,28 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Trix;
-//use  App\Nova\Category;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\Repeater;
+use App\Nova\Repeater\VariationAttributeField;
 
 
-class Attribute extends Resource
+class Variation extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Attribute>
+     * @var class-string<\App\Models\Variation>
      */
-    public static $model = \App\Models\Attribute::class;
+    public static $model = \App\Models\Variation::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'attribute';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -39,7 +43,7 @@ class Attribute extends Resource
      * @var array
      */
     public static $search = [
-        'id','attribute'
+        'id','sku','name'
     ];
 
     /**
@@ -50,15 +54,22 @@ class Attribute extends Resource
      */
     public function fields(NovaRequest $request)
     {
+		
+		$data=\App\Models\Product::leftJoin('variations', 'variations.product_id', '=', 'products.id')->where('variations.id', $request->id)->select('products.name as pname', 'products.id as pid')->first();
+		$product_id=$data->pid??'';
+		$product_name=$data->pname??'';
         return [
             ID::make()->sortable(),
-			BelongsTo::make('Attribute Category','category', \App\Nova\AttributeCategory::class)->hideWhenCreating()->hideWhenUpdating(),
-			Text::make('Attribute','attribute'),
-			Select::make('Attribute Category','att_cat_id')->options(\App\Models\AttributeCategory::pluck('category', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
-			Text::make('Small Description','small_description')
-                ->sortable()
-                ->rules('max:255'),
-			Image::make('Attribute Image','image')->disk('public')->disableDownload(),
+			Text::make('Variation Name','name'),
+			Text::make('SKU','sku')->sortable()->maxlength(255),
+            Number::make('MSRP','msrp')->min(1)->max(999999)->step(0.01)->sortable()->hideFromIndex(),
+			Number::make('Price','price')->min(1)->max(999999)->step(0.01)->sortable(),
+			Number::make('Discount (in %)','discount')->min(1)->max(100)->step('any')->hideFromIndex(),		
+			
+			HasMany::make('Variation Attributes','variationAttribute',\App\Nova\VariationAttribute::class)->hideWhenCreating(),
+
+
+				
         ];
     }
 
