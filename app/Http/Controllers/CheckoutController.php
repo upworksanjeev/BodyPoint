@@ -136,10 +136,39 @@ class CheckoutController extends Controller
     public function myOrder(Request $request)
     {
 		$user = Auth::user();
-		$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->get();
+		if($request->start_date!=''){ $start_date=date('y-m-d 00:00:01',strtotime($request->start_date)); }
+		if($request->end_date!=''){ $end_date=date('y-m-d 23:59:59',strtotime($request->end_date)); }
+		if($request->search_input!='' && $request->start_date!='' && $request->end_date!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at','>=', $start_date)->where('created_at','<=', $end_date)->where('purchase_order_no','like', "%".$request->search_input."%")->orWhere('bp_number','like', "%".$request->search_input."%")->get();
+		}elseif($request->search_input!='' && $request->start_date!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at','>=', $start_date)->where('purchase_order_no','like', "%".$request->search_input."%")->orWhere('bp_number','like', "%".$request->search_input."%")->get();
+		}elseif($request->start_date!='' && $request->end_date!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at','>=', $start_date)->where('created_at','<=', $end_date)->get();
+		}elseif($request->search_input!='' && $request->end_date!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at','<=', $end_date)->where('purchase_order_no','like', "%".$request->search_input."%")->orWhere('bp_number','like', "%".$request->search_input."%")->get();
+		}elseif($request->search_input!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('purchase_order_no','like', "%".$request->search_input."%")->orWhere('bp_number','like', "%".$request->search_input."%")->get();
+		}elseif($request->start_date!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at','>=', $start_date)->get();
+		}elseif($request->end_date!=''){
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at','<=', $end_date)->get();
+		}else{
+			$order=Order::with('User','OrderItem.Product.Media')->where('user_id', $user->id)->get();
+		}
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
+		if($request->has('download')){
+			$pdf = Pdf::loadView('all-order-receipt', ['orders' => $order,'user' => $user,'userDetail' => $user_detail]);
+			return $pdf->download();
+		}else{
 		return view('order', array(
 				'order' => $order,
+				'start_date' => $request->start_date??'',
+				'end_date' => $request->end_date??'',
+				'search' => $request->search_input??'',
 			));
+			
+		}
+		
 	} 
 	
 	/**
@@ -165,9 +194,6 @@ class CheckoutController extends Controller
 		$user = Auth::user();
 		$order=Order::with('User','OrderItem.Product.Media')->where('id', $request->order_id)->first();
 		$user_detail=UserDetails::where('user_id', $user->id)->first();
-		/*return view('order-receipt', array(
-				'order' => $order,'user' => $user,'userDetail' => $user_detail
-			));*/
 		$pdf = Pdf::loadView('order-receipt', ['order' => $order,'user' => $user,'userDetail' => $user_detail]);
 		return $pdf->download();
 	}
@@ -180,5 +206,6 @@ class CheckoutController extends Controller
 		if($request->has('cart_id')){
 			Cart::where('id', $request->cart_id)->update(['purchase_order_no' => $request->purchase_order_no]);
 		}
-	}
+	} 
+
 }

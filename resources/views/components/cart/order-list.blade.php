@@ -1,8 +1,18 @@
-   <div class="card-body p-0 md:p-6">
-     <div class="relative overflow-x-auto shadow-md sm:rounded-2xl">
-       @if(isset($order[0]))
+
+<div id="accordion-collapse" data-accordion="collapse">
+
+ @if(isset($order[0]))
        @foreach ($order as $orders)
-       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+  <h2 id="accordion-collapse-heading-{{ $orders['id'] }}" class="">
+    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-{{ $orders['id'] }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $orders['id'] }}">
+      <span>Order No: {{ $orders['purchase_order_no'] }}</span>  
+	  <!--x-icons.down-arrow /-->
+	  <span class="text-center">Order Date: {{ date('d M, Y',strtotime($orders['created_at'])) }}</span>
+    </button>
+  </h2>
+  <div id="accordion-collapse-body-{{ $orders['id'] }}" class="hidden" aria-labelledby="accordion-collapse-heading-{{ $orders['id'] }}">
+    <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
          <thead class="bg-[#008C99] font-semibold text-sm text-white">
            <tr>
              <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
@@ -10,15 +20,9 @@
              </th>
              <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                Stock Code
-             </th>
-             <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-               MSRP
-             </th>
-             <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-               Primary Discount
-             </th>
-             <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-                After Secondary Discount
+             </th> 
+			 <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
+               Marked For
              </th>
              <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                Qty.
@@ -45,18 +49,8 @@
              <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                {{ $cartitem['sku'] }}
              </td>
-
-             <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-               ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
-
-             </td>
-             <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-               ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ''):0 }}
-             </td>
-
-             <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-               ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
-
+			 <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+               {{ $cartitem['marked_for'] }}
              </td>
              <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                {{ $cartitem['quantity'] }}
@@ -78,18 +72,22 @@
            @endforeach
            <tr class="odd:bg-white even:bg-gray-50 border-b">
              <td class="w-4 p-4" colspan="2">
-
+				<div class="text-left"><span>BP Number: {{ $orders['bp_number'] }}</span></div>
              </td>
              <td class="w-4 p-4" colspan="8">
+			  
                <div class="text-right">
-                 <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
+                 <h3 class="text-2xl font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                </div>
              </td>
            </tr>
 
          </tbody>
        </table>
-       @endforeach
+       
+    </div>
+  </div>
+    @endforeach
        @endif
-     </div>
-   </div>
+	     </div>
+   
