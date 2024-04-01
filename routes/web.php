@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/quote', [CheckoutController::class, 'quote'])->name('quote');
 	Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');
 	Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
+	Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');
 	Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
 	Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
 	Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');

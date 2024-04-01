@@ -112,7 +112,7 @@ class CartController extends Controller
 				}
 		}
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		return view('components.cart.product-list ', ['page' => 'cart','cart' => $cart]);
+		return view('components.cart.product-list', ['page' => 'cart','cart' => $cart]);
 	} 
 	
 	
@@ -149,7 +149,7 @@ class CartController extends Controller
 			}
 		}				
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-		return view('components.cart.product-list ', ['page' =>  'cart','cart' => $cart]);
+		return view('components.cart.product-list', ['page' =>  'cart','cart' => $cart]);
 	} 
 	
 	/**
