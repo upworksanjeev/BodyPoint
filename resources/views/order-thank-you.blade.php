@@ -7,7 +7,7 @@
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="">
-          <h2 class="font-bold text-[#00707B] mb-5 text-center">Thank Yor For Your Purchase!</h2>
+          <h2 class="font-bold text-[#00707B] mb-5 text-center">Thank You For Your Purchase!</h2>
 		  
           <h5 class="font-bold text-[#00707B] mb-5 text-center">Esitmated Ship Date: {{ date('d M, y',strtotime($order['created_at'])) }} </h5>
          
