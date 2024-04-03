@@ -164,8 +164,8 @@ body {
 
     </div>
     <div style="padding: 24px;">
-      <div style="border-radius: 20px 20px 0px 0px;overflow: hidden;">
-        <table style="border: 1px solid rgb(104 104 104 / 28%); border-collapse: collapse;">
+      <div style="border-radius: 16px 16px 0px 0px;border: 1px solid rgb(104 104 104 / 28%);overflow: hidden;">
+        <table style="border-collapse: collapse;width: 100%;">
           <thead style="background-color: #008c99;">
             <tr style="white-space:nowrap;">
               <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
