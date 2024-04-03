@@ -3,7 +3,7 @@
   <x-cart-nav />
   <section class="bg-[#F6F6F6] py-9">
     <header>
-      <h2 class="text-lg font-medium text-[#008c99] font-bold text-center">
+      <h2 class="text-lg text-[#008c99] font-bold text-center">
         All Orders
       </h2>
 
@@ -19,25 +19,25 @@
 
 		<div class="grid gap-6 mb-6 md:grid-cols-3">
 			<div>
-				<label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Search By:</label>
-				<input type="text" id="search_input" name="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Order No/ BP Number" value="{{ $search??'' }}" />
+				<label for="search" class="block mb-2 text-sm font-medium text-gray-900">Search By:</label>
+				<input type="text" id="search_input" name="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Order No/ BP Number" value="{{ $search??'' }}" />
 			</div>
 			<div>
-				<label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Order Date: </label>
+				<label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date: </label>
 				
 			<div date-rangepicker class="flex items-center">
 			  <div class="relative">
 				<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
 					 <x-icons.date />
 				</div>
-				<input name="start_date" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start" value="{{ $start_date??'' }}">
+				<input name="start_date" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
 			  </div>
 			  <span class="mx-4 text-gray-500">to</span>
 			  <div class="relative">
 				<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
 					<x-icons.date />
 				</div>
-				<input name="end_date" id="end_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end" value="{{ $end_date??'' }}">
+				<input name="end_date" id="end_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
 			</div>
 			</div>
 
@@ -54,7 +54,7 @@
           <x-cart.order-list :order="$order" />
         </div>
         <div class="py-6 text-right">
-          <a href="{{ route('home') }}" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2 block">Continue Shopping <x-icons.next-arrow /></a>
+          <a href="{{ route('home') }}" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2">Continue Shopping <x-icons.next-arrow /></a>
         </div>
 
       </div>
