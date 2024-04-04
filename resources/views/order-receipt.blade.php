@@ -45,6 +45,9 @@ body {
     font-family: "Avenir LT", Sans-serif !important;
     font-weight: normal;
 }
+.productDetail > tbody > tr:last-child {
+  border-bottom: unset !important;
+}
   </style>
 </head>
 <body>
@@ -173,7 +176,7 @@ body {
     </div>
     <div style="padding: 24px;">
       <div style="border-radius: 16px 16px 0px 0px; border: 1px solid rgb(104 104 104 / 28%);overflow: hidden;">
-        <table style="border-collapse: collapse;">
+        <table style="border-collapse: collapse;width: 100%;" class="productDetail">
           <thead style="background-color: #008c99;">
             <tr style="white-space:nowrap;border-bottom: 1px solid rgb(104 104 104 / 28%);">
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);">
