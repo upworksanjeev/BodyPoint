@@ -168,34 +168,34 @@ body {
         <table style="border-collapse: collapse;width: 100%;">
           <thead style="background-color: #008c99;">
             <tr style="white-space:nowrap;border-bottom: 1px solid rgb(104 104 104 / 28%);">
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Product name
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Stock Code
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 MSRP
               </th>
               @if($priceOption=='msrp_primary')
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Primary Discount
               </th>
               @elseif($priceOption=='all_price')
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Primary Discount
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                  After Secondary Discount
               </th>
               @endif
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Qty.
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Unit
               </th>
-              <th scope="col" style="padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff;width:10px;">
+              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff;width:10px;">
                 Total
               </th>
             </tr>
