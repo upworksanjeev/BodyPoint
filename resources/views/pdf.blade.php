@@ -209,7 +209,9 @@ body {
             @if(isset($cart[0]))
             @foreach ($cart[0]['CartItem'] as $cartitem)
             <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+
                 {{ $cartitem['Product']['name'] }}
               </td>
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
