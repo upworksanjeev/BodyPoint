@@ -159,7 +159,7 @@
             </div>
         </div>
     </section>
-	<!--x-success-story :product="$product" /-->
+	<x-success-story :product="$product" />
 @else
 	<p>No Product Found</p>
 @endif

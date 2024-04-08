@@ -8,6 +8,7 @@ use App\Models\CategoryProduct;
 use App\Models\ProductAttribute;
 use App\Models\Category;
 use App\Models\Variation;
+use App\Models\SuccessStory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
@@ -50,6 +51,11 @@ class Product extends Model implements HasMedia
 	public function variation()
     {
         return $this->hasMany(Variation::class);
+    }
+	
+	public function successStory()
+    {
+        return $this->hasMany(SuccessStory::class);
     }
 
 }
