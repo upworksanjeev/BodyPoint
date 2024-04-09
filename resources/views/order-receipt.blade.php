@@ -67,7 +67,7 @@ body {
       </div>
 	  <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Order Date:</span>
-        <span style= "line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ date('d M, Y',strtotime($order['created_at'])) }}</span>
+        <span style= "line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ date('F j, Y',strtotime($order['created_at'])) }}</span>
       </div>
 	  <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">BP Number:</span>
@@ -163,15 +163,15 @@ body {
       <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice -30</span>
     </div>
     <div style="background-color: #008c99; padding: 8px 24px;">
-      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Shipping options</h4>
+      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Shipping</h4>
     </div>
     <div style="padding: 24px;">
 
-      <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Special <br>instruction:</div>
+      <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Special Instructions:</div>
 
       <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; margin-top: 20px;">Carrier:</div>
 
-      <div style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 20px;">All orders placed will ship within 5 business days. Freight cost is calculated at time of shipping. For expedited shipping options please contact customer service at sales@bodybpoint.com or 206.405.4555</div>
+      <div style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 20px;">All orders placed will ship within 5 business days. Freight cost is calculated at time of shipping. For expedited shipping options please contact customer service at Sales@bodypoint.com or 206.405.4555.</div>
 
     </div>
     <div style="padding: 24px;">
@@ -205,7 +205,9 @@ body {
             @if(isset($order))
             @foreach ($order['OrderItem'] as $cartitem)
             <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
-              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #3e3e3e; border-right: 1px solid rgb(104 104 104 / 28%);">
+
+              <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+
                 {{ $cartitem['Product']['name'] }}
               </td>
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">

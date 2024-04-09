@@ -9,12 +9,12 @@
         <div class="">
           <h2 class="font-bold text-[#00707B] mb-5 text-center">Thank You For Your Purchase!</h2>
 		  
-          <h5 class="font-bold text-[#00707B] mb-5 text-center">Esitmated Ship Date: {{ date('d M, y',strtotime($order['created_at'])) }} </h5>
+          <h5 class="font-bold text-[#00707B] mb-5 text-center">Estimated Ship Date: {{ date('F j, Y',strtotime($order['created_at'])) }} </h5>
          
 		   <div class="">
    <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
      <div class="card-header px-6 py-4 flex items-center justify-between border-b bg-[#008c99]">
-       <h4 class="text-[#fff] text-left">Order Date: {{ date('d M, y',strtotime($order['created_at'])) }}</h4><h4 class="text-[#fff] text-center">Order Details</h4> <h4 class="text-[#fff] text-right">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
+       <h4 class="text-[#fff] text-left">Order Date: {{ date('F j, Y',strtotime($order['created_at'])) }}</h4><h4 class="text-[#fff] text-center">Order Details</h4> <h4 class="text-[#fff] text-right">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
       
      </div>
      <div class="card-body">

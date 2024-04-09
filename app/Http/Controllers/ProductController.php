@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StorePostRequest; 
 use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\CategoryProduct;
@@ -12,9 +17,8 @@ use App\Models\ProductAttribute;
 use App\Models\AttributeCategory;
 use App\Models\VariationAttribute;
 use App\Models\Variation;
+use App\Models\SuccessStory;
 use App\Models\Media;
-
-
 
 class ProductController extends Controller
 {
@@ -24,7 +28,7 @@ class ProductController extends Controller
     public function index($name,Request $request)
     {			  
         $categories = Category::all();
-        $product = Product::with(['media'])->where('slug',$name)->first();
+        $product = Product::with(['media','SuccessStory'])->where('slug',$name)->first();
 		if(isset($product['id'])){
 			$products = CategoryProduct::with(['category'])->where('product_id',$product['id'])->get();
 			$productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
@@ -176,5 +180,34 @@ class ProductController extends Controller
 		return view('components.product-price', ['product' => $final_data]);
 	}  
 	
-  
+     /**
+     * Save success story
+     */
+	public function addStory(Request $request)
+    { 
+		$user = Auth::user();
+		$image='';
+		if($request->has('image')){
+			$image=Storage::disk('public')->put('success_story',$request->file('image'));
+		}
+		if($request->has('product_id')){
+			$story=SuccessStory::create([
+				'user_id' => $user->id,
+				'product_id' => $request->product_id,
+				'title' => $request->title,
+				'youtube' => $request->youtube,
+				'image' => $image,
+				'story' => $request->story,
+			]);
+		}
+		return redirect()->route('product',$request->product_slug);
+	}
+	
+	 /**
+     * Get success story
+     */
+	public function successStory(Request $request)
+    { 
+		
+	}
 }

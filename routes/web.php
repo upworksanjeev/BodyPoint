@@ -26,6 +26,7 @@ Route::get('/product/{name}', [ProductController::class, 'index'])->name('produc
 Route::post('/getNextAttribute', [ProductController::class, 'getNextAttribute'])->name('product-next-attribute');
 Route::post('/getVariationPrice', [ProductController::class, 'getVariationPrice'])->name('get-variation-price');
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -53,6 +54,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
 	Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');
 	Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
+	Route::post('/add-success-story', [ProductController::class, 'addStory'])->name('add-success-story');
 	
 });
 
