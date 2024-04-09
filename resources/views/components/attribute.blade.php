@@ -59,6 +59,7 @@
                 }
             });
 	  }else{
+		  $('#variation_price_div').html('');
 			$.ajax({
                 url: "{{ route('product-next-attribute') }}",
                 type: 'POST',
