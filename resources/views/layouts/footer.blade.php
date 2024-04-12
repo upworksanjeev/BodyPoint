@@ -17,6 +17,12 @@
                             <x-nav-link-custom href="{{ config('bodypoint.home_url') }}#/" classes="text-sm pr-4">
                                 {{ __('Privacy') }}
                                 </x-responsive-nave-link>
+							<x-nav-link-custom href="{{ config('bodypoint.home_url') }}/timeline" classes="text-sm pr-4">
+                                {{ __('Timeline') }}
+                                </x-responsive-nave-link>
+							<x-nav-link-custom href="{{ config('bodypoint.home_url') }}/complaint" classes="text-sm pr-4">
+                                {{ __('Complaint') }}
+                                </x-responsive-nave-link>
                 </div>
             </div>
             <div class="w-full lg:w-1/4">
