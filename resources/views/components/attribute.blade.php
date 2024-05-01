@@ -5,7 +5,7 @@
                                 <div class="relative py-[15px] linediv">
                                     <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">
                                         Select {{ ucwords($v) }} 
-										@if(str_contains($v,'size')) <a class="text-[#008C99] text-[14px] cursor-pointer">(See Sizing tab for size guide)</a> @endif
+										@if(str_contains($v,'size')) <a class="text-[#008C99] text-[14px] cursor-pointer scrollTo"  href="#accordion-collapse-heading-2">(See Sizing tab for size guide)</a> @endif
 										</h6>
                                 </div>
                                 <div class="grid-four pb-[10px]">
@@ -25,17 +25,7 @@
                                 </div>
 								@endif
 								  </div>
-                            @endforeach
-							
-							<!--div class="relative py-[15px] linediv">
-										<h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">Select Harness Size <span class="text-[#008C99] text-[14px]">(See Sizing tab for size guide)</span></h6></div>
-										<div class="size-button mb-[10px]">
-										  <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">S</a>
-										  <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">M</a>
-										  <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">L</a>
-										  <a class="border rounded-[12px] py-[10px] px-[18px] text-[#333] text-[22px] uppercase font-[500] pt-[13px]" href="#">XL</a>
-										</div-->
-                            
+                            @endforeach                           
 
 @push('other-scripts')
 <script>
@@ -83,6 +73,14 @@
 	  }
   }
   
+  $(".scrollTo").on('click', function(e) {
+     e.preventDefault();
+     var target = $(this).attr('href');
+     $('html, body').animate({
+       scrollTop: ($(target).offset().top - 120)
+     }, 2000);
+  });
   
+ 
 </script>
 @endpush
