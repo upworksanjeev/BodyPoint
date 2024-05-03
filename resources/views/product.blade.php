@@ -86,7 +86,7 @@
 
     <section class="py-[30px] md:py-[60px]">
         <div class="max-w-screen-xl mx-auto ctm-accordion xl:px-0 lg:px-8 md:px-6 px-4">
-            <div class="accordion">
+            <div class="accordion" id="accordion">
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
                     <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
@@ -102,7 +102,7 @@
                     </div><!-- /.accordion-item-body -->
                 </div>
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
-                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
+                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg" id="accordion-collapse-heading-2">
                         <span class="w-[28px] h-[28px] mr-4">
                            <x-icons.sizing />
                         </span>
@@ -152,6 +152,17 @@
                     </div><!-- /.accordion-item-header -->
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">
+							<h1>LIMITED LIFETIME WARRANTY</h1>
+							<br/>
+							<p>Most products manufactured by Bodypoint carry a limited lifetime warranty against defects in workmanship and materials arising under normal use by the original consumer. Product specifications are subject to change. For current specifications and warranty details, contact your local Independent Distributor or contact Customer Service at sales@bodypoint.com or 1-800-547-5716.</p>
+							<br/>
+							<h1>Limitations on Warranties</h1>
+							<br/>
+							<p>The warranties described herein do not extend to normal wear and tear; to products that have been subject to misuse, accident or tampering; nor to products that have been modified in any way other than that specifically described in the product instructions. Normal wear and tear is damage that naturally and inevitably occurs as a result of typical use. Purchaser’s sole remedy for defective products shall be repair, replacement or account adjustment at the discretion of Bodypoint. In all circumstances Bodypoint reserves the right to substitute an equivalent product or refund the purchase price of the original product.</p>
+							<br/>
+							<p>THE FOREGOING WARRANTIES ARE IN LIEU OF ALL OTHER WARRANTIES EXPRESSED OR IMPLIED, INCLUDING WITHOUT LIMITATION, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL BODYPOINT BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL LOSSES OR DAMAGES RESULTING FROM THE USE OF THE PRODUCT, INCLUDING WITHOUT LIMITATION, LOSS OF ANTICIPATED PROFITS, EVEN IF BODYPOINT SHALL HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH POTENTIAL LOSS OR DAMAGE. BODYPOINT SHALL NOT BE LIABLE FOR ANY LOSS OR DAMAGE CAUSED BY DELAY IN FURNISHING PRODUCT.</p>
+							<br/>
+							<p>Bodypoint does not authorize any distributor, dealer, agent, sales person or any third party to change the terms or coverage of this warranty, and any such change shall be null and void. This warranty is non-transferable. This warranty will be governed in accordance with the laws of the State of Washington. The customer consents that jurisdiction under Venue for any action shall be in King County Washington. This warranty information is reprinted here for information purposes only and is subject to change without notice.</p><br/>
                             <?php echo htmlspecialchars_decode(htmlspecialchars($product['warranty'])); ?>
                         </div>
                     </div><!-- /.accordion-item-body -->
