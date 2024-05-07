@@ -2,9 +2,9 @@
     @if(isset($product))
     <section class="py-[30px] md:py-[60px]">
         <div class="ctm-container">
-            <?php if (isset($error)) {
-                echo $error;
-            } else { ?>
+            @if(isset($error)) 
+			{{ $error }}
+            @else
 
 
                 <div class="antialiased">
@@ -15,7 +15,7 @@
                                 <div class="product-images-box">
                                     <div class="slider slider-for">
 									@foreach ($product['media'] as $media)<div>
-                                            <img src="<?php echo url('storage/' . $media['id'] . '/' . $media['file_name']); ?>" alt="{{ $product['name'] ?? '' }}"></div>
+                                            <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}" alt="{{ $product['name'] ?? '' }}"></div>
                                             @endforeach
 											
                                         
@@ -27,7 +27,7 @@
                                         @foreach ($product['media'] as $media)
                                         <div>
                                             <a href="#" data-id="{{ $k }}">
-                                                <img src="<?php echo url('storage/' . $media['id'] . '/' . $media['file_name']); ?>">
+                                                <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}">
                                             </a>
                                         </div>
                                         <?php $k++; ?>
@@ -66,53 +66,10 @@
                     </div>
                 </div>
 
-            <?php } ?>
+           @endif
         </div>
     </section>
-    <!-- <section class="bg-[#f5f5f7]">
-        <div class="ctm-container py-[30px] md:py-[60px]">
-            <div class="slider slider-for">
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                
-            </div>
-            <div class="slider slider-nav">
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div><img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-                <div>
-                    <img src="https://app.bodypoint.dev/storage/233/bb4.png" />
-                </div>
-            </div>
-        </div>
-    </section> -->
+   
     <section class="bg-[#f5f5f7]">
         <div class="ctm-container py-[30px] md:py-[60px]">
             <div class="chest-support">
