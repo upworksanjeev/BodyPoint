@@ -122,7 +122,7 @@
                             <x-icons.instruction />
 
                         </span>
-                        Instructions For Use
+                        Documents
                     </div><!-- /.accordion-item-header -->
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">

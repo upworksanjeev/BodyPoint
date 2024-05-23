@@ -34,7 +34,7 @@
            </div>
            <form action="{{ route('pdf-download') }}" method="post">
           <div class="card-body p-6 border-t">
-			<h3 class="mb-4 font-semibold text-gray-900">Choose PDF Option</h3>
+			<h3 class="mb-4 font-semibold text-gray-900">Select a PDF Quote Option to Save</h3>
 			<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
 				<li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
 					<div class="flex items-center ps-3">
@@ -64,7 +64,7 @@
 			   <input type="hidden" value="<?= csrf_token() ?>" name="_token">
 			  <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}">
 			         
-			  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Save a Quote</button>
+			  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
 			  </form>
 			  
               
