@@ -99,7 +99,7 @@
                     </div><!-- /.accordion-item-header -->
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">
-                            <?php echo htmlspecialchars_decode(htmlspecialchars($product['overview'])); ?>
+                            <?php if($product['overview']!=""){ echo htmlspecialchars_decode(htmlspecialchars($product['overview'])); }else{ echo "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus venenatis ex, vitae varius dolor dignissim sed. Pellentesque non metus dui. Donec a ante dui. Nam rhoncus bibendum cursus. Praesent in porttitor arcu. Suspendisse ultricies sodales posuere. Aenean elementum quam fermentum, tristique mauris id, ullamcorper lorem. Curabitur lobortis tellus quis arcu vehicula, ut facilisis nunc malesuada. Nullam feugiat ligula ligula, nec laoreet sapien sodales at. Cras facilisis vel eros a ultricies. Pellentesque vestibulum ligula nec auctor sollicitudin. Fusce in mauris gravida neque interdum tristique. Suspendisse dignissim tortor sed ligula sollicitudin iaculis. Donec id ultrices tortor. Proin feugiat ut massa in luctus. Ut at lorem at diam finibus dignissim."; }  ?>
                         </div>
                     </div><!-- /.accordion-item-body -->
                 </div>
@@ -112,7 +112,7 @@
                     </div><!-- /.accordion-item-header -->
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">
-                            <?php echo htmlspecialchars_decode(htmlspecialchars($product['sizing'])); ?>
+                            <?php if($product['sizing']!=""){ echo htmlspecialchars_decode(htmlspecialchars($product['sizing'])); }else{ echo "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus venenatis ex, vitae varius dolor dignissim sed. Pellentesque non metus dui. Donec a ante dui. Nam rhoncus bibendum cursus. Praesent in porttitor arcu. Suspendisse ultricies sodales posuere. Aenean elementum quam fermentum, tristique mauris id, ullamcorper lorem. Curabitur lobortis tellus quis arcu vehicula, ut facilisis nunc malesuada. Nullam feugiat ligula ligula, nec laoreet sapien sodales at. Cras facilisis vel eros a ultricies. Pellentesque vestibulum ligula nec auctor sollicitudin. Fusce in mauris gravida neque interdum tristique. Suspendisse dignissim tortor sed ligula sollicitudin iaculis. Donec id ultrices tortor. Proin feugiat ut massa in luctus. Ut at lorem at diam finibus dignissim."; }  ?>
                         </div>
                     </div><!-- /.accordion-item-body -->
                 </div>
@@ -126,7 +126,7 @@
                     </div><!-- /.accordion-item-header -->
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">
-                            <?php echo htmlspecialchars_decode(htmlspecialchars($product['instruction_of_use'])); ?>
+                            <?php if($product['instruction_of_use']!=""){ echo htmlspecialchars_decode(htmlspecialchars($product['instruction_of_use'])); }else{ echo "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus venenatis ex, vitae varius dolor dignissim sed. Pellentesque non metus dui. Donec a ante dui. Nam rhoncus bibendum cursus. Praesent in porttitor arcu. Suspendisse ultricies sodales posuere. Aenean elementum quam fermentum, tristique mauris id, ullamcorper lorem. Curabitur lobortis tellus quis arcu vehicula, ut facilisis nunc malesuada. Nullam feugiat ligula ligula, nec laoreet sapien sodales at. Cras facilisis vel eros a ultricies. Pellentesque vestibulum ligula nec auctor sollicitudin. Fusce in mauris gravida neque interdum tristique. Suspendisse dignissim tortor sed ligula sollicitudin iaculis. Donec id ultrices tortor. Proin feugiat ut massa in luctus. Ut at lorem at diam finibus dignissim."; }  ?>
                         </div>
                     </div><!-- /.accordion-item-body -->
                 </div>
@@ -140,7 +140,8 @@
                     </div><!-- /.accordion-item-header -->
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">
-                            <?php echo htmlspecialchars_decode(htmlspecialchars($product['warranty'])); ?>
+                            <?php if($product['warranty']!=""){ echo htmlspecialchars_decode(htmlspecialchars($product['warranty'])); }else{ echo "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus venenatis ex, vitae varius dolor dignissim sed. Pellentesque non metus dui. Donec a ante dui. Nam rhoncus bibendum cursus. Praesent in porttitor arcu. Suspendisse ultricies sodales posuere. Aenean elementum quam fermentum, tristique mauris id, ullamcorper lorem. Curabitur lobortis tellus quis arcu vehicula, ut facilisis nunc malesuada. Nullam feugiat ligula ligula, nec laoreet sapien sodales at. Cras facilisis vel eros a ultricies. Pellentesque vestibulum ligula nec auctor sollicitudin. Fusce in mauris gravida neque interdum tristique. Suspendisse dignissim tortor sed ligula sollicitudin iaculis. Donec id ultrices tortor. Proin feugiat ut massa in luctus. Ut at lorem at diam finibus dignissim."; }  ?>
+							
                         </div>
                     </div><!-- /.accordion-item-body -->
                 </div>
