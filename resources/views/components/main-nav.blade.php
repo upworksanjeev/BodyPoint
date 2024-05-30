@@ -39,11 +39,10 @@
                                          <a class="text-[22px] text-[#333] hover:text-[#008C99] mb-2"
                                              href="<?php echo url('/category/upper-body'); ?>">Upper Body</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harness</a></p>
+                                                 href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
                                                  href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/options'); ?>">Options</a></p>
+                                        
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
@@ -60,11 +59,10 @@
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
                                                  href="<?php echo url('/category/hip-belts'); ?>">Hip Belts</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/leg-harness'); ?>">Leg Harness</a></p>
+                                                 href="<?php echo url('/category/leg-harness'); ?>">Leg Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belt</a></p>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/options'); ?>">Options</a></p>
+                                                 href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belts</a></p>
+                                        
                                      </div>
                                  </div>
 								  <div class="ctm-grd-two">
@@ -83,9 +81,8 @@
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
                                                  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/universal-elastic-strap'); ?>">Universal Elastic Strap</a></p>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/options'); ?>">Options</a></p>
+                                                 href="<?php echo url('/category/universal-elastic-strap'); ?>">Elastic Mobility Straps</a></p>
+                                         
                                      </div>
                                  </div>
 								 <div class="ctm-grd-two">
@@ -99,10 +96,11 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2"
                                              href="<?php echo url('/category/power-chair-components'); ?>">Power Chair Components</a>
+											 <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
+                                                 href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
                                                  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
+                                         
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
@@ -117,11 +115,11 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#008C99] mb-2"
                                              href="<?php echo url('/category/specialty'); ?>">Specialty</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/shower'); ?>">Shower</a></p>
+                                                 href="<?php echo url('/category/shower'); ?>">Bath & Shower</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/pediatric'); ?>">Pediatric</a></p>
+                                                 href="<?php echo url('/category/pediatric'); ?>">Pediatric Users</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/sports-and-active-users'); ?>">Sports and Active Users</a></p>
+                                                 href="<?php echo url('/category/sports-and-active-users'); ?>">Athletic Users</a></p>
                                      </div>
                                  </div>
                                  
@@ -140,8 +138,7 @@
                                                  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
                                                  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#008C99]"
-                                                 href="<?php echo url('/category/options'); ?>">Options</a></p>
+                                         
                                      </div>
                                  </div>                               
                                  
@@ -401,7 +398,7 @@
                                          <div
                                              class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
-                                                 src="{{ asset('img/small-logo.png') }}"
+                                                 src="{{ asset('img/_Education Series.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
@@ -435,7 +432,7 @@
                                      <a class="" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">
                                          <div
                                              class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
-                                             <img class="" src="{{ asset('img/small-logo.png') }}"
+                                             <img class="" src="{{ asset('img/Dealer Tools.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
@@ -451,7 +448,7 @@
                                      <a class="" href="{{ config('bodypoint.home_url') }}/complaint/">
                                          <div
                                              class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
-                                             <img class="" src="{{ asset('img/small-logo.png') }}"
+                                             <img class="" src="{{ asset('img/Feedback.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
