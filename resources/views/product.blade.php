@@ -145,16 +145,6 @@
                         </div>
                     </div><!-- /.accordion-item-body -->
                 </div>
-                <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
-                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
-                        <span class="w-[28px] h-[28px] mr-4">
-                            <x-icons.setting />
-
-                        </span>
-                        Warranty
-                    </div><!-- /.accordion-item-header -->
-                    
-                </div>
             </div>
         </div>
     </section>
