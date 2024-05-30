@@ -398,7 +398,7 @@
                                          <div
                                              class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
-                                                 src="{{ asset('img/small-logo.png') }}"
+                                                 src="{{ asset('img/_Education Series.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
@@ -432,7 +432,7 @@
                                      <a class="" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">
                                          <div
                                              class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
-                                             <img class="" src="{{ asset('img/small-logo.png') }}"
+                                             <img class="" src="{{ asset('img/Dealer Tools.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
@@ -448,7 +448,7 @@
                                      <a class="" href="{{ config('bodypoint.home_url') }}/complaint/">
                                          <div
                                              class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
-                                             <img class="" src="{{ asset('img/small-logo.png') }}"
+                                             <img class="" src="{{ asset('img/Feedback.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
