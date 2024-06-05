@@ -38,7 +38,7 @@
                             </div>
                             <div class="md:flex-1 lg:px-5 ctm-mobile-mrgn product-outer-box">
                                 <h2 class="text-[#333] text-[30px] font-[700]">{{ $product['name'] ?? '' }}</h2>
-                                <p class="text-[#008C99] text-[18px] ">{{ $product['small_description'] ?? '' }}</p>
+                                <p class="text-[#00838f] text-[18px] ">{{ $product['small_description'] ?? '' }}</p>
                                 <form name="addtocart" id="addtocart" method="POST" action="{{ route('cart.save') }}">
                                     @csrf
                                     <input type="hidden" name="product_id" id="product_id" value="{{ $product['id'] ?? '' }}">
@@ -90,7 +90,7 @@
         <div class="max-w-screen-xl mx-auto ctm-accordion xl:px-0 lg:px-8 md:px-6 px-4">
             <div class="accordion" id="accordion">
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
-                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
+                    <div class="accordion-item-header items-center bg-[#00838f] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
                             <x-icons.eye />
 
@@ -104,7 +104,7 @@
                     </div><!-- /.accordion-item-body -->
                 </div>
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
-                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg" id="accordion-collapse-heading-2">
+                    <div class="accordion-item-header items-center bg-[#00838f] text-[#fff] rounded-lg" id="accordion-collapse-heading-2">
                         <span class="w-[28px] h-[28px] mr-4">
                             <x-icons.sizing />
                         </span>
@@ -117,7 +117,7 @@
                     </div><!-- /.accordion-item-body -->
                 </div>
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
-                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
+                    <div class="accordion-item-header items-center bg-[#00838f] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
                             <x-icons.instruction />
 
@@ -131,7 +131,7 @@
                     </div><!-- /.accordion-item-body -->
                 </div>
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
-                    <div class="accordion-item-header items-center bg-[#008c99] text-[#fff] rounded-lg">
+                    <div class="accordion-item-header items-center bg-[#00838f] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
                             <x-icons.faq />
 

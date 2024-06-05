@@ -5,7 +5,7 @@
                                 <div class="relative py-[15px] linediv">
                                     <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">
                                         Select {{ ucwords($v) }} 
-										@if(str_contains($v,'size')) <a class="text-[#008C99] text-[14px] cursor-pointer"  href="#accordion-collapse-heading-2">(See Sizing tab for size guide)</a> @endif
+										@if(str_contains($v,'size')) <a class="text-[#00838f] text-[14px] cursor-pointer"  href="#accordion-collapse-heading-2">(See Sizing tab for size guide)</a> @endif
 										</h6>
                                 </div>
                                 <div class="grid-four pb-[10px]">
@@ -16,7 +16,7 @@
                                                 <img src="<?php if(isset($v1['image']) && $v1['image']!=''){ echo url('storage/'.$v1['image']); }else{ echo "/img/standard-img.png"; } ?>"  alt="">
                                             </div>
                                             <div class="five-content p-[10px]">
-                                                <h6 class="text-[16px] text-[#008C99] font-[700]">{{ $v1['attribute'] }}
+                                                <h6 class="text-[16px] text-[#00838f] font-[700]">{{ $v1['attribute'] }}
                                                 </h6>
                                                 <p class="text-[14px] text-[#6A6D73]">{{ $v1['small_description'] }}</p>
                                             </div>

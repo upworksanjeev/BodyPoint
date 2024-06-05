@@ -1,6 +1,6 @@
 
  <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="bg-[#008C99] font-semibold text-sm text-white">
+            <thead class="bg-[#00838f] font-semibold text-sm text-white">
               <tr>
                 <!--th scope="col" class="p-4 pe-0">
                   <div class="flex items-center">
