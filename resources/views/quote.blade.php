@@ -13,16 +13,16 @@
         <div class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
 		<div id="quote_print_div">
           <div class="card-header px-6 py-2 bg-[#00838f] rounded-t-xl">
-            <h4 class="text-[#fff]">Order Information</h4>
+            <h4 class="text-[#fff]">Quote Details:</h4>
           </div>
           <div class="card-body p-6">
             <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
               <li class="flex items-start gap-5">
-                <span class="text-sm text-[#000] font-normal leading-[17px]">Account</span>
-                <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $user->email }}</span>
+                <span class="text-sm text-[#000] font-normal leading-[17px]">Quote No.:</span>
+                <span class="text-sm text-[#000] font-normal leading-[17px]">1</span>
               </li>
               <li class="flex items-center gap-5">
-                <span class="text-sm text-[#000] font-normal leading-[17px]">Purchase Order #:</span>
+                <span class="text-sm text-[#000] font-normal leading-[17px]">Your Purchase Order No.:</span>
                 <span class="py-[2px] px-5 text-sm text-white focus:outline-none bg-[#31BA32] rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center font-bold">Quote</span>
               </li>
             </ul>

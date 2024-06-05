@@ -4,10 +4,13 @@
             <thead class="bg-[#00838f] font-semibold text-sm text-white">
                   <tr class="whitespace-nowrap">
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-                      Product name  
+                      Product Name  
                     </th>
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                       Stock Code
+                    </th>
+					<th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
+                      Mark For
                     </th>
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                       MSRP
@@ -24,9 +27,7 @@
                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                        	Net Price 
                     </th>
-                    <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-                      Unit
-                    </th>
+                   
                     <th scope="col" class="px-4 py-3 font-bold">
                       Total
                     </th>
@@ -42,6 +43,9 @@
                     </td>
                     <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                       {{ $cartitem['sku'] }}
+                    </td>
+					<td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+                      {{ $cartitem['marked_for'] }}
                     </td>
 
                     <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
@@ -63,9 +67,7 @@
 
                     </td>                  
                    
-                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                      EA
-                    </td>
+                   
                     <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
                       ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
                     </td>
@@ -79,23 +81,23 @@
           </div>
           <div class="card-body p-6">
             <div class="grid grid-cols-12 gap-3">
-              <div class="col-span-5 sm:col-span-9">
-                <span class="text-sm text-[#000] font-normal leading-[17px]">Mark For:</span>
+              <div class="col-span-5 sm:col-span-7">
+               
 				
               </div>
-              <div class="col-span-4 sm:col-span-2">
+              <div class="col-span-4 sm:col-span-4">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">
-                  <span>Sub Total: </span><br>
+                  <!--span>Sub Total: </span><br>
                   <span>Tax: </span><br>
-                  <span>Shipping: </span><br>
-                  <span class="font-bold">Total: </span>
+                  <span>Shipping: </span><br-->
+                  <span class="font-bold">Total Before Freight: </span>
                 </span>
               </div>
               <div class="col-span-3 sm:col-span-1">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">
-                  <span class="font-bold">${{ number_format($subtotal, 2, '.', ',') }}</span><br>
+                  <!--span class="font-bold">${{ number_format($subtotal, 2, '.', ',') }}</span><br>
                   <span>${{ $tax }}</span><br>
-                  <span>TBD </span><br>
+                  <span>TBD </span><br-->
                   <span class="font-bold"> ${{ number_format($subtotal+$tax, 2, '.', ',') }}</span>
                 </span>
               </div>
