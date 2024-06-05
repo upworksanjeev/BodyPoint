@@ -53,31 +53,86 @@ body {
 <body>
 
   <div style="border: 1px solid rgba(23, 23, 23, 0.1); background-color: #fff;  box-shadow: 0px 0px 4px #e5e7eb; border-radius: 16px; max-width: 920px; margin: 0px auto">
-    <div style="background-color: #008c99; padding: 8px 24px; border-radius: 16px 16px 0px 0px;">
-      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;font-family: 'Avenir LT', Sans-serif; ">Order Information</h4>
+    <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
+      <tbody>
+      <tr>
+        <td>
+          <div style="padding: 24px;">
+            <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
+              <tbody>
+              <tr style="width: 50%:">
+                <td style="vertical-align: unset;">
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 100px; line-height: 1.35;">
+                      <img src="{{ asset('img/bp-logo-lg.png') }}" title="Bodypoint"> <br>
+                      558 1st Avenue South Suite <br>
+					  300 Seattle, WA 98104 USA <br>
+                      (800) 547-5716 (Office) <br>
+                      (206) 405-4556 (fax)
+                    </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+        <td style="vertical-align: bottom;">
+          <div style="padding: 24px;">
+            <table style="width: 100%;  border-collapse: collapse; border-spacing: 0px;">
+              <tbody>
+                <tr>
+                  <td style="vertical-align: bottom;">
+                    <span style="line-height: 22px; color: #000; font-size: 21px; font-weight: 400; min-width: 55px;">
+                      <b>Quote</b><br>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    </table>
+    <div style="background-color: #008c99; padding: 8px 24px;">
+      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;font-family: 'Avenir LT', Sans-serif; ">Quote Details:</h4>
     </div>
     <div style="padding: 24px;">
-      <div style="display: flex; gap: 20px; align-items: center;">
-        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Account</span>
-        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $user->email }}</span>
-      </div>
-      <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
-        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Purchase Order #:</span>
-        <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
-      </div>
+      <table style="width: 100%;">
+        <tr>
+          <td style="width: 50%;  vertical-align: top;">
+            <div style="display: flex; gap: 20px; align-items: center;">
+              <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No.:</span>
+              <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">1</span>
+            </div>
+            <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px;">
+              <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Your Purchase Order No.:</span>
+              <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
+            </div>
+          </td>
+          <td style="width: 50%;">
+            <div style="display: flex; gap: 20px; align-items: center; justify-content: end;">
+              <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote Date:</span>
+              <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; display: block; width: 75px;">{{ date('m/d/Y') }}</span>
+            </div>
+            <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px; justify-content: end;">
+              <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice Terms:</span>
+              <span style="font-size: 14px; font-weight: 500; line-height: 20px; display: block; width: 75px;">Invoice-30</span>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
-
 
     <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
       <tr>
         <td>
           <div style="background-color: #008c99; padding: 8px 24px">
-            <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Ship to information</h4>
+            <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Ship To:</h4>
           </div>
         </td>
         <td style="border-color: green;">
           <div style="background-color: #008c99; padding: 8px 24px;">
-            <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Bill to information</h4>
+            <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Bill To:</h4>
           </div>
         </td>
       </tr>
@@ -91,7 +146,7 @@ body {
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }} {{ $userDetail->shipping_country }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }}</span></td>
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span></td>
@@ -120,7 +175,7 @@ body {
                   <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span>
                 </td>
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }} {{ $userDetail->billing_country }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }}</span>
                 </td>
               </tr>
               <tr>
@@ -147,23 +202,16 @@ body {
     </table>
 
 
-
     <div style="background-color: #008c99; padding: 8px 24px;">
-      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Payment Method</h4>
-    </div>
-    <div style="padding: 24px;">
-      <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice -30</span>
-    </div>
-    <div style="background-color: #008c99; padding: 8px 24px;">
-      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Shipping</h4>
+      <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Items:</h4>
     </div>
     <div style="padding: 24px;">
 
-      <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Special Instructions:</div>
 
       <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; margin-top: 20px;">Carrier:</div>
 
-      <div style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 20px;">All orders placed will ship within 5 business days. Freight cost is calculated at time of shipping. For expedited shipping options please contact customer service at Sales@bodypoint.com or 206.405.4555.</div>
+      <div style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 20px;">Orders typically ship within 5 business days. Freight cost is calculated at time of shipping. For expedited shipping options please contact customer service at sales@bodypoint.com or 
+        <span>(206) 405-4555.</span></div>
 
     </div>
     <div style="padding: 24px;">
@@ -172,10 +220,13 @@ body {
           <thead style="background-color: #008c99;">
             <tr style="white-space:nowrap;border-bottom: 1px solid rgb(104 104 104 / 28%);">
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                Product name
+                Product Name
               </th>
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Stock Code
+              </th>
+			  <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                Mark For
               </th>
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 MSRP
@@ -195,9 +246,7 @@ body {
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                 Qty.
               </th>
-              <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                Unit
-              </th>
+              
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff;width:10px;">
                 Total
               </th>
@@ -215,6 +264,9 @@ body {
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['sku'] }}
               </td>
+			  <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                {{ $cartitem['marked_for'] }}
+              </td>
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
               </td>
@@ -223,9 +275,7 @@ body {
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['quantity'] }}
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                EA
-              </td>
+            
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['msrp']?number_format($cartitem['msrp']*$cartitem['quantity'], 2, '.', ','):0 }}
               </td>
@@ -237,9 +287,7 @@ body {
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['quantity'] }}
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                EA
-              </td>
+              
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['price']?number_format($cartitem['price']*$cartitem['quantity'], 2, '.', ','):0 }}
               </td>
@@ -255,9 +303,7 @@ body {
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['quantity'] }}
               </td>
-              <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                EA
-              </td>
+             
               <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
               </td>
@@ -277,62 +323,46 @@ body {
             border-collapse: collapse; border-spacing: 0px;">
         <tr>
           <td style="vertical-align: top;">
-            <span style="font-size: 14px; font-weight: 400; color: #000;">Mark For:</span>
+            
           </td>
-          <td width="200">
+          <td width="400">
 
             <table style="width: 100%;
                 border-collapse: collapse; border-spacing: 0px;">
               <tr>
                 <td>
-
-
-                  <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">Sub Total: </div>
-                  <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">Tax: </div>
-                  <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">Shipping: </div>
-                  <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">Total: </div>
-
-
+                  <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">Total Before Freight: </div>
                 </td>
                 <td align="right">
-
-
-                  <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">${{ number_format($subtotal, 2, '.', ',') }}</div>
-                  <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">${{ $tax }}</div>
-                  <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">TBD </div>
                   <div style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;"> ${{ number_format($subtotal+$tax, 2, '.', ',') }}</div>
-
-
                 </td>
               </tr>
             </table>
-
-
           </td>
         </tr>
       </table>
 
       </table>
 	  
-	  <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px;text-align: center;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;  margin-top: 100px;margin-bottom: 4px;">QUOTES EXPIRE AFTER 90 DAYS</div>
+	  <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1;text-align: center;border: 1px solid #ccc;padding: 12px 20px;border-radius: 10px;  margin-top: 75px;margin-bottom: 24px;">QUOTES EXPIRE AFTER 90 DAYS</div>
 	  @if($priceOption=='msrp_only')
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 4px;">Past due invoices will incur finance charges at the rate of 1.5% per month. Bodypoint reserves the right to hold shipments or require prepayment for any delinquent account.</div>
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 4px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;margin-bottom: 30px;">Bodypoint, Inc. has prepared this MSRP Quote at the request of the customer identified above ("Customer"). The MSRP listed in this Quote is not the actual purchase price charged to or paid by Customer. The actual purchase price and applicable discounts are identified in other sales documentation
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; margin-top: 5px; padding: 6px 20px; border-radius: 10px; margin-bottom: 8px;">Past due invoices will incur finance charges at the rate of 1.5% per month. Bodypoint reserves the right to hold shipments or require prepayment for any delinquent account.</div>
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;
+    margin-bottom: 24px;">Bodypoint, Inc. has prepared this MSRP Quote at the request of the customer identified above ("Customer"). The MSRP listed in this Quote is not the actual purchase price charged to or paid by Customer. The actual purchase price and applicable discounts are identified in other sales documentation
 		(e.g., the invoice) issued by Bodypoint, Inc. to Customer. Customer acknowledges and agrees that, upon the request of a third-party payor, including,
 		but not limited to any federal or state health care program, Customer must disclose such other sales documentation which reflects the actual purchase price
 		and all discounts between Customer and Bodypoint, Inc.</div>
 	@elseif($priceOption=='all_price')
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 4px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;margin-bottom: 30px;">The amount shown as TOTAL BEFORE FREIGHT is net of the Primary and any Secondary Discounts shown above . Other discounts may apply. All
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;margin-bottom: 24px;">The amount shown as TOTAL BEFORE FREIGHT is net of the Primary and any Secondary Discounts shown above . Other discounts may apply. All
 		discounts known on the date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found
 		at 42 CFR 1001.952(h). Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and
-		accepts that it is solely responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer
-		to which Customer submits claims for reimbursement.
+		accepts that it is solely responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer to which Customer submits claims for reimbursement.
 		</div>
 	@elseif($priceOption=='msrp_primary')
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom: 4px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 24px;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;margin-bottom: 30px;">The amount shown as TOTAL BEFORE FREIGHT is net of only the Primary Discount shown above . Other discounts may apply. All discounts known on the
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 20px; border-radius: 10px; margin-bottom:8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
+		<div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 20px;border-radius: 10px;margin-bottom: 24px;">The amount shown as TOTAL BEFORE FREIGHT is net of only the Primary Discount shown above . Other discounts may apply. All discounts known on the
 		date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found at 42 CFR 1001.952(h).
 		Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and accepts that it is solely
 		responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer to which Customer
