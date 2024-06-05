@@ -15,7 +15,7 @@
   <div id="accordion-collapse-body-{{ $orders['id'] }}" class="hidden" aria-labelledby="accordion-collapse-heading-{{ $orders['id'] }}">
     <div class="p-5 border border-b-0 border-gray-200">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-         <thead class="bg-[#008C99] font-semibold text-sm text-white">
+         <thead class="bg-[#00838f] font-semibold text-sm text-white">
            <tr>
              <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                Product name

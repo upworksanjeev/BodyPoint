@@ -38,7 +38,7 @@
 
         <div class="flex items-center sm:justify-end  justify-center mt-4 ">
             @if (Route::has('password.request'))
-                <a class="text-[#008c99] underline text-xs sm:text-sm  rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-0" href="{{ route('password.request') }}">
+                <a class="text-[#00838f] underline text-xs sm:text-sm  rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-0" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif

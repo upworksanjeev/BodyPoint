@@ -9,7 +9,7 @@
         @csrf
 
         <div class="step" data-step="1" >
-                <div class="text-xl text-[#008c99] pt-5 pb-7 text-center">{{ __('Contact Information') }}</div>
+                <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Contact Information') }}</div>
                 
                 <div class="flex flex-wrap	">
                     <!-- Name -->
@@ -78,7 +78,7 @@
          <!-- Step 2 -->
         <div class="step" data-step="2">
 
-            <div class="py-6 text-xl text-[#008c99] pt-5 pb-7 text-center">{{ __('Company Information') }}</div>    
+            <div class="py-6 text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Company Information') }}</div>    
             
                 <div class="mt-4">
                     <x-input-label for="customer_number" :value="__('Customer Number')" />
@@ -92,7 +92,7 @@
      <!-- Step 3 -->
      <div class="step" data-step="3">
 
-        <div class="py-6 text-xl text-[#008c99] pt-5 pb-7 text-center ">{{ __('Shipping Information') }}</div>    
+        <div class="py-6 text-xl text-[#00838f] pt-5 pb-7 text-center ">{{ __('Shipping Information') }}</div>    
         
         <div class="flex flex-wrap">
             <div class="w-full md:w-2/4  pr-0 md:pr-2">
@@ -156,7 +156,7 @@
     
     
         <div class="card flex items-center mt-4 justify-between">
-            <div class="py-6 text-xl text-[#008c99] py-3 ">{{ __('Billing Information') }}</div>   
+            <div class="py-6 text-xl text-[#00838f] ">{{ __('Billing Information') }}</div>   
             
             <div class="flex ml-4 pt-[5px] pr-2" >
                 <x-text-input id="shipping_details"    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-0" type="checkbox"  name="shipping_details" :value="old('shipping_details')" />
@@ -234,7 +234,7 @@
     
     </div>
     <div class="flex items-center justify-center mt-4">
-    <a class="underline text-sm text-[#008c99] hover:text-[#008c99] rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-0" href="{{ route('login') }}">
+    <a class="underline text-sm text-[#00838f] hover:text-[#00838f] rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
     </div>

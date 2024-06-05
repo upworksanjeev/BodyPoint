@@ -53,7 +53,7 @@ body {
 <body>
 
   <div style="border: 1px solid rgba(23, 23, 23, 0.1); background-color: #fff;  box-shadow: 0px 0px 4px #e5e7eb; border-radius: 16px; max-width: 920px; margin: 0px auto">
-    <div style="background-color: #008c99; padding: 8px 24px; border-radius: 16px 16px 0px 0px;">
+    <div style="background-color: #00838f; padding: 8px 24px; border-radius: 16px 16px 0px 0px;">
       <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;font-family: 'Avenir LT', Sans-serif; ">Order Information</h4>
     </div>
     <div style="padding: 24px;">
@@ -79,12 +79,12 @@ body {
     <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
       <tr>
         <td>
-          <div style="background-color: #008c99; padding: 8px 24px">
+          <div style="background-color: #00838f; padding: 8px 24px">
             <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Ship to information</h4>
           </div>
         </td>
         <td style="border-color: green;">
-          <div style="background-color: #008c99; padding: 8px 24px;">
+          <div style="background-color: #00838f; padding: 8px 24px;">
             <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Bill to information</h4>
           </div>
         </td>
@@ -156,13 +156,13 @@ body {
 
 
 
-    <div style="background-color: #008c99; padding: 8px 24px;">
+    <div style="background-color: #00838f; padding: 8px 24px;">
       <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Payment Method</h4>
     </div>
     <div style="padding: 24px;">
       <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice -30</span>
     </div>
-    <div style="background-color: #008c99; padding: 8px 24px;">
+    <div style="background-color: #00838f; padding: 8px 24px;">
       <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Shipping</h4>
     </div>
     <div style="padding: 24px;">
@@ -177,7 +177,7 @@ body {
     <div style="padding: 24px;">
       <div style="border-radius: 16px 16px 0px 0px; border: 1px solid rgb(104 104 104 / 28%);overflow: hidden;">
         <table style="border-collapse: collapse;width: 100%;" class="productDetail">
-          <thead style="background-color: #008c99;">
+          <thead style="background-color: #00838f;">
             <tr style="white-space:nowrap;border-bottom: 1px solid rgb(104 104 104 / 28%);">
               <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 14px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);">
                 Product name
