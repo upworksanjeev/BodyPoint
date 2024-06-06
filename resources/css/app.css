@@ -412,11 +412,25 @@ body {
 .product-outer-box {
     width: 50%;
 }
+header#app-site-header, .site-logo img, .nav-links, .top-navbar {
+    transition: 0.8s;
+}
+.header-small .site-logo img {
+    height: 40px;
+}
+.nav-links {
+    height: 80px;
+}
+.header-small .nav-links {
+    height: 50px;
+}
+.searchBar {
+    transition: .2s;
+}
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;
-    }
-    
+    }    
 }
 
 @media (max-width: 1024px) {

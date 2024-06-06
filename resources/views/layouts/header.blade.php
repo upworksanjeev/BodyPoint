@@ -6,9 +6,9 @@
     <div class="container mx-auto px-2 xl:px-10">
     </div>
 </header>
-<header class="bg-[#00838f]">
+<header class="bg-[#00838f] sticky top-0 z-50" id="app-site-header">
     <div class="ctm-container mx-auto px-4 xl:px-8 lg:block hidden">
-        <div class="grid grid-cols-12 py-2 mb-5 border-b-[1px]">
+        <div class="grid grid-cols-12 py-2 top-navbar">
             <div class="col-span-6">
                 <div class="slick-slider">
                     <div>
@@ -29,12 +29,19 @@
                 </div>
             </div>
             <div class="col-span-6 text-right">
-                <div class="h-8 flex justify-end text-[#fff] text-[15px] font-normal">
-					<div id="cart_count_div">
-					 <x-cart.cart-count />
-					</div>
+                <div class="h-8 flex justify-end text-[#fff] text-[15px] font-normal items-center">
+                    <div id="cart_count_div">
+                        <x-cart.cart-count />
+                    </div>
+                    <div class="pe-5">
+                        <a href="" class="hover:text-[#fe7300] transition duration-150 ease-in-out">
+                            <div class="flex items-center">
+                                <i class="fa fa-briefcase text-[18px] pr-2" aria-hidden="true"></i>
+                                <p class="text-[15px] font-light">Vault</p>
+                            </div>
+                        </a>
+                    </div>
                     <x-login-nav />
-					
                 </div>
             </div>
         </div>
@@ -47,6 +54,13 @@
 
 <script>
     $(document).ready(function() {
+        $(window).on('scroll', function() {
+            if ($(window).scrollTop() > 100) {
+                $('#app-site-header').addClass('header-small');
+            } else {
+                $('#app-site-header').removeClass('header-small');
+            }
+        });
         $(".slick-slider").slick({
             autoplay: true,
             dots: false,
