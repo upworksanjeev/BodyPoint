@@ -11,7 +11,7 @@
         </div>
 
         <div class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
-          <div class="card-header px-6 py-2 bg-[#008c99] rounded-t-xl">
+          <div class="card-header px-6 py-2 bg-[#00838f] rounded-t-xl">
             <h4 class="text-[#fff]">Order Information</h4>
           </div>
           <div class="card-body p-6">
@@ -22,7 +22,7 @@
               </li>
               <li class="flex items-center gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Purchase Order #:</span>
-                <input class="py-[2px] px-5 text-sm font-medium focus:outline-none rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center font-bold" value="{{ $purchase_order_no }}" name="purchase_no" id="purchase_no" onchange="changePurchaseNo({{ $cart[0]['id'] }})">
+                <input class="py-[2px] px-5 text-sm font-medium focus:outline-none rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center" value="{{ $purchase_order_no }}" name="purchase_no" id="purchase_no" onchange="changePurchaseNo({{ $cart[0]['id'] }})">
               </li>
             </ul>
           </div>
@@ -30,9 +30,9 @@
           <x-cart.final-checkout-list :cart="$cart" />
           <div class="card-body p-6 border-t">
             <div class="flex items-center justify-end gap-2">
-              <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+              <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
 
-              <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
+              <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
 
               <form action="{{ route('confirm-order') }}" method="post">
                 <input type="hidden" value="<?= csrf_token() ?>" name="_token">

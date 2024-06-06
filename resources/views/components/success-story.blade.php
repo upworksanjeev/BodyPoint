@@ -18,10 +18,10 @@
 					</div>
 				</div>
 				<div>
-					<p class="text-base font-bold text-[#008C99] mb-3">Success Story</p>
+					<p class="text-base font-bold text-[#00838f] mb-3">Success Story</p>
 
 					<h4 class="text-[24px] leading-8 font-bold text-black mb-6">{{ $v['title'] }}</h4>
-					<a data-modal-target="story-modal-{{ $v['id'] }}"  data-modal-toggle="story-modal-{{ $v['id'] }}" class="text-sm font-light text-[#008C99] mb-3 flex items-center underline group cursor-pointer">Read Full Story <x-icons.next-arrow-blue /> </a>
+					<a data-modal-target="story-modal-{{ $v['id'] }}"  data-modal-toggle="story-modal-{{ $v['id'] }}" class="text-sm font-light text-[#00838f] mb-3 flex items-center underline group cursor-pointer">Read Full Story <x-icons.next-arrow-blue /> </a>
 				</div>
 			</div>
 			
@@ -38,7 +38,7 @@
 		<div class="relative bg-white rounded-lg shadow">
 			<!-- Modal header -->
 			<div class="flex items-center justify-between absolute right-0 mt-[-16px] me-[-12px]">
-				<button type="button" class="text-white bg-[#008c99] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="share-modal">
+				<button type="button" class="text-white bg-[#00838f] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="share-modal">
 
 					<x-icons.close /> 
 
@@ -88,7 +88,7 @@
 			<!-- Modal header -->
 			<div class="flex items-center justify-between absolute right-0 mt-[-16px] me-[-12px]">
 
-				<button type="button" class="text-white bg-[#008c99] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="video-modal-{{ $v['id'] }}">
+				<button type="button" class="text-white bg-[#00838f] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="video-modal-{{ $v['id'] }}">
 					<x-icons.close /> 
 
 					<span class="sr-only">Close modal</span>
@@ -109,7 +109,7 @@
 		<div class="relative bg-white rounded-lg shadow">
 			<!-- Modal header -->
 			<div class="flex items-center justify-between absolute right-0 mt-[-16px] me-[-12px]">
-				<button type="button" class="text-white bg-[#008c99] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="story-modal-{{ $v['id'] }}">
+				<button type="button" class="text-white bg-[#00838f] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="story-modal-{{ $v['id'] }}">
 					<x-icons.close /> 
 					<span class="sr-only">Close modal</span>
 				</button>

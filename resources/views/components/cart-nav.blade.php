@@ -8,15 +8,15 @@
             <ul class="flex flex-wrap -mb-px">
               <li class="me-2">
                 <a href="{{ route('cart') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('cart')){ echo "text-[#000] border-b-[3px] active border-[#008C99]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>" aria-current="page">Shopping Cart</a>
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('cart')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>" aria-current="page">Shopping Cart</a>
               </li>
               <li class="me-2">
                 <a href="{{ route('order') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('order')){ echo "text-[#000] border-b-[3px] active border-[#008C99]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Order Lookup</a>
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('order')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Order Lookup</a>
               </li>
               <li class="me-2">
                 <a href="{{ route('profile.edit') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('profile')){ echo "text-[#000] border-b-[3px] active border-[#008C99]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">My Account</a>
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('profile')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">My Account</a>
               </li>
             </ul>
           </div>

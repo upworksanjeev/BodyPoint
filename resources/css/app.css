@@ -362,7 +362,7 @@ body {
 	}
     #myTable thead {
         position: sticky;
-        background: #008c99;
+        background: #00838f;
     }
 
 	#myTable th {
@@ -386,7 +386,7 @@ body {
 	  background-color: #f1f1f1;
 	} */
 /* .accordion-item-header svg path {
-    fill: #008c99;
+    fill: #00838f;
 } */
 /*single product page end */
 .product-images-box .slider-for  .slick-slide {

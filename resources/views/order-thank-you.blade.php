@@ -13,7 +13,7 @@
          
 		   <div class="">
    <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
-     <div class="card-header px-6 py-4 flex items-center justify-between border-b bg-[#008c99]">
+     <div class="card-header px-6 py-4 flex items-center justify-between border-b bg-[#00838f]">
        <h4 class="text-[#fff] text-left">Order Date: {{ date('F j, Y',strtotime($order['created_at'])) }}</h4><h4 class="text-[#fff] text-center">Order Details</h4> <h4 class="text-[#fff] text-right">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
       
      </div>
@@ -59,7 +59,7 @@
                 class="odd:bg-white even:bg-gray-50 border-b">
                 <td class="w-4 p-4" colspan="5">
                   <div class="flex items-center gap-2">
-                    <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#008C99] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[260px]">Continue Shopping</a>
+                    <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[260px]">Continue Shopping</a>
                   </div>
                 </td>                
                 <td class="w-4 p-4" colspan="6">
