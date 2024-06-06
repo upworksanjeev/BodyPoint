@@ -183,6 +183,10 @@ class CheckoutController extends Controller
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
 		$user_detail=UserDetails::where('user_id', $user->id)->first();
 		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail,'priceOption' => $price_option]);
+		$pdf->render();
+		$dompdf = $pdf->getDomPDF();
+		$font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
+        $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
 		return $pdf->download();
 	}
 	
