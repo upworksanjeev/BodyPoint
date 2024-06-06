@@ -8,28 +8,28 @@
 </header>
 <header class="bg-[#00838f] sticky top-0 z-50" id="app-site-header">
     <div class="ctm-container mx-auto px-4 xl:px-8 lg:block hidden">
-        <div class="grid grid-cols-12 py-2 top-navbar">
+        <div class="grid grid-cols-12 py-2 top-navbar items-center h-[43px]">
             <div class="col-span-6">
                 <div class="slick-slider">
                     <div>
-                        <p class="text-[15px] text-[#fff] font-normal mt-1">Thoughtful designs for stronger connections
+                        <p class="text-[15px] text-[#fff] font-normal">Thoughtful designs for stronger connections
                             between wheelchairs and people</p>
                     </div>
                     <div>
-                        <p class="text-[15px] text-[#fff] font-normal mt-1">Bridging the gap between wheelchairs and
+                        <p class="text-[15px] text-[#fff] font-normal">Bridging the gap between wheelchairs and
                             people... It's what we do.</p>
                     </div>
                     <div>
-                        <p class="text-[15px] text-[#fff] font-normal mt-1">Empowering independence through thoughtful
+                        <p class="text-[15px] text-[#fff] font-normal">Empowering independence through thoughtful
                             design.</p>
                     </div>
                     <div>
-                        <p class="text-[15px] text-[#fff] font-normal mt-1">30+ years of improving lives through innovative positioning.</p>
+                        <p class="text-[15px] text-[#fff] font-normal">30+ years of improving lives through innovative positioning.</p>
                     </div>
                 </div>
             </div>
             <div class="col-span-6 text-right">
-                <div class="h-8 flex justify-end text-[#fff] text-[15px] font-normal items-center">
+                <div class="flex justify-end text-[#fff] text-[15px] leading-7 font-normal items-center">
                     <div id="cart_count_div">
                         <x-cart.cart-count />
                     </div>

@@ -1,5 +1,5 @@
 <a href="{{ route('cart') }}" class="hover:text-[#fe7300] transition duration-150 ease-in-out">
-  <div class="flex items-center gap-2 pe-5 py-1">
+  <div class="flex items-center gap-2 pe-5">
     <div class="relative">
       <div class="w-[20px] h-[20px]">
         <!-- <x-icons.basket /> -->
