@@ -320,10 +320,9 @@
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Resources <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
-                             <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500]">Learn about Bodypoint and
+                             <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500] mb-5">Learn about Bodypoint and
                                  postural support</h5>
-                             <!-- <p class="text-[#333] pt-[5px] text-[16px] mb-5">Improve the independence, comfort and
-                                 safety of children and adults who use wheelchairs and other mobility devices.</p> -->
+                          
                              <div class="grid grid-cols-4 column-gap gap-x-4 gap-y-8">
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/faqs/">
@@ -371,6 +370,22 @@
                                              href="{{ config('bodypoint.home_url') }}/literature/">Literature</a>
                                          <p class="text-[14px] text-[#333] font-[400]">Catalog and clinical information
                                          </p>
+
+                                     </div>
+                                 </div>
+								  <div class="ctm-grd-two">
+                                     <a class="" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">
+                                         <div
+                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             <img class="" src="{{ asset('img/Dealer Tools.png') }}"
+                                                 alt="Your Company" />
+                                         </div>
+                                     </a>
+                                     <div class="prd-cntnt">
+                                         <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                             href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">Dealer Tools</a>
+                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                 href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
 
                                      </div>
                                  </div>
@@ -428,22 +443,7 @@
                                
 								  
                                 
-								 <div class="ctm-grd-two">
-                                     <a class="" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">
-                                         <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
-                                             <img class="" src="{{ asset('img/Dealer Tools.png') }}"
-                                                 alt="Your Company" />
-                                         </div>
-                                     </a>
-                                     <div class="prd-cntnt">
-                                         <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">Dealer Tools</a>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
-
-                                     </div>
-                                 </div>
+								
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/complaint/">
                                          <div
