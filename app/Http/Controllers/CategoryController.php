@@ -41,7 +41,8 @@ class CategoryController extends Controller
 					$cat[]=$v['id'];
 				}
 			}
-			$products = CategoryProduct::with(['product.media'])->whereIn('category_id',$cat)->get();
+			$products = CategoryProduct::with(['product.media'])->whereIn('category_id',$cat)->paginate(16);
+
 			return view('category', array(
 				'categories' => $categories,
 				'subcategory' => $subcategory,

@@ -14,28 +14,26 @@ use App\Models\Media;
 
 class HomeController extends Controller
 {
-    /**
-     * Display the category details.
-     */
-    public function index(Request $request)
-    {		
-	  
-        $categories = Category::all();
-       		
-		if(isset($categories)){
+	/**
+	 * Display the category details.
+	 */
+	public function index(Request $request)
+	{
+		$categories = Category::all();
+		if (isset($categories)) {
+			$products = CategoryProduct::select('product_id')
+				->groupBy('product_id')
+				->with(['product.media'])
+				->paginate(16);
 			
-			$products = CategoryProduct::with(['product.media'])->get();
-			return view('front', array(
+			return view('front', [
 				'categories' => $categories,
 				'products' => $products,
-			));
-		}else{
-		  return view('front', [
-			'error' => 'No Products Found!'
-        ]);
+			]);
+		} else {
+			return view('front', [
+				'error' => 'No Products Found!'
+			]);
 		}
-    }
-
-    
-  
+	}
 }
