@@ -22,11 +22,11 @@
       <img src="{{ asset('img/small-logo.png') }}" class="absolute top-[8px] right-[8px] h-[40px] max-w-[40px]" alt="">
       <img src="{{ $product->media->isNotEmpty() ? url('storage/'.$product->media[0]->id.'/'.$product->media[0]->file_name) : url('img/logo.png') }}" class="mx-auto xxl:min-h-[250px] xl:min-h-[230px] lg:min-h-[223px] md:min-h-[200px] object-contain" alt="{{ $product->name }}">
       <h6 class="text-[18px] text-[#253D4E] mb-2 mt-3 font-[600]">{{ $product->name }}</h6>
-     <p class="text-[14px] text-[#ADADAD] leading-[20px]"><?php echo substr(htmlspecialchars_decode(str_replace('</div>','',str_replace('<div>','',$product->description))), 0, 100) ?? '' ; ?>.....
-     </p>
+      <p class="text-[14px] text-[#ADADAD] leading-[20px]">{{ Str::limit(strip_tags($product->description), 100) }}...</p>
   </div>
 @endforeach
 </div>
 <div class="my-6">
-  {{ $products->links() }}
+{{ $products->links() }}
 </div>
+

@@ -23,11 +23,9 @@ class HomeController extends Controller
 		if (isset($categories)) {
 			// $products = CategoryProduct::with(['product.media'])->get();
 			$products = Product::with(['media'])->paginate(16);
-			$side_menu_products = Product::with(['media'])->get();
 			return view('front', [
 				'categories' => $categories,
 				'products' => $products,
-				'side_menu_products' => $side_menu_products
 			]);
 		} else {
 			return view('front', [
