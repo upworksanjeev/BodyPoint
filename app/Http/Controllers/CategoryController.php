@@ -42,9 +42,6 @@ class CategoryController extends Controller
 				}
 			}
 			$products = CategoryProduct::with(['product.media'])->whereIn('category_id',$cat)->paginate(16);
-			// $products = Product::whereHas('categories', function ($query) use ($cat) {
-			// 	$query->whereIn('category_id', $cat);
-			// })->paginate(16);
 
 			return view('category', array(
 				'categories' => $categories,

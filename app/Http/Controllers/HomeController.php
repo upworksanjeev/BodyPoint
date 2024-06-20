@@ -25,7 +25,7 @@ class HomeController extends Controller
 				->groupBy('product_id')
 				->with(['product.media'])
 				->paginate(16);
-			// $products = Product::with(['media'])->paginate(16);
+			
 			return view('front', [
 				'categories' => $categories,
 				'products' => $products,
