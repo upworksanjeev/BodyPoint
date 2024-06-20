@@ -21,8 +21,11 @@ class HomeController extends Controller
 	{
 		$categories = Category::all();
 		if (isset($categories)) {
-			// $products = CategoryProduct::with(['product.media'])->get();
-			$products = Product::with(['media'])->paginate(16);
+			$products = CategoryProduct::select('product_id')
+				->groupBy('product_id')
+				->with(['product.media'])
+				->paginate(16);
+			// $products = Product::with(['media'])->paginate(16);
 			return view('front', [
 				'categories' => $categories,
 				'products' => $products,
