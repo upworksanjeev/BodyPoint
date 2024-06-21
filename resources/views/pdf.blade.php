@@ -65,7 +65,7 @@
                                     <tr style="width: 50%:">
                                         <td style="vertical-align: unset;">
                                             <img style="width: 194px;" src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/img/bp-logo-lg-new.png'))); ?>"><br>
-                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 100px; line-height: 1.35;">
+                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 100px; text-align: left;">
 
                                                 558 1st Avenue South Suite <br>
                                                 300 Seattle, WA 98104 USA <br>
@@ -96,13 +96,13 @@
                 </tr>
             </tbody>
         </table>
-        <div style="background-color: #00838f; padding: 8px 24px;">
+        <div style="background-color: #00838f; padding: 8px 15px;">
             <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;font-family: 'Avenir LT', Sans-serif; ">Quote Details:</h4>
         </div>
         <div style="padding: 15px;">
             <table style="width: 100%;">
                 <tr>
-                    <td style="width: 50%;  vertical-align: top;">
+                    <td style="vertical-align: top;">
                         <div style="display: flex; gap: 20px; align-items: center;">
                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No.:</span>
                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">1</span>
@@ -112,12 +112,12 @@
                             <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
                         </div>
                     </td>
-                    <td style="width: 50%;vertical-align: top;">
-                        <div style="display: flex; gap: 20px; align-items: center; justify-content: end;">
+                    <td style="vertical-align: top;">
+                        <div style="display: flex; gap: 20px; align-items: center; justify-content: end;padding: 0 15px;">
                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote Date:</span>
                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; ">{{ date('m/d/Y') }}</span>
                         </div>
-                        <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px; justify-content: end;">
+                        <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px; justify-content: end;padding: 0 15px;">
                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice Terms:</span>
                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice-30</span>
                         </div>
@@ -129,12 +129,12 @@
         <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
             <tr>
                 <td>
-                    <div style="background-color: #00838f; padding: 8px 24px">
+                    <div style="background-color: #00838f; padding: 8px 15px">
                         <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Ship To:</h4>
                     </div>
                 </td>
                 <td style="border-color: green;">
-                    <div style="background-color: #00838f; padding: 8px 24px;">
+                    <div style="background-color: #00838f; padding: 8px 15px;">
                         <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Bill To:</h4>
                     </div>
                 </td>
@@ -205,12 +205,10 @@
         </table>
 
 
-        <div style="background-color: #00838f; padding: 8px 24px;">
+        <div style="background-color: #00838f; padding: 8px 15px;">
             <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Items:</h4>
         </div>
         <div style="padding: 15px;">
-
-
             <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; margin-top: 5px;">Carrier:</div>
 
             <div style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 10px;">Orders typically ship within 5 business days. Freight cost is calculated at time of shipping. For expedited shipping options please contact customer service at sales@bodypoint.com or
