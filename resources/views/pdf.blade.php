@@ -64,7 +64,7 @@
                                 <tbody>
                                     <tr style="width: 50%:">
                                         <td style="vertical-align: unset;">
-                                            <img style="width: 194px;height: 57px" src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/img/bp-logo-lg.png'))); ?>"><br>
+                                            <img style="width: 194px;" src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/img/bp-logo-lg-new.png'))); ?>"><br>
                                             <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 100px; line-height: 1.35;">
 
                                                 558 1st Avenue South Suite <br>
