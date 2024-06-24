@@ -412,6 +412,13 @@ body {
 .product-outer-box {
     width: 50%;
 }
+
+/* Product Faq Section */
+.second-p-margin{
+    margin-top: 14px;
+}
+/* End Product Faq Section */
+
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;
