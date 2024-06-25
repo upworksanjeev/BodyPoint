@@ -412,7 +412,6 @@ body {
 .product-outer-box {
     width: 50%;
 }
-
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;
