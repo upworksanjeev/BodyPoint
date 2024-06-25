@@ -21,7 +21,7 @@
                  <div class="flex space-x-4 nav-links mr-5 ">
                      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                      <div class="dropdown flex">
-                         <a href="<?php echo url('/'); ?>"
+                         <a href="{{ route('home') }}"
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Products <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
@@ -316,7 +316,7 @@
                          </div>
                      </div>
                      <div class="dropdown flex">
-                         <a href="#"
+                         <a href="{{ config('bodypoint.home_url') }}/resources/"
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Resources <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
@@ -327,7 +327,7 @@
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/faqs/">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class="" src="{{ asset('img/FAQ - Web Icons.png') }}"
                                                  alt="Your Company" />
                                          </div>
@@ -343,7 +343,7 @@
                                      <a class=""
                                          href="{{ config('bodypoint.home_url') }}/why-positioning-matters/">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class="" src="{{ asset('img/Powerchair.png') }}" alt="Your Company" />
                                          </div>
                                      </a>
@@ -358,7 +358,7 @@
                                  <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/literature/">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
                                                  src="{{ asset('img/LITERATURE - Icons.png') }}"
                                                  alt="Your Company" />
@@ -376,7 +376,7 @@
 								  <div class="ctm-grd-two">
                                      <a class="" href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class="" src="{{ asset('img/Dealer Tools.png') }}"
                                                  alt="Your Company" />
                                          </div>
@@ -393,7 +393,7 @@
                                      <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                          href="{{ config('bodypoint.home_url') }}/terms-conditions/">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
                                                  src="{{ asset('img/Terms and Conditions.png') }}"
                                                  alt="Your Company" />
@@ -411,7 +411,7 @@
 								 <div class="ctm-grd-two">
                                      <a class="" href="https://www.youtube.com/user/BodypointInc">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
                                                  src="{{ asset('img/_Education Series.png') }}"
                                                  alt="Your Company" />
@@ -427,7 +427,7 @@
                                  <div class="ctm-grd-two">
                                      <a class="" href="https://www.youtube.com/user/BodypointInc">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
                                                  src="{{ asset('img/Training.png') }}"
                                                  alt="Your Company" />
@@ -447,7 +447,7 @@
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/complaint/">
                                          <div
-                                             class="prd-img px-2 rounded flex items-center justify-center min-h-[120px] bg-[#fff]">
+                                             class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class="" src="{{ asset('img/Feedback.png') }}"
                                                  alt="Your Company" />
                                          </div>
