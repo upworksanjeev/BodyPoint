@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Events\OrderPlaced;
+use App\Helpers\FunHelper;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Cart;
@@ -122,6 +123,11 @@ class CheckoutController extends Controller
 		$cart->delete();
 		}
 		$order=Order::with('User','OrderItem.Product.Media')->where('id', $order->id)->first();
+		$user_detail=UserDetails::where('user_id', $user->id)->first();
+		$pdf = Pdf::loadView('order-receipt', ['order' => $order,'user' => $user,'userDetail' => $user_detail]);
+		$pdfContent = $pdf->output();
+		FunHelper::saveOrderPlacedPdf($pdfContent,$order);
+		event(new OrderPlaced($order));
 		return view('order-thank-you', array(
 				'order' => $order,
 			));
