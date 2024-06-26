@@ -60,16 +60,24 @@
                 <tr>
                     <td>
                         <div style="padding: 15px;">
-                            <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
+                            <table style="width: 100%; border-collapse:collapse; border-spacing: 0px;">
                                 <tbody>
                                     <tr style="width: 50%:">
                                         <td style="vertical-align: unset;">
                                             <img style="width: 194px;margin-bottom:8px;" src="data:image/png;base64,<?php echo base64_encode(file_get_contents(base_path('public/img/bp-logo-lg-new.png'))); ?>"><br>
-                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 100px; text-align: left;">
-
-                                                558 1st Avenue South Suite <br>
-                                                300 Seattle, WA 98104 USA <br>
-                                                (800) 547-5716 (Office) <br>
+                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;text-align: left;">
+                                                558 1st Avenue South Suite
+                                            </span>
+                                            <br />
+                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;text-align: left;">
+                                                300 Seattle, WA 98104 USA
+                                            </span>
+                                            <br />
+                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;text-align: left;">
+                                                (800) 547-5716 (Office)
+                                            </span>
+                                            <br />
+                                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;text-align: left;">
                                                 (206) 405-4556 (fax)
                                             </span>
                                         </td>
@@ -96,117 +104,111 @@
                 </tr>
             </tbody>
         </table>
-        <div style="background-color: #00838f; padding: 8px 15px;">
-            <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;font-family: 'Avenir LT', Sans-serif; ">Quote Details:</h4>
+        <div style="background-color: #00838f; padding: 8px 16px;">
+            <h4 style="color: #fff; font-size: 14px; font-weight: 400; line-height: 24px; margin: 0px;font-family: 'Avenir LT', Sans-serif; ">Quote Details:</h4>
         </div>
-        <div style="padding: 15px;">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="vertical-align: top;">
-                        <div style="display: flex; gap: 20px; align-items: center;">
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No.:</span>
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">1</span>
-                        </div>
-                        <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px;">
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Your Purchase Order No.:</span>
-                            <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
-                        </div>
-                    </td>
-                    <td style="vertical-align: top;">
-                        <div style="display: flex; gap: 20px; align-items: center; justify-content: end;padding: 0 15px;">
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote Date:</span>
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; ">{{ date('m/d/Y') }}</span>
-                        </div>
-                        <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px; justify-content: end;padding: 0 15px;">
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice Terms:</span>
-                            <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice-30</span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
+        <table style="width: 100%;border-collapse: collapse; border-spacing: 0px;padding: 15px;">
             <tr>
-                <td>
-                    <div style="background-color: #00838f; padding: 8px 15px">
-                        <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Ship To:</h4>
+                <td style="vertical-align: top;width:50%;">
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No.:</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">1</span>
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px;">
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Your Purchase Order No.:</span>
+                        <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
                     </div>
                 </td>
-                <td style="border-color: green;">
-                    <div style="background-color: #00838f; padding: 8px 15px;">
-                        <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Bill To:</h4>
+                <td style="vertical-align: top;width:50%;padding: 0 15px;">
+                    <div style="display: flex; align-items: center; justify-content: end;">
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote Date:</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; ">{{ date('m/d/Y') }}</span>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div style="padding: 15px;">
-                        <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
-                            <tr>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span></td>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span></td>
-                            </tr>
-                            <tr>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }}</span></td>
-                            </tr>
-                            <tr>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span></td>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_country }}</span></td>
-                            </tr>
-                            <tr>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Phone:</span></td>
-                                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->shipping_phone }}</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-                <td>
-                    <div style="padding: 15px;">
-                        <table style="width: 100%;  border-collapse: collapse; border-spacing: 0px;">
-                            <tr>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span>
-                                </td>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span>
-                                </td>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span>
-                                </td>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_country }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Phone:</span>
-                                </td>
-                                <td>
-                                    <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->billing_phone }}</span>
-                                </td>
-                            </tr>
-
-                        </table>
+                    <div style="display: flex; align-items: center; margin-top: 5px; justify-content: end;">
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice Terms:</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice-30</span>
                     </div>
                 </td>
             </tr>
         </table>
 
+        <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
+            <tr>
+                <td style="width: 50%;">
+                    <div style="background-color: #00838f; padding: 8px 15px">
+                        <h4 style="color: #fff; font-size: 14px; font-weight: 400; line-height: 24px; margin: 0px;">Ship To:</h4>
+                    </div>
+                </td>
+                <td style="border-color: green;width: 50%;">
+                    <div style="background-color: #00838f; padding: 8px 15px;">
+                        <h4 style="color: #fff; font-size: 14px; font-weight: 400; line-height: 24px; margin: 0px;">Bill To:</h4>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;padding: 15px;">
+                    <table style="width: 100%; border-collapse: collapse; border-spacing: 0px; ver">
+                        <tr>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_country }}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->shipping_phone }}</span></td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 50%;padding: 15px;">
+                    <table style="width: 100%;  border-collapse: collapse; border-spacing: 0px;vertical-align: top;">
+                        <tr>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span>
+                            </td>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
+                            </td>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span>
+                            </td>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_country }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span>
+                            </td>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->billing_phone }}</span>
+                            </td>
+                        </tr>
 
-        <div style="background-color: #00838f; padding: 8px 15px;">
-            <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Items:</h4>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+        <div style="background-color: #00838f; padding: 8px 16px;">
+            <h4 style="color: #fff; font-size: 14px; font-weight: 400; line-height: 24px; margin: 0px;">Items:</h4>
         </div>
         <div style="padding: 15px;">
             <div style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; margin-top: 5px;">Carrier:</div>
@@ -221,7 +223,7 @@
             <table style="border-collapse: collapse;width: 100%;" class="productDetail">
                 <thead style="background-color: #00838f;">
                     <tr style="white-space:nowrap;border-bottom: 1px solid rgb(104 104 104 / 28%);">
-                        <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                        <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                             Product Name
                         </th>
                         <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
@@ -234,11 +236,11 @@
                             MSRP
                         </th>
                         @if($priceOption=='msrp_primary')
-                        <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                        <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                             Primary Discount
                         </th>
                         @elseif($priceOption=='all_price')
-                        <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                        <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
                             Primary Discount
                         </th>
                         <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
@@ -260,7 +262,7 @@
                     @if(isset($cart[0]))
                     @foreach ($cart[0]['CartItem'] as $cartitem)
                     <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                        <td style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                             {{ $cartitem['Product']['name'] }}
                         </td>
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -325,7 +327,6 @@
         border-collapse: collapse; border-spacing: 0px;">
             <tr>
                 <td style="vertical-align: top;">
-
                 </td>
                 <td width="200">
 
