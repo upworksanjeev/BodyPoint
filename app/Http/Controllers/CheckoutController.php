@@ -127,7 +127,7 @@ class CheckoutController extends Controller
 		$pdf = Pdf::loadView('order-receipt', ['order' => $order,'user' => $user,'userDetail' => $user_detail]);
 		$pdfContent = $pdf->output();
 		FunHelper::saveOrderPlacedPdf($pdfContent,$order);
-		event(new OrderPlaced($order));
+		OrderPlaced::dispatch($order);
 		return view('order-thank-you', array(
 				'order' => $order,
 			));
