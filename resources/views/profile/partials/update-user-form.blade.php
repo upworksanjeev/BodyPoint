@@ -174,10 +174,10 @@
                 <div class="card flex items-center mt-4 justify-between">
                     <div class="py-6 text-xl text-[#00838f] py-3 ">{{ __('Billing Information') }}</div>   
                     
-                    <!-- <div class="flex ml-4 pt-[5px] pr-2" >
+                    {{-- <div class="flex ml-4 pt-[5px] pr-2" >
                         <x-text-input id="shipping_details"    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-0  dark:bg-gray-700 dark:border-gray-600" type="checkbox"  name="shipping_details" :value="old('shipping_details')" />
                         <x-input-label  for="shipping_details" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="" :value="__('Same As Shipping Address')" />
-                    </div> -->
+                    </div> --}}
 
                 
                 </div>
