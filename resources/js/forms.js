@@ -90,14 +90,14 @@ $(document).ready(function () {
             }
         })
         // Assuming you have a checkbox element with the id "myCheckbox"
-            const myCheckbox = document.getElementById('shipping_details');
+            // const myCheckbox = document.getElementById('shipping_details');
 
-            if (myCheckbox && myCheckbox.checked) {
+            // if (myCheckbox && myCheckbox.checked) {
        
-            } else {
-                const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
-                $billingFields.val('');
-            }
+            // } else {
+            //     const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
+            //     $billingFields.val('');
+            // }
 
         
         $('#shipping_details').change(function () {

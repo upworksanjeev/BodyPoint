@@ -16,10 +16,9 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => ['string', 'max:255'],
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'primary_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
             'alternate_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
             'shipping_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
@@ -27,6 +26,12 @@ class ProfileUpdateRequest extends FormRequest
             'shipping_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/',
             'billing_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/'
         ];
+
+        if(request()->password != null){
+            $rules['password'] = ['required', 'confirmed', Rules\Password::defaults()];
+        }
+
+        return $rules;
     }
 
 
