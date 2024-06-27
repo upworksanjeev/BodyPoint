@@ -25,7 +25,7 @@
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Products <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
-                             <h5 class="ctmH2 text-[22px] text-[#00838f] font-[500] mb-4">Product</h5>
+                             <h5 class="ctmH2 text-[22px] text-[#00838f] font-[500] mb-4">Products</h5>
 
                              <div class="ctm-grd-one">
                                  <div class="ctm-grd-two">
@@ -151,13 +151,8 @@
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">About <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
-                             <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500]">About Us</h5>
-                             <p class="text-[#333] pt-[5px] text-[16px] mb-5">“At Bodypoint, we work every day to
-                                 better understand the capabilities and aspirations of people who use wheelchairs. As we
-                                 imagine, design and manufacture our products, we strive to bridge the gap between the
-                                 hard and the soft, the inanimate and the living, to create a better connection between
-                                 wheelchairs and people.”
-                                 – David Hintzman, Co-Founder </p>
+                             <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500]">About</h5>
+                            
                              <div class="ctm-grd-one">
 							
                                  <div class="ctm-grd-two">
@@ -320,8 +315,7 @@
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Resources <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
-                             <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500] mb-5">Learn about Bodypoint and
-                                 postural support</h5>
+                             <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500] mb-5">Resources</h5>
                           
                              <div class="grid grid-cols-4 column-gap gap-x-4 gap-y-8">
 								 <div class="ctm-grd-two">
