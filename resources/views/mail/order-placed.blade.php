@@ -62,7 +62,7 @@
                                                 @endforeach
                                                 @endif
                                                 <tr style="background-color: #fff;">
-                                                    <td style="font-size: 12px; color: #000; padding: 10px;" colspan="2">
+                                                    <td style="font-size: 12px; color: #000; padding: 10px 10px 20px 10px;" colspan="2">
                                                         <div style="text-align: right;">
                                                             <h3 style="font-size: 24px; font-weight: normal; color: #000; margin: 0px;"><span style="font-weight: bold;">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                                                         </div>
