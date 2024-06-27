@@ -39,8 +39,8 @@
                                                 @foreach ($order['OrderItem'] as $cartitem)
                                                 <tr style="background-color: #fff; border-bottom: 1px solid #E5E7EB;">
                                                     <td style="font-size: 12px; color: #000; padding: 10px;">
-                                                        <div style="display: flex; align-items: center; gap: 10px">
-                                                            <div>
+                                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                                            <div style="margin-right: 10px;">
                                                                 <img src="<?php if (isset($cartitem['Product']['Media'][0]['id'])) {
                                               echo url('storage/' . $cartitem['Product']['Media'][0]['id'] . '/' . $cartitem['Product']['Media'][0]['file_name']);
                                             } else {
