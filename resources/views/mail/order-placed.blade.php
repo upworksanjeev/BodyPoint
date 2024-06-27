@@ -20,13 +20,13 @@
                                 <table style="padding: 10px; width: 100%; background-color: #00838f;">
                                     <tr>
                                         <th>
-                                            <h4 style="color: #fff; text-align: left; font-weight: 400; font-size: 13px">Order Date: {{ date('F j, Y',strtotime($order['created_at'])) }}</h4>
+                                            <h4 style="color: #fff; text-align: left; font-weight: 400; font-size: 13px; margin: 0px;">Order Date: {{ date('F j, Y',strtotime($order['created_at'])) }}</h4>
                                         </th>
                                         <th>
-                                            <h4 style="color: #fff; text-align: center; font-weight: 400; font-size: 13px">Order Details</h4>
+                                            <h4 style="color: #fff; text-align: center; font-weight: 400; font-size: 13px; margin: 0px;">Order Details</h4>
                                         </th>
                                         <th>
-                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
+                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
                                         </th>
                                     </tr>
                                 </table>
@@ -37,23 +37,23 @@
                                                 <?php $subtotal = 0; ?>
                                                 @if(isset($order))
                                                 @foreach ($order['OrderItem'] as $cartitem)
-                                                <tr style="background-color: #fff; border-bottom: 1px solid #E5E7EB;">
-                                                    <td style="font-size: 12px; color: #000; padding: 10px;">
+                                                <tr style="background-color: #fff;">
+                                                    <td style="font-size: 12px; color: #000; padding: 10px; border-bottom: 1px solid #E5E7EB;">
                                                         <div style="display: flex; align-items: center; gap: 10px;">
                                                             <div style="margin-right: 10px;">
                                                                 <img src="<?php if (isset($cartitem['Product']['Media'][0]['id'])) {
                                               echo url('storage/' . $cartitem['Product']['Media'][0]['id'] . '/' . $cartitem['Product']['Media'][0]['file_name']);
                                             } else {
                                               echo '/img/standard-img.png';
-                                            } ?>" alt="product-img" style="width: 65px; height: 65px; object-fit: cover;" />
+                                            } ?>" alt="product-img" style="width: 60px; height: 60px; object-fit: cover;" />
                                                             </div>
                                                             <div style="flex: 1;">
                                                                 <p style="font-size: 12px; margin: 0px 0px 5px 0px;"><a style="color: #000;" href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
-                                                                <span style="background-color: #E4E4E4; color: #000000; font-size: 10px; padding-left: 10px; padding-right: 11px;padding-top: 5px;padding-bottom: 5px;border-radius: 20px;display: inline-block;line-height: 1.5em;">Qty:{{ $cartitem['quantity'] }}</span>
+                                                                <span style="background-color: #E4E4E4; color: #000000; font-size: 10px; padding-left: 10px; padding-right: 11px;padding-top: 4px;padding-bottom: 4px;border-radius: 20px;display: inline-block;line-height: 1.5em;">Qty:{{ $cartitem['quantity'] }}</span>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td style="font-size: 12px; color: #000; padding: 10px; text-align: right;">
+                                                    <td style="font-size: 12px; color: #000; padding: 10px; text-align: right; border-bottom: 1px solid #E5E7EB;">
                                                         ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
                                                     </td>
                                                     <td></td>
