@@ -33,6 +33,7 @@ class ImportCategory implements ToModel, WithHeadingRow
 				   //Add product
 				   $product= Product::create([
 					   'name' => $row['item_name'],
+					   'item_name' => $row['model_name'],
 					   'slug' => Str::slug($row['item_name']),
 					   'sku' => $row['model_stockcode']?trim($row['model_stockcode']):trim($row['stockcode']),
 					   'product_type' => $product_type,
@@ -102,12 +103,13 @@ class ImportCategory implements ToModel, WithHeadingRow
 						if(!isset($prod_attr['id'])){				
 							$prod_attr=ProductAttribute::create(['prod_id' => $product_id,'attr_id' => $att_id]);
 						}
-						
+						if(isset($variation_id) && $variation_id!=null){
 						 //Add Variation Attributes
 					   $variation_attr= VariationAttribute::create([
 						   'variation_id' => $variation_id,
 						   'product_attribute_id' => $prod_attr['id'],
 					   ]);
+						}
 					}
 				}
 				}
