@@ -18,7 +18,7 @@ class Product extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
 	 protected $fillable = [
-        'name','slug', 'sku', 'msrp', 'price', 'discount', 'product_type','small_description','description','overview','sizing','instruction_of_use','warranty','video'
+        'name','item_name','slug', 'sku', 'msrp', 'price', 'discount', 'product_type','small_description','description','overview','sizing','instruction_of_use','warranty','video'
     ];
 	protected $attributes = [
        'product_type' => 'Single',
