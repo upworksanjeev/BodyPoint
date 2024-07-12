@@ -317,7 +317,7 @@
                          <div class="dropdown-content">
                              <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500] mb-5">Resources</h5>
                           
-                             <div class="grid grid-cols-4 column-gap gap-x-4 gap-y-8">
+                             <div class="grid grid-cols-4 column-gap gap-x-4 gap-y-2">
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/faqs/">
                                          <div
