@@ -75,7 +75,7 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
     -moz-column-gap: 16px;
     column-gap: 16px;
-    row-gap: 40px;
+    row-gap: 0px;
 }
  
 .dropdown-content {
@@ -431,7 +431,7 @@ body {
     .ctm-grd-one {
         display: grid;
         grid-template-columns: 1fr;
-        row-gap: 16px;
+        row-gap: 0px;
     }
     .ctm-grd-two {
         grid-template-columns: 1fr;
