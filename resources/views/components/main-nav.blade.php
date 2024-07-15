@@ -329,7 +329,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{ config('bodypoint.home_url') }}/faqs/">FAQ's</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">Product and ordering questions
+                                         <p class="text-[14px] text-[#333] font-[400]">
                                          </p>
                                      </div>
                                  </div>
@@ -344,8 +344,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{ config('bodypoint.home_url') }}/why-positioning-matters/">Positioning Matters</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">We improve users' safety,
-                                             comfort and function.</p>
+                                         <p class="text-[14px] text-[#333] font-[400]"></p>
 
                                      </div>
                                  </div>
@@ -362,7 +361,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{ config('bodypoint.home_url') }}/literature/">Literature</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">Catalog and clinical information
+                                         <p class="text-[14px] text-[#333] font-[400]">
                                          </p>
 
                                      </div>
@@ -379,7 +378,7 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/dealer-tools-&-accessories'); ?>">Dealer Tools</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/all-tools'); ?>">All Tools</a></p>
+                                                 href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
                                  </div>
@@ -397,13 +396,12 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{ config('bodypoint.home_url') }}/terms-conditions/">Terms &
                                              Conditions</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">BP trademarks, warranty, and
-                                             policies</p>
+                                         <p class="text-[14px] text-[#333] font-[400]"></p>
 
                                      </div>
                                  </div>
 								 <div class="ctm-grd-two">
-                                     <a class="" href="https://www.youtube.com/user/BodypointInc">
+                                     <a class="" href="{{ config('bodypoint.home_url') }}/education-series/">
                                          <div
                                              class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class=""
@@ -413,8 +411,8 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="https://www.youtube.com/user/BodypointInc">Education Series</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">Product and how-to videos</p>
+                                             href="{{ config('bodypoint.home_url') }}/education-series/">Education Series</a>
+                                         <p class="text-[14px] text-[#333] font-[400]"></p>
 
                                      </div>
                                  </div>
@@ -430,7 +428,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="https://www.youtube.com/user/BodypointInc">Training</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">Product and how-to videos</p>
+                                         <p class="text-[14px] text-[#333] font-[400]"></p>
 
                                      </div>
                                  </div>
@@ -449,7 +447,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{ config('bodypoint.home_url') }}/complaint/">Feedback Submit</a>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>">How can we help?</a></p>
+                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
                                  </div>

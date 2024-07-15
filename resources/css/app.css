@@ -291,14 +291,12 @@ body {
 .text-set {
     text-align: right;
 }
-
 .detactor {
     margin-top: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
 }
-
 .detactor-right {
     text-align: right;
 }
