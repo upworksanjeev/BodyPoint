@@ -132,6 +132,22 @@ class ProductController extends Controller
 				}
 			}
 			return view('components.attribute', ['index' => $request->index+1,'attribute' => $attribute,'category' => $category,'product' => $product]);
+	} 
+
+	
+	/**
+     * return list of product on basis of search keyword
+    */
+    public function productSearch(Request $request)
+    {
+		$search=$request->searchinput; 
+		if($search!=''){
+			$categories = Category::all();
+			$products = Product::with(['media'])->where('name','like','%'.$request->searchinput.'%')->paginate(16);
+			return view('search', ['products' => $products,'searchinput' => $search,'categories' => $categories]);
+		}else{
+			return redirect()->route('home');
+		}
 	}  
 	
 	 /**

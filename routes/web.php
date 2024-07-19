@@ -24,6 +24,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{name}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{name}', [ProductController::class, 'index'])->name('product');
 Route::post('/getNextAttribute', [ProductController::class, 'getNextAttribute'])->name('product-next-attribute');
+Route::post('/search', [ProductController::class, 'productSearch'])->name('product-search');
+Route::get('/search', [ProductController::class, 'productSearch'])->name('product-search');
 Route::post('/getVariationPrice', [ProductController::class, 'getVariationPrice'])->name('get-variation-price');
 
 
@@ -50,7 +52,7 @@ Route::middleware('auth')->group(function () {
 	Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');
 	Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
 	Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
-	Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
+	Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download-get');
 	Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
 	Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');
 	Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
