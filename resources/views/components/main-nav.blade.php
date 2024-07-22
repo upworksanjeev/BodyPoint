@@ -919,25 +919,13 @@
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
-                                 </div>
-                             
-
+                                 </div>                            
                              </div>
-
                          </div>
                  </div>
-
-
-                 </ul>
+                 
              </div>
          </div>
-
      </div>
-
-
-
      </div>
-
-
-
  </nav>

@@ -24,6 +24,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{name}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{name}', [ProductController::class, 'index'])->name('product');
 Route::post('/getNextAttribute', [ProductController::class, 'getNextAttribute'])->name('product-next-attribute');
+Route::post('/search', [ProductController::class, 'productSearch'])->name('product-search');
+Route::get('/search', [ProductController::class, 'productSearch'])->name('product-search');
 Route::post('/getVariationPrice', [ProductController::class, 'getVariationPrice'])->name('get-variation-price');
 
 
