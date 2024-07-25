@@ -437,7 +437,7 @@
                                 
 								
 								 <div class="ctm-grd-two">
-                                     <a class="" href="{{ config('bodypoint.home_url') }}/complaint/">
+                                     <a class="" href="{{ config('bodypoint.home_url') }}/feedback/">
                                          <div
                                              class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class="" src="{{ asset('img/Feedback.png') }}"
@@ -446,7 +446,7 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="{{ config('bodypoint.home_url') }}/complaint/">Feedback Submit</a>
+                                             href="{{ config('bodypoint.home_url') }}/feedback/">Feedback Submit</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
@@ -906,7 +906,7 @@
                                 
 								
 								 <div class="ctm-grd-two">
-                                     <a class="" href="{{ config('bodypoint.home_url') }}/complaint/">
+                                     <a class="" href="{{ config('bodypoint.home_url') }}/feedback/">
                                          <div
                                              class="prd-img px-2 rounded flex items-start justify-center min-h-[120px] bg-[#fff]">
                                              <img class="" src="{{ asset('img/Feedback.png') }}"
@@ -915,7 +915,7 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="{{ config('bodypoint.home_url') }}/complaint/">Feedback Submit</a>
+                                             href="{{ config('bodypoint.home_url') }}/feedback/">Feedback Submit</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
