@@ -7,7 +7,7 @@
              <button @click="open = ! open"
                  class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition ease-in-out duration-150 text-[40px]">
 				 <x-icons.mobile-menu />
-                 
+
 
              </button>
          </div>
@@ -42,7 +42,7 @@
                                                  href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
-                                        
+
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
@@ -62,7 +62,7 @@
                                                  href="<?php echo url('/category/leg-harness'); ?>">Leg Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belts</a></p>
-                                        
+
                                      </div>
                                  </div>
 								  <div class="ctm-grd-two">
@@ -82,7 +82,7 @@
                                                  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/universal-elastic-strap'); ?>">Elastic Mobility Straps</a></p>
-                                         
+
                                      </div>
                                  </div>
 								 <div class="ctm-grd-two">
@@ -100,7 +100,7 @@
                                                  href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
-                                         
+
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
@@ -122,7 +122,7 @@
                                                  href="<?php echo url('/category/sports-and-active-users'); ?>">Athletic Users</a></p>
                                      </div>
                                  </div>
-                                 
+
                                  <div class="ctm-grd-two">
                                      <a class="" href="<?php echo url('/category/hardware'); ?>">
                                          <div
@@ -138,23 +138,23 @@
                                                  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
-                                         
+
                                      </div>
-                                 </div>                               
-                                 
+                                 </div>
+
                              </div>
                          </div>
                      </div>
-                     
+
 					  <div class="dropdown flex">
                          <a href="{{ config('bodypoint.home_url') }}/company-overview/"
                              class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">About <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
                              <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500]">About</h5>
-                            
+
                              <div class="ctm-grd-one">
-							
+
                                  <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/company-overview/">
                                          <div
@@ -302,11 +302,11 @@
 
                                      </div>
                                  </div>
-                                
-								 
-                                
-                                 
-                                
+
+
+
+
+
                              </div>
                          </div>
                      </div>
@@ -316,7 +316,7 @@
                              aria-current="page">Resources <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
                              <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500] mb-5">Resources</h5>
-                          
+
                              <div class="grid grid-cols-4 column-gap gap-x-4 gap-y-2">
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/faqs/">
@@ -432,10 +432,10 @@
 
                                      </div>
                                  </div>
-                               
-								  
-                                
-								
+
+
+
+
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/feedback/">
                                          <div
@@ -446,7 +446,7 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="{{ config('bodypoint.home_url') }}/feedback/">Feedback Submit</a>
+                                             href="{{ config('bodypoint.home_url') }}/feedback/">Leave Feedback</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
@@ -454,7 +454,7 @@
                              </div>
                          </div>
                      </div>
-                    
+
                      </ul>
                  </div>
              </div>
@@ -503,7 +503,7 @@
                                                  href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
-                                        
+
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
@@ -523,7 +523,7 @@
                                                  href="<?php echo url('/category/leg-harness'); ?>">Leg Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belts</a></p>
-                                        
+
                                      </div>
                                  </div>
 								  <div class="ctm-grd-two">
@@ -543,7 +543,7 @@
                                                  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/universal-elastic-strap'); ?>">Elastic Mobility Straps</a></p>
-                                         
+
                                      </div>
                                  </div>
 								 <div class="ctm-grd-two">
@@ -561,7 +561,7 @@
                                                  href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
-                                         
+
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
@@ -583,7 +583,7 @@
                                                  href="<?php echo url('/category/sports-and-active-users'); ?>">Athletic Users</a></p>
                                      </div>
                                  </div>
-                                 
+
                                  <div class="ctm-grd-two">
                                      <a class="" href="<?php echo url('/category/hardware'); ?>">
                                          <div
@@ -599,12 +599,12 @@
                                                  href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
-                                         
+
                                      </div>
-                                 </div>                               
-                                 
+                                 </div>
+
                              </div>
-                            
+
 
                          </div>
 
@@ -617,9 +617,9 @@
                          {{ __('About') }} <i class="fa fa-caret-down"></i>
                          </x-responsive-nave-link>
                          <div class="mobile-dropdown-content" x-show="open">
-                            
+
                               <div class="ctm-grd-one">
-							
+
                                  <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/company-overview/">
                                          <div
@@ -767,16 +767,16 @@
 
                                      </div>
                                  </div>
-                                
-								 
-                                
-                                 
-                                
+
+
+
+
+
                              </div>
                          </div>
                  </div>
 
-					
+
                  <div class="mobile-dropdown" x-data="{ open: false, toggle() { this.open = !this.open } }">
                      <x-nav-link-custom @click="toggle()"
                          classes="transition duration-150 ease-in-out rounded-md px-3 font-light text-[#333] hover:text-[#fe7300] block py-2 text-[18px] font-[300] flex justify-between items-center cursor-pointer"
@@ -784,9 +784,9 @@
                          {{ __('Resources') }} <i class="fa fa-caret-down"></i>
                          </x-responsive-nave-link>
                          <div class="mobile-dropdown-content" x-show="open">
-                            
+
                              <div class="ctm-grd-one">
-                                  
+
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/faqs/">
                                          <div
@@ -901,10 +901,10 @@
 
                                      </div>
                                  </div>
-                               
-								  
-                                
-								
+
+
+
+
 								 <div class="ctm-grd-two">
                                      <a class="" href="{{ config('bodypoint.home_url') }}/feedback/">
                                          <div
@@ -915,15 +915,15 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="{{ config('bodypoint.home_url') }}/feedback/">Feedback Submit</a>
+                                             href="{{ config('bodypoint.home_url') }}/feedback/">Leave Feedback</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]" href="<?php echo url('/category/all-tools'); ?>"></a></p>
 
                                      </div>
-                                 </div>                            
+                                 </div>
                              </div>
                          </div>
                  </div>
-                 
+
              </div>
          </div>
      </div>
