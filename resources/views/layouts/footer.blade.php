@@ -26,22 +26,22 @@
             <div class="w-full lg:w-1/4">
                 <div class=" flex justify-center lg:justify-end  gap-3">
 
-                    <x-nav-link-custom href="https://www.facebook.com/BodypointInc" classes="flex items-center justify-center">
+                    <x-nav-link-custom target="_blank" href="https://www.facebook.com/BodypointInc" classes="flex items-center justify-center">
                         <i class="text-[#333] text-[22px] fa fa-facebook" aria-hidden="true"></i>
                         </x-responsive-nave-link>
-                        <x-nav-link-custom href="https://www.linkedin.com/company/bodypoint-inc-" classes="flex items-center justify-center">
+                        <x-nav-link-custom target="_blank" href="https://www.linkedin.com/company/bodypoint-inc-" classes="flex items-center justify-center">
                             <i class="text-[#333] text-[22px] fa fa-linkedin" aria-hidden="true"></i>
                             </x-responsive-nave-link>
 
-                            <x-nav-link-custom href="https://www.instagram.com/bodypoint_inc/" classes="flex items-center justify-center">
+                            <x-nav-link-custom target="_blank" href="https://www.instagram.com/bodypoint_inc/" classes="flex items-center justify-center">
                                 <i class="text-[#333] text-[22px] fa fa-instagram" aria-hidden="true"></i>
                                 </x-responsive-nave-link>
 
-                                <x-nav-link-custom href="https://x.com/bodypoint_inc" classes="flex items-center justify-center">
+                                <x-nav-link-custom target="_blank" href="https://x.com/bodypoint_inc" classes="flex items-center justify-center">
                                     <i class="text-[#333] text-[22px] fa fa-twitter" aria-hidden="true"></i>
                                     </x-responsive-nave-link>
 
-                                    <x-nav-link-custom href="https://www.youtube.com/bodypointinc" classes="flex items-center justify-center">
+                                    <x-nav-link-custom target="_blank" href="https://www.youtube.com/bodypointinc" classes="flex items-center justify-center">
                                         <i class="text-[#333] text-[22px] fa fa-youtube" aria-hidden="true"></i>
                                         </x-responsive-nave-link>
 
