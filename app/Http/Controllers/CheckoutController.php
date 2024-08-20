@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
 use App\Helpers\FunHelper;
 use Illuminate\Http\Request;
@@ -34,8 +35,8 @@ class CheckoutController extends Controller
 				'user' => $user,
 				'userDetail' => $user_detail,
 			));
-	} 
-	
+	}
+
 	/**
      * Payment select page.
      */
@@ -43,7 +44,7 @@ class CheckoutController extends Controller
     {
 		$user = Auth::user();
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
-	
+
 		return view('payment', array(
 				'cart' => $cart,
 			));
@@ -68,9 +69,9 @@ class CheckoutController extends Controller
 			));
 		}
 		return redirect()->route('cart');
-		
-	} 
-	
+
+	}
+
 	/**
      * quote page cart details.
      */
@@ -84,7 +85,7 @@ class CheckoutController extends Controller
 				'user' => $user,
 				'user_detail' => $user_detail,
 			));
-	} 
+	}
 
 	 /**
      * Save Order in DB
@@ -100,9 +101,9 @@ class CheckoutController extends Controller
 				'purchase_order_no' => $request->purchase_order_no,
 				'total_items' => $cart->total_items,
 			]);
-			
+
 		$cartitems=CartItem::where('cart_id', $cart->id)->get();
-		if($cartitems){ 	
+		if($cartitems){
 			foreach($cartitems as $k=>$v){
 				$order_item=OrderItem::create([
 						'order_id' => $order->id,
@@ -117,7 +118,7 @@ class CheckoutController extends Controller
 						'quantity' => $v->quantity,
 					]);
 			}
-			
+
 		}
 		CartItem::where('cart_id', $cart->id)->delete();
 		$cart->delete();
@@ -132,12 +133,12 @@ class CheckoutController extends Controller
 				'order' => $order,
 			));
 		}
-		return redirect()->route('cart');		
-			
-	} 
-	 
+		return redirect()->route('cart');
+
+	}
+
 	 /**
-     * get all Orders 
+     * get all Orders
      */
     public function myOrder(Request $request)
     {
@@ -172,11 +173,11 @@ class CheckoutController extends Controller
 				'end_date' => $request->end_date??'',
 				'search' => $request->search_input??'',
 			));
-			
+
 		}
-		
-	} 
-	
+
+	}
+
 	/**
 	*  PDF download for save quote
 	*/
@@ -188,6 +189,7 @@ class CheckoutController extends Controller
 		$price_option=$request->price_option; }
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
 		$user_detail=UserDetails::where('user_id', $user->id)->first();
+        GenerateQuote::dispatch($cart,$user,$user_detail,$price_option);
 		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail,'priceOption' => $price_option]);
 		$pdf->render();
 		$dompdf = $pdf->getDomPDF();
@@ -195,7 +197,7 @@ class CheckoutController extends Controller
         $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
 		return $pdf->download();
 	}
-	
+
 	/**
 	*  receipt download for orders
 	*/
@@ -207,7 +209,7 @@ class CheckoutController extends Controller
 		$pdf = Pdf::loadView('order-receipt', ['order' => $order,'user' => $user,'userDetail' => $user_detail]);
 		return $pdf->download();
 	}
-	 
+
 	 /**
      * Update Purchase No in cart table
      **/
@@ -216,6 +218,6 @@ class CheckoutController extends Controller
 		if($request->has('cart_id')){
 			Cart::where('id', $request->cart_id)->update(['purchase_order_no' => $request->purchase_order_no]);
 		}
-	} 
+	}
 
 }
