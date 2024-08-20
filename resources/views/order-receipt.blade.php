@@ -95,19 +95,19 @@ body {
             <table style="width: 100%; border-collapse: collapse; border-spacing: 0px;">
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_user_name??'' }} {{ $userDetail->shipping_last_name??'' }}</span></td>
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }} {{ $userDetail->shipping_country }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_address??'' }}, <br>{{ $userDetail->shipping_city??'' }}, {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }} {{ $userDetail->shipping_country??'' }}</span></td>
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_country }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_country??'' }}</span></td>
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Phone:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->shipping_phone }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->shipping_phone??'' }}</span></td>
               </tr>
             </table>
           </div>
@@ -120,7 +120,7 @@ body {
                   <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span>
                 </td>
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_user_name??'' }} {{ $userDetail->billing_last_name??'' }}</span>
                 </td>
               </tr>
               <tr>
@@ -128,7 +128,7 @@ body {
                   <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span>
                 </td>
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }} {{ $userDetail->billing_country }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }}, {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }} {{ $userDetail->billing_country??'' }}</span>
                 </td>
               </tr>
               <tr>
@@ -136,7 +136,7 @@ body {
                   <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span>
                 </td>
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_country }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_country??'' }}</span>
                 </td>
               </tr>
               <tr>
@@ -144,7 +144,7 @@ body {
                   <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Phone:</span>
                 </td>
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->billing_phone }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->billing_phone??'' }}</span>
                 </td>
               </tr>
 
@@ -208,10 +208,10 @@ body {
 
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
 
-                {{ $cartitem['Product']['name'] }}
+                {{ $cartitem['Product']['name']??'' }}
               </td>
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                {{ $cartitem['sku'] }}
+                {{ $cartitem['sku']??'' }}
               </td>
              
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -219,7 +219,7 @@ body {
               </td>
 
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                {{ $cartitem['quantity'] }}
+                {{ $cartitem['quantity']??'' }}
               </td>
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 EA
