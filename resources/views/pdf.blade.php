@@ -150,19 +150,21 @@
                     <table style="width: 100%; border-collapse: collapse; border-spacing: 0px; ver">
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span></td>
+
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_user_name??'' }} {{ $userDetail->shipping_last_name??'' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address??'' }}, <br>{{ $userDetail->shipping_city??'' }}, {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_country }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_country??'' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->shipping_phone }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->shipping_phone??'' }}</span></td>
+
                         </tr>
                     </table>
                 </td>
@@ -173,7 +175,9 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
+
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_user_name??'' }} {{ $userDetail->billing_last_name??'' }}</span>
+
                             </td>
                         </tr>
                         <tr>
@@ -181,7 +185,9 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
                             <td>
+
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }}</span>
+
                             </td>
                         </tr>
                         <tr>
@@ -189,7 +195,9 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_country }}</span>
+
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_country??'' }}</span>
+
                             </td>
                         </tr>
                         <tr>
@@ -197,7 +205,9 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->billing_phone }}</span>
+
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->billing_phone??'' }}</span>
+
                             </td>
                         </tr>
 
@@ -263,13 +273,15 @@
                     @foreach ($cart[0]['CartItem'] as $cartitem)
                     <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
                         <td style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['Product']['name'] }}
+
+                            {{ $cartitem['Product']['name']??'' }}
                         </td>
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['sku'] }}
+                            {{ $cartitem['sku']??'' }}
                         </td>
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['marked_for'] }}
+                            {{ $cartitem['marked_for']??'' }}
+
                         </td>
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                             ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
@@ -277,7 +289,9 @@
 
                         @if($priceOption=='msrp_only')
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['quantity'] }}
+
+                            {{ $cartitem['quantity']??'' }}
+
                         </td>
 
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -289,7 +303,9 @@
                             ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}
                         </td>
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['quantity'] }}
+
+                            {{ $cartitem['quantity']??'' }}
+
                         </td>
 
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -305,7 +321,9 @@
                         </td>
 
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['quantity'] }}
+
+                            {{ $cartitem['quantity']??'' }}
+
                         </td>
 
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
