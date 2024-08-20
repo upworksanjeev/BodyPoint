@@ -11,7 +11,7 @@
                 <div>
 					 <x-subcat-left-menu  :subcategory="$subcategory"/>
                      <x-category-left-menu  :categories="$categories"/>
-                     <x-product-left-menu  :products="$products"/>
+                     {{-- <x-product-left-menu  :products="$products"/> --}}
                      <button class="p-2 bg-[#fe7300] hover:bg-[#e96a00] text-white text-[20px] font-[500] w-[100%] rounded-[10px]">Reset</button>
                 </div>
                 <div class="product-details">

@@ -51,6 +51,7 @@ class Product extends Resource
      */
     public static $search = [
         'id',
+        'name'
     ];
 
     /**
