@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\Cart;
 use App\Models\UserDetails;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class FunHelper
 {
@@ -44,4 +45,11 @@ class FunHelper
 			}
 			return($cat_array);
      }
+
+	 public static function saveOrderPlacedPdf($pdfContent,$order){
+		$directory = 'orders';
+		$filename = 'order_receipt_' . $order->id . '.pdf';
+		$path = $directory . '/' . $filename;
+		Storage::disk('public')->put($path, $pdfContent);
+	 }
 }
