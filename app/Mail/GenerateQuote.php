@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Attachment;
 
 class GenerateQuote extends Mailable
 {
@@ -54,6 +55,11 @@ class GenerateQuote extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $filePath = storage_path('app/public/quotes/quote-generate' . $this->user->id . '.pdf');
+        return [
+            Attachment::fromPath($filePath)
+                ->as('Quote.pdf')
+                ->withMime('application/pdf'),
+        ];
     }
 }

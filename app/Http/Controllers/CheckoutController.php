@@ -189,9 +189,11 @@ class CheckoutController extends Controller
 		$price_option=$request->price_option; }
 		$cart=Cart::with('User','CartItem.Product.Media')->where('user_id', $user->id)->get();
 		$user_detail=UserDetails::where('user_id', $user->id)->first();
-        GenerateQuote::dispatch($cart,$user,$user_detail,$price_option);
 		$pdf = Pdf::loadView('pdf', ['cart' => $cart,'user' => $user,'userDetail' => $user_detail,'priceOption' => $price_option]);
 		$pdf->render();
+        $pdfContent = $pdf->output();
+        FunHelper::saveGenerateQuotePdf($pdfContent,$user);
+        GenerateQuote::dispatch($cart,$user,$user_detail,$price_option);
 		$dompdf = $pdf->getDomPDF();
 		$font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
         $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
