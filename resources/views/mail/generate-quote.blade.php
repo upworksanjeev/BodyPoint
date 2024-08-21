@@ -151,7 +151,7 @@
                     <table style="width: 100%; border-collapse: collapse; border-spacing: 0px; ver">
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_user_name }} {{ $userDetail->shipping_last_name }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_user_name ?? '' }} {{ $userDetail->shipping_last_name ?? '' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span></td>

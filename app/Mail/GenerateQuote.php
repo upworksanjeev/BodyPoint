@@ -34,6 +34,7 @@ class GenerateQuote extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from:'quotes@bodypoint.com',
             subject: 'Generate Quote',
         );
     }
