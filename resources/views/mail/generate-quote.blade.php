@@ -155,15 +155,15 @@
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address }}, <br>{{ $userDetail->shipping_city }}, {{ $userDetail->shipping_state }} {{ $userDetail->shipping_zip }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address ?? '' }}, <br>{{ $userDetail->shipping_city ?? '' }}, {{ $userDetail->shipping_state ?? '' }} {{ $userDetail->shipping_zip ?? '' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_country }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_country ?? '' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->shipping_phone }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->shipping_phone ?? '' }}</span></td>
                         </tr>
                     </table>
                 </td>
@@ -174,7 +174,7 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_user_name }} {{ $userDetail->billing_last_name }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_user_name ?? '' }} {{ $userDetail->billing_last_name ?? '' }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -182,7 +182,7 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address ?? ''  }} <br>{{ $userDetail->billing_city ?? '' }}, {{ $userDetail->billing_state ?? '' }} {{ $userDetail->billing_zip ?? ''  }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -190,7 +190,7 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_country }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_country ?? '' }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -198,7 +198,7 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->billing_phone }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->billing_phone ?? '' }}</span>
                             </td>
                         </tr>
 
