@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
+use App\Listeners\GenerateQuoteMail;
 use App\Listeners\OrderPlacedMail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderPlaced::class => [
             OrderPlacedMail::class
+        ],
+        GenerateQuote::class => [
+            GenerateQuoteMail::class
         ]
     ];
 
