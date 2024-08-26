@@ -186,7 +186,7 @@
                             </td>
                             <td>
 
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address  }} <br>{{ $userDetail->billing_city }}, {{ $userDetail->billing_state }} {{ $userDetail->billing_zip  }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }}, {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }}</span>
 
                             </td>
                         </tr>
