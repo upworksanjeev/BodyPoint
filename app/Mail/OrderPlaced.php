@@ -29,7 +29,7 @@ class OrderPlaced extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: 'confirmations@bodypoint.com',
+            from:config('bodypoint.mail_for_orders'),
             subject: 'Order Placed',
         );
     }
