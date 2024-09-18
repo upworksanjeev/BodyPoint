@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Services\SysproService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,7 +58,18 @@ Route::middleware('auth')->group(function () {
 	Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');
 	Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
 	Route::post('/add-success-story', [ProductController::class, 'addStory'])->name('add-success-story');
-
+    Route::get('/list-stock', function () {
+        $syspro_service = new SysproService();
+        $url = 'ListStock';
+        $response = $syspro_service->ListStock($url);
+        dd($response['response']);
+    });
+    Route::get('/place-order', function () {
+        $syspro_service = new SysproService();
+        $url = 'CreateQuote';
+        $response = $syspro_service->placeQuote($url);
+        dd($response['response']);
+    });
 });
 
 require __DIR__.'/auth.php';

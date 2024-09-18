@@ -30,5 +30,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'syspro' => [
+        'api_url' => env('SYSPRO_API_URL'),
+        'token' => env('SYSYPRO_API_TOKEN'),
+        'session_id' => env('SYSYPRO_API_SESSION_ID')
+    ]
 
 ];
