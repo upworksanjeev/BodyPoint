@@ -70,6 +70,12 @@ Route::middleware('auth')->group(function () {
         $response = $syspro_service->placeQuote($url);
         dd($response['response']);
     });
+    Route::get('/update-product-prices', function () {
+        $syspro_service = new SysproService();
+        $url = 'GetCustomerDetails/'.auth()->user()->customer_id;
+        $response = $syspro_service->getCustomerDetails($url);
+        dd($response['response']);
+    });
 });
 
 require __DIR__.'/auth.php';

@@ -51,7 +51,8 @@ class Product extends Resource
      */
     public static $search = [
         'id',
-        'name'
+        'name',
+        'sku'
     ];
 
     /**
@@ -85,19 +86,19 @@ class Product extends Resource
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
-						
+
      				Text::make('Description','description')->displayUsing(function($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
                         })->onlyOnIndex(),
-						
-                  
+
+
                 ]),
                 Tab::make('Overview', [
                     NovaTinyMCE::make('Overview','overview')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
                         ]),
-                ]),  
+                ]),
 				Tab::make('Sizing', [
                     NovaTinyMCE::make('Sizing','sizing')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
@@ -115,12 +116,12 @@ class Product extends Resource
                 ]),
 				Tab::make('Price', [
                      Text::make('SKU','sku')->sortable()->maxlength(255),
-                     
+
 					 Number::make('MSRP','msrp')->min(1)->max(999999)->step(0.01)->sortable()->hideFromIndex(),
 					 Number::make('Price','price')->min(1)->max(999999)->step(0.01)->sortable(),
 					 Number::make('Discount (in %)','discount')->min(1)->max(100)->step('any')->hideFromIndex(),
-                   
-                ]),  
+
+                ]),
                 Tab::make('Product Attributes', [
                     Select::make('Product Type','product_type')->options([
                         'Single' => 'Single',
@@ -180,7 +181,7 @@ class Product extends Resource
 			  (new DownloadExcel)->withFilename('Product-' . time() . '.xlsx')->allFields()->withHeadings("ID","Item_Name","Tagline","Description","Product Overview/Overview","Product Sizing/Sizing","Product Instructions/Instructions for Use","warranty","Item_Type","Categories")->except("video","is_deleted","created_at","updated_at","Images"),
 			  Actions\ImportAllCategory::make(),
 			//Actions\ExportAllCategory::make(),
-			
+
 		];
     }
 }

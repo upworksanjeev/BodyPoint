@@ -104,4 +104,23 @@ class SysproService
         $response = $this->post($url, $request);
         return $this->returnResponse($response);
     }
+
+    public function placeOrder($url,$order_number)
+    {
+        $request = [
+            "OrderNumber" => $order_number
+        ];
+        $response = $this->post($url, $request);
+        return $this->returnResponse($response);
+    }
+
+    public function getOrderDetails($url){
+        $response = $this->get($url);
+        return $this->returnResponse($response);
+    }
+
+    public function getCustomerDetails($url){
+        $response = $this->get($url);
+        return $this->returnResponse($response);
+    }
 }
