@@ -30,17 +30,12 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
-        if (!empty(auth()->user()->customer_id)) {
-            $syspro_service = new SysproService();
-            $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-            $response = $syspro_service->getCustomerDetails($url);
-            if (!empty($response['response']['Customer']['PriceList'])) {
-                $syspro_products = $response['response']['Customer']['PriceList'];
-                foreach ($syspro_products as $syspro_product) {
-                    if ($syspro_product['StockCode'] == $product->sku) {
-                        $product['price'] = $syspro_product['Price'];
-                        break;
-                    }
+        $syspro_products = session('customer_details');
+        if (!empty($syspro_products)) {
+            foreach ($syspro_products as $syspro_product) {
+                if ($syspro_product['StockCode'] == $product->sku) {
+                    $product['price'] = $syspro_product['Price'];
+                    break;
                 }
             }
         }
@@ -192,17 +187,14 @@ class ProductController extends Controller
         }
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
         if (!empty(auth()->user()->customer_id)) {
-            $syspro_service = new SysproService();
-            $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-            $response = $syspro_service->getCustomerDetails($url);
-            if (!empty($response['response']['Customer']['PriceList'])) {
-                $syspro_products = $response['response']['Customer']['PriceList'];
+            $syspro_products = session('customer_details');
+            if (!empty($syspro_products)) {
                 foreach ($syspro_products as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {
                         $product->price = $syspro_product['Price'];
                         break;
                     }
-                    if($syspro_product['StockCode'] == $variation->sku){
+                    if ($syspro_product['StockCode'] == $variation->sku) {
                         $variation->price = $syspro_product['Price'];
                         break;
                     }
