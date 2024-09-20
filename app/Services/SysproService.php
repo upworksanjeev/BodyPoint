@@ -78,12 +78,19 @@ class SysproService
         return $this->returnResponse($response);
     }
 
-    public function placeQuote($url)
+    public function placeQuote($url,$cartitems,$order_id)
     {
+        $customer_id = auth()->user()->customer_id;
+        $items[] = [];
+        foreach($cartitems as $key=>$item){
+            $items[$key]['StockCode'] = $item->sku;
+            $items[$key]['Qty'] = $item->quantity;
+            $items[$key]['Price'] = $item->price;
+        }
         $request = [
             'Order' => [
-                'CustomerAccountNumber' => '100008',
-                'CustomerPoNumber' => 'Z800004',
+                'CustomerAccountNumber' => $customer_id,
+                'CustomerPoNumber' => $order_id,
                 'StraightOrder' => 'Y',
                 'ShipAddressCode' => 'sample string 4',
                 'ShipAddress1' => 'sample string 5',
@@ -93,13 +100,7 @@ class SysproService
                 'ShipAddress5' => 'sample string 9',
                 'ShipPostalCode' => 'string 10',
             ],
-            'Lines' => [
-                [
-                    'StockCode' => 'HW320-30-50',
-                    'Qty' => 1,
-                    'Price' => 3.0,
-                ],
-            ],
+            'Lines' => $items
         ];
         $response = $this->post($url, $request);
         return $this->returnResponse($response);
