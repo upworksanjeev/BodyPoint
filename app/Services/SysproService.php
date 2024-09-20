@@ -78,7 +78,7 @@ class SysproService
         return $this->returnResponse($response);
     }
 
-    public function placeQuote($url,$cartitems,$order_id)
+    public function placeQuoteWithOrder($url,$cartitems,$order_id)
     {
         $customer_id = auth()->user()->customer_id;
         $items[] = [];
@@ -92,6 +92,34 @@ class SysproService
                 'CustomerAccountNumber' => $customer_id,
                 'CustomerPoNumber' => $order_id,
                 'StraightOrder' => 'Y',
+                'ShipAddressCode' => 'sample string 4',
+                'ShipAddress1' => 'sample string 5',
+                'ShipAddress2' => 'sample string 6',
+                'ShipAddress3' => 'sample string 7',
+                'ShipAddress4' => 'sample string 8',
+                'ShipAddress5' => 'sample string 9',
+                'ShipPostalCode' => 'string 10',
+            ],
+            'Lines' => $items
+        ];
+        $response = $this->post($url, $request);
+        return $this->returnResponse($response);
+    }
+
+    public function placeQuoteWithOutOrder($url,$cartitems,$cart_id)
+    {
+        $customer_id = auth()->user()->customer_id;
+        $items[] = [];
+        foreach($cartitems as $key=>$item){
+            $items[$key]['StockCode'] = $item->sku;
+            $items[$key]['Qty'] = $item->quantity;
+            $items[$key]['Price'] = $item->price;
+        }
+        $request = [
+            'Order' => [
+                'CustomerAccountNumber' => $customer_id,
+                'CustomerPoNumber' => rand(0,9999999999),
+                'StraightOrder' => 'N',
                 'ShipAddressCode' => 'sample string 4',
                 'ShipAddress1' => 'sample string 5',
                 'ShipAddress2' => 'sample string 6',

@@ -120,7 +120,7 @@ class CheckoutController extends Controller
                     }
                     $url = 'CreateQuote';
                     $syspro_service = new SysproService();
-                    $order_syspro = $syspro_service->placeQuote($url,$cartitems,$order->id);
+                    $order_syspro = $syspro_service->placeQuoteWithOrder($url,$cartitems,$order->id);
                     $purchase_order_number = $order_syspro['response']['orderNumber'];
                 }
                 CartItem::where('cart_id', $cart->id)->delete();
@@ -197,6 +197,15 @@ class CheckoutController extends Controller
             $price_option = $request->price_option;
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
+        $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
+        $url = 'CreateQuote';
+        $syspro_service = new SysproService();
+        $order_syspro = $syspro_service->placeQuoteWithOutOrder($url,$cartitems,$cart[0]->id);
+        $purchase_order_number = $order_syspro['response']['orderNumber'];
+        $cartNew = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->first();
+        $cartNew->update([
+            'purchase_order_no' => $purchase_order_number
+        ]);
         $user_detail = UserDetails::where('user_id', $user->id)->first();
         $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
         $pdf->render();
