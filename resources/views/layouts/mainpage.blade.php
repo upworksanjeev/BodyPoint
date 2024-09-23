@@ -23,14 +23,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('other-scripts')
 
-	
+
 
 </head>
 
 <body class="font-['Avenir'] antialiased">
+
     @include('layouts.header')
 
     <mainpage>
+        @include('partials.messages')
         {{ $slot }}
     </mainpage>
 
@@ -38,9 +40,9 @@
 
 <script>
 	$('#searchinput').keydown(function (e) {
-	  if (e.which == 13) { 
+	  if (e.which == 13) {
 		$('#formsearch').submit();
-		return false;    
+		return false;
 	  }
 	});
 	</script>

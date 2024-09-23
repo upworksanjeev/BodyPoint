@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     let currentStep = 1;
      const totalSteps = $steps.length; // Pass the total steps from your controller
-     
+
 
         // Function to validate the current step
         function validateStep() {
@@ -32,10 +32,10 @@ $(document).ready(function () {
     $steps.not(':first').hide();
 
     if(currentStep === 1){
-        $prevButton.hide();  
+        $prevButton.hide();
         $('.submit-button').hide();
     }
-    
+
     $nextButton.click(function (e) {
             e.preventDefault();
 
@@ -47,14 +47,14 @@ $(document).ready(function () {
                 $prevButton.show();
                 $nextStep.show();
                 currentStep++;
-                
+
                 // Hide "Next" button on the last step and display "Register"
                 if (currentStep === totalSteps) {
                     $nextButton.hide();
                     $('.submit-button').show();
                 }
             } else {
-        
+
             }
         });
 
@@ -77,7 +77,7 @@ $(document).ready(function () {
                 $prevButton.show();
                 $('.submit-button').hide();
                 }
-               
+
             }
         });
 
@@ -92,14 +92,14 @@ $(document).ready(function () {
         // Assuming you have a checkbox element with the id "myCheckbox"
             const myCheckbox = document.getElementById('shipping_details');
 
-            if (myCheckbox && myCheckbox.checked) {
-       
-            } else {
-                const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
-                $billingFields.val('');
-            }
+            // if (myCheckbox && myCheckbox.checked) {
 
-        
+            // } else {
+            //     const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
+            //     $billingFields.val('');
+            // }
+
+
         $('#shipping_details').change(function () {
 
             const $billingFields = $('.step[data-step="3"]').find('[name^="billing_"]');
@@ -118,8 +118,8 @@ $(document).ready(function () {
             }
         });
 
-       
-    
+
+
 });
 
 
@@ -129,14 +129,14 @@ function validateUSZipCode(zipCode) {
     var usZipRegex = /^\d{5}([ \-]\d{4})?$/;
     return usZipRegex.test(zipCode);
 }
- 
+
 
 // Validate ZIP code on input blur (for the United States)
 $('#shipping_zip ,#billing_zip').on('blur', function(e) {
     var zipCode = $(this).val();
     let val ="#"+ e.currentTarget.id
     if($('#output').length > 0 ){
-        $('#output').remove();   
+        $('#output').remove();
     }
     if (validateUSZipCode(zipCode)) {
         $("button.inline-flex").attr("disabled",false);
@@ -150,17 +150,17 @@ $('#shipping_zip ,#billing_zip').on('blur', function(e) {
 $("#primary_phone , #alternate_phone ,#shipping_phone ,#billing_phone").keypress(function (e) {
         let val ="#"+ e.currentTarget.id
     if($('#output').length > 0 ){
-        $('#output').remove();   
+        $('#output').remove();
     }
     if ($(val).val().length > 9 ){
         $(val).after('<div id="output" class="text-red-500">Please enter a valid phone number.</div>');
         }
 });
-    
+
 
 
 $('input[type="text"],textarea').keydown(function (e) {
     if(e.keyCode == 13){
         e.preventDefault();
-    } 
+    }
 });
