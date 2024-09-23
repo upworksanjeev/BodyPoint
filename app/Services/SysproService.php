@@ -118,7 +118,7 @@ class SysproService
         $request = [
             'Order' => [
                 'CustomerAccountNumber' => $customer_id,
-                'CustomerPoNumber' => rand(0,9999999999),
+                'CustomerPoNumber' => $cart_id,
                 'StraightOrder' => 'N',
                 'ShipAddressCode' => 'sample string 4',
                 'ShipAddress1' => 'sample string 5',
