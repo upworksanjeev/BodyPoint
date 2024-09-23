@@ -198,10 +198,10 @@ class CheckoutController extends Controller
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->first();
         $cartitems = CartItem::where('cart_id', $cart->id)->get();
-        if(!empty($cart->purchase_order_no)){
+        if(empty($cart->purchase_order_no)){
             $url = 'CreateQuote';
             $syspro_service = new SysproService();
-            $order_syspro = $syspro_service->placeQuoteWithOutOrder($url,$cartitems,$cart->id);
+            $order_syspro = $syspro_service->placeQuoteWithOutOrder($url,$cartitems);
             $purchase_order_number = $order_syspro['response']['orderNumber'];
             $cart->update([
                 'purchase_order_no' => $purchase_order_number

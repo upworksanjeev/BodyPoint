@@ -106,7 +106,7 @@ class SysproService
         return $this->returnResponse($response);
     }
 
-    public function placeQuoteWithOutOrder($url,$cartitems,$cart_id)
+    public function placeQuoteWithOutOrder($url,$cartitems)
     {
         $customer_id = auth()->user()->customer_id;
         $items[] = [];
@@ -118,7 +118,7 @@ class SysproService
         $request = [
             'Order' => [
                 'CustomerAccountNumber' => $customer_id,
-                'CustomerPoNumber' => $cart_id,
+                'CustomerPoNumber' => rand(0,9999999999),
                 'StraightOrder' => 'N',
                 'ShipAddressCode' => 'sample string 4',
                 'ShipAddress1' => 'sample string 5',
