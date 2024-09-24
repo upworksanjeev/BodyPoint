@@ -26,9 +26,8 @@ class HomeController extends Controller
                 ->paginate(16);
 
             if (!empty(auth()->user()->customer_id)) {
-                $syspro_service = new SysproService();
                 $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-                $response = $syspro_service->getCustomerDetails($url);
+                $response = SysproService::getCustomerDetails($url);
                 if(!empty($response['response']['Customer']['PriceList'])){
                     session(['customer_details' => $response['response']['Customer']['PriceList']]);
                 }else{
