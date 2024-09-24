@@ -8,17 +8,20 @@ use Illuminate\Support\Facades\Http;
 
 class SysproService
 {
-    protected $apiUrl;
-    protected $token;
-    protected $session_id;
-    public function __construct()
+    // Static properties
+    protected static $apiUrl;
+    protected static $token;
+    protected static $session_id;
+
+    // Static method to initialize configuration settings
+    protected static function initialize()
     {
-        $this->apiUrl = config('services.syspro.api_url');
-        $this->token = config('services.syspro.token');
-        $this->session_id = config('services.syspro.session_id');
+        self::$apiUrl = config('services.syspro.api_url');
+        self::$token = config('services.syspro.token');
+        self::$session_id = config('services.syspro.session_id');
     }
 
-    public function returnResponse($response)
+    public static function returnResponse($response)
     {
         $statusCode   = $response->status() ?? null;
         $responseBody = $response->json() ?? [];
@@ -30,13 +33,15 @@ class SysproService
         return $data;
     }
 
-    public function get($end_point, array $params = [])
+    public static function get($end_point, array $params = [])
     {
-        $syspro_url = $this->apiUrl . '/' . $end_point;
+        self::initialize(); // Ensure that we have initialized the config
+        $syspro_url = self::$apiUrl . '/' . $end_point;
         $headers   = [
-            'Authorization' => 'Basic ' . $this->getToken(),
-            'Cookie' => 'ASP.NET_SessionId=' . $this->getSessionId(),
+            'Authorization' => 'Basic ' . self::$token,
+            'Cookie' => 'ASP.NET_SessionId=' . self::$session_id,
         ];
+
         try {
             $response = Http::withHeaders($headers)->get($syspro_url, $params);
         } catch (Exception $e) {
@@ -46,12 +51,13 @@ class SysproService
         return $response;
     }
 
-    public function post($end_point, $request)
+    public static function post($end_point, $request)
     {
-        $syspro_url = $this->apiUrl . '/' . $end_point;
+        self::initialize(); // Ensure that we have initialized the config
+        $syspro_url = self::$apiUrl . '/' . $end_point;
         $headers   = [
-            'Authorization' => 'Basic ' . $this->getToken(),
-            'Cookie' => 'ASP.NET_SessionId=' . $this->getSessionId(),
+            'Authorization' => 'Basic ' . self::$token,
+            'Cookie' => 'ASP.NET_SessionId=' . self::$session_id,
         ];
 
         try {
@@ -63,28 +69,21 @@ class SysproService
         return $response;
     }
 
-    public function getToken()
+    // Static method for listing stock
+    public static function listStock($url)
     {
-        return $this->token;
+        $response = self::get($url);
+        return self::returnResponse($response);
     }
 
-    public function getSessionId()
+    public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y')
     {
-        return $this->session_id;
-    }
-
-    public function ListStock($url)
-    {
-        $response = $this->get($url);
-        return $this->returnResponse($response);
-    }
-
-    public function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y')
-    {
+        self::initialize();
         $user = Auth::user()->load(['getUserDetails']);
         if (!$order_id) {
             $order_id = rand(0, 9999999);
         }
+
         $order_data = [
             'CustomerAccountNumber' => auth()->user()->customer_id,
             'CustomerPoNumber' => $order_id,
@@ -97,6 +96,7 @@ class SysproService
             'ShipAddress5' => $user->getUserDetails->ship_address5 ?? '',
             'ShipPostalCode' => $user->getUserDetails->shipping_zip ?? 'default_postal',
         ];
+
         $items = [];
         foreach ($cartitems as $key => $item) {
             $items[$key] = [
@@ -105,32 +105,35 @@ class SysproService
                 'Price' => $item->price,
             ];
         }
+
         $request = [
             'Order' => $order_data,
             'Lines' => $items,
         ];
-        $response = $this->post($url, $request);
-        return $this->returnResponse($response);
+
+        $response = self::post($url, $request);
+        return self::returnResponse($response);
     }
 
-    public function placeOrder($url, $order_number)
+    public static function placeOrder($url, $order_number)
     {
         $request = [
             "OrderNumber" => $order_number
         ];
-        $response = $this->post($url, $request);
-        return $this->returnResponse($response);
+
+        $response = self::post($url, $request);
+        return self::returnResponse($response);
     }
 
-    public function getOrderDetails($url)
+    public static function getOrderDetails($url)
     {
-        $response = $this->get($url);
-        return $this->returnResponse($response);
+        $response = self::get($url);
+        return self::returnResponse($response);
     }
 
-    public function getCustomerDetails($url)
+    public static function getCustomerDetails($url)
     {
-        $response = $this->get($url);
-        return $this->returnResponse($response);
+        $response = self::get($url);
+        return self::returnResponse($response);
     }
 }

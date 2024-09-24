@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
-use App\Facades\SysproServiceFacade;
 use App\Helpers\FunHelper;
+use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Cart;
@@ -119,7 +119,7 @@ class CheckoutController extends Controller
                         ]);
                     }
                     $url = 'CreateQuote';
-                    $order_syspro = SysproServiceFacade::placeQuoteWithOrder($url, $cartitems, NULL);
+                    $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL);
                 }
                 CartItem::where('cart_id', $cart->id)->delete();
                 $cart->delete();
@@ -200,7 +200,7 @@ class CheckoutController extends Controller
         $cartitems = CartItem::where('cart_id', $cart->id)->get();
         if (empty($cart->purchase_order_no)) {
             $url = 'CreateQuote';
-            $order_syspro = SysproServiceFacade::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
             if(!empty($order_syspro['response']['orderNumber'])){
                 $cart->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber']

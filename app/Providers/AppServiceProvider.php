@@ -12,9 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('syspro-service', function ($app) {
-            return new SysproService();
-        });
+        //
     }
 
     /**
