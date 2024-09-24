@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
+use App\Facades\SysproServiceFacade;
 use App\Helpers\FunHelper;
-use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Cart;
@@ -119,17 +119,17 @@ class CheckoutController extends Controller
                         ]);
                     }
                     $url = 'CreateQuote';
-                    $syspro_service = new SysproService();
-                    $order_syspro = $syspro_service->placeQuoteWithOrder($url,$cartitems,$order->id);
-                    $purchase_order_number = $order_syspro['response']['orderNumber'];
+                    $order_syspro = SysproServiceFacade::placeQuoteWithOrder($url, $cartitems, NULL);
                 }
                 CartItem::where('cart_id', $cart->id)->delete();
                 $cart->delete();
             }
             $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $order->id)->first();
-            $order->update([
-                'purchase_order_no' => $purchase_order_number,
-            ]);
+            if(!empty($order_syspro['response']['orderNumber'])){
+                $order->update([
+                    'purchase_order_no' => $order_syspro['response']['orderNumber'],
+                ]);
+            }
             $user_detail = UserDetails::where('user_id', $user->id)->first();
             $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
@@ -198,14 +198,14 @@ class CheckoutController extends Controller
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->first();
         $cartitems = CartItem::where('cart_id', $cart->id)->get();
-        if(empty($cart->purchase_order_no)){
+        if (empty($cart->purchase_order_no)) {
             $url = 'CreateQuote';
-            $syspro_service = new SysproService();
-            $order_syspro = $syspro_service->placeQuoteWithOutOrder($url,$cartitems);
-            $purchase_order_number = $order_syspro['response']['orderNumber'];
-            $cart->update([
-                'purchase_order_no' => $purchase_order_number
-            ]);
+            $order_syspro = SysproServiceFacade::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
+            if(!empty($order_syspro['response']['orderNumber'])){
+                $cart->update([
+                    'purchase_order_no' => $order_syspro['response']['orderNumber']
+                ]);
+            }
         }
         $user_detail = UserDetails::where('user_id', $user->id)->first();
         $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);

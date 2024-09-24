@@ -29,7 +29,11 @@ class HomeController extends Controller
                 $syspro_service = new SysproService();
                 $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
                 $response = $syspro_service->getCustomerDetails($url);
-                session(['customer_details' => $response['response']['Customer']['PriceList']]);
+                if(!empty($response['response']['Customer']['PriceList'])){
+                    session(['customer_details' => $response['response']['Customer']['PriceList']]);
+                }else{
+                    session(['customer_details' => []]);
+                }
             }
 
             return view('front', [
