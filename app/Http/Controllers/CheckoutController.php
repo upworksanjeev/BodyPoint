@@ -19,7 +19,9 @@ use App\Models\CartAttribute;
 use App\Models\OrderAttribute;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -93,56 +95,59 @@ class CheckoutController extends Controller
     public function saveOrder(Request $request)
     {
         $user = Auth::user();
-        if ($request->has('cart_id')) {
-            $cart = Cart::where('id', $request->cart_id)->first();
-            if ($cart) {
-                $order = Order::create([
-                    'user_id' => $cart->user_id,
-                    'purchase_order_no' => $request->purchase_order_no,
-                    'total_items' => $cart->total_items,
+        if (!$request->has('cart_id')) {
+            return redirect()->route('cart')->with('error', 'Cart ID is missing.');
+        }
+        $cart = Cart::where('id', $request->cart_id)->first();
+        if (!$cart) {
+            return redirect()->route('cart')->with('error', 'Cart not found.');
+        }
+        DB::beginTransaction();
+        try {
+            $order = Order::create([
+                'user_id' => $cart->user_id,
+                'purchase_order_no' => $request->purchase_order_no,
+                'total_items' => $cart->total_items,
+            ]);
+            $cartitems = CartItem::where('cart_id', $cart->id)->get();
+            foreach ($cartitems as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'variation_id' => $cartItem->variation_id,
+                    'marked_for' => $cartItem->marked_for,
+                    'msrp' => $cartItem->msrp,
+                    'sku' => $cartItem->sku,
+                    'price' => $cartItem->price,
+                    'discount' => $cartItem->discount,
+                    'discount_price' => $cartItem->discount_price,
+                    'quantity' => $cartItem->quantity,
                 ]);
-
-                $cartitems = CartItem::where('cart_id', $cart->id)->get();
-                if ($cartitems) {
-                    foreach ($cartitems as $k => $v) {
-                        $order_item = OrderItem::create([
-                            'order_id' => $order->id,
-                            'product_id' => $v->product_id,
-                            'variation_id' => $v->variation_id,
-                            'marked_for' => $v->marked_for,
-                            'msrp' => $v->msrp,
-                            'sku' => $v->sku,
-                            'price' => $v->price,
-                            'discount' => $v->discount,
-                            'discount_price' => $v->discount_price,
-                            'quantity' => $v->quantity,
-                        ]);
-                    }
-                    $url = 'CreateQuote';
-                    $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL);
-                }
-                $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $order->id)->first();
-                if(!empty($order_syspro['response']['orderNumber'])){
-                    $order->update([
-                        'purchase_order_no' => $order_syspro['response']['orderNumber'],
-                    ]);
-                }
-                elseif(!empty($order_syspro['response']['Error'])){
-                    return redirect()->back()->with('error', $order_syspro['response']['Message']);
-                }
-                CartItem::where('cart_id', $cart->id)->delete();
-                $cart->delete();
             }
+            $url = 'CreateQuote';
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, null);
+            if (!empty($order_syspro['response']['orderNumber'])) {
+                $order->update([
+                    'purchase_order_no' => $order_syspro['response']['orderNumber'],
+                ]);
+            } elseif (!empty($order_syspro['response']['Error'])) {
+                DB::rollBack();
+                return redirect()->back()->with('error', $order_syspro['response']['Message']);
+            }
+            CartItem::where('cart_id', $cart->id)->delete();
+            $cart->delete();
+            DB::commit();
             $user_detail = UserDetails::where('user_id', $user->id)->first();
             $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
             FunHelper::saveOrderPlacedPdf($pdfContent, $order);
             OrderPlaced::dispatch($order);
-            return view('order-thank-you', array(
-                'order' => $order,
-            ));
+            return view('order-thank-you', ['order' => $order]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Order creation failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while placing your order. Please try again.');
         }
-        return redirect()->route('cart');
     }
 
     /**
@@ -204,11 +209,11 @@ class CheckoutController extends Controller
         if (empty($cart->purchase_order_no)) {
             $url = 'CreateQuote';
             $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
-            if(!empty($order_syspro['response']['orderNumber'])){
+            if (!empty($order_syspro['response']['orderNumber'])) {
                 $cart[0]->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber']
                 ]);
-            }elseif(!empty($order_syspro['response']['Error'])){
+            } elseif (!empty($order_syspro['response']['Error'])) {
                 return redirect()->back()->with('error', $order_syspro['response']['Message']);
             }
         }
