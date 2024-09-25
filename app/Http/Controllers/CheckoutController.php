@@ -121,14 +121,17 @@ class CheckoutController extends Controller
                     $url = 'CreateQuote';
                     $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL);
                 }
+                $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $order->id)->first();
+                if(!empty($order_syspro['response']['orderNumber'])){
+                    $order->update([
+                        'purchase_order_no' => $order_syspro['response']['orderNumber'],
+                    ]);
+                }
+                elseif(!empty($order_syspro['response']['Error'])){
+                    return redirect()->back()->with('error', $order_syspro['response']['Message']);
+                }
                 CartItem::where('cart_id', $cart->id)->delete();
                 $cart->delete();
-            }
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $order->id)->first();
-            if(!empty($order_syspro['response']['orderNumber'])){
-                $order->update([
-                    'purchase_order_no' => $order_syspro['response']['orderNumber'],
-                ]);
             }
             $user_detail = UserDetails::where('user_id', $user->id)->first();
             $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
@@ -196,15 +199,17 @@ class CheckoutController extends Controller
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
         }
-        $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->first();
-        $cartitems = CartItem::where('cart_id', $cart->id)->get();
+        $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
+        $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
         if (empty($cart->purchase_order_no)) {
             $url = 'CreateQuote';
             $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
             if(!empty($order_syspro['response']['orderNumber'])){
-                $cart->update([
+                $cart[0]->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber']
                 ]);
+            }elseif(!empty($order_syspro['response']['Error'])){
+                return redirect()->back()->with('error', $order_syspro['response']['Message']);
             }
         }
         $user_detail = UserDetails::where('user_id', $user->id)->first();
