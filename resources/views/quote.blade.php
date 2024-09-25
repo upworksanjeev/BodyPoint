@@ -9,7 +9,7 @@
         <div class="pb-6">
           <p class="text-[13px] font-normal leading-[19px] text-center">Your order summary is provided below. Please review carefully and click confirm order to process your order. Click cancel to return to your shopping cart.</p>
         </div>
-		
+
         <div class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
 		<div id="quote_print_div">
           <div class="card-header px-6 py-2 bg-[#00838f] rounded-t-xl">
@@ -27,10 +27,10 @@
               </li>
             </ul>
           </div>
-   
+
 		    <x-shipping-info :userDetail="$user_detail" :cart="$cart" :user="$user"/>
 		    <x-cart.final-checkout-list :cart="$cart"/>
-        
+
            </div>
            <form action="{{ route('pdf-download') }}" method="post">
           <div class="card-body p-6 border-t">
@@ -55,20 +55,20 @@
 					</div>
 				</li>
 			</ul>
-		  </div>		  
+		  </div>
           <div class="card-body p-6 border-t">
             <div class="flex items-center justify-end gap-2">
               <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-			  
-			 
+
+
 			   <input type="hidden" value="<?= csrf_token() ?>" name="_token">
 			  <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}">
-			         
+
 			  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
 			  </form>
-			  
-              
-			 
+
+
+
 
             </div>
           </div>
@@ -85,6 +85,6 @@ function print_window(){
 }
 </script>
 @endpush
-  
+
 </x-mainpage-layout>
 

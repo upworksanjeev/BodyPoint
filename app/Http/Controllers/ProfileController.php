@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\StorePostRequest; 
+use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +32,7 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {   
+    {
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -69,8 +69,8 @@ class ProfileController extends Controller
             'billing_zip' => $request->billing_zip,
             'billing_country' => $request->billing_country,
             'billing_phone' => $request->billing_phone,
-        ]);		
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        ]);
+        return Redirect::route('profile.edit')->with('success', 'Profile Updated Successfully');
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\StorePostRequest; 
+use App\Http\Requests\StorePostRequest;
 use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\CategoryProduct;
@@ -19,69 +19,77 @@ use App\Models\VariationAttribute;
 use App\Models\Variation;
 use App\Models\SuccessStory;
 use App\Models\Media;
+use App\Services\SysproService;
 
 class ProductController extends Controller
 {
     /**
      * Display the category details.
      */
-    public function index($name,Request $request)
-    {			  
+    public function index($name, Request $request)
+    {
         $categories = Category::all();
-        $product = Product::with(['media','SuccessStory'])->where('slug',$name)->first();
-		if(isset($product['id'])){
-			$products = CategoryProduct::with(['category'])->where('product_id',$product['id'])->get();
-			$productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
-				->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
-				->where('prod_id', $product['id'])->orderby('category')->get();
-				
-				$i=0;
-				$category=[];
-				$attribute=[];
-			/* attributes and their categories name for this product */
-			$j=0;
-			foreach($productattr as $k => $v){
-				if(in_array($v['category'],$category)){
-					$key = array_search($v['category'],$category); 
-					$j++;
-					$attribute[$key][$j]['id']=$v['attr_id'];
-					$attribute[$key][$j]['product_attr_id']=$v['id'];
-					$attribute[$key][$j]['attribute']=$v['attribute'];
-					$attribute[$key][$j]['small_description']=$v['small_description'];
-					$attribute[$key][$j]['image']=$v['image'];
-					
-				}else{
-				    $j=0;
-					
-					$category[$i]=$v['category'];
-					$attribute[$i][$j]['id']=$v['attr_id'];
-					$attribute[$i][$j]['product_attr_id']=$v['id'];
-					$attribute[$i][$j]['attribute']=$v['attribute'];
-					$attribute[$i][$j]['small_description']=$v['small_description'];
-					$attribute[$i][$j]['image']=$v['image'];
-					$i++;
-				}
-			}
-			if($product['discount']!='' && $product['discount']>0){
-				$product['discount_in_price']=round(($product['price']*$product['discount'])/100,2);
-				$product['discount_price']=($product['price']-$product['discount_in_price']);
-			}else{
-				$product['discount_price']=$product['price'];
-			}
-			
-			return view('product', array(
-				'categories' => $categories,
-				'category' => $category,
-				'attribute' => $attribute,
-				'product' => $product,
-				'products' => $products,
-			));
-			
-		}else{
-		  return view('product', [
-			'error' => 'No product Found!'
-        ]);
-		}
+        $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
+        $syspro_products = session('customer_details');
+        if (!empty($syspro_products)) {
+            foreach ($syspro_products as $syspro_product) {
+                if ($syspro_product['StockCode'] == $product->sku) {
+                    $product['price'] = $syspro_product['Price'];
+                    break;
+                }
+            }
+        }
+        if (isset($product['id'])) {
+            $products = CategoryProduct::with(['category'])->where('product_id', $product['id'])->get();
+            $productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
+                ->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
+                ->where('prod_id', $product['id'])->orderby('category')->get();
+
+            $i = 0;
+            $category = [];
+            $attribute = [];
+            /* attributes and their categories name for this product */
+            $j = 0;
+            foreach ($productattr as $k => $v) {
+                if (in_array($v['category'], $category)) {
+                    $key = array_search($v['category'], $category);
+                    $j++;
+                    $attribute[$key][$j]['id'] = $v['attr_id'];
+                    $attribute[$key][$j]['product_attr_id'] = $v['id'];
+                    $attribute[$key][$j]['attribute'] = $v['attribute'];
+                    $attribute[$key][$j]['small_description'] = $v['small_description'];
+                    $attribute[$key][$j]['image'] = $v['image'];
+                } else {
+                    $j = 0;
+
+                    $category[$i] = $v['category'];
+                    $attribute[$i][$j]['id'] = $v['attr_id'];
+                    $attribute[$i][$j]['product_attr_id'] = $v['id'];
+                    $attribute[$i][$j]['attribute'] = $v['attribute'];
+                    $attribute[$i][$j]['small_description'] = $v['small_description'];
+                    $attribute[$i][$j]['image'] = $v['image'];
+                    $i++;
+                }
+            }
+            if ($product['discount'] != '' && $product['discount'] > 0) {
+                $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
+            } else {
+                $product['discount_price'] = $product['price'];
+            }
+
+            return view('product', array(
+                'categories' => $categories,
+                'category' => $category,
+                'attribute' => $attribute,
+                'product' => $product,
+                'products' => $products,
+            ));
+        } else {
+            return view('product', [
+                'error' => 'No product Found!'
+            ]);
+        }
     }
 
     /**
@@ -89,141 +97,149 @@ class ProductController extends Controller
      */
     public function getNextAttribute(Request $request)
     {
-		$product = Product::with(['media'])->where('id',$request->product_id)->first();
-		$var_att_ids=VariationAttribute::select('variation_id')->where('product_attribute_id',$request->product_att_id )->get();
-		$attr=[];
-		$productattr=[];
+        $product = Product::with(['media'])->where('id', $request->product_id)->first();
+        $var_att_ids = VariationAttribute::select('variation_id')->where('product_attribute_id', $request->product_att_id)->get();
+        $attr = [];
+        $productattr = [];
 
-		foreach($var_att_ids as $k => $v){
-			$var_att=VariationAttribute::select('product_attribute_id')->where('variation_id',$v->variation_id)->get()->toArray();
-			foreach($var_att as $k1 => $v1){
-				if(!in_array($v1['product_attribute_id'], $attr)) {
-					$attr[]=$v1['product_attribute_id'];
-					$productattr[] = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
-					->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
-					->where('product_attributes.id', $v1['product_attribute_id'])->first();
-				}
-			}
-		}
-			$i=0;
-			$category=[];
-			$attribute=[];
-			/* attributes and their categories name for this product */
-			$j=0;
-			foreach($productattr as $k => $v){
-				if(in_array($v['category'],$category)){
-					$key = array_search($v['category'],$category); 
-					$j++;
-					$attribute[$key][$j]['id']=$v['attr_id'];
-					$attribute[$key][$j]['product_attr_id']=$v['id'];
-					$attribute[$key][$j]['attribute']=$v['attribute'];
-					$attribute[$key][$j]['small_description']=$v['small_description'];
-					$attribute[$key][$j]['image']=$v['image'];
-					
-				}else{
-				    $j=0;
-					$category[$i]=$v['category'];
-					$attribute[$i][$j]['id']=$v['attr_id'];
-					$attribute[$i][$j]['product_attr_id']=$v['id'];
-					$attribute[$i][$j]['attribute']=$v['attribute'];
-					$attribute[$i][$j]['small_description']=$v['small_description'];
-					$attribute[$i][$j]['image']=$v['image'];
-					$i++;
-				}
-			}
-			return view('components.attribute', ['index' => $request->index+1,'attribute' => $attribute,'category' => $category,'product' => $product]);
-	} 
+        foreach ($var_att_ids as $k => $v) {
+            $var_att = VariationAttribute::select('product_attribute_id')->where('variation_id', $v->variation_id)->get()->toArray();
+            foreach ($var_att as $k1 => $v1) {
+                if (!in_array($v1['product_attribute_id'], $attr)) {
+                    $attr[] = $v1['product_attribute_id'];
+                    $productattr[] = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
+                        ->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
+                        ->where('product_attributes.id', $v1['product_attribute_id'])->first();
+                }
+            }
+        }
+        $i = 0;
+        $category = [];
+        $attribute = [];
+        /* attributes and their categories name for this product */
+        $j = 0;
+        foreach ($productattr as $k => $v) {
+            if (in_array($v['category'], $category)) {
+                $key = array_search($v['category'], $category);
+                $j++;
+                $attribute[$key][$j]['id'] = $v['attr_id'];
+                $attribute[$key][$j]['product_attr_id'] = $v['id'];
+                $attribute[$key][$j]['attribute'] = $v['attribute'];
+                $attribute[$key][$j]['small_description'] = $v['small_description'];
+                $attribute[$key][$j]['image'] = $v['image'];
+            } else {
+                $j = 0;
+                $category[$i] = $v['category'];
+                $attribute[$i][$j]['id'] = $v['attr_id'];
+                $attribute[$i][$j]['product_attr_id'] = $v['id'];
+                $attribute[$i][$j]['attribute'] = $v['attribute'];
+                $attribute[$i][$j]['small_description'] = $v['small_description'];
+                $attribute[$i][$j]['image'] = $v['image'];
+                $i++;
+            }
+        }
+        return view('components.attribute', ['index' => $request->index + 1, 'attribute' => $attribute, 'category' => $category, 'product' => $product]);
+    }
 
-	
-	/**
+
+    /**
      * return list of product on basis of search keyword
-    */
+     */
     public function productSearch(Request $request)
     {
-		$search=$request->searchinput; 
-		if($search!=''){
-			$categories = Category::all();
-			$products = Product::with(['media'])->where('name','like','%'.$request->searchinput.'%')->paginate(16);
-			return view('search', ['products' => $products,'searchinput' => $search,'categories' => $categories]);
-		}else{
-			return redirect()->route('home');
-		}
-	}  
-	
-	 /**
+        $search = $request->searchinput;
+        if ($search != '') {
+            $categories = Category::all();
+            $products = Product::with(['media'])->where('name', 'like', '%' . $request->searchinput . '%')->paginate(16);
+            return view('search', ['products' => $products, 'searchinput' => $search, 'categories' => $categories]);
+        } else {
+            return redirect()->route('home');
+        }
+    }
+
+    /**
      * Get Variation Price and sku according to selected attributes
      */
-	public function getVariationPrice(Request $request)
+    public function getVariationPrice(Request $request)
     {
-		if($request->has('pro_att_id')){
-		  foreach($request->pro_att_id as $k=>$v){
-			  $variation[] = VariationAttribute::select('variation_id')->where('product_attribute_id',$v)->get()->toArray();
-		  }
-		  $varations=[];
-		  $abc=[];
-		  foreach($variation as $k=>$v)
-		  {
-			  foreach($v as $x=>$y)
-				{  
-				   $z=$y['variation_id'];
-					if(in_array($z,$varations))
-					{
-						$abc[$z]+=1;
-					}else{
-						$varations[]=$z;
-						$abc[$z]=1;
-					}
-				}
-		  }
-		  $key = array_search(count($request->pro_att_id), $abc);
-		
-			if($key!=''){
-				$variation=Variation::with(['product'])->where('id',$key)->first();
-			}
-		}
-		$product = Product::with(['media'])->where('id',$request->product_id)->first();
-		$final_data['variation_id']=$variation->id;
-		$final_data['sku']=$variation->sku??$product->sku;
-		$final_data['msrp']=$variation->msrp??$product->msrp;
-		$final_data['price']=$variation->price??$product->price;
-		$final_data['discount']=$variation->discount??$product->discount;
-		if($final_data['discount']!='' && $final_data['discount']>0){
-				$final_data['discount_in_price']=round(($final_data['price']*$final_data['discount'])/100,2);
-				$final_data['discount_price']=($final_data['price']-$final_data['discount_in_price']);
-			}else{
-				$final_data['discount_price']=$final_data['price'];
-			}			
-		return view('components.product-price', ['product' => $final_data]);
-	}  
-	
-     /**
+        if ($request->has('pro_att_id')) {
+            foreach ($request->pro_att_id as $k => $v) {
+                $variation[] = VariationAttribute::select('variation_id')->where('product_attribute_id', $v)->get()->toArray();
+            }
+            $varations = [];
+            $abc = [];
+            foreach ($variation as $k => $v) {
+                foreach ($v as $x => $y) {
+                    $z = $y['variation_id'];
+                    if (in_array($z, $varations)) {
+                        $abc[$z] += 1;
+                    } else {
+                        $varations[] = $z;
+                        $abc[$z] = 1;
+                    }
+                }
+            }
+            $key = array_search(count($request->pro_att_id), $abc);
+
+            if ($key != '') {
+                $variation = Variation::with(['product'])->where('id', $key)->first();
+            }
+        }
+        $product = Product::with(['media'])->where('id', $request->product_id)->first();
+        if (!empty(auth()->user()->customer_id)) {
+            $syspro_products = session('customer_details');
+            if (!empty($syspro_products)) {
+                foreach ($syspro_products as $syspro_product) {
+                    if ($syspro_product['StockCode'] == $product->sku) {
+                        $product->price = $syspro_product['Price'];
+                        break;
+                    }
+                    if ($syspro_product['StockCode'] == $variation->sku) {
+                        $variation->price = $syspro_product['Price'];
+                        break;
+                    }
+                }
+            }
+        }
+        $final_data['variation_id'] = $variation->id;
+        $final_data['sku'] = $variation->sku ?? $product->sku;
+        $final_data['msrp'] = $variation->msrp ?? $product->msrp;
+        $final_data['price'] = $variation->price ?? $product->price;
+        $final_data['discount'] = $variation->discount ?? $product->discount;
+        if ($final_data['discount'] != '' && $final_data['discount'] > 0) {
+            $final_data['discount_in_price'] = round(($final_data['price'] * $final_data['discount']) / 100, 2);
+            $final_data['discount_price'] = ($final_data['price'] - $final_data['discount_in_price']);
+        } else {
+            $final_data['discount_price'] = $final_data['price'];
+        }
+        return view('components.product-price', ['product' => $final_data]);
+    }
+
+    /**
      * Save success story
      */
-	public function addStory(Request $request)
-    { 
-		$user = Auth::user();
-		$image='';
-		if($request->has('image')){
-			$image=Storage::disk('public')->put('success_story',$request->file('image'));
-		}
-		if($request->has('product_id')){
-			$story=SuccessStory::create([
-				'user_id' => $user->id,
-				'product_id' => $request->product_id,
-				'title' => $request->title,
-				'youtube' => $request->youtube,
-				'image' => $image,
-				'story' => $request->story,
-			]);
-		}
-		return redirect()->route('product',$request->product_slug);
-	}
-	
-	 /**
+    public function addStory(Request $request)
+    {
+        $user = Auth::user();
+        $image = '';
+        if ($request->has('image')) {
+            $image = Storage::disk('public')->put('success_story', $request->file('image'));
+        }
+        if ($request->has('product_id')) {
+            $story = SuccessStory::create([
+                'user_id' => $user->id,
+                'product_id' => $request->product_id,
+                'title' => $request->title,
+                'youtube' => $request->youtube,
+                'image' => $image,
+                'story' => $request->story,
+            ]);
+        }
+        return redirect()->route('product', $request->product_slug);
+    }
+
+    /**
      * Get success story
      */
-	public function successStory(Request $request)
-    { 
-		
-	}
+    public function successStory(Request $request) {}
 }
