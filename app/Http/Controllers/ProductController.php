@@ -30,7 +30,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
-        $syspro_products = session('customer_details');
+        $syspro_products = SysproService::getCustomerDetailsSession();
         if (!empty($syspro_products)) {
             foreach ($syspro_products as $syspro_product) {
                 if ($syspro_product['StockCode'] == $product->sku) {
@@ -42,14 +42,9 @@ class ProductController extends Controller
         else{
             if (!empty(auth()->user()->customer_id)) {
                 $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-                $response = SysproService::getCustomerDetails($url);
-                if(!empty($response['response']['Customer']['PriceList'])){
-                    session(['customer_details' => $response['response']['Customer']['PriceList']]);
-                }else{
-                    session(['customer_details' => []]);
-                }
+                SysproService::getCustomerDetails($url);
             }
-            $syspro_products = session('customer_details');
+            $syspro_products = SysproService::getCustomerDetailsSession();
             if (!empty($syspro_products)) {
                 foreach ($syspro_products as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {
@@ -62,12 +57,7 @@ class ProductController extends Controller
 
         if (!empty(auth()->user()->customer_id)) {
             $url = 'ListStock';
-            $response = SysproService::listStock($url);
-            if(!empty($response['response']['StockList'])){
-                session(['stock_details' => $response['response']['StockList']]);
-            }else{
-                session(['stock_details' => []]);
-            }
+            SysproService::listStock($url);
         }
         if (isset($product['id'])) {
             $products = CategoryProduct::with(['category'])->where('product_id', $product['id'])->get();
@@ -217,7 +207,7 @@ class ProductController extends Controller
         }
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
         if (!empty(auth()->user()->customer_id)) {
-            $syspro_products = session('customer_details');
+            $syspro_products = SysproService::getCustomerDetailsSession();
             if (!empty($syspro_products)) {
                 foreach ($syspro_products as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {

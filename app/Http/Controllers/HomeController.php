@@ -27,12 +27,7 @@ class HomeController extends Controller
 
             if (!empty(auth()->user()->customer_id)) {
                 $url = 'ListStock';
-                $response = SysproService::listStock($url);
-                if(!empty($response['response']['StockList'])){
-                    session(['stock_details' => $response['response']['StockList']]);
-                }else{
-                    session(['stock_details' => []]);
-                }
+                SysproService::listStock($url);
             }
 
             return view('front', [

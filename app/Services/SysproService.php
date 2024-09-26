@@ -73,7 +73,11 @@ class SysproService
     public static function listStock($url)
     {
         $response = self::get($url);
-        return self::returnResponse($response);
+        if(!empty($response['response']['StockList'])){
+            session(['stock_details' => $response['response']['StockList']]);
+        }else{
+            session(['stock_details' => []]);
+        }
     }
 
     public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y')
@@ -125,7 +129,7 @@ class SysproService
         return self::returnResponse($response);
     }
 
-    public static function getOrderDetails($url)
+    public static function getOrderDetails($url): array
     {
         $response = self::get($url);
         return self::returnResponse($response);
@@ -134,6 +138,14 @@ class SysproService
     public static function getCustomerDetails($url)
     {
         $response = self::get($url);
-        return self::returnResponse($response);
+        if(!empty($response['response']['Customer']['PriceList'])){
+            session(['customer_details' => $response['response']['Customer']['PriceList']]);
+        }else{
+            session(['customer_details' => []]);
+        }
+    }
+
+    public static function getCustomerDetailsSession(){
+        return session('customer_details');
     }
 }
