@@ -43,8 +43,8 @@
                                     <input type="hidden" name="product_id" id="product_id" value="{{ $product['id'] ?? '' }}">
                                     <x-attribute index="0" :attribute="$attribute" :category="$category" :product="$product" />
                                     <div id="variation_price_div">
+                                        @php $found = false; @endphp
                                         @if(!empty(session('stock_details')))
-                                            @php $found = false; @endphp
                                             @foreach(session('stock_details') as $stock_detail)
                                                 @if($product['sku'] == $stock_detail['StockCode'] && $stock_detail['QuantityOnHand'] > 0)
                                                     @if($product['product_type'] != "Option")
