@@ -24,3 +24,8 @@
     </div>
 </section>
 </x-mainpage-layout>
+<script>
+    setTimeout(function(){
+        window.location.reload();
+    }, 1800000);
+</script>

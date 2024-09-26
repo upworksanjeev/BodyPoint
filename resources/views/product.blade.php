@@ -2,25 +2,24 @@
     @if(isset($product))
     <section class="py-[30px] md:py-[60px]">
         <div class="ctm-container">
-            @if(isset($error)) 
+            @if(isset($error))
 			{{ $error }}
             @else
-
 
                 <div class="antialiased">
                     <div class="ctm-container-two mt-[50px]">
                         <div class="flex flex-wrap flex-col md:flex-row -mx-4">
-                            <div class="md:flex-1 lg:px-5 product-outer-box">                               
-                         
+                            <div class="md:flex-1 lg:px-5 product-outer-box">
+
                                 <div class="product-images-box">
                                     <div class="slider slider-for">
 									@foreach ($product['media'] as $media)<div>
                                             <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}" alt="{{ $product['name'] ?? '' }}"></div>
                                             @endforeach
-											
-                                        
-                                           
-                                        
+
+
+
+
                                     </div>
                                     <div class="slider slider-nav">
 									<?php $k = 1; ?>
@@ -32,7 +31,7 @@
                                         </div>
                                         <?php $k++; ?>
                                         @endforeach
-                                      
+
                                     </div>
                                 </div>
                             </div>
@@ -44,8 +43,22 @@
                                     <input type="hidden" name="product_id" id="product_id" value="{{ $product['id'] ?? '' }}">
                                     <x-attribute index="0" :attribute="$attribute" :category="$category" :product="$product" />
                                     <div id="variation_price_div">
-                                        @if($product['product_type']!="Option")
-                                        <x-product-price :product="$product" />
+                                        @php $found = false; @endphp
+                                        @if(!empty(session('stock_details')))
+                                            @foreach(session('stock_details') as $stock_detail)
+                                                @if($product['sku'] == $stock_detail['StockCode'] && $stock_detail['QuantityOnHand'] > 0)
+                                                    @if($product['product_type'] != "Option")
+                                                        <x-product-price :product="$product" />
+                                                    @endif
+                                                    @php $found = true; @endphp
+                                                    @break;
+                                                @endif
+                                            @endforeach
+                                            @if (!$found)
+                                                <div class="out-off-stock">
+                                                    <h1>Out of Stock</h1>
+                                                </div>
+                                            @endif
                                         @endif
                                     </div>
                                 </form>
@@ -69,7 +82,7 @@
            @endif
         </div>
     </section>
-   
+
     <section class="bg-[#f5f5f7]">
         <div class="ctm-container py-[30px] md:py-[60px]">
             <div class="chest-support">
@@ -169,6 +182,9 @@
     @endif
 
     <script>
+        setTimeout(function(){
+            window.location.reload();
+        }, 1800000);
         const imgs = document.querySelectorAll('.img-select a');
         const imgBtns = [...imgs];
         let imgId = 1;

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Requests\StorePostRequest; 
+use App\Http\Requests\StorePostRequest;
+use App\Services\SysproService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,12 +28,16 @@ class CategoryController extends Controller
      * Display the category details.
      */
     public function index($name,Request $request)
-    {		
+    {
 	    $name=ucwords(str_replace('-',' ',$name));
         $categories = Category::where('parent_cat_id',0)->get();
         $category = Category::where('name',$name)->first();
-       
-		
+
+        if (!empty(auth()->user()->customer_id)) {
+            $url = 'ListStock';
+            SysproService::listStock($url);
+        }
+
 		if(isset($category['id'])){
 			$cat[]=$category['id'];
 			$subcategory = Category::where('parent_cat_id',$category['id'])->select('id','name')->get();
@@ -56,6 +61,6 @@ class CategoryController extends Controller
 		}
     }
 
-    
-  
+
+
 }
