@@ -28,9 +28,12 @@ class ProductController extends Controller
      */
     public function index($name, Request $request)
     {
+        // session('customer_details', []);
         $categories = Category::all();
         $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
-        $syspro_products = SysproService::getCustomerDetailsSession();
+        $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+        $syspro_products = SysproService::getCustomerDetails($url);
+
         if (!empty($syspro_products)) {
             foreach ($syspro_products as $syspro_product) {
                 if ($syspro_product['StockCode'] == $product->sku) {
@@ -39,26 +42,12 @@ class ProductController extends Controller
                 }
             }
         }
-        else{
-            if (!empty(auth()->user()->customer_id)) {
-                $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-                SysproService::getCustomerDetails($url);
-            }
-            $syspro_products = SysproService::getCustomerDetailsSession();
-            if (!empty($syspro_products)) {
-                foreach ($syspro_products as $syspro_product) {
-                    if ($syspro_product['StockCode'] == $product->sku) {
-                        $product['price'] = $syspro_product['Price'];
-                        break;
-                    }
-                }
-            }
-        }
 
         if (!empty(auth()->user()->customer_id)) {
             $url = 'ListStock';
             SysproService::listStock($url);
         }
+
         if (isset($product['id'])) {
             $products = CategoryProduct::with(['category'])->where('product_id', $product['id'])->get();
             $productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')

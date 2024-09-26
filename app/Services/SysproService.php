@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SysproService
 {
@@ -69,17 +70,6 @@ class SysproService
         return $response;
     }
 
-    // Static method for listing stock
-    public static function listStock($url)
-    {
-        $response = self::get($url);
-        if(!empty($response['response']['StockList'])){
-            session(['stock_details' => $response['response']['StockList']]);
-        }else{
-            session(['stock_details' => []]);
-        }
-    }
-
     public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y')
     {
         self::initialize();
@@ -131,21 +121,63 @@ class SysproService
 
     public static function getOrderDetails($url): array
     {
-        $response = self::get($url);
+        $response = self::get(end_point: $url);
         return self::returnResponse($response);
     }
 
     public static function getCustomerDetails($url)
     {
-        $response = self::get($url);
-        if(!empty($response['response']['Customer']['PriceList'])){
-            session(['customer_details' => $response['response']['Customer']['PriceList']]);
-        }else{
-            session(['customer_details' => []]);
+        $sessionKey = 'customer_details';
+        $maxAge = 86400;
+        $customerDetails = session($sessionKey);
+        $sessionTime = session('customer_details_time');
+        if ($customerDetails && $sessionTime && (time() - $sessionTime < $maxAge)) {
+            return $customerDetails;
         }
+        try {
+            $response = self::get($url);
+            $get_response = self::returnResponse($response);
+            if (!empty($get_response['response']['Customer']['PriceList'])) {
+                $customerDetails = $get_response['response']['Customer']['PriceList'];
+                session($sessionKey, $customerDetails);
+                session('customer_details_time', time());
+            } else {
+                $customerDetails = [];
+                session($sessionKey, $customerDetails);
+                session('customer_details_time', time());
+            }
+        } catch (Exception $e) {
+            Log::error('Error retrieving customer details: ' . $e->getMessage());
+            $customerDetails = [];
+        }
+        return $customerDetails;
     }
 
-    public static function getCustomerDetailsSession(){
-        return session('customer_details');
+    public static function listStock($url)
+    {
+        $sessionKey = 'stock_details';
+        $maxAge = 86400;
+        $stockDetails = session($sessionKey);
+        $sessionTime = session('list_stock_details_time');
+        if ($stockDetails && $sessionTime && (time() - $sessionTime < $maxAge)) {
+            return $stockDetails;
+        }
+        try {
+            $response = self::get($url);
+            $get_response = self::returnResponse($response);
+            if (!empty($get_response['response']['StockList'])) {
+                $stockDetails = $get_response['response']['StockList'];
+                session($sessionKey, $stockDetails);
+                session('list_stock_details_time', time());
+            } else {
+                $stockDetails = [];
+                session($sessionKey, $stockDetails);
+                session('list_stock_details_time', time());
+            }
+        } catch (Exception $e) {
+            Log::error('Error retrieving stock details: ' . $e->getMessage());
+            $stockDetails = [];
+        }
+        return $stockDetails;
     }
 }
