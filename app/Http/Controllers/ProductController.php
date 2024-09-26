@@ -28,17 +28,18 @@ class ProductController extends Controller
      */
     public function index($name, Request $request)
     {
-        // session('customer_details', []);
         $categories = Category::all();
         $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
-        $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-        $syspro_products = SysproService::getCustomerDetails($url);
+        if(!empty(auth()->user()->customer_id)){
+            $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+            $syspro_products = SysproService::getCustomerDetails($url);
 
-        if (!empty($syspro_products)) {
-            foreach ($syspro_products as $syspro_product) {
-                if ($syspro_product['StockCode'] == $product->sku) {
-                    $product['price'] = $syspro_product['Price'];
-                    break;
+            if (!empty($syspro_products)) {
+                foreach ($syspro_products as $syspro_product) {
+                    if ($syspro_product['StockCode'] == $product->sku) {
+                        $product['price'] = $syspro_product['Price'];
+                        break;
+                    }
                 }
             }
         }

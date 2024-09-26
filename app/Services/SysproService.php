@@ -128,10 +128,8 @@ class SysproService
     public static function getCustomerDetails($url)
     {
         $sessionKey = 'customer_details';
-        $maxAge = 86400;
         $customerDetails = session($sessionKey);
-        $sessionTime = session('customer_details_time');
-        if ($customerDetails && $sessionTime && (time() - $sessionTime < $maxAge)) {
+        if ($customerDetails) {
             return $customerDetails;
         }
         try {
@@ -139,12 +137,10 @@ class SysproService
             $get_response = self::returnResponse($response);
             if (!empty($get_response['response']['Customer']['PriceList'])) {
                 $customerDetails = $get_response['response']['Customer']['PriceList'];
-                session($sessionKey, $customerDetails);
-                session('customer_details_time', time());
+                session([$sessionKey => $customerDetails]);
             } else {
                 $customerDetails = [];
-                session($sessionKey, $customerDetails);
-                session('customer_details_time', time());
+                session([$sessionKey => $customerDetails]);
             }
         } catch (Exception $e) {
             Log::error('Error retrieving customer details: ' . $e->getMessage());
@@ -156,23 +152,16 @@ class SysproService
     public static function listStock($url)
     {
         $sessionKey = 'stock_details';
-        $maxAge = 86400;
         $stockDetails = session($sessionKey);
-        $sessionTime = session('list_stock_details_time');
-        if ($stockDetails && $sessionTime && (time() - $sessionTime < $maxAge)) {
-            return $stockDetails;
-        }
         try {
             $response = self::get($url);
             $get_response = self::returnResponse($response);
             if (!empty($get_response['response']['StockList'])) {
                 $stockDetails = $get_response['response']['StockList'];
-                session($sessionKey, $stockDetails);
-                session('list_stock_details_time', time());
+                session([$sessionKey => $stockDetails]);
             } else {
                 $stockDetails = [];
-                session($sessionKey, $stockDetails);
-                session('list_stock_details_time', time());
+                session([$sessionKey => $stockDetails]);
             }
         } catch (Exception $e) {
             Log::error('Error retrieving stock details: ' . $e->getMessage());
