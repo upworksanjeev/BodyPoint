@@ -28,17 +28,18 @@ class ProductController extends Controller
      */
     public function index($name, Request $request)
     {
-        // session('customer_details', []);
         $categories = Category::all();
         $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
-        $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-        $syspro_products = SysproService::getCustomerDetails($url);
+        if(!empty(auth()->user()->customer_id)){
+            $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+            $syspro_products = SysproService::getCustomerDetails($url);
 
-        if (!empty($syspro_products)) {
-            foreach ($syspro_products as $syspro_product) {
-                if ($syspro_product['StockCode'] == $product->sku) {
-                    $product['price'] = $syspro_product['Price'];
-                    break;
+            if (!empty($syspro_products)) {
+                foreach ($syspro_products as $syspro_product) {
+                    if ($syspro_product['StockCode'] == $product->sku) {
+                        $product['price'] = $syspro_product['Price'];
+                        break;
+                    }
                 }
             }
         }
@@ -110,6 +111,20 @@ class ProductController extends Controller
         $var_att_ids = VariationAttribute::select('variation_id')->where('product_attribute_id', $request->product_att_id)->get();
         $attr = [];
         $productattr = [];
+        $product_available = false;
+
+        if (!empty(auth()->user()->customer_id)) {
+            $url = 'ListStock';
+            $list_stock = SysproService::listStock($url);
+            if (!empty($list_stock)) {
+                foreach ($list_stock as $stock) {
+                    if ($stock['StockCode'] == $product->sku && $stock['QuantityOnHand'] > 0) {
+                        $product_available = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         foreach ($var_att_ids as $k => $v) {
             $var_att = VariationAttribute::select('product_attribute_id')->where('variation_id', $v->variation_id)->get()->toArray();
@@ -147,9 +162,14 @@ class ProductController extends Controller
                 $i++;
             }
         }
-        return view('components.attribute', ['index' => $request->index + 1, 'attribute' => $attribute, 'category' => $category, 'product' => $product]);
-    }
 
+        return view('components.attribute', [
+            'index' => $request->index + 1,
+            'attribute' => $attribute,
+            'category' => $category,
+            'product' => $product
+        ]);
+    }
 
     /**
      * return list of product on basis of search keyword
@@ -195,23 +215,30 @@ class ProductController extends Controller
             }
         }
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
+        $product_available = false;
         if (!empty(auth()->user()->customer_id)) {
             $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);
             if (!empty($syspro_products)) {
                 foreach ($syspro_products as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {
+                        $product_available = true;
                         $product->price = $syspro_product['Price'];
                         break;
                     }
-                    if ($syspro_product['StockCode'] == $variation->sku) {
-                        $variation->price = $syspro_product['Price'];
-                        break;
+                    if(!empty($variation->sku)){
+                        if ($syspro_product['StockCode'] == $variation->sku) {
+                            $product_available = true;
+                            $variation->price = $syspro_product['Price'];
+                            break;
+                        }
                     }
                 }
             }
         }
-        $final_data['variation_id'] = $variation->id;
+        if(!empty($variation->id)){
+            $final_data['variation_id'] = $variation->id;
+        }
         $final_data['sku'] = $variation->sku ?? $product->sku;
         $final_data['msrp'] = $variation->msrp ?? $product->msrp;
         $final_data['price'] = $variation->price ?? $product->price;
@@ -222,7 +249,8 @@ class ProductController extends Controller
         } else {
             $final_data['discount_price'] = $final_data['price'];
         }
-        return view('components.product-price', ['product' => $final_data]);
+        $html = view('components.product-price', ['product' => $final_data])->render();
+        return response()->json(['html' => $html,'product_available' => $product_available]);
     }
 
     /**
