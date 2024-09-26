@@ -7,7 +7,10 @@
 
     <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-[16px] focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3" data-accordion-target="#accordion-collapse-body-{{ $orders['id'] }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $orders['id'] }}">
 
-      <span>Order No: {{ $orders['purchase_order_no'] }}</span>  
+      <span>Order No: {{ $orders['purchase_order_no'] }}</span>
+      @if(!empty($orders['status']))
+        <span>Order Status: {{ $orders['status'] }}</span>
+      @endif
 	  <!--x-icons.down-arrow /-->
 	  <span class="text-center">Order Date: {{ date('F j, Y',strtotime($orders['created_at'])) }}</span>
     </button>
@@ -22,7 +25,7 @@
              </th>
              <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                Stock Code
-             </th> 
+             </th>
 			 <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                Marked For
              </th>
@@ -77,7 +80,7 @@
 				<div class="text-left"><span>BP Number: {{ $orders['bp_number'] }}</span></div>
              </td>
              <td class="w-4 p-4" colspan="8">
-			  
+
                <div class="text-right">
                  <h3 class="text-2xl font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                </div>
@@ -86,10 +89,10 @@
 
          </tbody>
        </table>
-       
+
     </div>
   </div>
     @endforeach
        @endif
 	     </div>
-   
+

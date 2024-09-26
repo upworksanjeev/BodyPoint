@@ -79,7 +79,7 @@ body {
 }
 
 
- 
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -95,7 +95,7 @@ body {
     padding: 40px 50px;
     transform: translateX(-50%);
 }
- 
+
 .ctm-grd-two {
     display: grid;
     grid-template-columns: 27% 67%;
@@ -420,11 +420,26 @@ body {
 .product-outer-box {
     width: 50%;
 }
+.out-off-stock {
+    text-align: right;
+    margin-top: 7px;
+}
+.out-off-stock h1 {
+    display: inline-block;
+    border: 3px solid red;
+    color: red;
+    padding: 3px 7px;
+    border-radius: 3px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    font-family: system-ui;
+    text-transform: uppercase;
+}
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;
     }
-    
+
 }
 
 @media (max-width: 1024px) {

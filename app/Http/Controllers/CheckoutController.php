@@ -130,6 +130,11 @@ class CheckoutController extends Controller
                 $order->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber'],
                 ]);
+                $url = 'GetOrderDetails/' . $order->purchase_order_no;
+                $response = SysproService::getOrderDetails($url);
+                $order->update([
+                    'status' => $response['response']['Status'],
+                ]);
             } elseif (!empty($order_syspro['response']['Error'])) {
                 DB::rollBack();
                 return redirect()->back()->with('error', $order_syspro['response']['Message']);

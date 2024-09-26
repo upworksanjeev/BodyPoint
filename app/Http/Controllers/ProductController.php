@@ -39,6 +39,36 @@ class ProductController extends Controller
                 }
             }
         }
+        else{
+            if (!empty(auth()->user()->customer_id)) {
+                $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+                $response = SysproService::getCustomerDetails($url);
+                if(!empty($response['response']['Customer']['PriceList'])){
+                    session(['customer_details' => $response['response']['Customer']['PriceList']]);
+                }else{
+                    session(['customer_details' => []]);
+                }
+            }
+            $syspro_products = session('customer_details');
+            if (!empty($syspro_products)) {
+                foreach ($syspro_products as $syspro_product) {
+                    if ($syspro_product['StockCode'] == $product->sku) {
+                        $product['price'] = $syspro_product['Price'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!empty(auth()->user()->customer_id)) {
+            $url = 'ListStock';
+            $response = SysproService::listStock($url);
+            if(!empty($response['response']['StockList'])){
+                session(['stock_details' => $response['response']['StockList']]);
+            }else{
+                session(['stock_details' => []]);
+            }
+        }
         if (isset($product['id'])) {
             $products = CategoryProduct::with(['category'])->where('product_id', $product['id'])->get();
             $productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
