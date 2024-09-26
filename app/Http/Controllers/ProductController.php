@@ -196,7 +196,8 @@ class ProductController extends Controller
         }
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
         if (!empty(auth()->user()->customer_id)) {
-            $syspro_products = SysproService::getCustomerDetailsSession();
+            $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+            $syspro_products = SysproService::getCustomerDetails($url);
             if (!empty($syspro_products)) {
                 foreach ($syspro_products as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {
