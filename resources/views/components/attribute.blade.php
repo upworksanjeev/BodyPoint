@@ -4,13 +4,13 @@
 						        <input type="hidden" name="pro_att_id[]" id="pro_att_{{ $k }}">
                                 <div class="relative py-[15px] linediv">
                                     <h6 class="text-[#333] text-[18px] font-[700]  bg-[#fff] pr-[10px] relative lineh6">
-                                        Select {{ ucwords($v) }} 
+                                        Select {{ ucwords($v) }}
 										@if(str_contains($v,'size')) <a class="text-[#00838f] text-[14px] cursor-pointer"  href="#accordion-collapse-heading-2">(See Sizing tab for size guide)</a> @endif
 										</h6>
                                 </div>
                                 <div class="grid-four pb-[10px]">
                                     @foreach ($attribute[$k] as $v1)
-									
+
                                         <button type="button" id="button_{{ $k }}_{{ $v1['product_attr_id'] }}" class="grid-five cursor-pointer hover:ring hover:ring-[#FF9119]-300 attribute_buttons_{{ $k }}" onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }})">
                                             <div class="five-g-img">
                                                 <img src="<?php if(isset($v1['image']) && $v1['image']!=''){ echo url('storage/'.$v1['image']); }else{ echo "/img/standard-img.png"; } ?>"  alt="">
@@ -25,7 +25,7 @@
                                 </div>
 								@endif
 								  </div>
-                            @endforeach                           
+                            @endforeach
 
 @push('other-scripts')
 <script>
@@ -42,10 +42,14 @@
                 type: 'POST',
                 data:  $("#addtocart").serialize(),
                 success: function(response) {
-					$('#variation_price_div').html(response);
+                    if(response.product_available){
+                        $('#variation_price_div').html(response.html);
+                    }else{
+                        $('#variation_price_div').html('<div class="out-off-stock"><h1>Out of Stock</h1></div>');
+                    }
                 },
                 error: function(xhr) {
-                  
+
                 }
             });
 	  }else{
@@ -67,11 +71,11 @@
 					$('#product_att_'+j).html(response);
                 },
                 error: function(xhr) {
-                  
+
                 }
             });
 	  }
-  } 
- 
+  }
+
 </script>
 @endpush
