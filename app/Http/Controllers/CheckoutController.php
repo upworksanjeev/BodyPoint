@@ -139,14 +139,14 @@ class CheckoutController extends Controller
                 DB::rollBack();
                 return redirect()->back()->with('error', $order_syspro['response']['Message']);
             }
-            CartItem::where('cart_id', $cart->id)->delete();
-            $cart->delete();
-            DB::commit();
             $user_detail = UserDetails::where('user_id', $user->id)->first();
             $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
             FunHelper::saveOrderPlacedPdf($pdfContent, $order);
             OrderPlaced::dispatch($order);
+            CartItem::where('cart_id', $cart->id)->delete();
+            $cart->delete();
+            DB::commit();
             return view('order-thank-you', ['order' => $order]);
         } catch (\Exception $e) {
             DB::rollBack();
