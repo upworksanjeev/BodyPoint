@@ -36,12 +36,10 @@ class ProductController extends Controller
 
             if (!empty($syspro_products)) {
                 $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
-                foreach ($syspro_products['PriceList'] as $syspro_product) {
-                    if ($syspro_product['StockCode'] == $product->sku) {
-                        $product['price'] = $syspro_product['Price'];
-                        $product['msrp'] = $syspro_product['Price'];
-                        break;
-                    }
+                $existingKey = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
+                if(!empty($existingKey)){
+                    $product['price'] = $syspro_products['PriceList'][$existingKey]['Price'];
+                    $product['msrp'] = $syspro_products['PriceList'][$existingKey]['Price'];
                 }
             }
         }
@@ -222,22 +220,21 @@ class ProductController extends Controller
             if (!empty($syspro_products['PriceList'])) {
                 $product->discount = $syspro_products['CustomerDiscountPercentage'];
                 $variation->discount = $syspro_products['CustomerDiscountPercentage'];
-                foreach ($syspro_products['PriceList'] as $syspro_product) {
-                    if ($syspro_product['StockCode'] == $product->sku) {
-                        $product_available = true;
-                        $product->price = $syspro_product['Price'];
-                        $product->msrp = $syspro_product['Price'];
-                        break;
-                    }
-                    if(!empty($variation->sku)){
-                        if ($syspro_product['StockCode'] == $variation->sku) {
-                            $product_available = true;
-                            $variation->price = $syspro_product['Price'];
-                            $variation->msrp = $syspro_product['Price'];
-                            break;
-                        }
+                if(!empty($product->sku)){
+                    $existingStockInProduct = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
+                    if(!empty($existingStockInProduct)){
+                        $product['price'] = $syspro_products['PriceList'][$existingStockInProduct]['Price'];
+                        $product['msrp'] = $syspro_products['PriceList'][$existingStockInProduct]['Price'];
                     }
                 }
+                if(!empty($variation->sku)){
+                    $existingStockInVariation = array_search($variation->sku,array_column($syspro_products['PriceList'], 'StockCode'));
+                    if(!empty($existingStockInVariation)){
+                        $variation->price = $syspro_products['PriceList'][$existingStockInVariation]['Price'];
+                        $variation->msrp = $syspro_products['PriceList'][$existingStockInVariation]['Price'];
+                    }
+                }
+
             }
         }
         if(!empty($variation->id)){

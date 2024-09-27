@@ -51,7 +51,7 @@
                                     <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-[16px] focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3" data-accordion-target="#accordion-collapse-body-{{ $quote->id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $quote->id }}">
                                         <span>Quote No: {{ $quote->purchase_order_no }}</span>
                                         @if(!empty($quote->status))
-                                            <span>Quote Status: {{ $quote->status }}</span>
+                                            <span>Quote Status: {{ $quote->order_status }}</span>
                                         @endif
                                         <span class="text-center">Quote Date: {{ date('F j, Y',strtotime($quote->created_at)) }}</span>
                                     </button>

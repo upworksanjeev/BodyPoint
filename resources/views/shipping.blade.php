@@ -1,4 +1,4 @@
-<x-mainpage-layout>  
+<x-mainpage-layout>
   <x-cart-nav />
   <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
     <div class="container mx-auto">
@@ -16,7 +16,7 @@
                  <x-icons.map />
                   Change Address
                 </button>
-				
+
               </div>
               <div class="card-body p-6">
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside mb-8">
@@ -26,7 +26,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address??'' }} <br>{{ $userDetail->shipping_city??'' }} {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }} {{ $userDetail->shipping_country??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address ?? '' }} <br>{{ $userDetail->shipping_city ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['State'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
@@ -51,7 +51,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }} {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }} {{ $userDetail->billing_country??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ session('customer_details')['billAddressLine2']??''  }} <br>{{ session('customer_details')['billAddressLine4'] ??'' }} {{ session('customer_details')['billAddressLine1'] ??'' }} {{ session('customer_details')['billAddressPostalCode'] ??''  }} {{ session('customer_details')['billAddressLine5'] ??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
@@ -91,14 +91,14 @@
 			<ul class="grid w-full gap-6 md:grid-cols-2">
 				<li>
 					<input type="radio" id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
-					<label for="hosting-small" class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-600 hover:bg-gray-100">                           
+					<label for="hosting-small" class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-600 hover:bg-gray-100">
 						<div class="block">
 							<div class="w-full text-normal font-semibold mb-2">Test User,</div>
 							<div class="w-full text-sm font-normal leading-[17px] space-y-1"><p>558 Occidential St Seattle, Suite 400</p>
 							<p>Seattle WA 98104 USA</p>
 							<p>+1 8878778887</p></div>
 						</div>
-					   
+
 					</label>
 				</li>
 				<li>
@@ -112,12 +112,12 @@
 						</div>
 					</label>
 				</li>
-				
+
 			</ul>
             </div>
             <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                
+
                 <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[100px]">Close</button>
 				<button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 gap-3  text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex items-center hover:bg-[#FF9119]/80 justify-center w-[100px] ml-2">Save</button>
             </div>
@@ -126,8 +126,8 @@
 </div>
 @push('other-scripts')
   <script>
-  
+
   </script>
 @endpush
-  
+
 </x-mainpage-layout>

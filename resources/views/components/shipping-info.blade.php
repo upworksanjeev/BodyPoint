@@ -11,7 +11,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address??'' }} <br>{{ $userDetail->shipping_city??'' }} {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }} {{ $userDetail->shipping_country??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address ?? '' }} <br>{{ $userDetail->shipping_city ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['State'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
@@ -36,7 +36,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }} {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }} {{ $userDetail->billing_country??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ session('customer_details')['billAddressLine2']??''  }} <br>{{ session('customer_details')['billAddressLine4'] ??'' }} {{ session('customer_details')['billAddressLine1'] ??'' }} {{ session('customer_details')['billAddressPostalCode'] ??''  }} {{ session('customer_details')['billAddressLine5'] ??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
@@ -65,7 +65,7 @@
           </div>
           <div class="card-body p-6">
             <ul class="space-y-5 text-gray-500 list-disc list-inside">
-             
+
               <li class="flex items-start gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Carrier:</span>
               </li>

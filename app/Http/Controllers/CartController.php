@@ -33,11 +33,9 @@ class CartController extends Controller
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
                     $isStockItem = false;
-                    foreach ($syspro_products['PriceList'] as $syspro_product) {
-                        if ($syspro_product['StockCode'] == $request->sku) {
-                            $isStockItem = true;
-                            break;
-                        }
+                    $existingKey = array_search($request->sku,array_column($syspro_products['PriceList'], 'StockCode'));
+                    if(!empty($existingKey)){
+                        $isStockItem = true;
                     }
                     if (!$isStockItem) {
                         return redirect()->back()->with('error', 'Non Stocked Item cannot be Added to Cart');
@@ -206,13 +204,9 @@ class CartController extends Controller
                 if (!empty($syspro_products['PriceList'])) {
                     $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                     $isStockItem = false;
-                    foreach ($syspro_products['PriceList'] as $syspro_product) {
-                        if ($syspro_product['StockCode'] == $product->sku) {
-                            $isStockItem = true;
-                            $product['price'] = $syspro_product['Price'];
-                            $product['msrp'] = $syspro_product['Price'];
-                            break;
-                        }
+                    $existingKey = array_search($request->sku,array_column($syspro_products['PriceList'], 'StockCode'));
+                    if(!empty($existingKey)){
+                        $isStockItem = true;
                     }
                     if (!$isStockItem) {
                         return response()->json(['success' => false, 'message' => 'Non-Stock Item Cannot be Added To Cart']);
