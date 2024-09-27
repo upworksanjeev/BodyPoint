@@ -6,6 +6,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Quote\QuoteController;
+use App\Http\Controllers\Order\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +49,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
     Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/quote', [CheckoutController::class, 'quote'])->name('quote');
+
+    //Quote Routes
+    Route::post('/generate-quote',[QuoteController::class, 'store'])->name('generateQuote');
+    Route::get('/quotes',[QuoteController::class, 'index'])->name('quotes');
+    Route::post('/quotes', [QuoteController::class, 'index'])->name('quote-search');
+
+    //Order Routes
+    Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');
+
     Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');
     Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
     Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');

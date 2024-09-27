@@ -135,8 +135,8 @@ class SysproService
         try {
             $response = self::get($url);
             $get_response = self::returnResponse($response);
-            if (!empty($get_response['response']['Customer']['PriceList'])) {
-                $customerDetails = $get_response['response']['Customer']['PriceList'];
+            if (!empty($get_response['response']['Customer'])) {
+                $customerDetails = $get_response['response']['Customer'];
                 session([$sessionKey => $customerDetails]);
             } else {
                 $customerDetails = [];

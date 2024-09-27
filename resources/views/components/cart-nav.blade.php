@@ -18,6 +18,10 @@
                 <a href="{{ route('profile.edit') }}"
                   class="inline-block p-4 rounded-t-lg <?php if(Request::is('profile')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">My Account</a>
               </li>
+              <li class="me-2">
+                <a href="{{ route('quotes') }}"
+                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('quotes')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Quotes</a>
+              </li>
             </ul>
           </div>
           <div class="flex-1">
@@ -30,7 +34,7 @@
                     placeholder="10245566 - Numotion" required />
                   <button type="submit"
                     class="p-2.5 text-sm font-medium text-[#070707] border-s-0 border border border-[#000]"><x-icons.search />
-                   
+
                     <span class="sr-only">Search</span>
                   </button>
                   <button id="dropdown-button" data-dropdown-toggle="dropdown"
