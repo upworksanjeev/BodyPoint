@@ -26,7 +26,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->shipping_address ?? '' }} <br>{{ $userDetail->shipping_city ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['State'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '' }} <br>{{ session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ??'' }} <br> {{ session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
