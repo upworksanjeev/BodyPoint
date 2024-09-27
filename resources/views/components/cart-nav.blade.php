@@ -31,7 +31,7 @@
                 <div class="relative w-full flex flex-1">
                   <input type="search" id="search-dropdown"
                     class="block p-2.5 w-full z-20 text-sm text-[#070707] bg-white rounded-s-lg border border border-[#000] focus:ring-blue-500 focus:border-blue-500 placeholder:text-[#070707] border-e-0"
-                    placeholder="10245566 - Numotion" required />
+                    placeholder="10245566 - Numotion" required  value="{{ session('customer_details') ? session('customer_details')['CustomerAccountNumber'] . ' - ' . session('customer_details')['CustomerName'] : '' }}" />
                   <button type="submit"
                     class="p-2.5 text-sm font-medium text-[#070707] border-s-0 border border border-[#000]"><x-icons.search />
 

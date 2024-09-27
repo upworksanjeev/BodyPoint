@@ -155,7 +155,7 @@
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address ?? '' }}, <br>{{ $userDetail->shipping_city ?? '' }}, {{ $userDetail->shipping_state ?? '' }} {{ $userDetail->shipping_zip ?? '' }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address ?? '' }} <br>{{ $userDetail->shipping_city ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['State'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span></td>
@@ -182,7 +182,7 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->billing_address ?? ''  }} <br>{{ $userDetail->billing_city ?? '' }}, {{ $userDetail->billing_state ?? '' }} {{ $userDetail->billing_zip ?? ''  }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ session('customer_details')['billAddressLine2']??''  }} <br>{{ session('customer_details')['billAddressLine4'] ??'' }} {{ session('customer_details')['billAddressLine1'] ??'' }} {{ session('customer_details')['billAddressPostalCode'] ??''  }} {{ session('customer_details')['billAddressLine5'] ??'' }}</span>
                             </td>
                         </tr>
                         <tr>

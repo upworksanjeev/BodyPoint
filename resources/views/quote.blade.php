@@ -59,12 +59,8 @@
           <div class="card-body p-6 border-t">
             <div class="flex items-center justify-end gap-2">
               <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-
-
 			   <input type="hidden" value="<?= csrf_token() ?>" name="_token">
-			  <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}">
-
-			  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
+			  <button  type="submit" onclick="makeButtonDisable(this)" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
 			  </form>
 
 
@@ -83,6 +79,7 @@
 function print_window(){
    window.print();
 }
+
 </script>
 @endpush
 

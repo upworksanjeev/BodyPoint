@@ -9,7 +9,7 @@
 
       <span>Order No: {{ $orders['purchase_order_no'] }}</span>
       @if(!empty($orders['status']))
-        <span>Order Status: {{ $orders['status'] }}</span>
+        <span>Order Status: {{ $orders->order_status }}</span>
       @endif
 	  <!--x-icons.down-arrow /-->
 	  <span class="text-center">Order Date: {{ date('F j, Y',strtotime($orders['created_at'])) }}</span>

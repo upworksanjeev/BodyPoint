@@ -46,15 +46,16 @@
                                         @if(auth()->user())
                                             @php $found = false; @endphp
                                             @if(!empty(session('stock_details')))
-                                                @foreach(session('stock_details') as $stock_detail)
-                                                    @if($product['sku'] == $stock_detail['StockCode'] && $stock_detail['QuantityOnHand'] > 0)
-                                                        @if($product['product_type'] != "Option")
-                                                            <x-product-price :product="$product" />
-                                                        @endif
-                                                        @php $found = true; @endphp
-                                                        @break;
+                                                @php
+                                                    $stock_code = array_search($product['sku'],array_column(session('stock_details'), 'StockCode'));
+                                                    $quantity_on_hand = session('stock_details')[$stock_code]['QuantityOnHand']
+                                                @endphp
+                                                @if(!empty($stock_code) && $quantity_on_hand > 0)
+                                                    @if($product['product_type'] != "Option")
+                                                        <x-product-price :product="$product" />
                                                     @endif
-                                                @endforeach
+                                                    @php $found = true; @endphp
+                                                @endif
                                                 @if (!$found)
                                                     <div class="out-off-stock">
                                                         <h1>Out of Stock</h1>
