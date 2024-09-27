@@ -102,7 +102,7 @@ body {
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_address??'' }}, <br>{{ $userDetail->shipping_city??'' }}, {{ $userDetail->shipping_state??'' }} {{ $userDetail->shipping_zip??'' }} {{ $userDetail->shipping_country??'' }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '' }} <br>{{ session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ??'' }} <br> {{ session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span></td>
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span></td>
@@ -134,7 +134,7 @@ body {
                 </td>
 
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_address??''  }} <br>{{ $userDetail->billing_city??'' }}, {{ $userDetail->billing_state??'' }} {{ $userDetail->billing_zip??''  }} {{ $userDetail->billing_country??'' }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_details')['billAddressLine2']??''  }} <br>{{ session('customer_details')['billAddressLine4'] ??'' }} {{ session('customer_details')['billAddressLine1'] ??'' }} {{ session('customer_details')['billAddressPostalCode'] ??''  }} {{ session('customer_details')['billAddressLine5'] ??'' }}</span>
 
                 </td>
               </tr>
@@ -223,7 +223,7 @@ body {
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 {{ $cartitem['sku']??'' }}
               </td>
-             
+
               <td style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
               </td>
@@ -238,7 +238,7 @@ body {
                 ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
               </td>
               <?php $subtotal += $cartitem['discount_price'] * $cartitem['quantity']; ?>
-              
+
             </tr>
 
             @endforeach
@@ -289,9 +289,9 @@ body {
       </table>
 
       </table>
-	  
+
 	   </div>
-	   
+
   </div>
   </div>
    @endforeach

@@ -155,7 +155,7 @@
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->shipping_address ?? '' }} <br>{{ $userDetail->shipping_city ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['State'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '' }} <br>{{ session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ??'' }} <br> {{ session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span></td>
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span></td>
