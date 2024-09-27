@@ -35,9 +35,11 @@ class ProductController extends Controller
             $syspro_products = SysproService::getCustomerDetails($url);
 
             if (!empty($syspro_products)) {
-                foreach ($syspro_products as $syspro_product) {
+                $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
+                foreach ($syspro_products['PriceList'] as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {
                         $product['price'] = $syspro_product['Price'];
+                        $product['msrp'] = $syspro_product['Price'];
                         break;
                     }
                 }
@@ -111,7 +113,6 @@ class ProductController extends Controller
         $var_att_ids = VariationAttribute::select('variation_id')->where('product_attribute_id', $request->product_att_id)->get();
         $attr = [];
         $productattr = [];
-        $product_available = false;
 
         if (!empty(auth()->user()->customer_id)) {
             $url = 'ListStock';
@@ -119,7 +120,6 @@ class ProductController extends Controller
             if (!empty($list_stock)) {
                 foreach ($list_stock as $stock) {
                     if ($stock['StockCode'] == $product->sku && $stock['QuantityOnHand'] > 0) {
-                        $product_available = true;
                         break;
                     }
                 }
@@ -219,17 +219,21 @@ class ProductController extends Controller
         if (!empty(auth()->user()->customer_id)) {
             $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);
-            if (!empty($syspro_products)) {
-                foreach ($syspro_products as $syspro_product) {
+            if (!empty($syspro_products['PriceList'])) {
+                $product->discount = $syspro_products['CustomerDiscountPercentage'];
+                $variation->discount = $syspro_products['CustomerDiscountPercentage'];
+                foreach ($syspro_products['PriceList'] as $syspro_product) {
                     if ($syspro_product['StockCode'] == $product->sku) {
                         $product_available = true;
                         $product->price = $syspro_product['Price'];
+                        $product->msrp = $syspro_product['Price'];
                         break;
                     }
                     if(!empty($variation->sku)){
                         if ($syspro_product['StockCode'] == $variation->sku) {
                             $product_available = true;
                             $variation->price = $syspro_product['Price'];
+                            $variation->msrp = $syspro_product['Price'];
                             break;
                         }
                     }

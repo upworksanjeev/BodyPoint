@@ -435,6 +435,12 @@ body {
     font-family: system-ui;
     text-transform: uppercase;
 }
+.place_order_form{
+    text-align: right;
+    display: flex;
+    justify-content: end;
+    margin-top: 16px;
+}
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;

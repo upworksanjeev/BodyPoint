@@ -32,7 +32,7 @@
 		    <x-cart.final-checkout-list :cart="$cart"/>
 
            </div>
-           <form action="{{ route('pdf-download') }}" method="post">
+           <form action="{{ route('generateQuote') }}" method="post">
           <div class="card-body p-6 border-t">
 			<h3 class="mb-4 font-semibold text-gray-900">Select a PDF Quote Option to Save</h3>
 			<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
