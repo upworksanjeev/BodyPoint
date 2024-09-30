@@ -129,6 +129,9 @@ class SysproService
     {
         $sessionKey = 'customer_details';
         $customerDetails = session($sessionKey);
+        if ($customerDetails) {
+            return $customerDetails;
+        }
         try {
             $response = self::get($url);
             $get_response = self::returnResponse($response);

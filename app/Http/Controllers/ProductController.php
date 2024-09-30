@@ -219,9 +219,7 @@ class ProductController extends Controller
             $syspro_products = SysproService::getCustomerDetails($url);
             if (!empty($syspro_products['PriceList'])) {
                 $product->discount = $syspro_products['CustomerDiscountPercentage'];
-                if(!empty($variation)){
-                    $variation['discount'] = $syspro_products['CustomerDiscountPercentage'];
-                }
+                $variation->discount = $syspro_products['CustomerDiscountPercentage'];
                 if(!empty($product->sku)){
                     $existingStockInProduct = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                     if(!empty($existingStockInProduct)){

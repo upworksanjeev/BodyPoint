@@ -1,31 +1,9 @@
 import './bootstrap';
 import './forms';
 import './flowbite.min';
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
 
 import Alpine from 'alpinejs';
 
-window.toastr = toastr;
 window.Alpine = Alpine;
 
 Alpine.start();
-
-toastr.options = {
-    "closeButton": true,
-    "debug": false,
-    "newestOnTop": true,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": false,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
-};
-
