@@ -439,7 +439,6 @@ body {
     text-align: right;
     display: flex;
     justify-content: end;
-    margin-top: 16px;
 }
 @media (max-width: 991px) {
     .product-outer-box {

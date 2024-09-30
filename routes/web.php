@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/generate-quote',[QuoteController::class, 'store'])->name('generateQuote');
     Route::get('/quotes',[QuoteController::class, 'index'])->name('quotes');
     Route::post('/quotes', [QuoteController::class, 'index'])->name('quote-search');
+    Route::get('/pdf/{quote_id}', [QuoteController::class, 'pdfDownloadQuote'])->name('pdf-download-quote');
 
     //Order Routes
     Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');

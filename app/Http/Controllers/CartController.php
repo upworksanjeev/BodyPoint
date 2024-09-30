@@ -33,8 +33,8 @@ class CartController extends Controller
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
                     $isStockItem = false;
-                    $existingKey = array_search($request->sku,array_column($syspro_products['PriceList'], 'StockCode'));
-                    if(!empty($existingKey)){
+                    $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+                    if (!empty($existingKey)) {
                         $isStockItem = true;
                     }
                     if (!$isStockItem) {
@@ -120,6 +120,12 @@ class CartController extends Controller
                         CartAttribute::where('cart_item_id', $cartitems->id)->delete();
                         $cartitems->delete();
                     }
+                    elseif($request->option == 'updateQuantity'){
+                        if($request->quantity != 0 && !empty($request->quantity)){
+                            $cartitems->update(['quantity' => $request->quantity]);
+                            $cart_quantity = CartItem::where('cart_id', $cart->id)->sum('quantity');
+                        }
+                    }
                     $cart->update(['total_items' => $cart_quantity]);
                 }
             }
@@ -204,8 +210,8 @@ class CartController extends Controller
                 if (!empty($syspro_products['PriceList'])) {
                     $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                     $isStockItem = false;
-                    $existingKey = array_search($request->sku,array_column($syspro_products['PriceList'], 'StockCode'));
-                    if(!empty($existingKey)){
+                    $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+                    if (!empty($existingKey)) {
                         $isStockItem = true;
                     }
                     if (!$isStockItem) {
