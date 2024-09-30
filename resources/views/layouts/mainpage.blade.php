@@ -27,7 +27,7 @@
 
 </head>
 
-<body class="font-['Avenir'] antialiased">
+<body class="font-['Avenir'] antialiased pb-14">
 
     @include('layouts.header')
 

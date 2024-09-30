@@ -57,7 +57,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-[#00838f] py-[20px]">
+    <div class="bg-[#00838f] py-[20px] fixed bottom-0 w-full">
         <x-copyrights>
             <x-slot name="content">
                 ©Copyright {{ date('Y') }}. Bodypoint. All Rights Reserved.

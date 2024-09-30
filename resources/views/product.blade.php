@@ -47,10 +47,12 @@
                                             @php $found = false; @endphp
                                             @if(!empty(session('stock_details')))
                                                 @php
+                                                    $price = 0;
                                                     $stock_code = array_search($product['sku'],array_column(session('stock_details'), 'StockCode'));
-                                                    $quantity_on_hand = session('stock_details')[$stock_code]['QuantityOnHand']
+                                                    $quantity_on_hand = session('stock_details')[$stock_code]['QuantityOnHand'];
+                                                    $stock = array_search($product['sku'],array_column(session('customer_details')['PriceList'], 'StockCode'));
                                                 @endphp
-                                                @if(!empty($stock_code) && $quantity_on_hand > 0)
+                                                @if(!empty($stock_code) && $quantity_on_hand > 0 && !empty($stock))
                                                     @if($product['product_type'] != "Option")
                                                         <x-product-price :product="$product" />
                                                     @endif
