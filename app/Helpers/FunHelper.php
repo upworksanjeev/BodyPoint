@@ -50,9 +50,6 @@ class FunHelper
 		$directory = 'orders';
 		$filename = 'order_receipt_' . $order->id . '.pdf';
 		$path = $directory . '/' . $filename;
-        if (!Storage::disk('public')->exists($directory)) {
-            Storage::disk('public')->makeDirectory($directory);
-        }
 		Storage::disk('public')->put($path, $pdfContent);
 	 }
 
@@ -60,9 +57,6 @@ class FunHelper
 		$directory = 'quotes';
 		$filename = 'quote-generate' . $user->id . '.pdf';
 		$path = $directory . '/' . $filename;
-        if (!Storage::disk('public')->exists($directory)) {
-            Storage::disk('public')->makeDirectory($directory);
-        }
 		Storage::disk('public')->put($path, $pdfContent);
 	 }
 }
