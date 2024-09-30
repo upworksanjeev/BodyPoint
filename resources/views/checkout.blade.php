@@ -20,10 +20,10 @@
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Account</span>
                 <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $user->email }}</span>
               </li>
-              <li class="flex items-center gap-5">
+              {{-- <li class="flex items-center gap-5">
                 <span class="text-sm text-[#000] font-normal leading-[17px]">Purchase Order #:</span>
                 <input class="py-[2px] px-5 text-sm font-medium focus:outline-none rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center" value="" name="purchase_no" id="purchase_no" onchange="changePurchaseNo({{ $cart[0]['id'] }})">
-              </li>
+              </li> --}}
             </ul>
           </div>
           <x-shipping-info :cart="$cart" :user="$user" :userDetail="$user_detail" />
