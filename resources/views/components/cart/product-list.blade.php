@@ -43,14 +43,14 @@
                     <div
                       class="relative flex items-center max-w-[8rem] border border-solid border-[#C5C5C5] rounded-full">
                       <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="border-e border-gray-300 rounded-s-lg p-2 h-7 focus:ring-gray-100 focus:ring-2 focus:outline-none" onclick="updateProduct('decrement',{{ $cartitem['id'] }})">
-                       <x-icons.minus /> 
-                        
+                       <x-icons.minus />
+
                       </button>
                       <input type="text" id="quantity_input_{{ $cartitem['id'] }}" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-7 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 "
-                        placeholder="1" required value="{{ $cartitem['quantity'] }}" />
+                        placeholder="1" required value="{{ $cartitem['quantity'] }}" onchange="updateQuantity('updateQuantity',{{ $cartitem['id'] }})" data-old-quantity="{{ $cartitem['quantity'] }}" />
                       <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="border-s border-gray-300 rounded-e-lg p-2 h-7 focus:ring-gray-100 focus:ring-2 focus:outline-none" onclick="updateProduct('increment',{{ $cartitem['id'] }})">
                         <x-icons.plus />
-                        
+
                       </button>
                     </div>
                   </form>
@@ -73,14 +73,14 @@
               </tr>
 			  <?php $subtotal+=$cartitem['discount_price']*$cartitem['quantity']; ?>
               @endforeach
-			  
-			  
+
+
               <tr class="odd:bg-white even:bg-gray-50 border-b">
                 <td class="w-4 p-4" colspan="10">
                   <div class="text-right">
                     <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                   </div>
-                </td>                
+                </td>
               </tr>
 			   <tr
                 class="odd:bg-white even:bg-gray-50 border-b">
@@ -88,16 +88,15 @@
                   <div class="flex items-center gap-2">
                     <button type="button"  onclick="clearCart({{ $cart[0]['id'] }})" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"><x-icons.delete /> Clear Cart</button>
                   </div>
-                </td>                
+                </td>
                 <td class="w-4 p-4" colspan="6">
                   <div class="flex items-center justify-end gap-2">
                     <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
                     <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
                   </div>
-                </td>                
+                </td>
               </tr>
-			 
+
 			  @endif
-			  
-             
-			
+
+

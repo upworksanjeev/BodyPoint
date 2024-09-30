@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Quote;
 
 use App\Events\GenerateQuote;
+use App\Helpers\FunHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class QuoteController extends Controller
 {
@@ -151,9 +153,15 @@ class QuoteController extends Controller
                 }
             }
             $user_detail = UserDetails::where('user_id', $user->id)->first();
+            $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
+            $pdf->render();
+            $pdfContent = $pdf->output();
+            FunHelper::saveGenerateQuotePdf($pdfContent, $user);
             GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
             CartItem::where('cart_id', $cart[0]->id)->delete();
             Cart::where('user_id', $user->id)->delete();
+            $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
+            Storage::disk('public')->delete($filePath);
             DB::commit();
             return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
         } catch (\Exception $e) {
@@ -161,5 +169,23 @@ class QuoteController extends Controller
             Log::error('Quote creation failed: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while placing your Quote. Please try again.');
         }
+    }
+
+    public function pdfDownloadQuote(Request $request,$quote_id){
+        set_time_limit(3600);
+        $user = Auth::user();
+        $price_option = "all_price";
+        if ($request->has('price_option')) {
+            $price_option = $request->price_option;
+        }
+        $cart = Order::with('user', 'orderItem.Product.Media')->where('id', $quote_id)->first();
+        // dd($cart);
+        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $pdf = Pdf::loadView('quotes.pdf-quote', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
+        $pdf->render();
+        $dompdf = $pdf->getDomPDF();
+        $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
+        $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0, 0, 0));
+        return $pdf->download();
     }
 }

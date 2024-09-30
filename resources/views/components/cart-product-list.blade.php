@@ -45,10 +45,10 @@
 			<x-cart.product-list :page="$page" :cart="$cart" />
             </tbody>
           </table>
-		   
+
 @push('other-scripts')
 <script>
-  
+
   /* update cart items like add/delete item */
   function updateProduct(option,cartitem_id){
 	   $.ajax({
@@ -71,11 +71,11 @@
 						});
                 },
                 error: function(xhr) {
-                  
+
                 }
             });
   }
-  
+
   /* Delete All cart items */
   function clearCart(cart_id){
 	   $.ajax({
@@ -97,11 +97,11 @@
 						});
                 },
                 error: function(xhr) {
-                  
+
                 }
             });
   }
-  
+
   /* update cart item details */
   function updateCartItem(cart_item_id){
 	   $.ajax({
@@ -113,12 +113,48 @@
                     marked_for: $('#marked_for_'+cart_item_id).val(),
                 },
                 success: function(response) {
-					
+
                 },
                 error: function(xhr) {
-                  
+
                 }
             });
   }
+
+function updateQuantity(option,cart_item_id){
+    var quantity = $('#quantity_input_'+cart_item_id).val();
+    var old_quantity = $('#quantity_input_'+cart_item_id).attr("data-old-quantity");
+    if (quantity == 0) {
+        toastr.error('Quantity cannot be zero. Please enter a valid quantity.');
+        $('#quantity_input_'+cart_item_id).val(old_quantity);
+        return;
+    }
+    if(quantity != 0 || quantity != ""){
+        $.ajax({
+            url: "{{ route('update-cart-item') }}",
+            type: 'POST',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                cart_item_id: cart_item_id,
+                option: option,
+                quantity: quantity
+            },
+            success: function(response) {
+                $('#tbody_data').html(response);
+                $.ajax({
+                    url: "{{ route('get-cart-count') }}",
+                    type: 'GET',
+                    success: function(response) {
+                            $('#cart_count_div').html(response);
+                    }
+                });
+            },
+            error: function(xhr) {
+
+            }
+        });
+    }
+}
+
 </script>
 @endpush
