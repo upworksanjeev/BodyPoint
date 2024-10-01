@@ -24,7 +24,6 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-
         if ($request->has('product_id')) {
             $cart = Cart::where('user_id', $user->id)->first();
             $product_id = $request->get('product_id');
@@ -212,6 +211,8 @@ class CartController extends Controller
                     $isStockItem = false;
                     $existingKey = array_search($product->sku, array_column($syspro_products['PriceList'], 'StockCode'));
                     if (!empty($existingKey)) {
+                        $product->price = $syspro_products['PriceList'][$existingKey]['Price'];
+                        $product->msrp = $syspro_products['PriceList'][$existingKey]['Price'];
                         $isStockItem = true;
                     }
                     if (!$isStockItem) {
