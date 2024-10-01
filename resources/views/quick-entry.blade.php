@@ -29,7 +29,8 @@
 
               <button type="button" class="text-white absolute end-2.5 top-0 bottom-0 right-0 bg-[#2F2F2F] hover:bg-[#000] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-e-full text-sm px-5 py-3" onclick="clearStock()">Clear</button>
               <div id="stock_search_div" class="hidden">
-                <table id="myTable" class="rounded-xl shadow-lg h-full min-h-[360px] max-h-[360px] overflow-y-auto bg-white">
+                <div class="h-full min-h-[250px] max-h-[360px] overflow-y-auto absolute top-45 w-full left-0 z-10">
+                <table id="myTable" class="rounded-xl shadow-lg max-h-[360px] overflow-y-auto bg-white">
                   <thead class="header top-0">
                     <tr>
                       <th scope="col" style="width: 30%;" class="text-white">Stock Code</th>
@@ -40,6 +41,7 @@
                   </tbody>
 
                 </table>
+            </div>
               </div>
             </div>
             <input id="selected_product_id" type="hidden">
@@ -130,13 +132,7 @@
           },
           success: function(response) {
             if(response.success == false){
-                $('mainpage').prepend(`
-                    <div id="error_alert" x-data="{ open: true }" x-show="open" class="alert message-alert bg-red-100 text-red-800 border border-red-400 rounded-lg p-4 relative" role="alert">
-                    ${response.message}
-                    <button @click="open = false" type="button" class="absolute top-0 bottom-0 right-0 mr-4 mt-2 text-red-800 focus:outline-none" aria-label="Close">&times;</button>
-                    </div>
-                `).first();
-                Alpine.initTree(document.querySelector('#error_alert'));
+                toastr.error(response.message);
                 return;
             }
             $('#tbody_data').html(response);

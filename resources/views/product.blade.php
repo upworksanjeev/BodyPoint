@@ -58,7 +58,7 @@
                                                     @endif
                                                     @php $found = true; @endphp
                                                 @endif
-                                                @if (!$found)
+                                                @if(!$found && $product['product_type'] !="Option")
                                                     <div class="out-off-stock">
                                                         <h1>Out of Stock</h1>
                                                     </div>
