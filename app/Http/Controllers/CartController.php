@@ -210,7 +210,7 @@ class CartController extends Controller
                 if (!empty($syspro_products['PriceList'])) {
                     $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                     $isStockItem = false;
-                    $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+                    $existingKey = array_search($product->sku, array_column($syspro_products['PriceList'], 'StockCode'));
                     if (!empty($existingKey)) {
                         $isStockItem = true;
                     }
