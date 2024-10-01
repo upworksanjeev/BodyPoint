@@ -106,6 +106,7 @@
     }
 
     function addToCart(sku, product_id) {
+        $('#error_alert').remove();
       if ($('#selected_product_id').val() == '') {
         $('#myInput').addClass('focus:ring-red-500 focus:border-red-500');
         $('#myInput').removeClass('focus:ring-blue-500 focus:border-blue-500');
