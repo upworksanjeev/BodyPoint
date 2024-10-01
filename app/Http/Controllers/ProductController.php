@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function index($name, Request $request)
     {
         $categories = Category::all();
-        $product = Product::with(['media', 'SuccessStory'])->where('slug', $name)->first();
+        $product = Product::with(['media', 'SuccessStory','attribute'])->where('slug', $name)->first();
         if(!empty(auth()->user()->customer_id)){
             $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);

@@ -19,8 +19,12 @@ class OrderController extends Controller
             if (!empty($response['response']['Error'])) {
                 return back()->with('error',$response['response']['Message']);
             }
-            $order = Order::where('purchase_order_no',$order_id)->first();
-            $order->update(['status', 'S']);
+            if(!empty($response['response']['OrderNumber'])){
+                $order = Order::where('purchase_order_no',$order_id)->first();
+                $url = 'GetOrderDetails/' . $order->purchase_order_no;
+                $get_order_details = SysproService::getOrderDetails($url);
+                $order->update(['status' => $get_order_details['response']['Status']]);
+            }
             DB::commit();
             return redirect()->route('order')->with('success','Order Placed Successfully');
         }

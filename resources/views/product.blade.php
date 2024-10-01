@@ -38,6 +38,7 @@
                             <div class="md:flex-1 lg:px-5 ctm-mobile-mrgn product-outer-box">
                                 <h2 class="text-[#333] text-[30px] font-[700]">{{ $product['name'] ?? '' }}</h2>
                                 <p class="text-[#00838f] text-[18px] ">{{ $product['small_description'] ?? '' }}</p>
+                                <p class="text-[#00838f] text-[18px] ">{{ $product['sku'] ?? '' }}</p>
                                 <form name="addtocart" id="addtocart" method="POST" action="{{ route('cart.save') }}">
                                     @csrf
                                     <input type="hidden" name="product_id" id="product_id" value="{{ $product['id'] ?? '' }}">
@@ -58,7 +59,7 @@
                                                     @endif
                                                     @php $found = true; @endphp
                                                 @endif
-                                                @if(!$found && $product['product_type'] !="Option")
+                                                @if((!$found && $product['product_type'] !="Option") || (!$found && $product['product_type'] == 'Option' && $product->attribute->isEmpty()))
                                                     <div class="out-off-stock">
                                                         <h1>Out of Stock</h1>
                                                     </div>

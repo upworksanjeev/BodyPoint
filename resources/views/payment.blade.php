@@ -1,6 +1,6 @@
 <x-mainpage-layout>
 
-   
+
   <x-cart-nav />
 
   <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
@@ -14,19 +14,19 @@
               class="card bg-white border border-gray-200 rounded-2xl shadow mb-4">
               <div class="card-header px-6 py-4 flex items-center justify-between border-b ">
                 <h4>Choose Payment</h4>
-                
+
               </div>
               <div class="card-body p-6">
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Payment Method:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">Invoice-30</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ auth()->user()->payment_term_description ?? 'Invoice-30' }}</span>
                   </li>
-                 
+
                 </ul>
               </div>
             </div>
-           
+
 			<div>
             <a onclick="addToCart()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px] float-right" href="{{ route('checkout') }}">
               Next
@@ -39,5 +39,5 @@
     </div>
   </section>
 
-  
+
 </x-mainpage-layout>

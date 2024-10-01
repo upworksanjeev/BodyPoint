@@ -17,7 +17,8 @@ class Order extends Model
         'total_items',
         'purchase_order_no',
         'bp_number',
-        'status'
+        'status',
+        'total'
     ];
 
 

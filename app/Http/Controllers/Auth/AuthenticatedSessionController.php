@@ -32,7 +32,12 @@ class AuthenticatedSessionController extends Controller
 
         if (!empty(auth()->user()->customer_id)) {
             $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
-            SysproService::getCustomerDetails($url);
+            $get_customer_details = SysproService::getCustomerDetails($url);
+            if(!empty($get_customer_details)){
+                auth()->user()->update([
+                    'payment_term_description' => $get_customer_details['PaymentTermDescription']
+                ]);
+            }
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);
