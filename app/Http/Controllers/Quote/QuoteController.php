@@ -113,6 +113,7 @@ class QuoteController extends Controller
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
         }
+        $total = 0;
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
         DB::beginTransaction();
@@ -142,12 +143,14 @@ class QuoteController extends Controller
                             'discount_price' => $cartItem->discount_price,
                             'quantity' => $cartItem->quantity,
                         ]);
-                        $url = 'GetOrderDetails/' . $order->purchase_order_no;
-                        $response = SysproService::getOrderDetails($url);
-                        $order->update([
-                            'status' => $response['response']['Status'],
-                        ]);
+                        $total += $cartItem->discount_price * $cartItem->quantity;
                     }
+                    $url = 'GetOrderDetails/' . $order->purchase_order_no;
+                    $response = SysproService::getOrderDetails($url);
+                    $order->update([
+                        'status' => $response['response']['Status'],
+                        'total' => $total
+                    ]);
                 } elseif (!empty($order_syspro['response']['Error'])) {
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
                 }

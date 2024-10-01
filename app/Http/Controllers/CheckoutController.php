@@ -95,6 +95,7 @@ class CheckoutController extends Controller
     public function saveOrder(Request $request)
     {
         $user = Auth::user();
+        $total = 0;
         if (!$request->has('cart_id')) {
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
         }
@@ -123,6 +124,7 @@ class CheckoutController extends Controller
                     'discount_price' => $cartItem->discount_price,
                     'quantity' => $cartItem->quantity,
                 ]);
+                $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
             $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, null);
@@ -134,6 +136,7 @@ class CheckoutController extends Controller
                 $response = SysproService::getOrderDetails($url);
                 $order->update([
                     'status' => $response['response']['Status'],
+                    'total' =>  $total
                 ]);
             } elseif (!empty($order_syspro['response']['Error'])) {
                 DB::rollBack();
