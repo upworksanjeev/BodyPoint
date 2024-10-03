@@ -46,7 +46,7 @@ class AuthenticatedSessionController extends Controller
             if (empty($user->password)) {
                 return response()->json([
                     'status' => 'new',
-                    'message' => 'No user found. Please set your password.',
+                    'message' => 'Please set your password.',
                 ]);
             }
             return response()->json([

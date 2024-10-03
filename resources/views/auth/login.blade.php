@@ -91,6 +91,7 @@
                                 this.step = 'password';
                             } else if (data.status === 'new') {
                                 this.step = 'set-password';
+                                toastr.success(data.message);
                             } else {
                                 toastr.error(data.message);
                             }
