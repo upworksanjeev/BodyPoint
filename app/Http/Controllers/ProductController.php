@@ -112,18 +112,6 @@ class ProductController extends Controller
         $attr = [];
         $productattr = [];
 
-        if (!empty(auth()->user()->customer_id)) {
-            $url = 'ListStock';
-            $list_stock = SysproService::listStock($url);
-            if (!empty($list_stock)) {
-                foreach ($list_stock as $stock) {
-                    if ($stock['StockCode'] == $product->sku && $stock['QuantityOnHand'] > 0) {
-                        break;
-                    }
-                }
-            }
-        }
-
         foreach ($var_att_ids as $k => $v) {
             $var_att = VariationAttribute::select('product_attribute_id')->where('variation_id', $v->variation_id)->get()->toArray();
             foreach ($var_att as $k1 => $v1) {
