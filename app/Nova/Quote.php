@@ -48,7 +48,7 @@ class Quote extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Purchase Order Number','purchase_order_no')->sortable()->readonly(),
+            Text::make('Purchase Quote Number','purchase_order_no')->sortable()->readonly(),
             Text::make('Total Items','total_items')->sortable()->readonly(),
             Text::make('Status','order_status')->sortable()->readonly(),
             Text::make('Total','total')->sortable()->readonly()
