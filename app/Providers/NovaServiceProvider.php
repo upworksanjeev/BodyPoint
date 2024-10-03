@@ -22,6 +22,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Blade;
 use App\Models\Product as ProductModel;
 use App\Models\ProductAttribute as ProductAttributeModel;
+use App\Nova\Order;
+use App\Nova\Quote;
 use Laravel\Nova\Observable;
 use App\Observers\ProductObserver;
 use App\Observers\ProductAttributeObserver;
@@ -40,8 +42,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::initialPath('/resources/users');
 
-		//Observable::make(ProductModel::class, ProductObserver::class);
-		//Observable::make(ProductAttributeModel::class, ProductAttributeObserver::class);
+        //Observable::make(ProductModel::class, ProductObserver::class);
+        //Observable::make(ProductAttributeModel::class, ProductAttributeObserver::class);
         Nova::mainMenu(function (Request $request) {
             return [
                 MenuSection::make('Users', [
@@ -54,12 +56,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
                 }),
-				MenuSection::make('Ecommerce', [
-                MenuItem::resource(Product::class),
-                MenuItem::resource(Category::class),
-				MenuItem::resource(AttributeCategory::class),
-				MenuItem::resource(Attribute::class),
+                MenuSection::make('Ecommerce', [
+                    MenuItem::resource(Product::class),
+                    MenuItem::resource(Category::class),
+                    MenuItem::resource(AttributeCategory::class),
+                    MenuItem::resource(Attribute::class),
                 ])->icon('list')->collapsable(),
+
+                MenuSection::make('Orders', [
+                    MenuItem::resource(Order::class),
+                ])->icon('list')->collapsable(),
+
+                MenuSection::make('Quotes', [
+                    MenuItem::resource(Quote::class),
+                ])
+                ->icon('list')
+                ->collapsable(),
 
             ];
         });
@@ -88,9 +100,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**
