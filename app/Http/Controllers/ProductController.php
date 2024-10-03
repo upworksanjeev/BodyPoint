@@ -213,6 +213,7 @@ class ProductController extends Controller
                 if(!empty($product->sku)){
                     $existingStockInProduct = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                     if(!empty($existingStockInProduct)){
+                        $product_available = true;
                         $product['price'] = $syspro_products['PriceList'][$existingStockInProduct]['Price'];
                         $product['msrp'] = $syspro_products['PriceList'][$existingStockInProduct]['Price'];
                     }
@@ -220,6 +221,7 @@ class ProductController extends Controller
                 if(!empty($variation->sku)){
                     $existingStockInVariation = array_search($variation->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                     if(!empty($existingStockInVariation)){
+                        $product_available = true;
                         $variation->price = $syspro_products['PriceList'][$existingStockInVariation]['Price'];
                         $variation->msrp = $syspro_products['PriceList'][$existingStockInVariation]['Price'];
                     }
