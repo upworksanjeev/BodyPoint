@@ -78,7 +78,7 @@ class AuthenticatedSessionController extends Controller
         } else {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Incorrect password.',
+                'message' => 'Incorrect Credentials.',
             ]);
         }
     }
@@ -93,7 +93,7 @@ class AuthenticatedSessionController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Password set successfully and logged in!',
+                'message' => 'Password set successfully!',
             ]);
         } else {
             throw ValidationException::withMessages([
