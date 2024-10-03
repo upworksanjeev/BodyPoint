@@ -152,6 +152,12 @@
         });
       }
     }
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#stock_search_div').length) {
+            $('#stock_search_div').removeClass('block').addClass('hidden');
+        }
+    });
   </script>
   @endpush
 
