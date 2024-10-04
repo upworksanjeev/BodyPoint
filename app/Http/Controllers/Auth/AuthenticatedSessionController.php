@@ -67,7 +67,7 @@ class AuthenticatedSessionController extends Controller
             }
             else{
                 return response()->json([
-                    'status' => 'no-customer',
+                    'status' => 'error',
                     'message' => 'Customer Does not exist on Syspro',
                 ]);
             }
