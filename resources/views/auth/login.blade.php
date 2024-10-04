@@ -34,23 +34,6 @@
                     </div>
                 </div>
 
-                <div x-show="step === 'set-password'" class="mt-4">
-                    <div>
-                        <x-input-label for="new-password" :value="__('New Password')" />
-                        <x-text-input id="new-password" class="block mt-1 w-full" type="password" x-model="newPassword" required />
-                    </div>
-                    <div class="mt-4">
-                        <x-input-label for="confirm-password" :value="__('Confirm Password')" />
-                        <x-text-input id="confirm-password" class="block mt-1 w-full" type="password" x-model="confirmPassword" required />
-                    </div>
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                    <div class="mt-4 text-right">
-                        <x-primary-button class="ml-3 text-xs" @click.prevent="setPassword">
-                            {{ __('Set Password') }}
-                        </x-primary-button>
-                    </div>
-                </div>
-
                 <!-- Remember Me Checkbox -->
                 <div class="block mt-4">
                     <label for="remember_me" class="inline-flex items-center">
@@ -89,10 +72,12 @@
                         success: (data) => {
                             if (data.status === 'exists') {
                                 this.step = 'password';
-                            } else if (data.status === 'new') {
-                                this.step = 'set-password';
+                            } else if (data.status === 'mail_sent') {
                                 toastr.success(data.message);
-                            } else {
+                            } else if(data.status === 'throttled') {
+                                toastr.error(data.message);
+                            }
+                            else{
                                 toastr.error(data.message);
                             }
                         },
@@ -110,32 +95,6 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         data: { email: this.email, password: this.password },
-                        success: (data) => {
-                            if (data.status === 'success') {
-                                toastr.success(data.message);
-                                window.location.href = '/dashboard';
-                            } else {
-                                toastr.error(data.message);
-                            }
-                        },
-                        error: (xhr) => {
-                            this.handleErrors(xhr);
-                        }
-                    });
-                },
-
-                setPassword() {
-                    $.ajax({
-                        url: '{{ route('set-password') }}',
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            email: this.email,
-                            password: this.newPassword,
-                            password_confirmation: this.confirmPassword
-                        },
                         success: (data) => {
                             if (data.status === 'success') {
                                 toastr.success(data.message);

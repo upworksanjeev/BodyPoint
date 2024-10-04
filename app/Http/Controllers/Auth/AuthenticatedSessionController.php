@@ -8,12 +8,14 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\SetPasswordRequest;
 use App\Models\User;
 use App\Services\SysproService;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Password;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -40,18 +42,36 @@ class AuthenticatedSessionController extends Controller
 
     public function store(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-
-        if ($user) {
-            if (empty($user->password)) {
-                return response()->json([
-                    'status' => 'new',
-                    'message' => 'Please set your password.',
-                ]);
+        try{
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                if (empty($user->password)) {
+                    $status = Password::sendResetLink(
+                        $request->only('email')
+                    );
+                    if($status == Password::RESET_LINK_SENT){
+                        return response()->json([
+                            'status' => 'mail_sent',
+                            'message' => 'Please set your password we have emailed You Link.',
+                        ]);
+                    }else{
+                        return response()->json([
+                            'status' => 'throttled',
+                            'message' => 'Too many reset attempts. Please try again in a few minutes.',
+                        ]);
+                    }
+                }else{
+                    return response()->json([
+                        'status' => 'exists',
+                        'message' => 'User exists. Please enter your password.',
+                    ]);
+                }
             }
+        }
+        catch(Exception $e) {
             return response()->json([
-                'status' => 'exists',
-                'message' => 'User exists. Please enter your password.',
+                'status' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }
@@ -83,22 +103,4 @@ class AuthenticatedSessionController extends Controller
         }
     }
 
-    public function setPassword(SetPasswordRequest $request)
-    {
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            $user->update([
-                'password' => Hash::make($request->password),
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Password set successfully!',
-            ]);
-        } else {
-            throw ValidationException::withMessages([
-                'email' => 'No user found with the provided email address.',
-            ]);
-        }
-    }
 }
