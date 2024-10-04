@@ -2,10 +2,12 @@
 
 namespace App\Nova;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\HasMany;
 
 class Quote extends Resource
 {
@@ -15,7 +17,6 @@ class Quote extends Resource
      * @var class-string<\App\Models\User>
      */
     public static $model = \App\Models\Order::class;
-
     /**
      * The columns that should be searched.
      *
@@ -24,7 +25,7 @@ class Quote extends Resource
     public static $search = [
         'id'
     ];
-
+    public static $with = ['user'];
     public static $clickAction = 'view';
     public static function indexQuery(NovaRequest $request, $query)
     {
@@ -51,7 +52,15 @@ class Quote extends Resource
             Text::make('Purchase Quote Number','purchase_order_no')->sortable()->readonly(),
             Text::make('Total Items','total_items')->sortable()->readonly(),
             Text::make('Status','order_status')->sortable()->readonly(),
-            Text::make('Total','total')->sortable()->readonly()
+            Text::make('Total','total')->sortable()->readonly(),
+            Text::make('Customer Id','user.customer_id')->readonly()->hideFromIndex(),
+            Text::make('Customer Name','user.name')->readonly()->hideFromIndex(),
+            Text::make('Payment Method','user.payment_term_description')->readonly()->hideFromIndex(),
+            Text::make('Date', function () {
+                return Carbon::parse($this->created_at)->format('d-m-Y h:i A');
+            })->readonly()->hideFromIndex(),
+
+            HasMany::make('Products', 'orderItem', OrderItem::class),
         ];
     }
 
