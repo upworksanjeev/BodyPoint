@@ -40,7 +40,7 @@
                                 </a>
                             @endif
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -75,7 +75,15 @@
                             if (data.status === 'exists') {
                                 this.step = 'password';
                             } else if (data.status === 'mail_sent') {
-                                toastr.success(data.message);
+                                Swal.fire({
+                                    title: 'Email Sent!',
+                                    text: data.message,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK',
+                                    customClass: {
+                                        confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+                                    }
+                                });
                             } else if(data.status === 'throttled') {
                                 toastr.error(data.message);
                             }

@@ -3,10 +3,13 @@ import './forms';
 import './flowbite.min';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 import Alpine from 'alpinejs';
 
 window.toastr = toastr;
+window.Swal = Swal;
 window.Alpine = Alpine;
 
 Alpine.start();
