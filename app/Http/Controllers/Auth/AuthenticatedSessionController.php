@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
     {
         try{
             $user = User::where('email', $request->email)->first();
-            if ($user) {
+            if ($user && !empty($user->customer_id)) {
                 if (empty($user->password)) {
                     $status = Password::sendResetLink(
                         $request->only('email')
@@ -50,7 +50,7 @@ class AuthenticatedSessionController extends Controller
                     if($status == Password::RESET_LINK_SENT){
                         return response()->json([
                             'status' => 'mail_sent',
-                            'message' => 'Please set your password we have emailed You Link.',
+                            'message' => 'We have sent you an email with password reset link. Please click on the link to reset your password.',
                         ]);
                     }else{
                         return response()->json([
@@ -64,6 +64,12 @@ class AuthenticatedSessionController extends Controller
                         'message' => 'User exists. Please enter your password.',
                     ]);
                 }
+            }
+            else{
+                return response()->json([
+                    'status' => 'no-customer',
+                    'message' => 'Customer Does not exist on Syspro',
+                ]);
             }
         }
         catch(Exception $e) {

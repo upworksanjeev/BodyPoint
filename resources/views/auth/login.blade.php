@@ -31,6 +31,16 @@
                         <x-primary-button class="ml-3 text-xs" @click.prevent="checkPassword">
                             {{ __('Login') }}
                         </x-primary-button>
+
+                        <!-- Forgot Password Link -->
+                        <div class="flex items-center sm:justify-end justify-center mt-2">
+                            @if (Route::has('password.request'))
+                                <a class="text-[#00838f] underline text-xs sm:text-sm rounded-md focus:outline-none" href="{{ route('password.request') }}">
+                                    {{ __('Forgot your password?') }}
+                                </a>
+                            @endif
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -42,14 +52,6 @@
                     </label>
                 </div>
 
-                <!-- Forgot Password Link -->
-                <div class="flex items-center sm:justify-end justify-center mt-2">
-                    @if (Route::has('password.request'))
-                        <a class="text-[#00838f] underline text-xs sm:text-sm rounded-md focus:outline-none" href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
-                        </a>
-                    @endif
-                </div>
             </form>
         </div>
     </div>
