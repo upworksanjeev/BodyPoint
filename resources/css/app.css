@@ -439,6 +439,9 @@ body {
     display: flex;
     justify-content: end;
 }
+.swal-button-color{
+    box-shadow: none!important;
+}
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;

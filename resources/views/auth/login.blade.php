@@ -79,9 +79,10 @@
                                     title: 'Email Sent!',
                                     text: data.message,
                                     icon: 'success',
+                                    iconColor: '#00838f',
                                     confirmButtonText: 'OK',
                                     customClass: {
-                                        confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+                                        confirmButton: 'swal-button-color bg-[#00838f] px-6 py-2 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#00777f] focus:bg-[#00777f] active:bg-[#00777f] focus:outline-none focus:shadow-none focus-visible:shadow-none' // Correct syntax for focus-visible and removing shadows
                                     }
                                 });
                             } else if(data.status === 'throttled') {
