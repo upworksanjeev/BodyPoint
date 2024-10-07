@@ -114,6 +114,7 @@ class QuoteController extends Controller
             $price_option = $request->price_option;
         }
         $total = 0;
+        $orderItems = [];
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
         DB::beginTransaction();
@@ -130,20 +131,22 @@ class QuoteController extends Controller
                         'purchase_order_no' => $order_syspro['response']['orderNumber'],
                         'total_items' => $cart[0]->total_items
                     ]);
-                    foreach ($cartitems as $cartItem) {
-                        OrderItem::create([
-                            'order_id' => $order->id,
-                            'product_id' => $cartItem->product_id,
-                            'variation_id' => $cartItem->variation_id,
-                            'marked_for' => $cartItem->marked_for,
-                            'msrp' => $cartItem->msrp,
-                            'sku' => $cartItem->sku,
-                            'price' => $cartItem->price,
-                            'discount' => $cartItem->discount,
-                            'discount_price' => $cartItem->discount_price,
-                            'quantity' => $cartItem->quantity,
-                        ]);
-                        $total += $cartItem->discount_price * $cartItem->quantity;
+                    if(!$cartitems->isEmpty()){
+                        foreach ($cartitems as $cartItem) {
+                            $orderItems[] = [
+                                'product_id' => $cartItem->product_id,
+                                'variation_id' => $cartItem->variation_id,
+                                'marked_for' => $cartItem->marked_for,
+                                'msrp' => $cartItem->msrp,
+                                'sku' => $cartItem->sku,
+                                'price' => $cartItem->price,
+                                'discount' => $cartItem->discount,
+                                'discount_price' => $cartItem->discount_price,
+                                'quantity' => $cartItem->quantity,
+                            ];
+                            $total += $cartItem->discount_price * $cartItem->quantity;
+                        }
+                        $order->orderItem()->createMany($orderItems);
                     }
                     $url = 'GetOrderDetails/' . $order->purchase_order_no;
                     $response = SysproService::getOrderDetails($url);
@@ -173,7 +176,6 @@ class QuoteController extends Controller
             return redirect()->back()->with('error', 'An error occurred while placing your Quote. Please try again.');
         }
     }
-
     public function pdfDownloadQuote(Request $request,$quote_id){
         set_time_limit(3600);
         $user = Auth::user();
