@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Quote\QuoteController;
 use App\Http\Controllers\Order\OrderController;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');
     Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
     Route::post('/add-success-story', [ProductController::class, 'addStory'])->name('add-success-story');
+
+    Route::get('/import-csv-index', [ImportController::class, 'indexImportCustomer'])->name('import-customers');
+    Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
 });
 
 require __DIR__ . '/auth.php';
