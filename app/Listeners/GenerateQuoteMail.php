@@ -21,6 +21,7 @@ class GenerateQuoteMail
             $price_option = $event->price_option;
             $user = $event->user;
             Mail::to($event->user)->send(new MailGenerateQuote($cart, $user, $user_detail, $price_option));
+            Mail::to(config('bodypoint.mail_for_quote'))->send(new MailGenerateQuote($cart, $user, $user_detail, $price_option));
         } catch (Exception $e) {
             Log::error('Error sending Generate Quote email: ' . $e->getMessage());
         }
