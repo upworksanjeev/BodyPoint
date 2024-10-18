@@ -7,7 +7,7 @@
                     <x-nav-link-custom href="{{ config('bodypoint.home_url') }}" classes="text-sm pr-4">
                         {{ __('Home') }}
                         </x-responsive-nave-link>
-						<x-nav-link-custom href="{{ config('bodypoint.home_url') }}company-overview/" classes="text-sm pr-4">
+						<x-nav-link-custom href="{{ config('bodypoint.home_url') }}/company-overview/" classes="text-sm pr-4">
                                 {{ __('About') }}
                         </x-responsive-nave-link>
                         <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/why-positioning-matters/" classes="text-sm pr-4">
