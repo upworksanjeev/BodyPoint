@@ -30,6 +30,10 @@ class ProfileUpdateRequest extends FormRequest
             $rules['password'] = ['required', 'confirmed', Rules\Password::defaults()];
         }
 
+        if (request()->has('profile_img')) {
+            $rules['profile_img'] = ['image','mimes:jpg,png,jpeg',];
+        }
+
         return $rules;
     }
 
@@ -45,6 +49,8 @@ class ProfileUpdateRequest extends FormRequest
             'alternate_phone' => 'please enter 10 digit alternate number',
             'shipping_phone' => 'please enter 10 digit shipping number',
             'billing_phone' => 'please enter 10 digit billing number',
+            'profile_img.image' => 'Please Upload Image Only',
+            'profile_img.mimes' => 'The Proifle Image must be a file of type: jpg, png, jpeg.'
         ];
     }
 }

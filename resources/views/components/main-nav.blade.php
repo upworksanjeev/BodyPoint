@@ -1,5 +1,5 @@
  <nav x-data="{ open: false }">
-     <div class="ctm-pt relative flex flex-wrap items-center justify-between pb-5">
+     <div class="ctm-pt relative flex flex-wrap items-center justify-between pb-3">
 
          <div
              class="inset-y-0 left-0 flex items-center xl:hidden justify-end lg:justify-start w-6/12 lg:w-1/12 xl:w-1/12">
@@ -12,7 +12,7 @@
              </button>
          </div>
          <div
-             class="flex flex-1 items-center justify-start order-first lg:order-none lg:justify-between shift-logo w-6/12 lg:w-6/12 xl:w-9/12 pb-1">
+             class="flex flex-1 items-center justify-start order-first lg:order-none lg:justify-between shift-logo w-6/12 lg:w-6/12 xl:w-9/12 ">
              <div class="flex flex-shrink-0 items-center">
                  <a href="{{ config('bodypoint.home_url') }}"> <img class="h-14 w-auto"
                          src="{{ asset('img/logo-1.png') }}" alt="Body Point" /> </a>
