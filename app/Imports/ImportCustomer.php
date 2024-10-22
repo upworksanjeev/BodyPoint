@@ -29,7 +29,7 @@ class Sheet1Import implements WithHeadingRow, ToCollection
                     ['email' => $row['email']],
                     [
                         'name'                      => trim($row['firstname'] . ' ' . $row['lastname']),
-                        'email'                     => $row['email'],
+                        'email'                     => strtolower($row['email']),
                         'payment_term_description'  => $row['paymenttermdescription'] ?? null,
                         'default_customer_id'       => $row['customer_id'],
                     ]
