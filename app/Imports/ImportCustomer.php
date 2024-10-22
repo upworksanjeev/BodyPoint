@@ -2,7 +2,9 @@
 
 namespace App\Imports;
 
+use App\Models\Product;
 use App\Models\User;
+use App\Models\Variation;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -24,7 +26,7 @@ class Sheet1Import implements WithHeadingRow, ToCollection
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            if (!empty($row['email']) && !empty($row['customer_id']) && $row['customer_id'] != -1) {
+            if (!empty($row['email'])){
                 User::updateOrCreate(
                     ['email' => $row['email']],
                     [
@@ -50,7 +52,7 @@ class Sheet2Import implements WithHeadingRow, ToCollection
     {
         foreach ($rows as $row) {
             $users = User::where('default_customer_id', $row['customer_id'])->get();
-            if (!empty($row['customer_id']) && $row['customer_id'] != -1) {
+            if (!empty($row['customer_id'])) {
                 foreach ($users as $user) {
                     $user->update([
                         'customer_id' => $row['customernumber'],
