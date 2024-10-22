@@ -71,8 +71,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
     Route::post('/add-success-story', [ProductController::class, 'addStory'])->name('add-success-story');
 
-    Route::get('/import-csv-index', [ImportController::class, 'indexImportCustomer'])->name('import-customers');
+    //Import Customers
+    Route::get('/import-csv-customers', [ImportController::class, 'indexImportCustomer'])->name('import-customers');
     Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
+
 });
 
 require __DIR__ . '/auth.php';
