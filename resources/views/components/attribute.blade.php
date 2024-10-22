@@ -45,7 +45,7 @@
                     if(response.product_available){
                         $('#variation_price_div').html(response.html);
                     }else{
-                        $('#variation_price_div').html('<div class="out-off-stock"><h1>Out of Stock</h1></div>');
+                        $('#variation_price_div').html('<div class="out-off-stock"><h1>Price of this product is not available. Please contact support.</h1></div>');
                     }
                 },
                 error: function(xhr) {
