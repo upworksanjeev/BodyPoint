@@ -24,7 +24,10 @@ class User extends Authenticatable
         'email',
         'password',
         'payment_term_description',
-        'customer_id'
+        'customer_id',
+        'default_customer_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
