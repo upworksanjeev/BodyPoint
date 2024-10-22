@@ -425,14 +425,13 @@ body {
 }
 .out-off-stock h1 {
     display: inline-block;
-    border: 3px solid red;
     color: red;
     padding: 3px 7px;
     border-radius: 3px;
-    font-weight: 900;
-    letter-spacing: 0.8px;
+    font-weight: 600;
+    letter-spacing: .8px;
     font-family: system-ui;
-    text-transform: uppercase;
+    font-size: 14px;
 }
 .place_order_form{
     text-align: right;
