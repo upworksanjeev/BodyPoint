@@ -34,15 +34,19 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'name',
+        'email',
     ];
+
+    public static $with = ['getUserDetails'];
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if($request->user()->isSuperAdmin())
+        if ($request->user()->isSuperAdmin())
             return $query;
-         else
-             return $query->whereDoesntHave('roles', function ($query) {
+        else
+            return $query->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'super-admin');
             });
     }
@@ -93,10 +97,111 @@ class User extends Resource
                     });
                 })->hideFromIndex()->resolveUsing(function ($request, $model) {
                     return $model->getRoleNames();
-                })->rules('required')->canSee(function ($request) {
-                   return ($request->user()->isAdmin());
-                }
-            ),
+                })->rules('required')->canSee(
+                    function ($request) {
+                        return ($request->user()->isAdmin());
+                    }
+                ),
+
+            Text::make('Default Customer Id', 'default_customer_id')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+
+            Text::make('Customer Number', 'customer_id')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Payment Term Description', 'payment_term_description')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Tax Status', 'getUserDetails.tax_status')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Tax Exemption Number', 'getUserDetails.tax_exemption_no')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+
+            Text::make('Credit Limit', 'getUserDetails.credit_limit')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Class Id', 'getUserDetails.class_id')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Invoice Term Code', 'getUserDetails.invoice_term_code')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('User Field', 'getUserDetails.user_field')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Salesperson', 'getUserDetails.salesperson')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Invoice Discount Code', 'getUserDetails.invoice_discount_code')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Branch', 'getUserDetails.branch')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Line Discount Code', 'getUserDetails.line_discount_code')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('State Code', 'getUserDetails.state_code')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Default Email', 'getUserDetails.default_email')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+            Text::make('Primary Phone', 'getUserDetails.primary_phone')
+                ->readonly()
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
+
 
             MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
             MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
@@ -146,5 +251,4 @@ class User extends Resource
     {
         return [];
     }
-
 }
