@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cropper.destroy();
                 }
                 cropper = new Cropper(image, {
-                    aspectRatio: 16 / 9,
+                    aspectRatio: 16 / 16,
                     viewMode: 1,
                     crop: updateCroppedImage,
                 });
