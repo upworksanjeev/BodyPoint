@@ -18,7 +18,7 @@
                 @method('patch')
                 <div class="step" data-step="1" >
                         <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Contact Information') }}</div>
-                        
+
                         <div class="flex flex-wrap	">
                             <!-- Name -->
                             <div class="w-full md:w-2/4  pr-0 md:pr-2">
@@ -78,8 +78,8 @@
 
                                 <x-input-error :messages="$errors->get('alternate_phone')" class="mt-2" />
                             </div>
-							
-							<div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
+
+							<div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4 profile_image">
                                 <x-input-label for="profile_img" :value="__('Profile Image')" />
 
                                 <x-text-input type="file" id="profile_img" class="block mt-1 w-full" name="profile_img"  autofocus autocomplete="profile_img" />
@@ -87,15 +87,15 @@
                                 <x-input-error :messages="$errors->get('profile_img')" class="mt-2" />
                             </div>
                         </div>
-                
+
                 </div>
 
 
                 <!-- Step 2 -->
                 <div class="step" data-step="2">
 
-                    <div class="py-6 text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Company Information') }}</div>    
-                    
+                    <div class="py-6 text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Company Information') }}</div>
+
                         <div class="mt-4">
                             <x-input-label for="customer_number" :value="__('Customer Number')" />
                             <x-text-input id="customer_number" class="block mt-1 w-full" name="customer_number" :value="old('customer_number' , $user->getUserDetails->customer_number)" required autofocus autocomplete="customer_number"  />
@@ -108,8 +108,8 @@
             <!-- Step 3 -->
             <div class="step" data-step="3">
 
-                <div class="py-6 text-xl text-[#00838f] pt-5 pb-7 text-center ">{{ __('Shipping Information') }}</div>    
-                
+                <div class="py-6 text-xl text-[#00838f] pt-5 pb-7 text-center ">{{ __('Shipping Information') }}</div>
+
                 <div class="flex flex-wrap">
                     <div class="w-full md:w-2/4  pr-0 md:pr-2">
                         <x-input-label for="shipping_user_name" :value="__('Name')" />
@@ -169,17 +169,17 @@
                 </div>
                 <!-- Other fields for step 3 -->
 
-            
-            
+
+
                 <div class="card flex items-center mt-4 justify-between">
-                    <div class="py-6 text-xl text-[#00838f] py-3 ">{{ __('Billing Information') }}</div>   
-                    
+                    <div class="py-6 text-xl text-[#00838f] py-3 ">{{ __('Billing Information') }}</div>
+
                     <!-- <div class="flex ml-4 pt-[5px] pr-2" >
                         <x-text-input id="shipping_details"    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-0  dark:bg-gray-700 dark:border-gray-600" type="checkbox"  name="shipping_details" :value="old('shipping_details')" />
                         <x-input-label  for="shipping_details" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="" :value="__('Same As Shipping Address')" />
                     </div> -->
 
-                
+
                 </div>
 
                 <div class="flex flex-wrap">
@@ -240,16 +240,16 @@
                     </div>
                 </div>
             </div>
-                
+
                     <div class="flex items-center justify-end mt-4">
                         <x-primary-button class="ml-4 prev-button focusver:">  {{ __('Previous') }} </x-primary-button>
-                        <x-primary-button class="ml-4 next-button focus:border-none ">{{ __('Next') }} </x-primary-button>
+                        <x-primary-button id="profile-update-next-btn" class="ml-4 next-button focus:border-none ">{{ __('Next') }} </x-primary-button>
                         <x-primary-button class="ml-4 submit-button">
                         {{ __('Update Profile') }}
                         </x-primary-button>
-                    
+
                     </div>
-                    
+
             </form>
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
@@ -270,5 +270,5 @@
                 </div>
             @endif
     </div>
-   
+
 </section>
