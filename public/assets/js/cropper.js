@@ -42,18 +42,22 @@ document.addEventListener('DOMContentLoaded', function() {
         croppedImage.src = resizedCanvas.toDataURL();
     }
 
-    $('#profile-update-next-btn').on('click', function() {
-        const canvas = cropper.getCroppedCanvas();
-        canvas.toBlob(async (blob) => {
-            const file = new File([blob], 'cropped_image.png', {
-                type: 'image/png',
-                lastModified: Date.now()
+    $(document).on('click','#profile-update-next-btn',function () {
+        const files = $('#profile_img')[0].files;
+        console.log(files);
+        if (files && files.length > 0) {
+            const canvas = cropper.getCroppedCanvas();
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], 'cropped_image.png', {
+                    type: 'image/png',
+                    lastModified: Date.now()
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = document.getElementById('profile_img');
+                fileInput.files = dataTransfer.files;
             });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            const fileInput = document.getElementById('profile_img');
-            fileInput.files = dataTransfer.files;
-        });
+        }
     });
 
 });
