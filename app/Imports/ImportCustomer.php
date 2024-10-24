@@ -23,7 +23,6 @@ class Sheet1Import implements WithHeadingRow, ToCollection
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            // dd($row);
             if (!empty($row['email'])) {
                 $user = User::updateOrCreate(
                     ['email' => $row['email']],
