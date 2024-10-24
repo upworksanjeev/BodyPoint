@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +29,14 @@ class User extends Authenticatable
         'default_customer_id',
         'created_at',
         'updated_at',
+        'first_name',
+        'last_name',
+        'account_id',
+        'customeronhold',
+        'telephone',
+        'contact',
+        'last_login_date',
+        'shipping_code'
     ];
 
     /**
@@ -77,6 +85,5 @@ class User extends Authenticatable
     public function getUserDetails()
     {
         return $this->hasOne(UserDetails::class)->withDefault();
-
     }
 }

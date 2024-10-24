@@ -42,7 +42,9 @@ class UserDetails extends Model
         'branch',
         'line_discount_code',
         'state_code',
-        'default_email'
+        'default_email',
+        'pricecode_id',
+        'company_name'
     ];
     public function user()
     {
