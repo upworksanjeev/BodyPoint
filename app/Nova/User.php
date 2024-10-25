@@ -111,10 +111,7 @@ class User extends Resource
 
 
             Text::make('Customer Number', 'customer_id')
-                ->readonly()
-                ->hideFromIndex()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                ->hideFromIndex(),
 
             Text::make('Payment Term Description', 'payment_term_description')
                 ->readonly()
