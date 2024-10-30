@@ -27,18 +27,19 @@ class Sheet1Import implements WithHeadingRow, ToCollection
                 $user = User::updateOrCreate(
                     ['email' => $row['email']],
                     [
-                        'name' => $row['name'] ?? null,
+                        'name' => $row['customername'] ?? null,
                         'first_name' => $row['firstname'] ?? null,
                         'last_name' => $row['lastname'] ?? null,
                         'email' => strtolower($row['email']),
                         'telephone' => $row['telephone'] ?? null,
                         'contact' => $row['contact'] ?? null,
                         'payment_term_description' => $row['paymenttermdescription'] ?? null,
-                        'default_customer_id' => $row['customer_id'],
+                        'default_customer_id' => $row['customer_id'] ?? null,
                         'customer_id' => $row['customernumber'],
                         'customeronhold' => $row['customeronhold'] ?? null,
                         'last_login_date' => $row['lastlogindate'] ?? null,
                         'shipping_code' => $row['shippingcode'] ?? null,
+                        'created_at' => $row['createdate'] ?? now()
                     ]
                 );
                 $user->getUserDetails()->updateOrCreate(
@@ -46,7 +47,7 @@ class Sheet1Import implements WithHeadingRow, ToCollection
                     [
                         'primary_phone'        => $row['primaryphone'] ?? null,
                         'alternate_phone'        => $row['alternatephone'] ?? null,
-                        'customer_number'      => $row['customernumber'],
+                        'customer_number'      => $row['customernumber'] ?? null,
                         'tax_status'           => $row['taxstatus'] ?? null,
                         'tax_exemption_no'     => $row['taxexemptionnum'] ?? null,
                         'credit_limit'         => $row['creditlimit'] ?? null,
