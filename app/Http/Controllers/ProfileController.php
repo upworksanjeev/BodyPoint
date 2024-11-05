@@ -39,7 +39,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $customer_id = session()->get('customer_id') ?? $request->user()->default_customer_id;
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

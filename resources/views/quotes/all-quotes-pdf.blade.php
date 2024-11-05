@@ -111,7 +111,7 @@
                                 </tr>
                                 <tr>
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Phone:</span></td>
-                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->primary_phone ?? '' }}</span></td>
+                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -153,7 +153,7 @@
                                     </td>
 
                                     <td>
-                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->primary_phone ?? '' }}</span>
+                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
                                     </td>
                                 </tr>
 

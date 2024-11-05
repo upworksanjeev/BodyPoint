@@ -23,7 +23,7 @@ class QuoteController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
             $start_date = date('y-m-d 00:00:01', strtotime($request->start_date));
@@ -119,7 +119,7 @@ class QuoteController extends Controller
 
     public function store(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
@@ -194,7 +194,7 @@ class QuoteController extends Controller
     }
     public function pdfDownloadQuote(Request $request,$quote_id){
         set_time_limit(3600);
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
