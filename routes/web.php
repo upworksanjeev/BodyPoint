@@ -80,16 +80,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
 
-    Route::get('/email-lower', function () {
-        $customers = User::get();
-        foreach ($customers as $customer) {
-            $customer->update([
-                'email' => strtolower($customer->email),
-            ]);
-        }
-        dd('done');
-    });
-
 });
 
 require __DIR__ . '/auth.php';
