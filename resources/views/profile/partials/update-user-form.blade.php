@@ -62,7 +62,7 @@
 
                                 <x-text-input id="primary_phone" class="block mt-1 w-full"
                                                 type="number"
-                                                name="primary_phone"  :value="old('primary_phone', isset($userDetail->primary_phone) ? str_replace('-', '', $userDetail->primary_phone) : null)"  autofocus autocomplete="primary_phone" />
+                                                name="primary_phone"  :value="old('primary_phone', isset($userDetail->primary_phone) ? str_replace('-', '', $userDetail->primary_phone) : $userDetail->getUserDetails->primary_phone)"  autofocus autocomplete="primary_phone" />
 
                                 <x-input-error :messages="$errors->get('primary_phone')" class="mt-2" />
                             </div>
@@ -72,7 +72,7 @@
 
                                 <x-text-input id="alternate_phone" class="block mt-1 w-full"
                                                 type="number"
-                                                name="alternate_phone" :value="old('alternate_phone', isset($userDetail->alternate_phone) ? str_replace('-', '', $userDetail->alternate_phone) : null)"  autofocus autocomplete="alternate_phone"/>
+                                                name="alternate_phone" :value="old('alternate_phone', isset($userDetail->alternate_phone) ? str_replace('-', '', $userDetail->alternate_phone) : $userDetail->getUserDetails->alternate_phone)"  autofocus autocomplete="alternate_phone"/>
 
                                 <x-input-error :messages="$errors->get('alternate_phone')" class="mt-2" />
                             </div>
