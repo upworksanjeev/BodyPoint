@@ -10,6 +10,8 @@ use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Media;
 use App\Services\SysproService;
+use Exception;
+use Illuminate\Support\Facades\Response;
 
 class HomeController extends Controller
 {
@@ -42,11 +44,19 @@ class HomeController extends Controller
     }
 
     public function changeCustomer(Request $request){
-        session()->put('customer_id', $request->customer_id);
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
-        $url = 'GetCustomerDetails/' . $customer_id;
-        $get_customer_details = SysproService::getCustomerDetails($url);
-        session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
-        return redirect()->back()->with('success', 'Customer Changed successfully');
+        try{
+            session()->put('customer_id', $request->customer_id);
+            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $url = 'GetCustomerDetails/' . $customer_id;
+            $get_customer_details = SysproService::getCustomerDetails($url);
+            session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
+            if($get_customer_details){
+                return Response::json(['success' => true,'message' => 'Csutomer Changed Successfully']);
+            }else{
+                return Response::json(['success' => false,'message' => 'Something went wrong']);
+            }
+        } catch (Exception $e) {
+            return Response::json(['success' => false,'message' => $e->getMessage()]);
+        }
     }
 }
