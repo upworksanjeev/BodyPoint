@@ -143,7 +143,7 @@ class QuoteController extends Controller
                         'user_id' => $user->id,
                         'purchase_order_no' => $order_syspro['response']['orderNumber'],
                         'total_items' => $cart[0]->total_items,
-                        'asscoiate_customer_id' => $customer->id ?? null,
+                        'associate_customer_id' => $customer->id ?? null,
                         'customer_number' => $customer_id
                     ]);
                     if(!$cartitems->isEmpty()){
