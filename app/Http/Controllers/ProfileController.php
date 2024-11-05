@@ -22,12 +22,14 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $countries = Country::all();
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $customer_id = session()->get('customer_id') ?? $request->user()->default_customer_id;
+        $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+        $userDetail = $customer ?? $user;
         return view('profile.edit', [
             'user' => $request->user(),
             'countries' => $countries,
-            'userDetail' => $user->associateCustomers()->where('customer_id',$customer_id)->first(),
+            'userDetail' => $userDetail,
         ]);
     }
 
