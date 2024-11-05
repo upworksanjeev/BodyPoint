@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\HasMany;
 
 class User extends Resource
 {
@@ -39,7 +40,7 @@ class User extends Resource
         'email',
     ];
 
-    public static $with = ['getUserDetails'];
+    public static $with = ['getUserDetails','associateCustomers'];
 
     public static function indexQuery(NovaRequest $request, $query)
     {
@@ -115,8 +116,11 @@ class User extends Resource
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
 
+            HasMany::make('Associated Customers', 'associateCustomers', AssociateCustomer::class),
+
             MorphToMany::make('Roles', 'roles', \Sereny\NovaPermissions\Nova\Role::class),
             MorphToMany::make('Permissions', 'permissions', \Sereny\NovaPermissions\Nova\Permission::class),
+
         ];
     }
 
