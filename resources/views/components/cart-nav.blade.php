@@ -32,7 +32,7 @@
                     @php
                         $user = auth()->user()->load(['associateCustomers']);
                     @endphp
-                    <form method="POST" action="{{ route('change-customer') }}">
+                    <form method="POST" action="{{ route('change-customer') }}" id="customer-form">
                         @csrf
                         <select name="customer_id" id="search-dropdown">
                             @if(!$user->associateCustomers->isEmpty())
@@ -91,3 +91,36 @@
   </section>
     @endauth
 @endif
+
+<script>
+    $(document).ready(function(){
+        $('#customer-form').on('submit', function(event) {
+            event.preventDefault();
+            const csrfToken = $('input[name="_token"]').val();
+            const customerId = $('#search-dropdown').val();
+            if (confirm("Please confirm to switch the customer for your browsing session. \n\n All customer specific store settings will change including: \n - Available product and product categories\n- Product Pricing\n- Available shipping options and addresses\n- Credit Limit Settings\n- Available payment methods\n- Order posting customer account\n- Order history")) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        customer_id: customerId
+                    },
+                    success: function(response) {
+                        if(response.success == true){
+                            toastr.success(response.message);
+                            window.location.href = '/dashboard';
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error(response.message);
+                    }
+                });
+            }
+        });
+    });
+</script>
