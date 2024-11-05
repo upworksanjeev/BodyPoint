@@ -160,7 +160,7 @@
                         </tr>
                         <tr>
                             <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span></td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->primary_phone ??'' }}</span></td>
+                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span></td>
 
                         </tr>
                     </table>
@@ -196,7 +196,7 @@
                                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span>
                             </td>
                             <td>
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->primary_phone??'' }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
                             </td>
                         </tr>
 

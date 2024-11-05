@@ -30,7 +30,7 @@ class CheckoutController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
@@ -59,7 +59,7 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         if (isset($cart[0])) {
             $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
@@ -81,7 +81,7 @@ class CheckoutController extends Controller
      */
     public function quote(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
@@ -97,7 +97,7 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $total = 0;
         if (!$request->has('cart_id')) {
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
@@ -216,7 +216,7 @@ class CheckoutController extends Controller
     public function pdfDownload(Request $request)
     {
         set_time_limit(3600);
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
@@ -241,7 +241,7 @@ class CheckoutController extends Controller
     public function receiptDownload(Request $request)
     {
         set_time_limit(3600);
-        $user = Auth::user()->load(['associateCustomers']);
+        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $request->order_id)->first();
         $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
