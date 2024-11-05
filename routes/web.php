@@ -9,6 +9,8 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Quote\QuoteController;
 use App\Http\Controllers\Order\OrderController;
+use App\Models\AssociateCustomer;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,6 +79,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
 
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
+
+    Route::get('/email-lower', function () {
+        $customers = User::get();
+        foreach ($customers as $customer) {
+            $customer->update([
+                'email' => strtolower($customer->email),
+            ]);
+        }
+        dd('done');
+    });
 
 });
 
