@@ -98,7 +98,7 @@ body {
               <tr>
 
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span></td>
-                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name ?? '' }} {{ $userDetail->last_name ??'' }}</span></td>
+                <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name?? auth()->user()->name }} {{ $userDetail->last_name ??'' }}</span></td>
               </tr>
               <tr>
                 <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
@@ -125,7 +125,7 @@ body {
                 </td>
 
                 <td>
-                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name ?? '' }} {{ $userDetail->last_name ??'' }}</span>
+                  <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name?? auth()->user()->name }} {{ $userDetail->last_name ??'' }}</span>
                 </td>
               </tr>
               <tr>

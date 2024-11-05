@@ -99,7 +99,7 @@
                                 <tr>
 
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span></td>
-                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name ?? '' }} {{ $userDetail->last_name ?? '' }}</span></td>
+                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name?? auth()->user()->name }} {{ $userDetail->last_name ?? '' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
@@ -125,7 +125,7 @@
                                     </td>
 
                                     <td>
-                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_user_name ?? '' }} {{ $userDetail->billing_last_name ?? '' }}</span>
+                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name ?? '' }}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -143,7 +143,7 @@
                                     </td>
 
                                     <td>
-                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->billing_country ?? '' }}</span>
+                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? '' }}</span>
                                     </td>
 
                                 </tr>
@@ -153,7 +153,7 @@
                                     </td>
 
                                     <td>
-                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->billing_phone ?? '' }}</span>
+                                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->primary_phone ?? '' }}</span>
                                     </td>
                                 </tr>
 
