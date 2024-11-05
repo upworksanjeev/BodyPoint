@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/quotes',[QuoteController::class, 'index'])->name('quotes');
     Route::post('/quotes', [QuoteController::class, 'index'])->name('quote-search');
     Route::get('/pdf/{quote_id}', [QuoteController::class, 'pdfDownloadQuote'])->name('pdf-download-quote');
+    Route::get('/save-shipping-address', [QuoteController::class, 'saveShippingAddress'])->name('saveShippingAddress');
 
     //Order Routes
     Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');
@@ -74,6 +75,8 @@ Route::middleware('auth')->group(function () {
     //Import Customers
     Route::get('/import-csv-customers', [ImportController::class, 'indexImportCustomer'])->name('import-customers');
     Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
+
+    Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
 
 });
 

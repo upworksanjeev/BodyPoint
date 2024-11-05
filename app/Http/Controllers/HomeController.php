@@ -25,7 +25,7 @@ class HomeController extends Controller
                 ->with(['product.media'])
                 ->paginate(16);
 
-            if (!empty(auth()->user()->customer_id)) {
+            if (!empty(auth()->user()->default_customer_id)) {
                 $url = 'ListStock';
                 SysproService::listStock($url);
             }
@@ -39,5 +39,14 @@ class HomeController extends Controller
                 'error' => 'No Products Found!'
             ]);
         }
+    }
+
+    public function changeCustomer(Request $request){
+        session()->put('customer_id', $request->customer_id);
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $url = 'GetCustomerDetails/' . $customer_id;
+        $get_customer_details = SysproService::getCustomerDetails($url);
+        session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
+        return redirect()->back()->with('success', 'Customer Changed successfully');
     }
 }

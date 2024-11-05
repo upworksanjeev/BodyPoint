@@ -86,4 +86,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetails::class)->withDefault();
     }
+
+    public function associateCustomers(){
+        return $this->hasMany(AssociateCustomer::class);
+    }
 }

@@ -18,13 +18,20 @@ class Order extends Model
         'purchase_order_no',
         'bp_number',
         'status',
-        'total'
+        'total',
+        'customer_number',
+        'associate_customer_id'
     ];
 
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(AssociateCustomer::class,'associate_customer_id');
     }
 
     public function orderItem()

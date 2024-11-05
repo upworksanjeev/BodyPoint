@@ -33,7 +33,7 @@ $(document).ready(function () {
 
     if(currentStep === 1){
         $prevButton.hide();
-        $('.submit-button').hide();
+        $('.submit-button').show();
     }
 
     $nextButton.click(function (e) {
