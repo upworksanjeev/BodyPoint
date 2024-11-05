@@ -16,13 +16,15 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class QuoteController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
+        $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
             $start_date = date('y-m-d 00:00:01', strtotime($request->start_date));
         }
@@ -32,6 +34,7 @@ class QuoteController extends Controller
         if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
@@ -41,6 +44,7 @@ class QuoteController extends Controller
         } elseif ($request->search_input != '' && $request->start_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('created_at', '>=', $start_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->where('status', 'F')
@@ -49,6 +53,7 @@ class QuoteController extends Controller
         } elseif ($request->start_date != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
                 ->where('status', 'F')
@@ -57,6 +62,7 @@ class QuoteController extends Controller
         } elseif ($request->search_input != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
@@ -66,6 +72,7 @@ class QuoteController extends Controller
         } elseif ($request->search_input != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
                 ->where('status', 'F')
@@ -74,6 +81,7 @@ class QuoteController extends Controller
         } elseif ($request->start_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('created_at', '>=', $start_date)
                 ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
@@ -81,6 +89,7 @@ class QuoteController extends Controller
         } elseif ($request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('created_at', '<=', $end_date)
                 ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
@@ -88,11 +97,13 @@ class QuoteController extends Controller
         } else {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
+                ->where('customer_number',$customer_number)
                 ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         if ($request->has('download')) {
             $pdf = Pdf::loadView('quotes.all-quotes-pdf', ['quotes' => $quotes, 'user' => $user, 'userDetail' => $user_detail]);
             return $pdf->download();
@@ -108,7 +119,7 @@ class QuoteController extends Controller
 
     public function store(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
@@ -120,6 +131,8 @@ class QuoteController extends Controller
         DB::beginTransaction();
         try {
             if (empty($cart->purchase_order_no)) {
+                $customer_id = session('customer_id') ?? auth()->user()->default_customer_id;
+                $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'CreateQuote';
                 $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
                 if (!empty($order_syspro['response']['orderNumber'])) {
@@ -129,7 +142,9 @@ class QuoteController extends Controller
                     $order = Order::create([
                         'user_id' => $user->id,
                         'purchase_order_no' => $order_syspro['response']['orderNumber'],
-                        'total_items' => $cart[0]->total_items
+                        'total_items' => $cart[0]->total_items,
+                        'associate_customer_id' => $customer->id ?? null,
+                        'customer_number' => $customer_id
                     ]);
                     if(!$cartitems->isEmpty()){
                         foreach ($cartitems as $cartItem) {
@@ -158,7 +173,8 @@ class QuoteController extends Controller
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
                 }
             }
-            $user_detail = UserDetails::where('user_id', $user->id)->first();
+            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
             $pdf->render();
             $pdfContent = $pdf->output();
@@ -178,19 +194,30 @@ class QuoteController extends Controller
     }
     public function pdfDownloadQuote(Request $request,$quote_id){
         set_time_limit(3600);
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
         }
         $cart = Order::with('user', 'orderItem.Product.Media')->where('id', $quote_id)->first();
-        // dd($cart);
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $pdf = Pdf::loadView('quotes.pdf-quote', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
         $pdf->render();
         $dompdf = $pdf->getDomPDF();
         $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
         $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0, 0, 0));
         return $pdf->download();
+    }
+
+    public function saveShippingAddress(Request $request){
+        $addresses = session('customer_details')['ShipToAddresses'];
+        $key = $request->shipping_address_key;
+        $get_address = array_key_exists($key, $addresses) ? $addresses[$key] : $addresses[0];
+        if($get_address){
+            session()->put('customer_address', $get_address);
+            return Response::json(['success' => true,'address' => $get_address]);
+        }
+        return Response::json(['success' => false]);
     }
 }

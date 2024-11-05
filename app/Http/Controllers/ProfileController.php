@@ -22,9 +22,12 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $countries = Country::all();
+        $user = Auth::user()->load(['associateCustomers']);
+        $customer_id = session()->get('customer_id') ?? $request->user()->default_customer_id;
         return view('profile.edit', [
             'user' => $request->user(),
-            'countries' => $countries
+            'countries' => $countries,
+            'userDetail' => $user->associateCustomers()->where('customer_id',$customer_id)->first(),
         ]);
     }
 
@@ -34,7 +37,8 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
-
+        $user = Auth::user()->load(['associateCustomers']);
+        $customer_id = session()->get('customer_id') ?? $request->user()->default_customer_id;
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
@@ -69,6 +73,10 @@ class ProfileController extends Controller
             'billing_zip' => $request->billing_zip,
             'billing_country' => $request->billing_country,
             'billing_phone' => $request->billing_phone,
+        ]);
+        $user->associateCustomers()->where('customer_id',$customer_id)->update([
+            'primary_phone' => $request->primary_phone,
+            'alternate_phone' => $request->alternate_phone,
         ]);
         return Redirect::route('profile.edit')->with('success', 'Profile Updated Successfully');
     }

@@ -73,22 +73,23 @@ class SysproService
     public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y')
     {
         self::initialize();
-        $user = Auth::user()->load(['getUserDetails']);
         if (!$order_id) {
             $order_id = rand(0, 9999999);
         }
+        $address =  session()->get('customer_address');
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
 
         $order_data = [
-            'CustomerAccountNumber' => auth()->user()->customer_id,
+            'CustomerAccountNumber' => $customer_id,
             'CustomerPoNumber' => $order_id,
             'StraightOrder' => $straight_order,
-            'ShipAddressCode' => $user->getUserDetails->shipping_address_code ?? 'default_code',
-            'ShipAddress1' => $user->getUserDetails->shipping_address ?? 'default_address1',
-            'ShipAddress2' => $user->getUserDetails->shipping_city ?? '',
-            'ShipAddress3' => $user->getUserDetails->shipping_state ?? '',
-            'ShipAddress4' => $user->getUserDetails->ship_address4 ?? '',
-            'ShipAddress5' => $user->getUserDetails->ship_address5 ?? '',
-            'ShipPostalCode' => $user->getUserDetails->shipping_zip ?? 'default_postal',
+            'ShipAddressCode' => $address['AddressCode'] ?? 'default_code',
+            'ShipAddress1' =>  $address['AddressLine1'] ?? 'default_address1',
+            'ShipAddress2' => $address['AddressLine2'] ?? '',
+            'ShipAddress3' => $address['AddressLine3']  ?? '',
+            'ShipAddress4' => $address['AddressLine4']  ?? '',
+            'ShipAddress5' => $address['AddressLine5']  ?? '',
+            'ShipPostalCode' => $address['AddressCode'] ?? 'default_postal',
         ];
 
         $items = [];

@@ -16,7 +16,6 @@ use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Media;
 use App\Models\Country;
-use App\Models\UserDetails;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -33,7 +32,7 @@ class CategoryController extends Controller
         $categories = Category::where('parent_cat_id',0)->get();
         $category = Category::where('name',$name)->first();
 
-        if (!empty(auth()->user()->customer_id)) {
+        if (!empty(auth()->user()->default_customer_id)) {
             $url = 'ListStock';
             SysproService::listStock($url);
         }

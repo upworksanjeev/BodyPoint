@@ -30,9 +30,10 @@ class CheckoutController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         return view('shipping', array(
             'cart' => $cart,
             'user' => $user,
@@ -58,10 +59,11 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         if (isset($cart[0])) {
-            $user_detail = UserDetails::where('user_id', $user->id)->first();
+            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $string = uniqid(rand());
             $purchase_order_no = $cart[0]['purchase_order_no'] ? $cart[0]['purchase_order_no'] : substr($string, 0, 10);
             return view('checkout', array(
@@ -79,9 +81,10 @@ class CheckoutController extends Controller
      */
     public function quote(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         return view('quote', array(
             'cart' => $cart,
             'user' => $user,
@@ -94,7 +97,7 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $total = 0;
         if (!$request->has('cart_id')) {
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
@@ -105,10 +108,14 @@ class CheckoutController extends Controller
         }
         DB::beginTransaction();
         try {
+            $customer_id = session('customer_id') ?? auth()->user()->default_customer_id;
+            $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $order = Order::create([
                 'user_id' => $cart->user_id,
                 'purchase_order_no' => $request->purchase_order_no,
                 'total_items' => $cart->total_items,
+                'associate_customer_id' => $customer->id ?? null,
+                'customer_number' => $customer_id
             ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
@@ -142,7 +149,8 @@ class CheckoutController extends Controller
                 DB::rollBack();
                 return redirect()->back()->with('error', $order_syspro['response']['Message']);
             }
-            $user_detail = UserDetails::where('user_id', $user->id)->first();
+            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
             FunHelper::saveOrderPlacedPdf($pdfContent, $order);
@@ -164,6 +172,7 @@ class CheckoutController extends Controller
     public function myOrder(Request $request)
     {
         $user = Auth::user();
+        $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
             $start_date = date('y-m-d 00:00:01', strtotime($request->start_date));
         }
@@ -171,21 +180,21 @@ class CheckoutController extends Controller
             $end_date = date('y-m-d 23:59:59', strtotime($request->end_date));
         }
         if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
         } elseif ($request->search_input != '' && $request->start_date != '') {
             $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '>=', $start_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->start_date != '' && $request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('status','!=','F')->orWhereNull('status')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('status','!=','F')->orWhereNull('status')->orderBy('created_at','desc')->get();
         } elseif ($request->search_input != '' && $request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
         } elseif ($request->search_input != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
         } elseif ($request->start_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '>=', $start_date)->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '>=', $start_date)->where('status','!=','F')->orderBy('created_at','desc')->get();
         } elseif ($request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '<=', $end_date)->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '<=', $end_date)->where('status','!=','F')->orderBy('created_at','desc')->get();
         } else {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->orderBy('created_at','desc')->get();
         }
         $user_detail = UserDetails::where('user_id', $user->id)->first();
         if ($request->has('download')) {
@@ -207,13 +216,14 @@ class CheckoutController extends Controller
     public function pdfDownload(Request $request)
     {
         set_time_limit(3600);
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
         $pdf->render();
         $pdfContent = $pdf->output();
@@ -231,9 +241,10 @@ class CheckoutController extends Controller
     public function receiptDownload(Request $request)
     {
         set_time_limit(3600);
-        $user = Auth::user();
+        $user = Auth::user()->load(['associateCustomers']);
         $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $request->order_id)->first();
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
+        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
         return $pdf->download();
     }

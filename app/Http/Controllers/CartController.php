@@ -27,8 +27,9 @@ class CartController extends Controller
         if ($request->has('product_id')) {
             $cart = Cart::where('user_id', $user->id)->first();
             $product_id = $request->get('product_id');
-            if (!empty(auth()->user()->customer_id)) {
-                $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+            if (!empty(auth()->user()->default_customer_id)) {
+                $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+                $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
                     $isStockItem = false;
@@ -203,8 +204,9 @@ class CartController extends Controller
         if ($request->has('product_id')) {
             $product = Product::where('id', $request->product_id)->first();
             $cart = Cart::where('user_id', $user->id)->first();
-            if (!empty(auth()->user()->customer_id)) {
-                $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+            if (!empty(auth()->user()->default_customer_id)) {
+                $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+                $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
                     $product['discount'] = $syspro_products['CustomerDiscountPercentage'];

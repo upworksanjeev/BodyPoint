@@ -22,15 +22,15 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside mb-8">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Ship To:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]"> {{ $userDetail->shipping_user_name??'' }} {{ $userDetail->shipping_last_name??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]"> {{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name ??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">{{ session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '' }} <br>{{ session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ??'' }} <br> {{ session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">{{ session('customer_address')['AddressLine1'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] }} <br>{{ session('customer_address')['AddressLine2'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] }} {{  session('customer_address')['AddressLine3'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] }} <br> {{ session('customer_address')['State'] ?? session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_address')['AddressCode'] ?? session('customer_details')['ShipToAddresses'][0]['AddressCode'] }} {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]"> +1 {{ $userDetail->shipping_phone??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]"> +1 {{ $userDetail->primary_phone ??'' }}</span>
                   </li>
                 </ul>
 				<div class="flex items-center mb-4">
@@ -47,7 +47,7 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Name:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->billing_user_name??'' }} {{ $userDetail->billing_last_name??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name??'' }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
@@ -55,7 +55,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->billing_phone??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->primary_phone ??'' }}</span>
                   </li>
                 </ul>
               </div>
@@ -132,7 +132,22 @@
     $(document).on('click', '#updateShippingAddress', function () {
         var key = $(this).attr("data-key");
         var address = $('.shipping-address-'+key).html();
-        $('.change-shipping-address').html(address);
+        $.ajax({
+            url: '{{ route('saveShippingAddress') }}',
+            type: 'GET',
+            data: {
+                shipping_address_key: key
+            },
+            success: function(response) {
+                if(response.success) {
+                    toastr.success('Customer Address Changed Successfully');
+                    $('.change-shipping-address').html(address);
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error(error);
+            }
+        });
     });
 
   </script>

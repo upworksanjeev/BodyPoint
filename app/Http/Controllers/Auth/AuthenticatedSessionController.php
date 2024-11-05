@@ -31,6 +31,8 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
+        session()->flush();
+
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
@@ -42,7 +44,7 @@ class AuthenticatedSessionController extends Controller
     {
         try{
             $user = User::where('email', $request->email)->first();
-            if ($user && !empty($user->customer_id)) {
+            if ($user && !empty($user->default_customer_id)) {
                 if (empty($user->password)) {
                     $status = Password::sendResetLink(
                         $request->only('email')
@@ -86,10 +88,11 @@ class AuthenticatedSessionController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
-            if (!empty(auth()->user()->customer_id)) {
-                $url = 'GetCustomerDetails/' . auth()->user()->customer_id;
+            if (!empty(auth()->user()->default_customer_id)) {
+                $url = 'GetCustomerDetails/' . auth()->user()->default_customer_id;
                 $get_customer_details = SysproService::getCustomerDetails($url);
                 if (!empty($get_customer_details)) {
+                    session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
                     auth()->user()->update([
                         'payment_term_description' => $get_customer_details['PaymentTermDescription']
                     ]);

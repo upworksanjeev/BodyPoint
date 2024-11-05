@@ -99,19 +99,19 @@
                                 <tr>
 
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Name:</span></td>
-                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_user_name ?? '' }} {{ $userDetail->shipping_last_name ?? '' }}</span></td>
+                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->first_name ?? '' }} {{ $userDetail->last_name ?? '' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span></td>
-                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '' }} <br>{{ session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '' }} {{ session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ??'' }} <br> {{ session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_details')['ShipToAddresses'][0]['AddressCode'] ??'' }} {{ session('customer_details')['ShipToAddresses'][0]['Country'] ?? '' }}</span></td>
+                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_address')['AddressLine1'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] }} <br>{{ session('customer_address')['AddressLine2'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] }} {{ session('customer_address')['AddressLine3'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] }} <br> {{ session('customer_address')['State'] ?? session('customer_details')['ShipToAddresses'][0]['State'] }} {{ session('customer_address')['AddressCode'] ?? session('customer_details')['ShipToAddresses'][0]['AddressCode'] }} {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}</span></td>
                                 </tr>
                                 <tr>
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span></td>
-                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->shipping_country ?? '' }}</span></td>
+                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? '' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Phone:</span></td>
-                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->shipping_phone ?? '' }}</span></td>
+                                    <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">+1 {{ $userDetail->primary_phone ?? '' }}</span></td>
                                 </tr>
                             </table>
                         </div>
