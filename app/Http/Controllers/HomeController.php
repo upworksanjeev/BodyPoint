@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Media;
+use App\Models\User;
 use App\Services\SysproService;
 use Exception;
 use Illuminate\Support\Facades\Response;
@@ -44,6 +44,20 @@ class HomeController extends Controller
     }
 
     public function changeCustomer(Request $request){
+        $request->validate([
+            'customer_id' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $existsInUsers = User::where('default_customer_id', $value)
+                        ->orWhereHas('associateCustomers', function ($query) use ($value) {
+                            $query->where('customer_id', $value);
+                        })->exists();
+                    if (!$existsInUsers) {
+                        $fail('The selected customer ID does not exist.');
+                    }
+                },
+            ],
+        ]);
         try{
             session()->put('customer_id', $request->customer_id);
             $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;

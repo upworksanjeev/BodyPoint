@@ -117,7 +117,14 @@
                         }
                     },
                     error: function(xhr) {
-                        toastr.error(response.message);
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, messages) {
+                                messages.forEach(message => toastr.error(message));
+                            });
+                        } else {
+                            toastr.error('An error occurred. Please try again.');
+                        }
                     }
                 });
             }
