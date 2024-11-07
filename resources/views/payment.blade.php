@@ -20,7 +20,7 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Payment Method:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ auth()->user()->payment_term_description ?? 'Invoice-30' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ session('customer_details')['PaymentTermDescription'] ?? 'Invoice-30' }}</span>
                   </li>
 
                 </ul>

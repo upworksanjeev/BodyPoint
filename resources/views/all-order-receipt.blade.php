@@ -171,7 +171,7 @@ body {
       <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Payment Method</h4>
     </div>
     <div style="padding: 24px;">
-      <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ auth()->user()->payment_term_description ?? 'Invoice-30' }}</span>
+      <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_details')['PaymentTermDescription'] ?? 'Invoice-30' }}</span>
     </div>
     <div style="background-color: #00838f; padding: 8px 24px;">
       <h4 style="color: #fff; font-size: 16px; font-weight: 400; line-height: 24px; margin: 0px;">Shipping</h4>

@@ -32,7 +32,7 @@ class CheckoutController extends Controller
     {
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         return view('shipping', array(
             'cart' => $cart,
@@ -62,7 +62,7 @@ class CheckoutController extends Controller
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         if (isset($cart[0])) {
-            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $string = uniqid(rand());
             $purchase_order_no = $cart[0]['purchase_order_no'] ? $cart[0]['purchase_order_no'] : substr($string, 0, 10);
@@ -83,7 +83,7 @@ class CheckoutController extends Controller
     {
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         return view('quote', array(
             'cart' => $cart,
@@ -108,7 +108,7 @@ class CheckoutController extends Controller
         }
         DB::beginTransaction();
         try {
-            $customer_id = session('customer_id') ?? auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $order = Order::create([
                 'user_id' => $cart->user_id,
@@ -149,7 +149,7 @@ class CheckoutController extends Controller
                 DB::rollBack();
                 return redirect()->back()->with('error', $order_syspro['response']['Message']);
             }
-            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
@@ -222,7 +222,7 @@ class CheckoutController extends Controller
             $price_option = $request->price_option;
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
         $pdf->render();
@@ -243,7 +243,7 @@ class CheckoutController extends Controller
         set_time_limit(3600);
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $request->order_id)->first();
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
         return $pdf->download();

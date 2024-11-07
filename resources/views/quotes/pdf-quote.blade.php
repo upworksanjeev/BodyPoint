@@ -125,7 +125,7 @@
                     </div>
                     <div style="display: flex; align-items: center; margin-top: 5px; justify-content: end;">
                         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice Terms:</span>
-                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ auth()->user()->payment_term_description ?? 'Invoice-30' }}</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_details')['PaymentTermDescription'] ?? 'Invoice-30' }}</span>
                     </div>
                 </td>
             </tr>
