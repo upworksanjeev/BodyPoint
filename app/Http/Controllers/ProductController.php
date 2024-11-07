@@ -31,7 +31,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $product = Product::with(['media', 'SuccessStory','attribute'])->where('slug', $name)->first();
         if(!empty(auth()->user()->default_customer_id)){
-            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $url = 'GetCustomerDetails/' . $customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);
 
@@ -204,7 +204,7 @@ class ProductController extends Controller
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
         $product_available = false;
         if (!empty(auth()->user()->default_customer_id)) {
-            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $url = 'GetCustomerDetails/' . $customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);
             if (!empty($syspro_products['PriceList'])) {

@@ -60,7 +60,7 @@ class HomeController extends Controller
         ]);
         try{
             session()->put('customer_id', $request->customer_id);
-            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $url = 'GetCustomerDetails/' . $customer_id;
             $get_customer_details = SysproService::getCustomerDetails($url);
             session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);

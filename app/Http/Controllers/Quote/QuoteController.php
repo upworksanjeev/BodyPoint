@@ -102,7 +102,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         if ($request->has('download')) {
             $pdf = Pdf::loadView('quotes.all-quotes-pdf', ['quotes' => $quotes, 'user' => $user, 'userDetail' => $user_detail]);
@@ -131,7 +131,7 @@ class QuoteController extends Controller
         DB::beginTransaction();
         try {
             if (empty($cart->purchase_order_no)) {
-                $customer_id = session('customer_id') ?? auth()->user()->default_customer_id;
+                $customer_id = getCustomerId();
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'CreateQuote';
                 $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
@@ -173,7 +173,7 @@ class QuoteController extends Controller
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
                 }
             }
-            $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+            $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
             $pdf->render();
@@ -200,7 +200,7 @@ class QuoteController extends Controller
             $price_option = $request->price_option;
         }
         $cart = Order::with('user', 'orderItem.Product.Media')->where('id', $quote_id)->first();
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $pdf = Pdf::loadView('quotes.pdf-quote', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
         $pdf->render();

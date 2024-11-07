@@ -23,7 +23,7 @@ class ProfileController extends Controller
     {
         $countries = Country::all();
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
-        $customer_id = session()->get('customer_id') ?? $request->user()->default_customer_id;
+        $customer_id = getCustomerId();
         $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $userDetail = $customer ?? $user;
         return view('profile.edit', [
@@ -40,7 +40,7 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
-        $customer_id = session()->get('customer_id') ?? $request->user()->default_customer_id;
+        $customer_id = getCustomerId();
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }

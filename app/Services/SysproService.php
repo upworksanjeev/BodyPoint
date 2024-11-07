@@ -77,8 +77,7 @@ class SysproService
             $order_id = rand(0, 9999999);
         }
         $address =  session()->get('customer_address');
-        $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
-
+        $customer_id = getCustomerId();
         $order_data = [
             'CustomerAccountNumber' => $customer_id,
             'CustomerPoNumber' => $order_id,

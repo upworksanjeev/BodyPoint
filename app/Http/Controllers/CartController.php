@@ -28,7 +28,7 @@ class CartController extends Controller
             $cart = Cart::where('user_id', $user->id)->first();
             $product_id = $request->get('product_id');
             if (!empty(auth()->user()->default_customer_id)) {
-                $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+                $customer_id = getCustomerId();
                 $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
@@ -205,7 +205,7 @@ class CartController extends Controller
             $product = Product::where('id', $request->product_id)->first();
             $cart = Cart::where('user_id', $user->id)->first();
             if (!empty(auth()->user()->default_customer_id)) {
-                $customer_id = session()->get('customer_id') ? session()->get('customer_id') : auth()->user()->default_customer_id;
+                $customer_id = getCustomerId();
                 $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
