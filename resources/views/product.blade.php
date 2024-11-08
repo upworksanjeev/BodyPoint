@@ -73,8 +73,8 @@
                                         <p class="text-[#000] flex items-center gap-[10px]"><i class="fas fa-map-marker-alt text-[20px]"></i> <span class="text-[18px]">Find a Dealer</span></p>
                                     </div>
                                     <div class="detactor-right">
-                                        <button class="bg-[#373B3C] rounded-[3px] py-[8px] px-[30px] text-[#fff] border border-[#373B3C] mr-[8px]">Save</button>
-                                        <button class="border border-[#373B3C] text-[#373B3C] py-[8px] px-[30px]">Print</button>
+                                        {{-- <button class="bg-[#373B3C] rounded-[3px] py-[8px] px-[30px] text-[#fff] border border-[#373B3C] mr-[8px]">Save</button> --}}
+                                        <button onclick="window.print()" class="border border-[#373B3C] text-[#373B3C] py-[8px] px-[30px]">Print</button>
                                     </div>
                                 </div>
                             </div>

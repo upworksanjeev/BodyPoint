@@ -28,9 +28,9 @@
                                 <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                                     Qty.
                                 </th>
-                                <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
+                                {{-- <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                                     Net Price
-                                </th>
+                                </th> --}}
                                 <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                                     Unit
                                 </th>
@@ -59,9 +59,9 @@
                                         {{ $cartitem['quantity'] }}
                                     </td>
 
-                                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+                                    {{-- <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                                         ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
-                                    </td>
+                                    </td> --}}
 
                                     <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                                         EA

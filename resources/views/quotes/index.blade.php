@@ -74,9 +74,6 @@
                                                         Qty.
                                                     </th>
                                                     <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
-                                                        Net Price
-                                                    </th>
-                                                    <th scope="col" class="px-4 py-3 font-bold border-e border-gray-500">
                                                         Unit
                                                     </th>
                                                     <th scope="col" class="px-4 py-3 font-bold">
@@ -91,32 +88,28 @@
                                                 @endphp
 
                                                 @foreach ($quote->OrderItem as $cartitem)
-                                                <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                                    <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e">
-                                                        {{ $cartitem->Product->name }}
-                                                    </td>
-                                                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                                                        {{ $cartitem->sku }}
-                                                    </td>
-                                                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                                                        {{ $cartitem->marked_for }}
-                                                    </td>
-                                                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                                                        {{ $cartitem->quantity }}
-                                                    </td>
+                                                    <tr class="odd:bg-white even:bg-gray-50 border-b">
+                                                        <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e">
+                                                            {{ $cartitem->Product->name }}
+                                                        </td>
+                                                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+                                                            {{ $cartitem->sku }}
+                                                        </td>
+                                                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+                                                            {{ $cartitem->marked_for }}
+                                                        </td>
+                                                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+                                                            {{ $cartitem->quantity }}
+                                                        </td>
 
-                                                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                                                        ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0 }}
-                                                    </td>
+                                                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
+                                                            EA
+                                                        </td>
 
-                                                    <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                                                        EA
-                                                    </td>
-
-                                                    <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
-                                                        ${{ $cartitem->discount_price ? number_format($cartitem->discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
-                                                    </td>
-                                                </tr>
+                                                        <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
+                                                            ${{ $cartitem->discount_price ? number_format($cartitem->discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                                        </td>
+                                                    </tr>
                                                 <?php $subtotal += $cartitem->discount_price * $cartitem->quantity; ?>
                                                 @endforeach
                                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
@@ -135,7 +128,9 @@
                                             </tbody>
                                         </table>
                                         <div class="flex justify-end align-center mt-4 gap-4">
-                                            <a href="{{ route('pdf-download-quote',$quote->id) }}" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-[160px] items-left">Dowload</a>
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP</a>
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP and Primary Price</a>
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download All</a>
                                             @if(!empty($quote->purchase_order_no))
                                                 <form method="POST" action="{{ route('place-order',$quote->purchase_order_no) }}" class="place_order_form">
                                                     @csrf
@@ -159,3 +154,15 @@
         </div>
     </section>
 </x-mainpage-layout>
+@if(session('downloadFile'))
+<script>
+    window.onload = function() {
+        const downloadUrl = "{{ session('downloadFile') }}";
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'quote.pdf';
+        link.click();
+        {{ session()->forget('downloadFile') }}
+    };
+</script>
+@endif
