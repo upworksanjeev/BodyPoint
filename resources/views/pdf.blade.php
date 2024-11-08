@@ -297,7 +297,7 @@
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                             ${{ $cartitem['msrp']?number_format($cartitem['msrp']*$cartitem['quantity'], 2, '.', ','):0 }}
                         </td>
-                        <?php $subtotal += $cartitem['Product']['msrp'] * $cartitem['quantity']; ?>
+                        <?php $subtotal += $cartitem['msrp'] * $cartitem['quantity']; ?>
                         @elseif($priceOption=='msrp_primary')
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                             ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}

@@ -128,7 +128,7 @@
                                             </tbody>
                                         </table>
                                         <div class="flex justify-end align-center mt-4 gap-4">
-                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP</a>
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP</a>
                                             <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP and Primary Price</a>
                                             <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download All</a>
                                             @if(!empty($quote->purchase_order_no))
