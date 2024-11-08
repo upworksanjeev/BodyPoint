@@ -7,3 +7,11 @@ if (!function_exists('getCustomerId')) {
         return $customer_id;
     }
 }
+
+
+if (!function_exists('clearSession')) {
+    function clearSession()
+    {
+        session()->forget('downloadFile');
+    }
+}

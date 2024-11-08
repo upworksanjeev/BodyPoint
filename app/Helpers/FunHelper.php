@@ -3,7 +3,7 @@ namespace App\Helpers;
 use App\Models\Category;
 use App\Models\Cart;
 use App\Models\UserDetails;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class FunHelper

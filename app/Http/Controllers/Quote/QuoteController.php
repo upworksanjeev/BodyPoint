@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class QuoteController extends Controller
 {
@@ -127,8 +128,13 @@ class QuoteController extends Controller
         $total = 0;
         $orderItems = [];
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
+        if ($cart->isEmpty()) {
+            return redirect()->route('quotes')->with('error','Quote Already Generated');
+        }
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
         DB::beginTransaction();
+        $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
+        Storage::disk('public')->delete($filePath);
         try {
             if (empty($cart->purchase_order_no)) {
                 $customer_id = getCustomerId();
@@ -182,8 +188,7 @@ class QuoteController extends Controller
             GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
             CartItem::where('cart_id', $cart[0]->id)->delete();
             Cart::where('user_id', $user->id)->delete();
-            $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
-            Storage::disk('public')->delete($filePath);
+            session()->put('downloadFile', asset('storage/' . $filePath));
             DB::commit();
             return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
         } catch (\Exception $e) {
@@ -209,6 +214,7 @@ class QuoteController extends Controller
         $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0, 0, 0));
         return $pdf->download();
     }
+
 
     public function saveShippingAddress(Request $request){
         $addresses = session('customer_details')['ShipToAddresses'];

@@ -231,24 +231,24 @@
                         <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                             MSRP
                         </th>
-                        @if($priceOption=='msrp_primary')
-                        <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                            Primary Discount
-                        </th>
-                        @elseif($priceOption=='all_price')
-                        <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                            Primary Discount
-                        </th>
-                        <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                            After Secondary Discount
-                        </th>
+                        @if($priceOption == 'msrp_primary')
+                            <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                                Primary Discount
+                            </th>
+                        @elseif($priceOption == 'all_price')
+                            <th scope="col" style="text-align: left;padding: 12px 15px; font-size: 10px; font-weight: 700; color: #fff; border: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                                Primary Discount
+                            </th>
+                            <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                                After Secondary Discount
+                            </th>
                         @endif
-                        <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                            Qty.
-                        </th>
-                        <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff;width:10px;">
-                            Total
-                        </th>
+                            <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                                Qty.
+                            </th>
+                            <th scope="col" style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff;width:10px;">
+                                Total
+                            </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -258,63 +258,63 @@
                     @endphp
                     @if(!empty($cart))
                     @foreach ($cart['orderItem'] as $cartitem)
-                    <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
-                        <td style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->Product->name ?? '' }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->sku ?? '' }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->marked_for ?? '' }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->msrp ? number_format($cartitem->msrp, 2, '.', ',') : 0 }}
-                        </td>
+                        <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+                            <td style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                {{ $cartitem->Product->name ?? '' }}
+                            </td>
+                            <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                {{ $cartitem->sku ?? '' }}
+                            </td>
+                            <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                {{ $cartitem->marked_for ?? '' }}
+                            </td>
+                            <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                ${{ $cartitem->msrp ? number_format($cartitem->msrp, 2, '.', ',') : 0 }}
+                            </td>
 
-                        @if($priceOption=='msrp_only')
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->quantity ?? '' }}
-                        </td>
+                            @if($priceOption=='msrp_only')
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->quantity ?? '' }}
+                                </td>
 
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->msrp ? number_format($cartitem->msrp * $cartitem->quantity, 2, '.', ',') : 0 }}
-                        </td>
-                        @php
-                        $subtotal += $cartitem->Product->msrp * $cartitem->quantity;
-                        @endphp
-                        @elseif($priceOption=='msrp_primary')
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->quantity ?? '' }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->price ? number_format($cartitem->price * $cartitem->quantity, 2, '.', ','):0 }}
-                        </td>
-                        @php
-                        $subtotal += $cartitem->price * $cartitem->quantity;
-                        @endphp
-                        @elseif($priceOption=='all_price')
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0 }}
-                        </td>
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->quantity ?? '' }}
-                        </td>
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->msrp ? number_format($cartitem->msrp * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                </td>
+                                @php
+                                    $subtotal += $cartitem->price * $cartitem->quantity;
+                                @endphp
+                            @elseif($priceOption=='msrp_primary')
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
+                                </td>
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->quantity ?? '' }}
+                                </td>
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->price ? number_format($cartitem->price * $cartitem->quantity, 2, '.', ','):0 }}
+                                </td>
+                                @php
+                                    $subtotal += $cartitem->price * $cartitem->quantity;
+                                @endphp
+                            @elseif($priceOption=='all_price')
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
+                                </td>
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0 }}
+                                </td>
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->quantity ?? '' }}
+                                </td>
 
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->discount_price ? number_format($cartitem->discount_price  *$cartitem->quantity, 2, '.', ',') : 0 }}
-                        </td>
-                        @php
-                        $subtotal += $cartitem->discount_price * $cartitem->quantity;
-                        @endphp
-                        @endif
-                    </tr>
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->discount_price ? number_format($cartitem->discount_price  *$cartitem->quantity, 2, '.', ',') : 0 }}
+                                </td>
+                                @php
+                                    $subtotal += $cartitem->discount_price * $cartitem->quantity;
+                                @endphp
+                            @endif
+                        </tr>
                     @endforeach
                     @endif
                 </tbody>
@@ -342,28 +342,28 @@
         </table>
         <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1;text-align: center;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;  margin-top: 25px;margin-bottom: 8px;">QUOTES EXPIRE AFTER 90 DAYS</div>
         @if($priceOption=='msrp_only')
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; margin-top: 5px; padding: 6px 15px; border-radius: 10px; margin-bottom: 8px;">Past due invoices will incur finance charges at the rate of 1.5% per month. Bodypoint reserves the right to hold shipments or require prepayment for any delinquent account.</div>
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 15px; border-radius: 10px; margin-bottom: 8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;margin-bottom: 8px;">Bodypoint, Inc. has prepared this MSRP Quote at the request of the customer identified above ("Customer"). The MSRP listed in this Quote is not the actual purchase price charged to or paid by Customer. The actual purchase price and applicable discounts are identified in other sales documentation
-            (e.g., the invoice) issued by Bodypoint, Inc. to Customer. Customer acknowledges and agrees that, upon the request of a third-party payor, including,
-            but not limited to any federal or state health care program, Customer must disclose such other sales documentation which reflects the actual purchase price
-            and all discounts between Customer and Bodypoint, Inc.
-        </div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; margin-top: 5px; padding: 6px 15px; border-radius: 10px; margin-bottom: 8px;">Past due invoices will incur finance charges at the rate of 1.5% per month. Bodypoint reserves the right to hold shipments or require prepayment for any delinquent account.</div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 15px; border-radius: 10px; margin-bottom: 8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;margin-bottom: 8px;">Bodypoint, Inc. has prepared this MSRP Quote at the request of the customer identified above ("Customer"). The MSRP listed in this Quote is not the actual purchase price charged to or paid by Customer. The actual purchase price and applicable discounts are identified in other sales documentation
+                (e.g., the invoice) issued by Bodypoint, Inc. to Customer. Customer acknowledges and agrees that, upon the request of a third-party payor, including,
+                but not limited to any federal or state health care program, Customer must disclose such other sales documentation which reflects the actual purchase price
+                and all discounts between Customer and Bodypoint, Inc.
+            </div>
         @elseif($priceOption=='all_price')
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 15px; border-radius: 10px; margin-bottom: 8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;margin-bottom: 8px;">The amount shown as TOTAL BEFORE FREIGHT is net of the Primary and any Secondary Discounts shown above . Other discounts may apply. All
-            discounts known on the date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found
-            at 42 CFR 1001.952(h). Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and
-            accepts that it is solely responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer to which Customer submits claims for reimbursement.
-        </div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 15px; border-radius: 10px; margin-bottom: 8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;margin-bottom: 8px;">The amount shown as TOTAL BEFORE FREIGHT is net of the Primary and any Secondary Discounts shown above . Other discounts may apply. All
+                discounts known on the date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found
+                at 42 CFR 1001.952(h). Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and
+                accepts that it is solely responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer to which Customer submits claims for reimbursement.
+            </div>
         @elseif($priceOption=='msrp_primary')
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 15px; border-radius: 10px; margin-bottom:8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
-        <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;margin-bottom: 8px;">The amount shown as TOTAL BEFORE FREIGHT is net of only the Primary Discount shown above . Other discounts may apply. All discounts known on the
-            date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found at 42 CFR 1001.952(h).
-            Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and accepts that it is solely
-            responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer to which Customer
-            submits claims for reimbursement.
-        </div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35; border: 1px solid #ccc; padding: 6px 15px; border-radius: 10px; margin-bottom:8px; margin-top: 5px;">Freight and Tax Policy: Prices quoted do not include freight. Any taxes which may apply are the responsibility of the purchasing organization.</div>
+            <div style="font-size: 11px;font-weight: 400;color: #000;line-height: 1.35;border: 1px solid #ccc;padding: 6px 15px;border-radius: 10px;margin-bottom: 8px;">The amount shown as TOTAL BEFORE FREIGHT is net of only the Primary Discount shown above . Other discounts may apply. All discounts known on the
+                date of sale will be reflected on a customer invoice prepared in compliance with the "safe harbor" regulations for discounts found at 42 CFR 1001.952(h).
+                Bodypoint, Inc. has prepared this quote at the request of the customer identified above ("Customer"). Customer understands and accepts that it is solely
+                responsible for ensuring that this quote complies with the requirements of any state or federal health care program or private payer to which Customer
+                submits claims for reimbursement.
+            </div>
         @endif
     </div>
 
