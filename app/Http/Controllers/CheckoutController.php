@@ -97,6 +97,11 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
+        $request->validate([
+            'po_number' => ['required']
+        ], [
+            'po_number.required' => 'The PO number is required.',
+        ]);
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $total = 0;
         if (!$request->has('cart_id')) {
@@ -134,7 +139,7 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, null);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->po_number);
             if (!empty($order_syspro['response']['orderNumber'])) {
                 $order->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber'],
