@@ -97,6 +97,11 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
+        $request->validate([
+            'customer_po_number' => ['required']
+        ], [
+            'customer_po_number.required' => 'The PO number is required.',
+        ]);
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $total = 0;
         if (!$request->has('cart_id')) {
@@ -115,7 +120,7 @@ class CheckoutController extends Controller
                 'purchase_order_no' => $request->purchase_order_no,
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
-                'customer_number' => $customer_id
+                'customer_number' => $customer_id,
             ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
@@ -134,10 +139,11 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, null);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number);
             if (!empty($order_syspro['response']['orderNumber'])) {
                 $order->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber'],
+                    'customer_po_number' => $request->customer_po_number ?? null
                 ]);
                 $url = 'GetOrderDetails/' . $order->purchase_order_no;
                 $response = SysproService::getOrderDetails($url);

@@ -20,7 +20,8 @@ class Order extends Model
         'status',
         'total',
         'customer_number',
-        'associate_customer_id'
+        'associate_customer_id',
+        'customer_po_number'
     ];
 
 
