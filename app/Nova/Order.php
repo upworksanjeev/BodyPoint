@@ -51,6 +51,7 @@ class Order extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Purchase Order Number', 'purchase_order_no')->sortable()->readonly(),
+            Text::make('Customer PO Number', 'customer_po_number')->sortable()->readonly(),
             Text::make('Total Items', 'total_items')->sortable()->readonly(),
             Text::make('Status', 'order_status')->sortable()->readonly(),
             Text::make('Total', 'total')->sortable()->readonly(),

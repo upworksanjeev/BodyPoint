@@ -72,7 +72,7 @@
                     <form id="confirm-order-form" action="{{ route('confirm-order') }}" method="POST">
                         <input type="hidden" value="<?= csrf_token() ?>" name="_token">
                         <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}" id="order-cart-id">
-                        <input type="text" name="po_number" placeholder="Enter PO Number" id="customer-po-number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                        <input type="text" name="customer_po_number" placeholder="Enter PO Number" id="customer-po-number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                     </form>
                 </div>
                 <!-- Modal footer -->

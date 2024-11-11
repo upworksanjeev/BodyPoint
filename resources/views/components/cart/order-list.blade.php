@@ -77,7 +77,7 @@
                             @endforeach
                             <tr class="odd:bg-white even:bg-gray-50 border-b">
                                 <td class="w-4 p-4" colspan="2">
-                                    <div class="text-left"><span>BP Number: {{ $orders['bp_number'] }}</span></div>
+                                    <div class="text-left"><span>Customer PO Number: {{ $orders['customer_po_number'] ?? null }}</span></div>
                                 </td>
                                 <td class="w-4 p-4" colspan="8">
                                     <div class="text-right">
