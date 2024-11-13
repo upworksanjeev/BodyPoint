@@ -37,12 +37,11 @@
                     </div>
                     <x-shipping-info :cart="$cart" :user="$user" :userDetail="$user_detail" />
                     <x-cart.final-checkout-list :cart="$cart" />
-                    <div class="card-body p-6 border-t">
+                    <div class="card-body p-6 border-t order-buttons">
                         <div class="flex items-center justify-end gap-2">
                             <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
-
                             <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                            <button type="submit" data-modal-target="po-number-modal" data-modal-toggle="po-number-modal" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Confirm Order</button>
+                            <button id="confirm-order" type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Confirm Order</button>
                         </div>
                     </div>
                 </div>
@@ -51,23 +50,20 @@
     </section>
 
     <!-- Main modal -->
-    <div id="po-number-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div id="po-number-modal" data-modal-target='po-number-modal' tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-lg max-h-full">
-            <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow ">
-                <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                     <h3 class="text-xl font-semibold text-gray-900">
                         CUSTOMER PO NUMBER
                     </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="po-number-modal">
+                    <button type="button" class="close-cross-po-modal text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="po-number-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
-                <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-4">
                     <form id="confirm-order-form" action="{{ route('confirm-order') }}" method="POST">
                         <input type="hidden" value="<?= csrf_token() ?>" name="_token">
@@ -75,10 +71,9 @@
                         <input type="text" name="customer_po_number" placeholder="Enter PO Number" id="customer-po-number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                     </form>
                 </div>
-                <!-- Modal footer -->
                 <div class="flex items-center justify-end gap-3 p-4 md:p-5 border-t border-gray-200 rounded-b">
-                    <button data-modal-hide="po-number-modal" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff]  focus:z-10 focus:ring-4 focus:ring-gray-100 w-[160px]">Cancel</button>
-                    <button type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" id="confirm-order">Confirm</button>
+                    <button type="button" class="close-po-number-modal py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff]  focus:z-10 focus:ring-4 focus:ring-gray-100 w-[160px]">Cancel</button>
+                    <button type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" id="save-po-number">Save</button>
                 </div>
             </div>
         </div>
@@ -106,12 +101,47 @@
         $(document).on('click', '#confirm-order', function(event) {
             event.preventDefault();
             const po_number = $('#customer-po-number').val();
+            if (po_number !== "" && po_number !== null) {
+                $('#confirm-order-form').submit();
+            }else{
+                $('#po-number-modal').show();
+                $('#po-number-modal').css({
+                    'display': 'flex',
+                    'background-color': 'rgb(0 0 0 / 56%)'
+                });
+            }
+        });
+
+        $(document).on('click','#save-po-number',function(){
+            const po_number = $('#customer-po-number').val();
             if (po_number == "" || po_number == null) {
                 toastr.error('Customer PO Number is Required');
-            } else {
-                $('#confirm-order-form').submit();
+            }else {
+                $('.po-number-div').remove();
+                $('.order-buttons').before('<div class="po-number-div flex justify-end gap-3 flex-wrap px-6 pb-6">' +
+                    '<div class="min-w-[250px]">' +
+                        '<span class="text-sm text-[#000] font-bold leading-[17px]">Your PO Number Is:</span>' +
+                    '</div>' +
+                    '<div class="min-w-[100px] text-right">' +
+                        '<span class="font-bold mr-2">' + po_number + '</span> ' +
+                        '<button data-modal-target="po-number-modal" data-modal-toggle="po-number-modal" class="edit-customer-po-number" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>' +
+                    '</div>' +
+                '</div>');
+                $('#po-number-modal').hide();
             }
+        });
 
+
+        $(document).on('click', '.edit-customer-po-number', function() {
+            $('#po-number-modal').show();
+            $('#po-number-modal').css({
+                'display': 'flex',
+                'background-color': 'rgb(0 0 0 / 56%)'
+            });
+        });
+
+        $(document).on('click', '.close-po-number-modal, .close-cross-po-modal', function() {
+            $('#po-number-modal').hide();
         });
 
     </script>
