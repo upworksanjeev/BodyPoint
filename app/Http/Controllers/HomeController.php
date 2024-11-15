@@ -22,10 +22,7 @@ class HomeController extends Controller
     {
         $categories = Category::all();
         if (isset($categories)) {
-            $products = CategoryProduct::select('product_id')
-                ->groupBy('product_id')
-                ->with(['product.media'])
-                ->paginate(16);
+            $products = Product::with(['media'])->paginate(16);
 
             if (!empty(auth()->user()->default_customer_id)) {
                 $url = 'ListStock';
