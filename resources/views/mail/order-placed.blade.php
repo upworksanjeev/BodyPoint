@@ -26,10 +26,10 @@
                                             <h4 style="color: #fff; text-align: center; font-weight: 400; font-size: 13px; margin: 0px;">Order Details</h4>
                                         </th>
                                         <th>
-                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
+                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Order No: {{ $order['purchase_order_no'] }}</h4>
                                         </th>
                                         <th>
-                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Cutomer PO No: {{ $order['customer_po_number'] ?? '' }}</h4>
+                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Customer PO No: {{ $order['customer_po_number'] ?? '' }}</h4>
                                         </th>
                                     </tr>
                                 </table>
