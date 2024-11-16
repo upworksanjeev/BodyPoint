@@ -62,7 +62,7 @@ body {
         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $user->email }}</span>
       </div>
       <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
-        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Purchase Order #:</span>
+        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Order No #:</span>
         <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">{{ $order['purchase_order_no'] }}</span>
       </div>
 	  <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
