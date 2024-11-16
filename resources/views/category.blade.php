@@ -17,7 +17,7 @@
                 <div class="product-details">
                     <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">
                         {{ $category['name'] ?? '' }} Products</h5>
-                    <x-product-list  :products="$products"/>
+                    <x-product-list-category-wise  :products="$products"/>
                 </div>
          </div>
     <?php } ?>
