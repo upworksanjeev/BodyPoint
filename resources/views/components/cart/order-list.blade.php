@@ -6,6 +6,7 @@
                     <span>Order No: {{ $orders['purchase_order_no'] }}</span>
                     @if(!empty($orders['status']))
                     <span>Order Status: {{ $orders->order_status }}</span>
+                    <span>Customer PO No: {{ $orders['customer_po_number'] }}</span>
                     @endif
                     <!--x-icons.down-arrow /-->
                     <span class="text-center">Order Date: {{ date('F j, Y',strtotime($orders['created_at'])) }}</span>

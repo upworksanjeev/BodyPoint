@@ -28,6 +28,9 @@
                                         <th>
                                             <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Purchase Order No: {{ $order['purchase_order_no'] }}</h4>
                                         </th>
+                                        <th>
+                                            <h4 style="color: #fff; text-align: right; font-weight: 400; font-size: 13px; margin: 0px;">Cutomer PO No: {{ $order['customer_po_number'] ?? '' }}</h4>
+                                        </th>
                                     </tr>
                                 </table>
                                 <div>
