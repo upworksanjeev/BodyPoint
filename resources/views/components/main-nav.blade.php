@@ -77,7 +77,7 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/lower-body'); ?>">Lower Body</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
+                                                 href="<?php echo url('/category/ankle-huggers®'); ?>">Ankle Huggers</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
@@ -538,7 +538,7 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/lower-body'); ?>">Lower Body</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
+                                                 href="<?php echo url('/category/ankle-huggers®'); ?>">Ankle Huggers</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
