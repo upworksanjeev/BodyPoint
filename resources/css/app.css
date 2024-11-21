@@ -236,6 +236,11 @@ body {
     /* border-image: linear-gradient(to right, transparent, #34495e, transparent) 1; */
 }
 
+.ctm-accordion .accordion-item-body-content p a {
+    color: #0378bc;
+    text-decoration: underline;
+}
+
 .linediv::after {
     content: "";
     position: absolute;
