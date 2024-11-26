@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="robots" content="noindex, nofollow" />
 
     <title>{{ config('app.name', 'Bodypoint') }}</title>
 
@@ -21,7 +22,7 @@
 </head>
 
 <body class="font-['Avenir'] antialiased">
-    
+
         @include('layouts.navigation')
 
         <!-- Page Heading -->
