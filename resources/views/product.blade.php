@@ -88,22 +88,27 @@
     </section>
 
     <section class="bg-[#f5f5f7]">
-        <div class="ctm-container py-[30px] md:py-[60px]">
-            <div class="chest-support">
-                <div class="chest-img">
-                    <iframe src="{{ $product['video'] ?? 'https://www.youtube.com/embed/-Yb6Ahx3gB8' }}" class="w-full aspect-video rounded-lg" height="350"></iframe>
-                </div>
-                <div class="chest-content">
-                    <h6 class="text-[#333] text-[20px] md:text-[30px] font-[600]">
-                        {{ $product['small_description'] ?? '' }}
-                    </h6>
-                    <p class="text-[#333] text-[16px] mt-[10px]"><?php echo htmlspecialchars_decode(htmlspecialchars($product['description'])); ?></p>
+        @if(!empty($product['video']))
+            <div class="ctm-container py-[30px] md:py-[60px]">
+                <div class="chest-support">
+                        <div class="chest-img">
+                            <iframe src="{{ $product['video'] ?? '' }}" class="w-full aspect-video rounded-lg" height="350"></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
+        @endif
+        <div class="ctm-container">
+            <div class="chest-content">
+                <h6 class="text-[#333] text-[20px] md:text-[30px] font-[600]">
+                    {{ $product['small_description'] ?? '' }}
+                </h6>
+            </div>
+            <p class="text-[#333] text-[16px] mt-[10px]"><?php echo htmlspecialchars_decode(htmlspecialchars($product['description'])); ?></p>
         </div>
     </section>
 
-    <section class="py-[30px] md:py-[60px]">
+    <section class="py-[30px] md:pt-[20px] md:pb-[60px]">
         <div class="max-w-screen-xl mx-auto ctm-accordion xl:px-0 lg:px-8 md:px-6 px-4">
             <div class="accordion" id="accordion">
                 <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
