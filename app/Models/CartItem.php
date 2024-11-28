@@ -12,12 +12,12 @@ use App\Models\Product;
 class CartItem extends Model
 {
     use HasFactory;
-
 	 protected $fillable = [
         'cart_id', 'product_id','price','quantity','discount','discount_price','marked_for','sku','variation_id','msrp'
     ];
-	
-
+    protected $casts = [
+        'discount' => 'float',
+    ];
 	public function cart()
     {
         return $this->belongsTo(Cart::class);
@@ -27,12 +27,12 @@ class CartItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
-	
+
 	public function cartAttribute()
     {
         return $this->hasMany(CartAttribute::class);
     }
 
-  
+
 
 }
