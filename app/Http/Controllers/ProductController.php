@@ -39,8 +39,8 @@ class ProductController extends Controller
                 $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                 $existingKey = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                 if(!empty($existingKey)){
-                    $product['price'] = $syspro_products['PriceList'][$existingKey]['Price'];
-                    $product['msrp'] = $syspro_products['PriceList'][$existingKey]['Price'];
+                    $product['price'] = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
+                    $product['msrp'] = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
                 }
             }
         }
@@ -216,16 +216,16 @@ class ProductController extends Controller
                     $existingStockInProduct = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                     if(!empty($existingStockInProduct)){
                         $product_available = true;
-                        $product['price'] = $syspro_products['PriceList'][$existingStockInProduct]['Price'];
-                        $product['msrp'] = $syspro_products['PriceList'][$existingStockInProduct]['Price'];
+                        $product['price'] = $syspro_products['PriceList'][$existingStockInProduct]['DealerPrice'];
+                        $product['msrp'] = $syspro_products['PriceList'][$existingStockInProduct]['MSRPPrice'];
                     }
                 }
                 if(!empty($variation->sku)){
                     $existingStockInVariation = array_search($variation->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                     if(!empty($existingStockInVariation)){
                         $product_available = true;
-                        $variation->price = $syspro_products['PriceList'][$existingStockInVariation]['Price'];
-                        $variation->msrp = $syspro_products['PriceList'][$existingStockInVariation]['Price'];
+                        $variation->price = $syspro_products['PriceList'][$existingStockInVariation]['DealerPrice'];
+                        $variation->msrp = $syspro_products['PriceList'][$existingStockInVariation]['MSRPPrice'];
                     }
                 }
 

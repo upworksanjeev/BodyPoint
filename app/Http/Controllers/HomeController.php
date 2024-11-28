@@ -62,7 +62,7 @@ class HomeController extends Controller
             $get_customer_details = SysproService::getCustomerDetails($url);
             session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
             if($get_customer_details){
-                return Response::json(['success' => true,'message' => 'Csutomer Changed Successfully']);
+                return Response::json(['success' => true,'message' => 'Customer Changed Successfully']);
             }else{
                 return Response::json(['success' => false,'message' => 'Something went wrong']);
             }

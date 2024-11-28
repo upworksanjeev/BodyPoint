@@ -213,8 +213,8 @@ class CartController extends Controller
                     $isStockItem = false;
                     $existingKey = array_search($product->sku, array_column($syspro_products['PriceList'], 'StockCode'));
                     if (!empty($existingKey)) {
-                        $product->price = $syspro_products['PriceList'][$existingKey]['Price'];
-                        $product->msrp = $syspro_products['PriceList'][$existingKey]['Price'];
+                        $product->price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
+                        $product->msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
                         $isStockItem = true;
                     }
                     if (!$isStockItem) {
