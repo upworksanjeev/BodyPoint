@@ -16,7 +16,9 @@ class OrderItem extends Model
 	 protected $fillable = [
         'order_id', 'product_id','price','quantity','discount','discount_price','marked_for','sku','variation_id','msrp'
     ];
-	
+    protected $casts = [
+        'discount' => 'float',
+    ];
 	public function order()
     {
         return $this->belongsTo(Order::class);
@@ -26,12 +28,12 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
-	
+
 	public function orderAttribute()
     {
         return $this->hasMany(OrderAttribute::class);
     }
 
-  
+
 
 }
