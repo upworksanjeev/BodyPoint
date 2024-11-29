@@ -281,7 +281,7 @@
                                     ${{ $cartitem->msrp ? number_format($cartitem->msrp * $cartitem->quantity, 2, '.', ',') : 0 }}
                                 </td>
                                 @php
-                                    $subtotal += $cartitem->price * $cartitem->quantity;
+                                    $subtotal += $cartitem->msrp * $cartitem->quantity;
                                 @endphp
                             @elseif($priceOption=='msrp_primary')
                                 <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
