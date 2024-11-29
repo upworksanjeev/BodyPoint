@@ -120,6 +120,11 @@ class QuoteController extends Controller
 
     public function store(Request $request)
     {
+        $customer_class = getCustomerClass();
+        $customer_classes_can_place_order = ['W', 'WX', 'WS'];
+        if(!in_array($customer_class, $customer_classes_can_place_order)){
+            return redirect()->back()->with('error', 'You Cannot Place Quote Because Your Customer Class Is '.$customer_class);
+        }
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {

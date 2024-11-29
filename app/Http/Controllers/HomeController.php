@@ -60,6 +60,7 @@ class HomeController extends Controller
             $customer_id = getCustomerId();
             $url = 'GetCustomerDetails/' . $customer_id;
             $get_customer_details = SysproService::getCustomerDetails($url);
+            session()->put('customer_details', $get_customer_details);
             session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
             if($get_customer_details){
                 return Response::json(['success' => true,'message' => 'Customer Changed Successfully']);
