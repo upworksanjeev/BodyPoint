@@ -32,6 +32,7 @@ class CartController extends Controller
                 $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
+                    session()->put('customer_details', $syspro_products);
                     $isStockItem = false;
                     $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
                     if (!empty($existingKey)) {
@@ -209,6 +210,7 @@ class CartController extends Controller
                 $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
                 if (!empty($syspro_products['PriceList'])) {
+                    session()->put('customer_details', $syspro_products);
                     $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                     $isStockItem = false;
                     $existingKey = array_search($product->sku, array_column($syspro_products['PriceList'], 'StockCode'));

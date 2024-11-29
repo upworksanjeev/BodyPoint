@@ -8,6 +8,14 @@ if (!function_exists('getCustomerId')) {
     }
 }
 
+if (!function_exists('getCustomerClass')) {
+    function getCustomerClass()
+    {
+        $customer_class = session()->get('customer_details') ? session()->get('customer_details')['CustomerClass'] : "";
+        return $customer_class;
+    }
+}
+
 
 if (!function_exists('clearSession')) {
     function clearSession()

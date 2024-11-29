@@ -36,6 +36,7 @@ class ProductController extends Controller
             $syspro_products = SysproService::getCustomerDetails($url);
 
             if (!empty($syspro_products)) {
+                session()->put('customer_details', $syspro_products);
                 $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                 $existingKey = array_search($product->sku,array_column($syspro_products['PriceList'], 'StockCode'));
                 if(!empty($existingKey)){
@@ -208,6 +209,7 @@ class ProductController extends Controller
             $url = 'GetCustomerDetails/' . $customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);
             if (!empty($syspro_products['PriceList'])) {
+                session()->put('customer_details', $syspro_products);
                 $product->discount = $syspro_products['CustomerDiscountPercentage'];
                 if(!empty($variation)){
                     $variation['discount'] = $syspro_products['CustomerDiscountPercentage'];

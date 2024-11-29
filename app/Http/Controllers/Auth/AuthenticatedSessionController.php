@@ -92,6 +92,7 @@ class AuthenticatedSessionController extends Controller
                 $url = 'GetCustomerDetails/' . auth()->user()->default_customer_id;
                 $get_customer_details = SysproService::getCustomerDetails($url);
                 if (!empty($get_customer_details)) {
+                    session()->put('customer_details', $get_customer_details);
                     session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
                     auth()->user()->update([
                         'payment_term_description' => $get_customer_details['PaymentTermDescription']
