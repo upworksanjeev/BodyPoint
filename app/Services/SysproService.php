@@ -96,7 +96,7 @@ class SysproService
             $items[$key] = [
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
-                'Price' => $item->price,
+                'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
             ];
         }
 
