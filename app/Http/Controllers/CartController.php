@@ -37,6 +37,11 @@ class CartController extends Controller
                     $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
                     if (!empty($existingKey)) {
                         $isStockItem = true;
+                        $msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
+                        $price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
+                        $discount = $syspro_products['CustomerDiscountPercentage'];
+                        $discount_price = $price * ($discount/100);
+                        $discount_price = $price - $discount_price;
                     }
                     if (!$isStockItem) {
                         return redirect()->back()->with('error', 'Non Stocked Item cannot be Added to Cart');
@@ -66,10 +71,10 @@ class CartController extends Controller
                     'product_id' => $product_id,
                     'variation_id' => $var_id,
                     'sku' => $request->sku ?? '',
-                    'price' => $request->price,
-                    'msrp' => $request->msrp,
-                    'discount' => $request->discount,
-                    'discount_price' => $request->discount_price,
+                    'price' => $price ?? $request->price,
+                    'msrp' => $msrp ?? $request->price,
+                    'discount' => $discount ?? $request->discount,
+                    'discount_price' => $discount_price ?? $request->discount_price,
                     'quantity' => 1,
                 ]);
             }
