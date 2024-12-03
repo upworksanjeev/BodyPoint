@@ -53,12 +53,14 @@
             <input type="number" id="qty" class="block w-full p-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center" placeholder="01" />
           </div>
           <div>
-            <button type="button" onclick="addToCart()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">
-              <div class="w-[20px] h-[20px]">
-                <x-icons.basket />
-              </div>
-              Add To Cart
-            </button>
+            @if(in_array(getCustomerClass(), ['W', 'WX', 'WS']))
+                <button type="button" onclick="addToCart()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">
+                <div class="w-[20px] h-[20px]">
+                    <x-icons.basket />
+                </div>
+                Add To Cart
+                </button>
+            @endif
           </div>
         </div>
 
