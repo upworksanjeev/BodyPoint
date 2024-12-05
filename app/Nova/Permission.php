@@ -31,16 +31,6 @@ class Permission extends Resource
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        if ($request->user()->isSuperAdmin()) {
-            return $query;
-        }
-
-        // Exclude the 'super-admin' role
-        return $query->where('name', '!=', 'super-admin');
-    }
-
     /**
      * Get the fields displayed by the resource.
      *
