@@ -8,27 +8,19 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
-use App\Nova\CategoryProduct;
 use App\Nova\User;
 use App\Nova\Category;
 use App\Nova\Product;
-use App\Nova\ProductAttribute;
 use App\Nova\AttributeCategory;
 use App\Nova\Attribute;
-use Sereny\NovaPermissions\Nova\Role;
-use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Blade;
-use App\Models\Product as ProductModel;
-use App\Models\ProductAttribute as ProductAttributeModel;
 use App\Nova\Order;
-use App\Nova\Permission as NovaPermission;
 use App\Nova\Quote;
-use App\Nova\Role as NovaRole;
-use Laravel\Nova\Observable;
-use App\Observers\ProductObserver;
-use App\Observers\ProductAttributeObserver;
+use App\Nova\Role;
+use App\Nova\Permission;
+
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -54,10 +46,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Roles & Permissions', [
                     MenuItem::resource(Role::class),
-                    MenuItem::resource(Permission::class)
+                    MenuItem::resource(Permission::class),
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
                 }),
+
                 MenuSection::make('Ecommerce', [
                     MenuItem::resource(Product::class),
                     MenuItem::resource(Category::class),
@@ -71,18 +64,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Quotes', [
                     MenuItem::resource(Quote::class),
-                ])
-                ->icon('list')
-                ->collapsable(),
-
-                MenuSection::make('Roles', [
-                    MenuItem::resource(NovaRole::class),
-                ])
-                ->icon('list')
-                ->collapsable(),
-
-                MenuSection::make('Permissions', [
-                    MenuItem::resource(NovaPermission::class),
                 ])
                 ->icon('list')
                 ->collapsable(),
