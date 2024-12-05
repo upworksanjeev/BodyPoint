@@ -20,13 +20,8 @@ use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Blade;
-use App\Models\Product as ProductModel;
-use App\Models\ProductAttribute as ProductAttributeModel;
 use App\Nova\Order;
 use App\Nova\Quote;
-use Laravel\Nova\Observable;
-use App\Observers\ProductObserver;
-use App\Observers\ProductAttributeObserver;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
