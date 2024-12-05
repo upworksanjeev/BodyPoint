@@ -75,7 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-success-story', [ProductController::class, 'addStory'])->name('add-success-story');
 
     //Import Customers
-    Route::get('/import-csv-customers', [ImportController::class, 'indexImportCustomer'])->name('import-customers');
+    Route::get('/import-csv-customers', [ImportController::class, 'indexImportCustomer'])->name('import-customers-index');
     Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
 
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');

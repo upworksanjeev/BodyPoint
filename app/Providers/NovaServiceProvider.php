@@ -8,20 +8,19 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
-use App\Nova\CategoryProduct;
 use App\Nova\User;
 use App\Nova\Category;
 use App\Nova\Product;
-use App\Nova\ProductAttribute;
 use App\Nova\AttributeCategory;
 use App\Nova\Attribute;
-use Sereny\NovaPermissions\Nova\Role;
-use Sereny\NovaPermissions\Nova\Permission;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Blade;
 use App\Nova\Order;
 use App\Nova\Quote;
+use App\Nova\Role;
+use App\Nova\Permission;
+
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -47,7 +46,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Roles & Permissions', [
                     MenuItem::resource(Role::class),
-                    MenuItem::resource(Permission::class)
+                    MenuItem::resource(Permission::class),
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
                 }),
@@ -68,6 +67,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])
                 ->icon('list')
                 ->collapsable(),
+
             ];
         });
 
