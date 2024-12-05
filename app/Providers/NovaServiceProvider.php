@@ -23,9 +23,7 @@ use Illuminate\Support\Facades\Blade;
 use App\Models\Product as ProductModel;
 use App\Models\ProductAttribute as ProductAttributeModel;
 use App\Nova\Order;
-use App\Nova\Permission as NovaPermission;
 use App\Nova\Quote;
-use App\Nova\Role as NovaRole;
 use Laravel\Nova\Observable;
 use App\Observers\ProductObserver;
 use App\Observers\ProductAttributeObserver;
@@ -58,6 +56,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
                 }),
+
                 MenuSection::make('Ecommerce', [
                     MenuItem::resource(Product::class),
                     MenuItem::resource(Category::class),
@@ -74,19 +73,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])
                 ->icon('list')
                 ->collapsable(),
-
-                MenuSection::make('Roles', [
-                    MenuItem::resource(NovaRole::class),
-                ])
-                ->icon('list')
-                ->collapsable(),
-
-                MenuSection::make('Permissions', [
-                    MenuItem::resource(NovaPermission::class),
-                ])
-                ->icon('list')
-                ->collapsable(),
-
             ];
         });
 
