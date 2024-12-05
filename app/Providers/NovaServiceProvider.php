@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Blade;
 use App\Models\Product as ProductModel;
 use App\Models\ProductAttribute as ProductAttributeModel;
 use App\Nova\Order;
+use App\Nova\Permission as NovaPermission;
 use App\Nova\Quote;
+use App\Nova\Role as NovaRole;
 use Laravel\Nova\Observable;
 use App\Observers\ProductObserver;
 use App\Observers\ProductAttributeObserver;
@@ -69,6 +71,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Quotes', [
                     MenuItem::resource(Quote::class),
+                ])
+                ->icon('list')
+                ->collapsable(),
+
+                MenuSection::make('Roles', [
+                    MenuItem::resource(NovaRole::class),
+                ])
+                ->icon('list')
+                ->collapsable(),
+
+                MenuSection::make('Permissions', [
+                    MenuItem::resource(NovaPermission::class),
                 ])
                 ->icon('list')
                 ->collapsable(),
