@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     public function PlaceOrder($order_id){
+        $customer = getCustomer();
+        $this->authorize('placeOrder', $customer);
         try{
             DB::beginTransaction();
             $url = 'PlaceOrder';
