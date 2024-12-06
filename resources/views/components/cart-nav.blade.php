@@ -1,3 +1,6 @@
+@php
+    $user = getCustomer();
+@endphp
 @if (Route::has('login'))
     @auth
     <section class="bg-white border-b border-solid border-[#E0E0E0]">
@@ -10,18 +13,20 @@
                 <a href="{{ route('cart') }}"
                   class="inline-block p-4 rounded-t-lg <?php if(Request::is('cart')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>" aria-current="page">Shopping Cart</a>
               </li>
-              <li class="me-2">
-                <a href="{{ route('order') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('order')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Order Lookup</a>
-              </li>
+              @if($user->hasPermissionTo('orderHistory'))
+                <li class="me-2">
+                    <a href="{{ route('order') }}"
+                    class="inline-block p-4 rounded-t-lg <?php if(Request::is('order')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Order Lookup</a>
+                </li>
+              @endif
               <li class="me-2">
                 <a href="{{ route('profile.edit') }}"
                   class="inline-block p-4 rounded-t-lg <?php if(Request::is('profile')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">My Account</a>
               </li>
-              <li class="me-2">
+            <li class="me-2">
                 <a href="{{ route('quotes') }}"
-                  class="inline-block p-4 rounded-t-lg <?php if(Request::is('quotes')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Quotes</a>
-              </li>
+                class="inline-block p-4 rounded-t-lg <?php if(Request::is('quotes')){ echo "text-[#000] border-b-[3px] active border-[#00838f]"; }else{ echo "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"; } ?>">Quotes</a>
+            </li>
             </ul>
           </div>
           <div class="">

@@ -84,7 +84,7 @@ class AuthenticatedSessionController extends Controller
 
     public function checkPassword(CheckPasswordRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with(['associateCustomers'])->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
@@ -92,11 +92,39 @@ class AuthenticatedSessionController extends Controller
                 $url = 'GetCustomerDetails/' . auth()->user()->default_customer_id;
                 $get_customer_details = SysproService::getCustomerDetails($url);
                 if (!empty($get_customer_details)) {
+                    if ($get_customer_details['CustomerClass'] == "") {
+                        Auth::logout();
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'You Cannot Login',
+                        ]);
+                    }
+                    session()->put('customer_id', auth()->user()->default_customer_id);
                     session()->put('customer_details', $get_customer_details);
                     session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
                     auth()->user()->update([
                         'payment_term_description' => $get_customer_details['PaymentTermDescription']
                     ]);
+                    if($user->associateCustomers->isEmpty()){
+                        if($get_customer_details['CustomerClass'] == ""){
+                            if (!$user->hasRole('Public User')) {
+                                $user->assignRole('Public User');
+                            }
+                        }
+                        if(!$user->hasRole($get_customer_details['CustomerClass'])){
+                            $user->assignRole($get_customer_details['CustomerClass']);
+                        }
+                    }else{
+                        $customer = $user->associateCustomers()->where('customer_id', auth()->user()->default_customer_id)->first();
+                        if (!$customer->hasRole($get_customer_details['CustomerClass'])) {
+                            if($get_customer_details['CustomerClass'] == ""){
+                                if (!$customer->hasRole('Public User')) {
+                                    $customer->assignRole('Public User');
+                                }
+                            }
+                            $customer->assignRole($get_customer_details['CustomerClass']);
+                        }
+                    }
                 }
             }
             return response()->json([

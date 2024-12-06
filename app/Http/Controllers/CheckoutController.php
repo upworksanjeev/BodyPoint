@@ -97,11 +97,8 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
-        $customer_class = getCustomerClass();
-        $customer_classes_can_place_order = ['W', 'WX', 'WS'];
-        if(!in_array($customer_class, $customer_classes_can_place_order)){
-            return redirect()->back()->with('error', 'You Cannot Place Order Because Your Customer Class Is '.$customer_class);
-        }
+        $customer = getCustomer();
+        $this->authorize('placeOrder', $customer);
         $request->validate([
             'customer_po_number' => ['required']
         ], [
@@ -182,6 +179,8 @@ class CheckoutController extends Controller
      */
     public function myOrder(Request $request)
     {
+        $customer = getCustomer();
+        $this->authorize('orderHistory', $customer);
         $user = Auth::user();
         $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
