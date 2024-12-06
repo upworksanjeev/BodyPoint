@@ -69,13 +69,15 @@ class HomeController extends Controller
                         ['user_id', Auth::id()],
                         ['customer_id', $customer_id]
                     ])->first();
-                    if($get_customer_details['CustomerClass'] == ""){
-                        if (!$customer->hasRole('Public User')) {
-                            $customer->assignRole('Public User');
+                    if($customer){
+                        if($get_customer_details['CustomerClass'] == ""){
+                            if (!$customer->hasRole('Public User')) {
+                                $customer->assignRole('Public User');
+                            }
                         }
-                    }
-                    if(!$customer->hasRole($get_customer_details['CustomerClass'])){
-                        $customer->assignRole($get_customer_details['CustomerClass']);
+                        if(!$customer->hasRole($get_customer_details['CustomerClass'])){
+                            $customer->assignRole($get_customer_details['CustomerClass']);
+                        }
                     }
                 return Response::json(['success' => true,'message' => 'Customer Changed Successfully']);
             }
