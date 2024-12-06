@@ -98,7 +98,7 @@ class CheckoutController extends Controller
     public function saveOrder(Request $request)
     {
         $customer = getCustomer();
-        $this->authorize('placeOrder', $customer);
+        $this->authorize('placeOrders', $customer);
         $request->validate([
             'customer_po_number' => ['required']
         ], [
