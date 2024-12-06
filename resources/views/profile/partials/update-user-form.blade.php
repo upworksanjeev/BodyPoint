@@ -34,28 +34,33 @@
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
-                            <!-- Password -->
-                            <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
-                                <x-input-label for="password" :value="__('Password')" />
+                            @php
+                                $customer = getCustomer();
+                            @endphp
+                            @if($customer->hasPermissionTo('updatePassword'))
+                                <!-- Password -->
+                                <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
+                                    <x-input-label for="password" :value="__('Password')" />
 
-                                <x-text-input id="password" class="block mt-1 w-full"
-                                                type="password"
-                                                name="password"
-                                                 autocomplete="new-password"  />
+                                    <x-text-input id="password" class="block mt-1 w-full"
+                                                    type="password"
+                                                    name="password"
+                                                    autocomplete="new-password"  />
 
-                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                            </div>
+                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                </div>
 
-                            <!-- Confirm Password -->
-                            <div class="w-full md:w-2/4  pl-0 md:pl-2 mt-4">
-                                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                                <!-- Confirm Password -->
+                                <div class="w-full md:w-2/4  pl-0 md:pl-2 mt-4">
+                                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                                <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                                type="password"
-                                                name="password_confirmation"  autocomplete="new-password"   />
+                                    <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                                                    type="password"
+                                                    name="password_confirmation"  autocomplete="new-password"   />
 
-                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                            </div>
+                                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                </div>
+                            @endif
 
                             <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
                                 <x-input-label for="primary_phone" :value="__('Primary Phone')" />

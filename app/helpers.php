@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 if (!function_exists('getCustomerId')) {
     function getCustomerId()
     {
@@ -21,5 +23,15 @@ if (!function_exists('clearSession')) {
     function clearSession()
     {
         session()->forget('downloadFile');
+    }
+}
+
+if (!function_exists('getCustomer')) {
+    function getCustomer()
+    {
+        $customer_id = session()->get('customer_id') ?? auth()->id();
+        $user = Auth::user()->load(relations: ['associateCustomers','roles.permissions']);
+        $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+        return $customer ?? $user;
     }
 }

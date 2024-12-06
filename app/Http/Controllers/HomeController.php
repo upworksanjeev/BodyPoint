@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssociateCustomer;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Category;
@@ -11,6 +12,7 @@ use App\Models\Media;
 use App\Models\User;
 use App\Services\SysproService;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class HomeController extends Controller
@@ -63,8 +65,21 @@ class HomeController extends Controller
             session()->put('customer_details', $get_customer_details);
             session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
             if($get_customer_details){
+                    $customer = AssociateCustomer::where([
+                        ['user_id', Auth::id()],
+                        ['customer_id', $customer_id]
+                    ])->first();
+                    if($get_customer_details['CustomerClass'] == ""){
+                        if (!$customer->hasRole('Public User')) {
+                            $customer->assignRole('Public User');
+                        }
+                    }
+                    if(!$customer->hasRole($get_customer_details['CustomerClass'])){
+                        $customer->assignRole($get_customer_details['CustomerClass']);
+                    }
                 return Response::json(['success' => true,'message' => 'Customer Changed Successfully']);
-            }else{
+            }
+            else{
                 return Response::json(['success' => false,'message' => 'Something went wrong']);
             }
         } catch (Exception $e) {

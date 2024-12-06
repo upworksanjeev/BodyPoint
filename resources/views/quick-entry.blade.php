@@ -1,8 +1,8 @@
+@php
+    $customer = getCustomer();
+@endphp
 <x-mainpage-layout>
-
-
   <x-cart-nav />
-
   <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
@@ -53,7 +53,7 @@
             <input type="number" id="qty" class="block w-full p-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center" placeholder="01" />
           </div>
           <div>
-            @if(in_array(getCustomerClass(), ['W', 'WX', 'WS']))
+            @if($customer->hasPermissionTo('addToCart'))
                 <button type="button" onclick="addToCart()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">
                 <div class="w-[20px] h-[20px]">
                     <x-icons.basket />
