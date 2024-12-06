@@ -13,7 +13,7 @@ class OrderController extends Controller
 {
     public function PlaceOrder($order_id){
         $customer = getCustomer();
-        $this->authorize('placeOrder', $customer);
+        $this->authorize('placeOrders', $customer);
         try{
             DB::beginTransaction();
             $url = 'PlaceOrder';
