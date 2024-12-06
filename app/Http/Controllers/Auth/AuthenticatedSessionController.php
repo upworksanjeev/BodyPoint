@@ -96,7 +96,7 @@ class AuthenticatedSessionController extends Controller
                         Auth::logout();
                         return response()->json([
                             'status' => 'error',
-                            'message' => 'You Cannot Login',
+                            'message' => 'Please Contact BodyPoint for Login Details!',
                         ]);
                     }
                     session()->put('customer_id', auth()->user()->default_customer_id);
