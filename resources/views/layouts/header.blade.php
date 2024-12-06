@@ -33,14 +33,21 @@
                     <div id="cart_count_div">
                         <x-cart.cart-count />
                     </div>
-                    <div class="pe-5">
-                        <a href="{{ config('bodypoint.home_url') }}/vault/" class="hover:text-[#fe7300] transition duration-150 ease-in-out">
-                            <div class="flex items-center">
-                                <i class="fa fa-briefcase text-[18px] pr-2" aria-hidden="true"></i>
-                                <p class="text-[15px] font-light">Vault</p>
-                            </div>
-                        </a>
-                    </div>
+                    @php
+                        if(auth()->user()){
+                            $customer = getCustomer();
+                        }
+                    @endphp
+                    @if(auth()->user() && $customer->hasPermissionTo('accessVault'))
+                        <div class="pe-5">
+                            <a href="{{ config('bodypoint.home_url') }}/vault/" class="hover:text-[#fe7300] transition duration-150 ease-in-out">
+                                <div class="flex items-center">
+                                    <i class="fa fa-briefcase text-[18px] pr-2" aria-hidden="true"></i>
+                                    <p class="text-[15px] font-light">Vault</p>
+                                </div>
+                            </a>
+                        </div>
+                    @endif
                     <x-login-nav />
                 </div>
             </div>
