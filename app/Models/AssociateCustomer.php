@@ -9,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 class AssociateCustomer extends Model
 {
     use HasFactory, HasRoles;
-
+    protected $guard_name = 'web';
     protected $fillable = [
         'user_id',
         'customer_id',
