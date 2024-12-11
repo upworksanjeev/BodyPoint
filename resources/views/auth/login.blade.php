@@ -1,10 +1,9 @@
 <x-mainpage-layout>
     <!-- Session Status -->
-    <div class="h-[65vh] sm:h-[62.5vh] p-5 flex sm:justify-center items-center mt-4 sm:pt-0">
+    <div class=" p-5 flex sm:justify-center items-center mt-4 sm:pt-0">
         <div class="w-full sm:max-w-xl px-10 py-10 shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]">
             <!-- Display Session Status if any -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
-
             <form method="POST" @submit.prevent x-data="loginHandler()">
                 @csrf
 
@@ -54,6 +53,16 @@
 
             </form>
         </div>
+    </div>
+    <div class="py-[32px] md:py-[70px] px-4 flex justify-center">
+        <div class="max-w-[900px] bg-[#00838F] p-[24px] md:p-[60px] flex justify-between items-center gap-4 md:gap-8 flex-wrap">
+            <div class="flex-1">
+        <h1 class="text-[#fff] text-[36px] font-bold mb-4 md:mb-6 font-lato">Find a Partner</h1>
+        <h2 class="text-[#fff] text-sm font-lato">Find a Bodypoint Partner near you! Bodypoint's worldwide partners sell our products, support our users and educate others about positioning.</h2>
+
+    </div>
+    <a class="uppercase text-sm text-[#fff] rounded-[50px] py-5 px-12 bg-[#FE7300] font-lato font-bold" href="{{ config('bodypoint.home_url') }}/find-a-partner-international">PARTNER LOCATOR</a>
+    </div>
     </div>
     <script>
         function loginHandler() {
