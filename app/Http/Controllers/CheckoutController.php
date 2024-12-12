@@ -98,7 +98,9 @@ class CheckoutController extends Controller
     public function saveOrder(Request $request)
     {
         $customer = getCustomer();
-        $this->authorize('placeOrders', $customer);
+        if(!$customer->hasPermissionTo('placeOrders')){
+            abort(403);
+        }
         $request->validate([
             'customer_po_number' => ['required']
         ], [
@@ -180,7 +182,9 @@ class CheckoutController extends Controller
     public function myOrder(Request $request)
     {
         $customer = getCustomer();
-        $this->authorize('orderHistory', $customer);
+        if(!$customer->hasPermissionTo('orderHistory')){
+            abort(403);
+        }
         $user = Auth::user();
         $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
