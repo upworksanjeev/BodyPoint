@@ -121,7 +121,9 @@ class QuoteController extends Controller
     public function store(Request $request)
     {
         $customer = getCustomer();
-        $this->authorize('getQuotes', $customer);
+        if(!$customer->hasPermissionTo('getQuotes')){
+            abort(403);
+        }
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {

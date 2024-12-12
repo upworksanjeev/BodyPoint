@@ -13,7 +13,9 @@ class OrderController extends Controller
 {
     public function PlaceOrder($order_id){
         $customer = getCustomer();
-        $this->authorize('placeOrders', $customer);
+        if(!$customer->hasPermissionTo('placeOrders')){
+            abort(403);
+        }
         try{
             DB::beginTransaction();
             $url = 'PlaceOrder';
