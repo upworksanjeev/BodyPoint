@@ -124,6 +124,11 @@ class QuoteController extends Controller
         if(!$customer->hasPermissionTo('getQuotes')){
             abort(403);
         }
+        $request->validate([
+            'customer_po_number' => ['required']
+        ], [
+            'customer_po_number.required' => 'The PO number is required.',
+        ]);
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
@@ -144,7 +149,7 @@ class QuoteController extends Controller
                 $customer_id = getCustomerId();
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'CreateQuote';
-                $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, NULL, 'N');
+                $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'N');
                 if (!empty($order_syspro['response']['orderNumber'])) {
                     $cart[0]->update([
                         'purchase_order_no' => $order_syspro['response']['orderNumber']
@@ -177,7 +182,8 @@ class QuoteController extends Controller
                     $response = SysproService::getOrderDetails($url);
                     $order->update([
                         'status' => $response['response']['Status'],
-                        'total' => $total
+                        'total' => $total,
+                        'customer_po_number' => $request->customer_po_number ?? null
                     ]);
                 } elseif (!empty($order_syspro['response']['Error'])) {
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
