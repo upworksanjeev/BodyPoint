@@ -1,6 +1,6 @@
 <x-mainpage-layout>
 
-   
+
   <x-cart-nav />
 
   <section class="bg-[#F6F6F6] py-9">
@@ -8,9 +8,9 @@
       <div class="max-w-screen-xl mx-auto">
         <div class="">
           <h2 class="font-bold text-[#00707B] mb-5 text-center">Thank You For Your Purchase!</h2>
-		  
+
           <h5 class="font-bold text-[#00707B] mb-5 text-center">Estimated Ship Date: {{ date('F j, Y',strtotime($order['created_at'])) }} </h5>
-         
+
 		   <div class="">
    <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
      <div class="card-header px-6 py-4 flex items-center justify-between border-b bg-[#00838f]">
@@ -63,18 +63,18 @@
                   <div class="flex items-center gap-2">
                     <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[260px]">Continue Shopping</a>
                   </div>
-                </td>                
+                </td>
                 <td class="w-4 p-4" colspan="6">
                   <div class="flex items-center justify-end gap-2">
-                  
+
 					<form action="{{ route('receipt-download') }}" method="post">
 					  <input type="hidden" value="<?= csrf_token() ?>" name="_token">
 						  <input type="hidden" name="order_id" value="{{ $order['id'] }}">
-						  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download Receipt</button>
+						  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download Order Confirmation</button>
 					  </form>
-                   
+
                   </div>
-                </td>                
+                </td>
               </tr>
            </tbody>
          </table>
@@ -84,13 +84,13 @@
  </div>
         </div>
 
-       
-       
-        
+
+
+
       </div>
     </div>
   </section>
 
 
-  
+
 </x-mainpage-layout>
