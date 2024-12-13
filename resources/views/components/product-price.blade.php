@@ -18,8 +18,8 @@
         @endif
         <h6 class="text-[16px] text-[#000] font-[500]">YOUR PRICE</h6>
         @if ($product['discount'] > 0 && $customer->hasPermissionTo('viewDiscount'))
-            <p class="text-[14px] text-[#6A6D73]">Discounted Price</p>
-            <p class="text-[14px] text-[#6A6D73]">Discount</p>
+            <p class="text-[14px] text-[#6A6D73]">Your Discounts (Primary + Secondary)</p>
+            {{-- <p class="text-[14px] text-[#6A6D73]">Discount</p> --}}
         @endif
     </div>
     <div class="right-price">
@@ -27,10 +27,10 @@
             @if($customer->hasPermissionTo('viewMsrp'))
                 <p class="text-[14px] text-[#6A6D73]">@if (isset($product['msrp'])) ${{ number_format($product['msrp'], 2, '.', ',') }} EA @endif</p>
             @endif
-            <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['price'])) ${{ number_format($product['price'], 2, '.', ',')  }} EA @endif</h6>
+            <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['discount_price'])) ${{ number_format($product['discount_price'], 2, '.', ',')  }} EA @endif</h6>
             @if ($product['discount'] > 0 && $customer->hasPermissionTo('viewDiscount'))
-                <p class="text-[14px] text-[#6A6D73]">${{ number_format($product['discount_price'], 2, '.', ',') }} EA</p>
-                <p class="text-[14px] text-[#6A6D73]">${{ $product['discount_in_price'] ?? '' }} ({{ number_format($product['discount'], 2, '.', ',')  }}% Off)</p>
+                {{-- <p class="text-[14px] text-[#6A6D73]">${{ number_format($product['discount_price'], 2, '.', ',') }} EA</p> --}}
+                <p class="text-[14px] text-[#6A6D73]">{{ number_format($product['price'],2,'.',',') ?? '' }}% +  {{ number_format($product['discount'], 2, '.', ',')  }}%</p>
             @endif
         </div>
 
