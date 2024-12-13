@@ -35,3 +35,14 @@ if (!function_exists('getCustomer')) {
         return $customer ?? $user;
     }
 }
+
+if (!function_exists('calculateDiscountPercentage')) {
+    function calculateDiscountPercentage($msrp, $dealerPrice)
+    {
+        if ($msrp <= 0) {
+            return 0;
+        }
+        $discountPercentage = (($msrp - $dealerPrice) / $msrp) * 100;
+        return round($discountPercentage, 2);
+    }
+}
