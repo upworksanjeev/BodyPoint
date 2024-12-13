@@ -30,7 +30,7 @@
             <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['discount_price'])) ${{ number_format($product['discount_price'], 2, '.', ',')  }} EA @endif</h6>
             @if ($product['discount'] > 0 && $customer->hasPermissionTo('viewDiscount'))
                 {{-- <p class="text-[14px] text-[#6A6D73]">${{ number_format($product['discount_price'], 2, '.', ',') }} EA</p> --}}
-                <p class="text-[14px] text-[#6A6D73]">{{ number_format($product['price'],2,'.',',') ?? '' }}% +  {{ number_format($product['discount'], 2, '.', ',')  }}%</p>
+                <p class="text-[14px] text-[#6A6D73]">{{ calculateDiscountPercentage($product['msrp'],$product['price']) ?? '' }}% +  {{ number_format($product['discount'], 2, '.', ',')  }}%</p>
             @endif
         </div>
 
