@@ -81,25 +81,25 @@
             </div>
         </section>
 
-        <section class="bg-[#f5f5f7]">
-            @if(!empty($product['video']))
-            <div class="ctm-container py-[30px] md:py-[60px]">
-                <div class="chest-support">
-                    <div class="chest-img">
-                        <iframe src="{{ $product['video'] ?? '' }}" class="w-full aspect-video rounded-lg" height="350"></iframe>
+        <section class="bg-[#f5f5f7] max-w-screen-xl mx-auto ">
+                @if(!empty($product['video']))
+                <div class="ctm-container py-[30px] md:py-[60px]">
+                    <div class="chest-support">
+                        <div class="chest-img">
+                            <iframe src="{{ $product['video'] ?? '' }}" class="w-full aspect-video rounded-lg" height="350"></iframe>
+                        </div>
                     </div>
                 </div>
-            </div>
-            </div>
-            @endif
-            <div class="ctm-container">
-                <div class="chest-content">
-                    <h6 class="text-[#333] text-[20px] md:text-[30px] font-[600]">
-                        {{ $product['small_description'] ?? '' }}
-                    </h6>
                 </div>
-                <p class="text-[#333] text-[16px] mt-[10px]"><?php echo htmlspecialchars_decode(htmlspecialchars($product['description'])); ?></p>
-            </div>
+                @endif
+                <div class="ctm-container ">
+                    <div class="chest-content">
+                        <h6 class="text-[#333] text-[20px] md:text-[30px] font-[600]">
+                            {{ $product['small_description'] ?? '' }}
+                        </h6>
+                    </div>
+                    <p class="text-[#333] text-[16px] mt-[10px]"><?php echo htmlspecialchars_decode(htmlspecialchars($product['description'])); ?></p>
+                </div>
         </section>
 
         <section class="py-[30px] md:pt-[20px] md:pb-[60px]">

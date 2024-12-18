@@ -55,7 +55,7 @@ class ProductController extends Controller
             $products = CategoryProduct::with(['category'])->where('product_id', $product['id'])->get();
             $productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
                 ->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
-                ->where('prod_id', $product['id'])->orderby('category')->get();
+                ->where('prod_id', $product['id'])->orderby('product_attributes.attr_order')->get();
 
             $i = 0;
             $category = [];
@@ -130,6 +130,8 @@ class ProductController extends Controller
         $attribute = [];
         /* attributes and their categories name for this product */
         $j = 0;
+
+        $productattr = collect($productattr)->sortBy('attr_order')->values();
         foreach ($productattr as $k => $v) {
             if (in_array($v['category'], $category)) {
                 $key = array_search($v['category'], $category);
