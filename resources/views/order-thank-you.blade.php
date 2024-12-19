@@ -70,7 +70,7 @@
 					<form action="{{ route('receipt-download') }}" method="post">
 					  <input type="hidden" value="<?= csrf_token() ?>" name="_token">
 						  <input type="hidden" name="order_id" value="{{ $order['id'] }}">
-						  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download Order Confirmation</button>
+						  <button  type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center">Download Order Confirmation</button>
 					  </form>
 
                   </div>
