@@ -15,7 +15,7 @@
                  @foreach ($attribute[$k] as $v1)
                      <button type="button" id="button_{{ $k }}_{{ $v1['product_attr_id'] }}"
                          class="grid-five cursor-pointer hover:ring hover:ring-[#FF9119]-300 attribute_buttons_{{ $k }}"
-                         onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }})">
+                         onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }}, this)">
                          <div class="five-g-img">
                              <img src="<?php if (isset($v1['image']) && $v1['image'] != '') {
                                  echo url('storage/' . $v1['image']);
@@ -39,7 +39,17 @@
      <script>
          var total_category = {{ count($category) }};
          /* update attribute detail */
-         function changeAttribute(product_att_id, product_id, index, k) {
+         function changeAttribute(product_att_id, product_id, index, k, el = null) {
+
+            if (index === 0) {
+                const imgElement = el.querySelector('.five-g-img img');
+                const imageUrl = imgElement?.src;
+
+                if (imageUrl) {
+                    document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
+                }
+            }
+
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
