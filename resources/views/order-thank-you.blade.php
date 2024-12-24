@@ -9,7 +9,7 @@
         <div class="">
           <h2 class="font-bold text-[#00707B] mb-5 text-center">Thank You For Your Purchase!</h2>
 
-          <h5 class="font-bold text-[#00707B] mb-5 text-center">Estimated Ship Date: {{ date('F j, Y',strtotime($order['created_at'])) }} </h5>
+          {{-- <h5 class="font-bold text-[#00707B] mb-5 text-center">Estimated Ship Date: {{ date('F j, Y',strtotime($order['created_at'])) }} </h5> --}}
 
 		   <div class="">
    <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
