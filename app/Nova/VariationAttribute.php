@@ -51,14 +51,20 @@ class VariationAttribute extends Resource
      */
     public function fields(NovaRequest $request)
     {
-		
+
         return [
             ID::make()->sortable(),
 			Select::make('Variation','variation_id')->options(\App\Models\Variation::where('id', $request->viaResourceId)->pluck('name', 'id'))->default($request->viaResourceId)->hideFromIndex()->hideFromDetail(),
-			/*Repeater::make('Attributes','product_attribute_id')
-				->repeatables([
-					VariationAttributeField::make(),
-				])->asHasMany(),*/
+            /*Repeater::make('Attributes','product_attribute_id')
+                 ->repeatables([
+                     VariationAttributeField::make(),
+                 ])->asHasMany(),*/
+            Select::make('Attribute', 'product_attribute_id')
+            ->options(\App\Models\Attribute::leftJoin('product_attributes', 'attributes.id', '=', 'product_attributes.attr_id')
+            ->leftJoin('variations', 'variations.product_id', '=', 'product_attributes.prod_id')
+            ->where('variations.id', $request->viaResourceId)
+            ->pluck('attributes.attribute', 'product_attributes.id'))
+            ->hideFromIndex()->hideFromDetail(),
 			
 			BelongsTo::make('Attribute','attribute', \App\Nova\Attribute::class)->showOnIndex()->sortable()->hideWhenCreating()->hideWhenUpdating(),
 		   

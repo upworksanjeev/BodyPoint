@@ -14,7 +14,7 @@
                 <div style="max-width: 1280px; margin-left: auto; margin-right: auto;">
                     <div>
                         <h2 style="font-weight: bold; color: #00707B; margin-bottom: 1.25rem; text-align: center;">Thank You For Your Purchase!</h2>
-                        <h5 style="font-weight: bold; color: #00707B; margin-bottom: 1.25rem; text-align: center;">Estimated Ship Date: {{ date('F j, Y',strtotime($order['created_at'])) }} </h5>
+                        {{-- <h5 style="font-weight: bold; color: #00707B; margin-bottom: 1.25rem; text-align: center;">Estimated Ship Date: {{ date('F j, Y',strtotime($order['created_at'])) }} </h5> --}}
                         <div>
                             <div style="background-color: white; border: 1px solid #E5E7EB; border-radius: 1rem; box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden;">
                                 <table style="padding: 10px; width: 100%; background-color: #00838f;">
