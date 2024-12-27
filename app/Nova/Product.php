@@ -26,6 +26,7 @@ use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Tab;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
+use Laravel\Nova\Fields\SoftDeletes;
 
 
 class Product extends Resource
@@ -133,6 +134,11 @@ class Product extends Resource
                 ]),
             ]),
         ];
+    }
+
+    public static function softDeletes()
+    {
+        return true;
     }
 
 	/**
