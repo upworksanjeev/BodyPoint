@@ -66,7 +66,9 @@
                                     </form>
                                     <div class="detactor">
                                         <div class="detactor-left">
-                                            <p class="text-[#000] flex items-center gap-[10px]"><i class="fas fa-map-marker-alt text-[20px]"></i> <span class="btn text-[18px]"><a href="{{$partnerPageURl}}"  target="_blank"><button class="border border-[#373B3C] text-[#373B3C] py-[8px] px-[30px]" >Find a Partner </button></a></span></p>
+                                            @if($showFindPartnerButton ?? false)
+                                             <p class="text-[#000] flex items-center gap-[10px]"><i class="fas fa-map-marker-alt text-[20px]"></i> <span class="btn text-[18px]"><a href="{{$partnerPageURl}}"  target="_blank"><button class="border border-[#373B3C] text-[#373B3C] py-[8px] px-[30px]" >Find a Partner </button></a></span></p>
+                                            @endif
                                         </div>
                                         <div class="detactor-right">
                                             {{-- <button class="bg-[#373B3C] rounded-[3px] py-[8px] px-[30px] text-[#fff] border border-[#373B3C] mr-[8px]">Save</button> --}}
