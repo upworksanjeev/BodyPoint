@@ -41,14 +41,14 @@
          /* update attribute detail */
          function changeAttribute(product_att_id, product_id, index, k, el = null) {
 
-            if (index === 0) {
+            // if (index === 0) {
                 const imgElement = el.querySelector('.five-g-img img');
                 const imageUrl = imgElement?.src;
 
                 if (imageUrl && document.querySelector('.slick-slide.slick-current.slick-active img')) {
                     document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
                 }
-            }
+            // }
 
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
