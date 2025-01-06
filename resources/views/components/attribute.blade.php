@@ -45,7 +45,7 @@
                 const imgElement = el.querySelector('.five-g-img img');
                 const imageUrl = imgElement?.src;
 
-                if (imageUrl) {
+                if (imageUrl && document.querySelector('.slick-slide.slick-current.slick-active img')) {
                     document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
                 }
             }
