@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StorePostRequest;
+use App\Models\AssociateCustomer;
 use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\CategoryProduct;
@@ -29,6 +30,35 @@ class ProductController extends Controller
     public function index($name, Request $request)
     {
         $categories = Category::all();
+
+        $showFindPartnerButton = false;
+        $customer_id =  null;
+        
+        try {
+            $customer_id = getCustomerId();
+        } catch (\Exception $e) {
+            $showFindPartnerButton = true;
+        }
+
+        
+        
+        if($customer_id) {
+            $customer = AssociateCustomer::where([
+                ['user_id', Auth::id()],
+                ['customer_id', $customer_id]
+            ])->first();
+    
+    
+            $rolesToCheck = ['VA', 'WC', 'WI', 'WM', 'WR', 'WL'];
+
+            
+            if ( $customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
+                $showFindPartnerButton = true;
+            }
+
+        }
+        
+
         $product = Product::with(['media', 'SuccessStory','attribute'])->where('slug', $name)->first();
         if(!empty(auth()->user()->default_customer_id)){
             $customer_id = getCustomerId();
@@ -96,6 +126,7 @@ class ProductController extends Controller
                 'attribute' => $attribute,
                 'product' => $product,
                 'products' => $products,
+                'showFindPartnerButton' => $showFindPartnerButton
             ));
         } else {
             return view('product', [
