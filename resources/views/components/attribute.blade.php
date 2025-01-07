@@ -15,6 +15,7 @@
                  @foreach ($attribute[$k] as $v1)
                      <button type="button" id="button_{{ $k }}_{{ $v1['product_attr_id'] }}"
                          class="grid-five cursor-pointer hover:ring hover:ring-[#FF9119]-300 attribute_buttons_{{ $k }}"
+                         data-description="{{$v1['small_description']}}"
                          onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }}, this)">
                          <div class="five-g-img">
                              <img src="<?php if (isset($v1['image']) && $v1['image'] != '') {
@@ -39,16 +40,47 @@
      <script>
          var total_category = {{ count($category) }};
          /* update attribute detail */
-         function changeAttribute(product_att_id, product_id, index, k, el = null) {
+         function changeAttribute(product_att_id, product_id, index, k,  el = null) {
 
-            // if (index === 0) {
-                const imgElement = el.querySelector('.five-g-img img');
-                const imageUrl = imgElement?.src;
+            const imgElement = el.querySelector('.five-g-img img');
+            const imageUrl = imgElement?.src;
 
-                if (imageUrl && document.querySelector('.slick-slide.slick-current.slick-active img')) {
-                    document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
+            if (imageUrl && document.querySelector('.slick-slide.slick-current.slick-active img')) {
+                document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
+            }
+            const description = el.getAttribute('data-description');
+  
+            if (description) {
+                // Select the first section inside .slider-for
+                const firstSection = document.querySelector('.slider-for .slick-current.slick-active');
+
+                if (firstSection) {
+                    const existingDescriptionContainer = document.querySelector('.description-container');
+                    if (existingDescriptionContainer) {
+                        existingDescriptionContainer.remove(); // Remove the existing container
+                    }
+                    const descriptionContainer = document.createElement('div');
+                    descriptionContainer.className = 'description-container';
+                    descriptionContainer.style.cssText = `
+                        border: 1px solid #ccc;
+                        padding: 15px;
+                        margin-top: 20px;
+                        background-color: #f9f9f9;
+                        border-radius: 8px;
+                        width: 100%;
+                        text-align: center;
+                        bottom: 0px;
+                        position: absolute;
+                        z-index: 999;
+                    `;
+
+                    descriptionContainer.innerText = description;
+
+                    // Insert the container after the first section
+                    firstSection.insertAdjacentElement('afterend', descriptionContainer);
                 }
-            // }
+
+            }
 
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
