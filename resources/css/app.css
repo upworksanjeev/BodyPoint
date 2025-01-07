@@ -401,7 +401,7 @@ body {
     fill: #00838f;
 } */
 /*single product page end */
-.product-images-box .slider-for  .slick-slide img {
+.product-images-box .slider-for  .slick-slide  {
     border: 1px solid #ececec;
     display: flex;
     align-items: center;
