@@ -62,7 +62,7 @@
                     const descriptionContainer = document.createElement('div');
                     descriptionContainer.className = 'description-container';
                     descriptionContainer.style.cssText = `
-                        border: 1px solid #ececec;
+                        border-top: 1px solid #ececec;
                         padding: 15px;
                         margin-top: 20px;
                         width: 100%;
