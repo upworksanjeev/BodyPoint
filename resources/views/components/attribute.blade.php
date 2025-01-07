@@ -62,16 +62,11 @@
                     const descriptionContainer = document.createElement('div');
                     descriptionContainer.className = 'description-container';
                     descriptionContainer.style.cssText = `
-                        border: 1px solid #ccc;
+                        border: 1px solid ececec;
                         padding: 15px;
                         margin-top: 20px;
-                        background-color: #f9f9f9;
-                        border-radius: 8px;
                         width: 100%;
-                        text-align: center;
-                        bottom: 0px;
-                        position: absolute;
-                        z-index: 999;
+                        text-align: center;                       
                     `;
 
                     descriptionContainer.innerText = description;

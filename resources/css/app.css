@@ -401,11 +401,15 @@ body {
     fill: #00838f;
 } */
 /*single product page end */
-.product-images-box .slider-for  .slick-slide {
+.product-images-box .slider-for  .slick-slide img {
     border: 1px solid #ececec;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    height: 100%;
+    min-height: 541px;
 }
 .product-images-box .slider-nav  .slick-slide {
     border: 1px solid #ececec;
