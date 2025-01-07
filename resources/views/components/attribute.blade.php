@@ -66,7 +66,9 @@
                         padding: 15px;
                         margin-top: 20px;
                         width: 100%;
-                        text-align: center;                       
+                        text-align: center;
+                        position: absolute;
+                        bottom: 0px;                     
                     `;
 
                     descriptionContainer.innerText = description;
