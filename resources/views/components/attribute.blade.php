@@ -52,7 +52,7 @@
   
             if (description) {
                 // Select the first section inside .slider-for
-                const firstSection = document.querySelector('.slider-for .slick-current.slick-active');
+                const firstSection = document.querySelector('.slider-for .slick-current.slick-active img');
 
                 if (firstSection) {
                     const existingDescriptionContainer = document.querySelector('.description-container');
