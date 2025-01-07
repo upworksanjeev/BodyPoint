@@ -16,6 +16,7 @@
                      <button type="button" id="button_{{ $k }}_{{ $v1['product_attr_id'] }}"
                          class="grid-five cursor-pointer hover:ring hover:ring-[#FF9119]-300 attribute_buttons_{{ $k }}"
                          data-description="{{$v1['small_description']}}"
+                         data-title="{{$v1['attribute']}}"
                          onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }}, this)">
                          <div class="five-g-img">
                              <img src="<?php if (isset($v1['image']) && $v1['image'] != '') {
@@ -49,8 +50,9 @@
                 document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
             }
             const description = el.getAttribute('data-description');
-  
-            if (description) {
+            const title = el.getAttribute('data-title');
+
+            if (title) {
                 // Select the first section inside .slider-for
                 const firstSection = document.querySelector('.slider-for .slick-current.slick-active img');
 
@@ -71,7 +73,21 @@
                         bottom: 0px;                     
                     `;
 
-                    descriptionContainer.innerText = description;
+                    if (title) {
+                        const titleElement = document.createElement('h4');
+                        titleElement.style.cssText = 'margin: 0 0 10px; font-weight: bold; font-size: 18px;';
+                        titleElement.textContent = title;
+                        descriptionContainer.appendChild(titleElement);
+                    }
+
+                    if (description) {
+                        const descriptionElement = document.createElement('p');
+                        descriptionElement.style.cssText = 'margin: 0; font-size: 14px; color: #555;';
+                        descriptionElement.textContent = description;
+                        descriptionContainer.appendChild(descriptionElement);
+                    }
+
+                    // descriptionContainer.inner = description;
 
                     // Insert the container after the first section
                     firstSection.insertAdjacentElement('afterend', descriptionContainer);
