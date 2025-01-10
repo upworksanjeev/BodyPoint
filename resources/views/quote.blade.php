@@ -80,15 +80,16 @@
         $(document).on('click', '#generate-quote', function(event) {
             event.preventDefault();
             const po_number = $('#customer-po-number-quote').val();
-            if (po_number !== "" && po_number !== null) {
-                $('#generate-quote-form').submit();
-            }else{
-                $('#po-number-modal-quote').show();
-                $('#po-number-modal-quote').css({
-                    'display': 'flex',
-                    'background-color': 'rgb(0 0 0 / 56%)'
-                });
-            }
+             $('#generate-quote-form').submit();
+            // if (po_number !== "" && po_number !== null) {
+            //     $('#generate-quote-form').submit();
+            // }else{
+            //     $('#po-number-modal-quote').show();
+            //     $('#po-number-modal-quote').css({
+            //         'display': 'flex',
+            //         'background-color': 'rgb(0 0 0 / 56%)'
+            //     });
+            // }
         });
 
         $(document).on('click','#save-po-number-quote',function(){
