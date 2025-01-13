@@ -88,4 +88,9 @@ class HomeController extends Controller
             return Response::json(['success' => false,'message' => $e->getMessage()]);
         }
     }
+
+    public function vault(Request $request)
+    {
+        return view('vault');
+    }
 }

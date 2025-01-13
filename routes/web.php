@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
 
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
+    Route::get('/vault', [HomeController::class,'vault'])->name('vault');
 
 });
 
