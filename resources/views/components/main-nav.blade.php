@@ -42,6 +42,8 @@
                                                  href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
+                                                 <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                 href="<?php echo url('/category/arm-supports'); ?>">Arm Supports</a></p>
 
                                      </div>
                                  </div>
