@@ -260,4 +260,14 @@
             ]
         });
     </script>
+
+    
+<script>
+    // Declare the variable outside of the event listeners
+let productsAddedToCartModal = 0;
+
+
+</script>
+
+
 </x-mainpage-layout>
