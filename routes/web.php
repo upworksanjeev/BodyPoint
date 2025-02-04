@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-cart', [CartController::class, 'deleteCart'])->name('delete-cart');
     Route::post('/search-product', [CartController::class, 'searchProduct'])->name('search-product');
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+    Route::post('/add-to-cart-attachment', [CartController::class, 'addToCartAttachment'])->name('add-to-cart-attachment');
     Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
     Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('/quote', [CheckoutController::class, 'quote'])->name('quote');

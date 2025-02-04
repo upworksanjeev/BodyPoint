@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\Variation;
 use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
 use Illuminate\Support\Str;
@@ -269,5 +270,79 @@ class CartController extends Controller
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         return view('components.cart.product-list', ['page' => 'quick-entry', 'cart' => $cart]);
+    }
+
+    public function addToCartAttachment(Request $request)
+    {
+        $user = Auth::user();
+        if ($request->has('product_id')) {
+            $product = Variation::where('product_id', $request->product_id)->where('sku', $request->sku)->first();
+            //dd($product);
+            $cart = Cart::where('user_id', $user->id)->first();
+            if (!empty(auth()->user()->default_customer_id)) {
+                $customer_id = getCustomerId();
+                $url = 'GetCustomerDetails/' . $customer_id;
+                $syspro_products = SysproService::getCustomerDetails($url);
+                ///dd($syspro_products);
+                if (!empty($syspro_products['PriceList'])) {
+                    session()->put('customer_details', $syspro_products);
+                    $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
+                    $isStockItem = false;
+                    $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+                    if (!empty($existingKey)) {
+                        $product->price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
+                        $product->msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
+                        $isStockItem = true;
+                    }
+                    if (!$isStockItem) {
+                        return response()->json(['success' => false, 'message' => 'Non-Stock Item Cannot be Added To Cart']);
+                    }
+                }
+            }
+            if ($cart) {
+                $cart->update(['total_items' => $cart->total_items + $request->qty]);
+            } else {
+                $cart = Cart::create([
+                    'user_id' => $user->id,
+                    'total_items' => $request->qty,
+                ]);
+            }
+
+            if ($request->variation_id && $request->variation_id != '') {
+                $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->where('variation_id', $request->variation_id)->first();
+                $var_id = $request->variation_id;
+            } else {
+                $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->first();
+                $var_id = NULL;
+            }
+            if ($cartitems) {
+                $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
+            } else {
+                if ($product['discount'] != '' && $product['discount'] > 0) {
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                    $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
+                } else {
+                    $product['discount_price'] = $product['price'];
+                }
+                $cartitem = CartItem::create([
+                    'cart_id' => $cart->id,
+                    'product_id' => $request->product_id,
+                    'variation_id' => $var_id,
+                    'sku' => $product->sku ?? '',
+                    'msrp' => $product->msrp ?? null,
+                    'price' => $product->price,
+                    'discount' => $product['discount_in_price'] ?? 0,
+                    'discount_price' => $product['discount_price'],
+                    'quantity' => $request->qty,
+                ]);
+            }
+        }
+        $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
+        
+        return response()->json([
+        'success' => true,
+        'message' => 'Item added to cart successfully!',
+        'cart' => $cart, // You can pass updated cart data if needed
+    ]);
     }
 }
