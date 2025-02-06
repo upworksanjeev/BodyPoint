@@ -105,9 +105,10 @@
                      type: 'POST',
                      data: $("#addtocart").serialize(),
                      success: function(response) {
-                         if (response.product_available) {
+                         if (response.product_available || !response.is_auth_user) {
                              $('#variation_price_div').html(response.html);
-                         } else {
+                         }
+                         else {
                              $('#variation_price_div').html(
                                  '<div class="out-off-stock"><h1>Price of this product is not available. Please contact support.</h1></div>'
                                  );

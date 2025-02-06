@@ -53,7 +53,7 @@ if (in_array($productSku, $armSupportSku)) {
         </div>
     </div>
 </div>
-
+@if($customer)
 <div class="ctm-price mt-[30px]">
     <div class="left-price">
         @if($customer->hasPermissionTo('viewMsrp'))
@@ -87,6 +87,7 @@ if (in_array($productSku, $armSupportSku)) {
         @endif
     </div>
 </div>
+@endif
 
 <!-- Addon Products Popup -->
 <div id="addon-popup" class="fixed inset-0 bg-gray-800 bg-opacity-70 flex justify-center items-center z-50 hidden">
