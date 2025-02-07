@@ -237,6 +237,7 @@ class ProductController extends Controller
         }
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
         $product_available = false;
+        
         if (!empty(auth()->user()->default_customer_id)) {
             $customer_id = getCustomerId();
             $url = 'GetCustomerDetails/' . $customer_id;
@@ -280,7 +281,7 @@ class ProductController extends Controller
             $final_data['discount_price'] = $final_data['price'];
         }
         $html = view('components.product-price', ['product' => $final_data])->render();
-        return response()->json(['html' => $html,'product_available' => $product_available]);
+        return response()->json(['html' => $html,'product_available' => $product_available, 'is_auth_user' =>Auth::check()]);
     }
 
     /**

@@ -30,9 +30,15 @@ if (!function_exists('getCustomer')) {
     function getCustomer()
     {
         $customer_id = session()->get('customer_id') ?? auth()->id();
-        $user = Auth::user()->load(relations: ['associateCustomers','roles.permissions']);
-        $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-        return $customer ?? $user;
+        
+        // Check if the user is authenticated before calling load()
+        if (Auth::check()) {
+            $user = Auth::user()->load(['associateCustomers', 'roles.permissions']);
+            $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+            return $customer ?? $user;
+        }
+
+        return null; // Return null if no authenticated user
     }
 }
 
