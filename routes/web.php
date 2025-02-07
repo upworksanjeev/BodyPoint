@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
     Route::get('/vault', [HomeController::class,'vault'])->name('vault');
+    Route::post('/vault', [HomeController::class,'postVault'])->name('post-vault');
 
 });
 

@@ -28,7 +28,8 @@
                                 </p>
                             </div>
                             <div class="py-6 px-7">
-                                <form>
+                                <form method="post" action="{{route('post-vault')}}" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="flex items-start flex-col justify-center w-full mb-6">
                                         <label for="first_name"
                                             class="block mb-2 text-base font-medium text-gray-900">First name</label>
@@ -50,7 +51,7 @@
                                                     SVG, PNG, JPG or GIF (MAX. 800x400px)
                                                 </p>
                                             </div>
-                                            <input id="dropzone-file" type="file" class="hidden" />
+                                            <input id="dropzone-file" type="file" name="attachment" class="hidden" />
                                         </label>
                                     </div>
                                     <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -59,7 +60,7 @@
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Expected
                                                 Launch Date
                                             </label>
-                                            <input type="text" id=""
+                                            <input type="text" id="datepicker-format" datepicker datepicker-format="dd-mm-yyyy" name="date"
                                                 class="bg-[#F6F6F6] border border-[#EAEAEA] text-gray-900 text-sm rounded focus:ring-gray-400 focus:border-gray-400 block w-full p-2.5"
                                                 placeholder="03-05-2024" required />
                                         </div>
@@ -67,7 +68,7 @@
                                             <label for=""
                                                 class="block mb-2 text-base font-medium text-gray-900">Company
                                                 Name</label>
-                                            <input type="text" id=""
+                                            <input type="text" id="" name="company_name"
                                                 class="bg-[#F6F6F6] border border-[#EAEAEA] text-gray-900 text-sm rounded focus:ring-gray-400 focus:border-gray-400 block w-full p-2.5"
                                                 placeholder="Company Name" required />
                                         </div>
@@ -75,7 +76,7 @@
                                     <div class="mb-6">
                                         <label for=""
                                             class="block mb-2 text-base font-medium text-gray-900">Contact Name</label>
-                                        <input type="text" id=""
+                                        <input type="text" id="" name="contact_name"
                                             class="bg-[#F6F6F6] border border-[#EAEAEA] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                             placeholder="Contact Name" required />
                                     </div>
@@ -84,14 +85,14 @@
                                             <label for="first_name"
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Phone
                                             </label>
-                                            <input type="text" id=""
+                                            <input type="text" id="" name="phone" pattern="[0-9]{10}"
                                                 class="bg-[#F6F6F6] border border-[#EAEAEA] text-gray-900 text-sm rounded focus:ring-gray-400 focus:border-gray-400 block w-full p-2.5"
                                                 placeholder="Enter Your Phone" required />
                                         </div>
                                         <div>
                                             <label for=""
                                                 class="block mb-2 text-base font-medium text-gray-900">Email</label>
-                                            <input type="text" id=""
+                                            <input type="email" id="" name="email"
                                                 class="bg-[#F6F6F6] border border-[#EAEAEA] text-gray-900 text-sm rounded focus:ring-gray-400 focus:border-gray-400 block w-full p-2.5"
                                                 placeholder="Enter Your Email" required />
                                         </div>
@@ -99,7 +100,7 @@
                                     <div class="mb-4">
                                         <label for="message"
                                             class="block mb-2 text-sm font-medium text-gray-900">Message</label>
-                                        <textarea id="message" rows="4"
+                                        <textarea id="message" rows="4" name="message"
                                             class="block p-2.5 w-full text-sm text-gray-900 bg-[#F6F6F6] border border-[#EAEAEA] rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
                                     </div>
                                     <div class="text-right">
@@ -116,89 +117,236 @@
                         <div class="accordion bg-white rounded-2xl">
                             <div class="accordion-item border border-[#E9E9E9] rounded-t-2xl">
                                 <div
-                                    class="accordion-item-headers accordion-item-headers-first flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    class="accordion-item-headers accordion-item-headers-nav accordion-item-headers-first flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
                                     Frequently Used Files
                                 </div>
                                 <div class="accordion-item-body overflow-hidden max-h-0">
                                     <div
                                         class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
                                         <ul>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf"
-                                                    target="_blank" class="text-[15px] text-[#00A8B8] font-normal">Product
-                                                    Guide</a>
-                                            </li>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Dynamic-Arm-Support-Brochure-BMM343-2022.4.pdf"
-                                                    target="_blank" class="text-[15px] text-[#00A8B8] font-normal">Dynamic
-                                                    Arm Support Brochure</a>
-                                            </li>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Essentials_Hip_Belt_Sell_Sheet_-BMM337_2023.4.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Essential Hip Belt Sell
-                                                    Sheet</a>
-                                            </li>
+                                            @foreach ($frequently_user_files as $file)
+                                                <li>
+                                                    <a href="{{ url($file['url']) }}" target="_blank"
+                                                        class="text-[15px] text-[#00838F] font-normal">
+                                                        {{ $file['name'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="accordion-item border border-[#E9E9E9] border-t-0">
                                 <div
-                                    class="accordion-item-headers flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
                                     Newly Added
                                 </div>
                                 <div class="accordion-item-body overflow-hidden max-h-0">
                                     <div
                                         class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
                                         <ul>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Product Guide</a>
-                                            </li>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Dynamic-Arm-Support-Brochure-BMM343-2022.4.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Dynamic Arm Support
-                                                    Brochure</a>
-                                            </li>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Essentials_Hip_Belt_Sell_Sheet_-BMM337_2023.4.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Essential Hip Belt
-                                                    Sell Sheet</a>
-                                            </li>
+                                            @foreach ($newly_added as $file)
+                                                <li>
+                                                    <a href="{{ url($file['url']) }}" target="_blank"
+                                                        class="text-[15px] text-[#00838F] font-normal">
+                                                        {{ $file['name'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item border border-[#E9E9E9] border-t-0 ">
+                                <div
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    Media Assets
+                                </div>
+                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                    <div
+                                        class="accordion-item-body-content py-[20px] px-7 leading-normal border-t border-[#E9E9E9]">
+                                        <ul>
+                                            @foreach ($media_assets as $key =>  $files)
+                                                <li>
+                                                    <div class="accordion-item">
+                                                        <div
+                                                            class="accordion-item-headers accordion-item-headers-inner accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
+                                                            {{ $key }}
+                                                        </div>
+                                                        <div class="accordion-item-body max-h-full">
+                                                            <div
+                                                                class="accordion-item-body-content accordion-item-body-content-inner leading-normal mb-4">
+                                                                <ul>
+                                                                   @foreach ($files as $key =>  $file)
+                                                                    <li>
+                                                                        <a href="{{ url($file['url']) }}" target="_blank"
+                                                                            class="text-[15px] text-[#00838F] font-normal">
+                                                                            {{ $file['name'] }}
+                                                                        </a>
+                                                                    </li>
+                                                                   @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item border border-[#E9E9E9] border-t-0">
+                                <div
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    Marketing Collateral
+                                </div>
+                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                    <div
+                                        class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
+                                        <ul>
+                                            @foreach ($marketing_collateral as $key =>  $files)
+                                                <li>
+                                                    <div class="accordion-item">
+                                                        <div
+                                                            class="accordion-item-headers accordion-item-headers-inner accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
+                                                            {{ $key }}
+                                                        </div>
+                                                        <div class="accordion-item-body overflow-hidden max-h-0">
+                                                            <div
+                                                                class="accordion-item-body-content accordion-item-body-content-inner leading-normal mb-4">
+                                                                <ul>
+                                                                   @foreach ($files as $key =>  $file)
+                                                                    <li>
+                                                                        <a href="{{ url($file['url']) }}" target="_blank"
+                                                                            class="text-[15px] text-[#00838F] font-normal">
+                                                                            {{ $file['name'] }}
+                                                                        </a>
+                                                                    </li>
+                                                                   @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="accordion-item border border-[#E9E9E9] border-t-0">
+                                <div
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    Pricing Guide
+                                </div>
+                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                    <div
+                                        class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
+                                        <ul>
+                                            @foreach ($pricing_guide as $file)
+                                                <li>
+                                                    <a href="{{ url($file['url']) }}" target="_blank"
+                                                        class="text-[15px] text-[#00838F] font-normal">
+                                                        {{ $file['name'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="accordion-item border border-[#E9E9E9] border-t-0">
+                                <div
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    Presentations
+                                </div>
+                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                    <div
+                                        class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
+                                        <ul>
+                                            @foreach ($presentations as $file)
+                                                <li>
+                                                    <a href="{{ url($file['url']) }}" target="_blank"
+                                                        class="text-[15px] text-[#00838F] font-normal">
+                                                        {{ $file['name'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item border border-[#E9E9E9] border-t-0 ">
+                                <div
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    Product and Technical
+                                </div>
+                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                    <div
+                                        class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
+                                        <ul>
+                                            @foreach ($product_and_technical as $key =>  $filesCategories)
+                                                <li>
+                                                    <div class="accordion-item">
+                                                        <div
+                                                            class="accordion-item-headers accordion-item-headers-inner accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
+                                                            {{ $key }}
+                                                        </div>
+                                                        <div class="accordion-item-body overflow-hidden max-h-0">
+                                                            <div
+                                                                class="accordion-item-body-content accordion-item-body-content-inner leading-normal">
+                                                                <ul>
+                                                                   @foreach ($filesCategories as $categoryKey =>  $category)
+                                                                    <li>
+                                                                         <div class="accordion-item px-4">
+                                                                                <div
+                                                                                    class="accordion-item-headers accordion-item-headers-innerchild accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
+                                                                                    {{ $categoryKey }}
+                                                                                </div>
+                                                                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                                                                    <div
+                                                                                        class="accordion-item-body-content accordion-item-body-content-inner leading-normal">
+                                                                                        <ul>
+                                                                                        @foreach ($category as  $file)
+                                                                                            <li>
+                                                                                                <a href="{{ url($file['url']) }}" target="_blank"
+                                                                                                    class="text-[15px] text-[#00838F] font-normal">
+                                                                                                    {{ $file['name'] }}
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        @endforeach
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                    </li>
+                                                                   @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="accordion-item border border-[#E9E9E9] border-t-0 rounded-b-2xl">
                                 <div
-                                    class="accordion-item-headers flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
-                                    Media Assets
+                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                    Active Campaigns
                                 </div>
                                 <div class="accordion-item-body overflow-hidden max-h-0">
                                     <div
-                                        class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
-                                        <ul>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Product Guide</a>
-                                            </li>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Dynamic-Arm-Support-Brochure-BMM343-2022.4.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Dynamic Arm Support
-                                                    Brochure</a>
-                                            </li>
-                                            <li>
-                                                <a href="https://bodypoint.dev/wp-content/uploads/2024/07/Essentials_Hip_Belt_Sell_Sheet_-BMM337_2023.4.pdf"
-                                                    target="_blank"
-                                                    class="text-[15px] text-[#00A8B8] font-normal">Essential Hip Belt
-                                                    Sell Sheet</a>
-                                            </li>
+                                        class="accordion-item-body-content leading-normal border-t border-[#E9E9E9]">
+                                        <ul class="active_campaigns py-1 px-[14px]">
+                                            @foreach ($active_campaigns as $file)
+                                                <li>
+                                                    <a href="{{ url($file['image']) }}" target="_blank"
+                                                        class="text-[15px] text-[#00838F] font-normal">
+                                                        <img decoding="async" src="{{ url($file['image']) }}">
+                                                    </a>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -218,29 +366,60 @@
         </section>
     </div>
     <script>
-      const accordionItemHeaders = document.querySelectorAll(
-        ".accordion-item-headers"
-      );
+       document.addEventListener("DOMContentLoaded", function () {
+    function setupAccordion(accordionHeaders, parentClass) {
+        accordionHeaders.forEach((header) => {
+            header.addEventListener("click", (event) => {
+                // Close other active accordions at the same level
+                const currentlyActive = document.querySelector(
+                    `.${parentClass}.active`
+                );
+                if (currentlyActive && currentlyActive !== header) {
+                    currentlyActive.classList.remove("active");
+                    currentlyActive.nextElementSibling.style.maxHeight = 0;
+                }
 
-      accordionItemHeaders.forEach((accordionItemHeader) => {
-        accordionItemHeader.addEventListener("click", (event) => {
-          // Uncomment in case you only want to allow for the display of only one collapsed item at a time!
+                // Toggle current accordion
+                header.classList.toggle("active");
+                const body = header.nextElementSibling;
 
-              const currentlyActiveAccordionItemHeader = document.querySelector(".accordion-item-headers.active");
-              if(currentlyActiveAccordionItemHeader && currentlyActiveAccordionItemHeader!==accordionItemHeader) {
-                 currentlyActiveAccordionItemHeader.classList.toggle("active");
-                 currentlyActiveAccordionItemHeader.nextElementSibling.style.maxHeight = 0;
-               }
-
-          accordionItemHeader.classList.toggle("active");
-          const accordionItemBody = accordionItemHeader.nextElementSibling;
-          if (accordionItemHeader.classList.contains("active")) {
-            accordionItemBody.style.maxHeight =
-              accordionItemBody.scrollHeight + "px";
-          } else {
-            accordionItemBody.style.maxHeight = 0;
-          }
+                if (header.classList.contains("active")) {
+                    body.style.maxHeight = body.scrollHeight + "px";
+                    updateParentHeight(header);
+                } else {
+                    body.style.maxHeight = 0;
+                    updateParentHeight(header, true);
+                }
+            });
         });
-      });
+    }
+
+    function updateParentHeight(element, isClosing = false) {
+        let parentBody = element.closest(".accordion-item-body");
+        while (parentBody) {
+            if (isClosing) {
+                parentBody.style.maxHeight = parentBody.scrollHeight - element.nextElementSibling.scrollHeight + "px";
+            } else {
+                parentBody.style.maxHeight = parentBody.scrollHeight + element.nextElementSibling.scrollHeight + "px";
+            }
+            parentBody = parentBody.parentElement.closest(".accordion-item-body");
+        }
+    }
+
+    setupAccordion(
+        document.querySelectorAll(".accordion-item-headers-nav"),
+        "accordion-item-headers-nav"
+    );
+    setupAccordion(
+        document.querySelectorAll(".accordion-item-headers-inner"),
+        "accordion-item-headers-inner"
+    );
+    setupAccordion(
+        document.querySelectorAll(".accordion-item-headers-innerchild"),
+        "accordion-item-headers-innerchild"
+    );
+});
+
     </script>
 </x-mainpage-layout>
+
