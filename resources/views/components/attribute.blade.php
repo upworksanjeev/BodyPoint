@@ -84,13 +84,14 @@
                         const descriptionElement = document.createElement('p');
                         descriptionElement.style.cssText = 'margin: 0; font-size: 14px; color: #555;';
                         descriptionElement.textContent = description;
-                        descriptionContainer.appendChild(descriptionElement);
+                        descriptionContainer.appendChild(descriptionElement); 
                     }
 
                     // descriptionContainer.inner = description;
 
                     // Insert the container after the first section
-                    firstSection.insertAdjacentElement('afterend', descriptionContainer);
+                    // Remove below comment to show variation names under the product image on change
+                    //firstSection.insertAdjacentElement('afterend', descriptionContainer);
                 }
 
             }
