@@ -1,12 +1,12 @@
 <x-mainpage-layout>
     @if(isset($product))
-        <section class="py-[30px] md:py-[60px]">
+        <section class="py-[15px] md:py-[40px]">
             <div class="ctm-container">
                 @if(isset($error))
                     {{ $error }}
                 @else
                     <div class="antialiased">
-                        <div class="ctm-container-two mt-[50px]">
+                        <div class="ctm-container-two">
                             <div class="flex flex-wrap flex-col md:flex-row -mx-4">
                                 <div class="md:flex-1 lg:px-5 product-outer-box">
                                     <div class="product-images-box">

@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Avenir LT", Sans-serif !important;
-    src: url("/resources/fonts/AvenirLTStd-Roman.woff2") format("woff2"),
-        url("/resources/fonts/AvenirLTStd-Roman.woff") format("woff");
+    font-family: "Avenir";
+    src: url("/resources/fonts/AvenirLTStd-Roman-c.woff2") format("woff2"),
+         url("/resources/fonts/AvenirLTStd-Roman-c.woff") format("woff");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -33,19 +33,23 @@
     font-family: "Avenir LT", Sans-serif !important;
     src: url("/resources/fonts/AvenirLTStd-Book.woff2") format("woff2"),
         url("/resources/fonts/AvenirLTStd-Book.woff") format("woff");
-    font-weight: 300;
-    font-style: normal;
+        font-weight: normal;
+        font-style: normal;
     font-display: swap;
 }
 
 body {
-    font-family: "Avenir LT", Sans-serif !important;
+    font-family: "Avenir";
     font-weight: normal;
+}
+
+h1,h2,h3,h4,h5,h6,span,strong,a,button,select,p,div {
+    font-family: "Avenir";
 }
 
 .footer-heading-title {
     color: #333;
-    font-family: "Avenir LT", Sans-serif;
+    font-family: "Avenir";
     font-weight: 600;
     font-size: 20px;
 }
@@ -102,9 +106,9 @@ body {
     display: grid;
     grid-template-columns: 27% 67%;
     gap: 16px;
+    align-items: center;
+    padding: 20px 0px;
 }
-
-
 
 .mobileLeft-Sidebar {
     position: fixed;
@@ -599,13 +603,31 @@ ul.active_campaigns li {
     }
 
     .ctm-grd-two {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        border-bottom: 1px solid #f5f5f7;
+        padding: 10px 0;
     }
 
     .prd-img {
         height: auto;
-        padding: 10px !important;
+        padding: 0px;
+        width: 40px;
+    }
+
+    .ctm-grd-two img {
+        height: 40px;
+        object-fit: cover;
+    }
+
+    .prd-cntnt > a {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .prd-cntnt p a {
+        font-size: 14px;
     }
 
     .ctm-pt {
@@ -733,31 +755,9 @@ ul.active_campaigns li {
         text-align: center;
     }
 
-    .prd-img {
-        border-style: solid;
-        border-width: 1px 1px 1px 1px;
-        border-color: #ececec;
-        border-radius: 5px 5px 5px 5px;
-        box-shadow: 0px 0px 4px 0px #ececec;
-        padding: 10px;
-        min-height: 80px;
-    }
-
-    .ctm-grd-two {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        border-bottom: 1px solid #f5f5f7;
-        padding: 10px 0;
-    }
-
     .prd-cntnt {
         flex: 1;
     }
 
-    .prd-img img {
-        width: 80px;
-        height: 80px;
-        object-fit: contain;
-    }
+
 }

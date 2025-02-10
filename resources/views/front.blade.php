@@ -8,7 +8,7 @@
                      {{-- <x-product-left-menu  :products="$side_menu_products"/> --}}
             </div>
             <div id="product_div">
-				 <h5 class="text-[#233049] text-[32px] capitalize mb-[20px] md:mb-[30px]">All Products</h5>
+				 <h5 class="text-[#233049] text-[26px] capitalize mb-[15px]">All Products</h5>
                  <x-product-list  :products="$products"/>
             </div>
           </div>

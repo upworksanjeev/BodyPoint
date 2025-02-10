@@ -7,7 +7,7 @@
     </div>
 </header>
 <header class="bg-[#00838f] sticky top-0 z-50" id="app-site-header">
-    <div class="ctm-container mx-auto px-4 xl:px-8 lg:block hidden pt-3">
+    <div class="ctm-container mx-auto px-4 xl:px-8 lg:block hidden pt-1">
         <div class="grid grid-cols-12  top-navbar items-center h-[43px]">
             <div class="col-span-6">
                 <div class="slick-slider">
