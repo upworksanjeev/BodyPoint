@@ -1051,6 +1051,7 @@ class HomeController extends Controller
         $pricing_guide = $this->getPricingGuide();
         $presentations = $this->getPresentations();
         $active_campaigns = $this->getActiveCampaigns();
+        
         if ($customer_id) {
             $customer = AssociateCustomer::where([
                 ['user_id', Auth::id()],
@@ -1060,6 +1061,12 @@ class HomeController extends Controller
             $rolesToCheck = ['VA', 'WC', 'WI', 'WM', 'WR', 'WL'];
         
             if ($customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
+                $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+                    return $item['name'] !== 'Dealer Price List';
+                }));
+            }
+            
+            if (Auth::user()->hasAnyRole(['VA', 'WC', 'WI', 'WM', 'WR', 'WL'])) {
                 $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
                     return $item['name'] !== 'Dealer Price List';
                 }));
