@@ -22,7 +22,7 @@
                      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                      <div class="dropdown flex">
                          <a href="{{ route('home') }}"
-                             class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
+                             class="px-2 py-2 font-thin text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Products <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
                              <h5 class="ctmH2 text-[22px] text-[#00838f] font-[500] mb-4">Products</h5>
@@ -151,7 +151,7 @@
 
                      <div class="dropdown flex">
                          <a href="{{ config('bodypoint.home_url') }}/company-overview/"
-                             class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
+                             class="px-2 py-2 font-thin text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">About <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
                              <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500]">About</h5>
@@ -311,7 +311,7 @@
                      </div>
                      <div class="dropdown flex">
                          <a href="{{ config('bodypoint.home_url') }}/resources/"
-                             class="px-2 py-2 font-normal text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
+                             class="px-2 py-2 font-thin text-[18px] text-white hover:text-[#fe7300] transition duration-150 ease-in-out"
                              aria-current="page">Resources <i class="fa fa-chevron-down text-[14px]"></i></a>
                          <div class="dropdown-content">
                              <h5 class="ctmH2 text-[22px] text-[#00838f]  font-[500] mb-5">Resources</h5>
