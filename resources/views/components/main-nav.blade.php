@@ -473,7 +473,7 @@
 
 
          <!-- Responsive Settings Options -->
-         <div class="pt-4 pb-1 border-t border-gray-200">
+         <div class="pt-6 pb-1 border-t border-gray-200">
              <div class="space-y-1 px-2 pb-3 pt-2">
                  <div class="space-y-1 px-2 pb-3 h-77">
                      <a class="closebtn text-[#333] text-[22px] absolute top-[15px] right-[15px] cursor-pointer"

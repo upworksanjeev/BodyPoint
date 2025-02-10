@@ -1,6 +1,6 @@
 <section class="bg-[#f5f5f7]">
 	<div class="max-w-screen-xl mx-auto py-[30px] md:py-[60px] lg:px-0 px-5">
-		<div class="flex items-center justify-between mb-5 lg:flex-row flex-col">
+		<div class="flex items-center justify-between mb-1 lg:flex-row flex-col">
 			<h2 class="text-[#333] text-[30px] font-[700] lg:mb-0">Success Stories</h2>
 			<button class="bg-[#FE7300] rounded-lg text-white text-base font-medium min-w-[180px] py-2 px-3 lg:block hidden" data-modal-target="share-modal" data-modal-toggle="share-modal">Share Your Story</button>
 		</div>
