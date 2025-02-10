@@ -97,7 +97,8 @@ class HomeController extends Controller
             [
                 [
                     'name' => 'Product Guide',
-                    'url' => 'https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf',
+                    //'url' => 'https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf',
+                    'url' => 'https://bodypoint.dev/wp-content/uploads/2025/01/product-guide-catalog.pdf',
                 ],
                 [
                     'name' => 'Dynamic Arm Support Brochure',
@@ -1040,7 +1041,8 @@ class HomeController extends Controller
     }
 
     public function vault(Request $request)
-    {
+    {   
+        $customer_id = getCustomerId();
         $frequently_user_files = $this->getFrequentlyUserFiles();
         $newly_added =  $this->getNewlyAdded();
         $media_assets = $this->getMediaAssets();
@@ -1049,6 +1051,27 @@ class HomeController extends Controller
         $pricing_guide = $this->getPricingGuide();
         $presentations = $this->getPresentations();
         $active_campaigns = $this->getActiveCampaigns();
+        
+        if ($customer_id) {
+            $customer = AssociateCustomer::where([
+                ['user_id', Auth::id()],
+                ['customer_id', $customer_id]
+            ])->first();
+        
+            $rolesToCheck = ['VA', 'WC', 'WI', 'WM', 'WR', 'WL'];
+        
+            if ($customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
+                $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+                    return $item['name'] !== 'Dealer Price List';
+                }));
+            }
+            
+            if (Auth::user()->hasAnyRole(['VA', 'WC', 'WI', 'WM', 'WR', 'WL'])) {
+                $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+                    return $item['name'] !== 'Dealer Price List';
+                }));
+            }
+        }
         $data = [
             'frequently_user_files' => $frequently_user_files,
             'newly_added' => $newly_added,

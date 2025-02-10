@@ -10,17 +10,17 @@
             </p>
         </header>
         <div class="container mx-auto mt-9">
-            <div class="max-w-screen-xl mx-auto">
+            <div class="lg:max-w-screen-xl mx-auto">
                 <form action="{{ route('quote-search') }}" method="post">
                     @csrf
-                    <div class="grid gap-6 mb-6 md:grid-cols-3">
+                    <div class="lg:grid gap-6 mb-6 md:grid-cols-3">
                         <div>
                             <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Search By:</label>
                             <input type="text" id="search_input" name="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Quote No/ BP Number" value="{{ $search??'' }}" />
                         </div>
-                        <div>
+                        <div class="">
                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date: </label>
-                            <div date-rangepicker class="flex items-center">
+                            <div date-rangepicker class="lg:flex items-center">
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center mt-5 gap-2">
+                        <div class="lg:flex items-center mt-5 gap-2">
                             <button type="submit" name="search_quote" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-[160px] items-left">Search Quote</button>
                             <a href="{{ route('quotes') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-[160px]">Clear Search</a>
                             <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download</button>
