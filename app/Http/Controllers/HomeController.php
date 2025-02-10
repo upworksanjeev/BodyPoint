@@ -97,7 +97,8 @@ class HomeController extends Controller
             [
                 [
                     'name' => 'Product Guide',
-                    'url' => 'https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf',
+                    //'url' => 'https://bodypoint.dev/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf',
+                    'url' => 'https://bodypoint.dev/wp-content/uploads/2025/01/product-guide-catalog.pdf',
                 ],
                 [
                     'name' => 'Dynamic Arm Support Brochure',
