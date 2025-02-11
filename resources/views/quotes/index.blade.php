@@ -1,6 +1,6 @@
 <x-mainpage-layout>
     <x-cart-nav />
-    <section class="bg-[#F6F6F6] py-9">
+    <section class="bg-[#fdffff] py-9 px-3">
         <header>
             <h2 class="text-lg text-[#00838f] font-bold text-center">
                 All Quotes
@@ -36,10 +36,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="lg:flex items-center mt-5 gap-2">
-                            <button type="submit" name="search_quote" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-[160px] items-left">Search Quote</button>
-                            <a href="{{ route('quotes') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-[160px]">Clear Search</a>
-                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download</button>
+                        <div class="flex items-baseline md:items-center flex-wrap lg:flex-nowrap mt-0 md:mt-5 gap-2">
+                            <button type="submit" name="search_quote" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left">Search Quote</button>
+                            <a href="{{ route('quotes') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[160px]">Clear Search</a>
+                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px]">Download</button>
                         </div>
                     </div>
                 </form>

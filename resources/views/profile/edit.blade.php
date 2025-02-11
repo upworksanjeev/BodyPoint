@@ -2,9 +2,8 @@
     <x-cart-nav />
 
     <div class="">
-        <div class="sm:px-6 lg:px-8 space-y-6">
-
-                <div class="min-h-[65vh]  flex flex-col sm:justify-center items-center pt-10 pb-10 mt-4 sm:pt-0 ">
+        <div class="sm:px-3 lg:px-8">
+                <div class="flex flex-col sm:justify-center items-center py-5 md:py-10">
                  @include('profile.partials.update-user-form')
                 </div>
         </div>

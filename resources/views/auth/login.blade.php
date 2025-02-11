@@ -1,7 +1,7 @@
 <x-mainpage-layout>
     <!-- Session Status -->
-    <div class=" p-5 flex sm:justify-center items-center mt-4 sm:pt-0">
-        <div class="w-full sm:max-w-xl px-10 py-10 shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]">
+    <div class="pt-[32px] md:pt-[60px] px-4 flex sm:justify-center items-center">
+        <div class="w-full sm:max-w-xl px-6 py-8 border border-[#c0c0c04f] overflow-hidden rounded-lg bg-[#fff]">
             <!-- Display Session Status if any -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
             <form method="POST" @submit.prevent x-data="loginHandler()">
@@ -9,12 +9,12 @@
 
                 <div x-show="step === 'email'">
                     <div>
-                        <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" class="block mt-1 w-full" type="email" x-model="email" required autofocus autocomplete="username" />
+                        <x-input-label class="tex-sm font-semibold" for="email" :value="__('Email')" />
+                        <x-text-input id="email" class="block mt-2 w-full" type="email" x-model="email" required autofocus autocomplete="username" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
                     <div class="mt-4 text-right">
-                        <x-primary-button class=" text-xs" @click.prevent="login">
+                        <x-primary-button class="text-sm capitalize font-mono font-extralight" @click.prevent="login">
                             {{ __('Continue') }}
                         </x-primary-button>
                     </div>
@@ -26,7 +26,7 @@
                         <x-text-input id="password" class="block mt-1 w-full" type="password" x-model="password" required autocomplete="current-password" />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
-                    <div class="mt-4 text-right">
+                    <div class="mt-3 text-right">
                         <x-primary-button class="ml-3 text-xs" @click.prevent="checkPassword">
                             {{ __('Login') }}
                         </x-primary-button>
@@ -54,14 +54,13 @@
             </form>
         </div>
     </div>
-    <div class="py-[32px] md:py-[70px] px-4 flex justify-center">
-        <div class="max-w-[900px] bg-[#00838F] p-[24px] md:p-[60px] flex justify-between items-center gap-4 md:gap-8 flex-wrap">
+    <div class="py-[30px] md:py-[60px] px-4 flex justify-center">
+        <div class="max-w-[900px] bg-[#00838F] p-[20px] md:p-[40px] rounded-xl flex justify-between items-baseline sm:items-center gap-4 md:gap-8 flex-wrap flex-col sm:flex-row">
             <div class="flex-1">
-        <h1 class="text-[#fff] text-[36px] font-bold mb-4 md:mb-6 font-lato">Find a Partner</h1>
+        <h1 class="text-[#fff] text-[18px] md:text-[24px] font-semibold mb-2 font-lato">Find a Partner</h1>
         <h2 class="text-[#fff] text-sm font-lato">Find a Bodypoint Partner near you! Bodypoint's worldwide partners sell our products, support our users and educate others about positioning.</h2>
-
     </div>
-    <a class="uppercase text-sm text-[#fff] rounded-[50px] py-5 px-12 bg-[#FE7300] font-lato font-bold" href="{{ config('bodypoint.home_url') }}/find-a-partner-international">PARTNER LOCATOR</a>
+    <a class="capitalize text-sm text-[#fff] rounded-[50px] py-2 px-4 bg-[#FE7300] font-lato" href="{{ config('bodypoint.home_url') }}/find-a-partner-international">Partner Locator</a>
     </div>
     </div>
     <script>
