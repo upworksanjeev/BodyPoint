@@ -2,7 +2,7 @@
      <div class="ctm-pt relative flex flex-wrap items-center justify-between pb-3">
 
          <div
-             class="inset-y-0 left-0 flex items-center xl:hidden justify-end lg:justify-start w-6/12 lg:w-1/12 xl:w-1/12">
+             class="inset-y-0 left-0 flex items-center lg:hidden justify-end lg:justify-start w-6/12 lg:w-1/12 xl:w-1/12">
              <!-- Mobile menu button-->
              <button @click="open = ! open"
                  class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition ease-in-out duration-150 text-[40px]">

@@ -5,27 +5,27 @@
                 <h2 class="footer-heading-title lg:text-left text-center text-[#333333]">More Information</h2>
                 <div class="flex flex-wrap lg:block  justify-center mb-5 lg:mb-0">
                     <x-nav-link-custom href="{{ config('bodypoint.home_url') }}"
-                        classes="text-sm pr-4 leading-[33px] text-[#333333]">
+                        classes="text-sm pr-4 leading-[33px] text-[#333333] hover:text-[#d16629]">
                         {{ __('Home') }}
                         </x-responsive-nave-link>
 
                         <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/company-overview/"
-                            classes="text-sm pr-4 leading-[33px] text-[#333333]">
+                            classes="text-sm pr-4 leading-[33px] text-[#333333] hover:text-[#d16629]">
                             {{ __('About') }}
                             </x-responsive-nave-link>
 
                             <x-nav-link-custom href="{{ route('login.index') }}"
-                                classes="text-sm pr-4 leading-[33px] text-[#333333]">
+                                classes="text-sm pr-4 leading-[33px] text-[#333333] hover:text-[#d16629]">
                                 {{ __('Partners') }}
                                 </x-responsive-nave-link>
 
                                 <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/timeline"
-                                    classes="text-sm pr-4 leading-[33px] text-[#333333]">
+                                    classes="text-sm pr-4 leading-[33px] text-[#333333] hover:text-[#d16629]">
                                     {{ __('Timeline') }}
                                     </x-responsive-nave-link>
 
                                     <x-nav-link-custom href="{{ config('bodypoint.home_url') }}/feedback"
-                                        classes="text-sm pr-4 leading-[33px] text-[#333333]">
+                                        classes="text-sm pr-4 leading-[33px] text-[#333333] hover:text-[#d16629]">
                                         {{ __('Feedback') }}
                                         </x-responsive-nave-link>
                 </div>
@@ -70,7 +70,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-[#00838f] py-[20px] fixed bottom-0 w-full">
+    <div class="bg-[#00838f] py-[20px] fixed bottom-0 w-full z-10">
         <x-copyrights>
             <x-slot name="content">
                 ©Copyright {{ date('Y') }}. Bodypoint. All Rights Reserved.

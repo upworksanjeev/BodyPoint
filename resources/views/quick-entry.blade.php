@@ -3,7 +3,7 @@
 @endphp
 <x-mainpage-layout>
   <x-cart-nav />
-  <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
+  <section class="bg-[#fdffff] py-9 lg:px-0 px-4">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="pb-6">
@@ -17,7 +17,7 @@
             <li>5. Click “Go to Shopping Cart”, and follow the checkout / quote process.</li>
           </ol>
         </div>
-        <div class="flex items-center lg:flex-row flex-col gap-4 justify-start mb-6">
+        <div class="flex items-baseline lg:items-center lg:flex-row flex-col gap-4 justify-start mb-6">
           <div class="lg:w-[35%] w-full">
 
             <div class="relative">
@@ -49,8 +49,8 @@
           </div>
 
           <div class="flex items-center gap-3">
-            <label class="text-sm font-normal text-[#000] leading-[18px]">Qty</label>
-            <input type="number" id="qty" class="block w-full p-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center" placeholder="01" />
+            <label class="text-md font-normal text-[#000] leading-[18px]">Qty</label>
+            <input type="number" id="qty" class="block w-full py-2 px-3 text-sm text-[#000] border border-[#000] rounded-full bg-white min-w-[72px] max-w-[72px] text-center" placeholder="01" />
           </div>
           <div>
             @if($customer->hasPermissionTo('addToCart'))

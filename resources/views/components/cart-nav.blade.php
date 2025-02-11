@@ -3,7 +3,7 @@
 @endphp
 @if (Route::has('login'))
     @auth
-        <section class="bg-white border-b border-solid border-[#E0E0E0]">
+        <section class="bg-white border-b border-solid border-[#E0E0E0] py-[30px] lg:py-0 px-3">
             <div class="container mx-auto">
                 <div class="max-w-screen-xl mx-auto">
                     <div class="flex items-center justify-between lg:flex-nowrap flex-wrap pt-1 pb-2">
@@ -46,18 +46,18 @@
                             </ul>
                         </div>
 
-                        <div class="lg:px-0 px-3">
-                            <label for="search-dropdown" class="text-sm font-medium text-[#000]">Change Associate
+                        <div class="lg:px-0 px-3 w-full lg:w-auto">
+                            <label for="search-dropdown" class="text-base font-medium text-[#000]">Change Associate
                                 customer</label>
-                            <div class="relative w-full flex flex-1">
+                            <div class="relative w-full flex flex-1 mt-1">
                                 @php
                                     $user = auth()
                                         ->user()
                                         ->load(['associateCustomers']);
                                 @endphp
-                                <form method="POST" action="{{ route('change-customer') }}" id="customer-form">
+                                <form method="POST" class="w-full lg:w-auto" action="{{ route('change-customer') }}" id="customer-form">
                                     @csrf
-                                    <select name="customer_id" id="search-dropdown" class="lg:w-auto w-full">
+                                    <select name="customer_id" id="search-dropdown" class="lg:w-auto w-full rounded-lg">
                                         @if (!$user->associateCustomers->isEmpty())
                                             @foreach ($user->associateCustomers as $customer)
                                                 <option value="{{ $customer->customer_id }}"
@@ -73,7 +73,7 @@
                                         @endif
                                     </select>
                                     <button type="submit" id="dropdown-button"
-                                        class=" py-2.5 px-4 text-sm font-medium text-center text-white bg-[#494949] lg:rounded-e-lg lg:w-auto w-full lg:mt-0 mt-2">Change
+                                        class="py-2.5 px-4 text-sm font-medium text-center text-white bg-[#494949] rounded-lg lg:w-auto w-full mt-2">Change
                                         Customer</button>
                                 </form>
                                 {{-- <input type="search" id="search-dropdown"
@@ -85,7 +85,7 @@
                     <span class="sr-only">Search</span>
                   </button>
                   <button id="dropdown-button" data-dropdown-toggle="dropdown"
-                    class="flex-shrink-0 z-10 inline-flex items-center py-2.5 pe-4 text-sm font-medium text-center text-white bg-[#494949] rounded-e-lg"
+                    class="flex-shrink-0 z-10 inline-flex items-center py-2.5 pe-4 text-sm font-medium text-center text-white bg-[#494949] rounded-lg"
                     type="button"><x-icons.down-arrow /></button> --}}
                                 <div id="dropdown"
                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">

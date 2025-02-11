@@ -1,6 +1,6 @@
-<section >
+<section class="px-3">
     <header>
-        <h2 class="text-lg text-[#00838f] font-bold text-center">
+        <h2 class="text-[18px] md:text-[26px] text-[#00838f] font-bold text-center">
             {{ __('Profile Information') }}
         </h2>
 
@@ -9,15 +9,15 @@
         </p>
     </header>
 
-    <div class="w-full  sm:max-w-xl mt-0 md:mt-10 px-5 md:px-10 py-6   shadow-lg overflow-hidden sm:rounded-lg bg-[#f6f6f6]">
+    <div class="w-full sm:max-w-xl mt-3 md:mt-7 px-6 py-8 overflow-hidden border border-[#c0c0c04f] rounded-lg bg-[#fff]">
         <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-        @csrf
-    </form>
+         @csrf
+        </form>
             <form id="registrationForm"  method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
-                <div class="step" data-step="1" >
-                        <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Contact Information') }}</div>
+                <div class="step" data-step="1">
+                        <div class="text-xl text-[#00838f] pb-5 text-center">{{ __('Contact Information') }}</div>
 
                         <div class="flex flex-wrap	">
                             <!-- Name -->
@@ -109,9 +109,9 @@
                 </div> --}}
 
                     <div class="flex items-center justify-end mt-4">
-                        {{-- <x-primary-button class="ml-4 prev-button focusver:">  {{ __('Previous') }} </x-primary-button> --}}
-                        {{-- <x-primary-button id="profile-update-next-btn" class="ml-4 next-button focus:border-none ">{{ __('Next') }} </x-primary-button> --}}
-                        <x-primary-button class="ml-4 submit-button">
+                        {{-- <x-primary-button class="ml-4 prev-button capitalize font-extralight focus:border-none">  {{ __('Previous') }} </x-primary-button> --}}
+                        {{-- <x-primary-button id="profile-update-next-btn" class="ml-4 next-button capitalize font-extralight focus:border-none">{{ __('Next') }} </x-primary-button> --}}
+                        <x-primary-button class="ml-4 submit-button capitalize font-extralight focus:border-none">
                         {{ __('Update Profile') }}
                         </x-primary-button>
 
