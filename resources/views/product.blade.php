@@ -69,6 +69,7 @@
                                             @if($showFindPartnerButton ?? false)
                                              <p class="text-[#000] flex items-center gap-[10px]"><i class="fas fa-map-marker-alt text-[20px]"></i> <span class="btn text-[18px]"><a href="{{$partnerPageURl}}"  target="_blank"><button class="bg-[#FE7300] rounded-lg text-white text-base font-medium min-w-[180px] p-4 lg:block hidden" >Find a Partner </button></a></span></p>
                                             @endif
+                                           
                                         </div>
                                         <div class="detactor-right">
                                             {{-- <button class="bg-[#373B3C] rounded-[3px] py-[8px] px-[30px] text-[#fff] border border-[#373B3C] mr-[8px]">Save</button> --}}
