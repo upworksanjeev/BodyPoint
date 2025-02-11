@@ -3,7 +3,7 @@
 
   <x-cart-nav />
 
-  <section class="bg-[#fdffff] py-9">
+  <section class="bg-[#F6F6F6] py-9">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="">
