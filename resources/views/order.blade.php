@@ -37,16 +37,16 @@
                             </div>
                         </div>
                         <div class="flex items-center mt-0 lg:mt-5 gap-2 flex-wrap ">
-                            <button type="submit" name="search_order" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[150px] items-left">Search Order</button>
-                            <a href="{{ route('order') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[150px]">Clear Search</a>
-                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[150px] ">Download</button>
+                            <button type="submit" name="search_order" class="py-2.5 px-3 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[124px] items-left">Search Order</button>
+                            <a href="{{ route('order') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[124px]">Clear Search</a>
+                            <button type="submit" name="download" class="py-2.5 px-3 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[124px] ">Download</button>
                         </div>
                     </div>
                 </form>
                 <div class="relative overflow-x-auto sm:rounded-2xl mt-10" id="order_list">
                     <x-cart.order-list :order="$order" />
                 </div>
-                <div class="py-6 text-right">
+                <div class="pt-4 md:pt-6 pb-2 text-right">
                     <a href="{{ route('home') }}" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2">Continue Shopping
                         <x-icons.next-arrow />
                     </a>
