@@ -46,7 +46,7 @@
                             </ul>
                         </div>
 
-                        <div class="lg:px-0 px-3 w-full lg:w-auto">
+                        <div class="w-full lg:w-auto">
                             <label for="search-dropdown" class="text-base font-medium text-[#000]">Change Associate
                                 customer</label>
                             <div class="relative w-full flex flex-1 mt-1">
