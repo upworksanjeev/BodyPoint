@@ -191,7 +191,12 @@ class CartController extends Controller
      */
     public function searchProduct(Request $request)
     {
-        $product = Product::where('sku', 'like', '%' . $request->keys . '%')->orWhere('name', 'like', '%' . $request->keys . '%')->get();
+        $product = Product::where(function ($query) use ($request) {
+            $query->where('sku', 'like', '%' . $request->keys . '%')
+                  ->orWhere('name', 'like', '%' . $request->keys . '%');
+        })
+        ->withoutTrashed() 
+        ->get();
         $data = '';
         if ($product) {
             foreach ($product as $k => $v) {
