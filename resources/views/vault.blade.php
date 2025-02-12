@@ -1,17 +1,17 @@
 <x-mainpage-layout>
 
     <div class="min-h-[62vh] bg-[#f6f6f6]">
-        <section class="bg-[#00838F] text-[#ffffff] px-10">
-            <div class="container mx-auto py-9">
-                <h2 class="text-5xl font-400 leading-tight">Partner Vault</h2>
+        <section class="bg-[#00838F] text-[#ffffff] px-6 lg:px-10">
+            <div class="lg:container mx-auto py-7 md:py-9">
+                <h2 class="text-[32px] md:text-5xl font-400 leading-tight">Partner Vault</h2>
             </div>
         </section>
         <section class="">
-            <div class="max-w-[1170px] mx-auto py-20">
-                <div class="lg:grid grid-cols-2 gap-8">
+            <div class="max-w-[1170px] mx-auto py-8 md:py-16 px-6">
+                <div class="md:grid grid-cols-2 gap-4 md:gap-8">
                     <div>
                         <div>
-                            <h2 class="text-3xl font-normal mb-4">
+                            <h2 class="text-3xl font-normal mb-2 md:mb-4">
                                 Welcome to Partner Vault
                             </h2>
                             <p class="text-lg font-normal mb-4">Partner Resource Central</p>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="bg-white rounded-2xl mt-8 border border-[#E9E9E9]">
                             <div class="p-6 border-b border-[#E9E9E9]">
-                                <h2 class="text-3xl mb-4">Review My Document</h2>
+                                <h2 class="text-3xl md-3 md:mb-4">Review My Document</h2>
                                 <p class="text-lg font-normal">
                                     Send the Bodypoint Marketing Team your file for review here!
                                     Response time is typically less then 2 business days!
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-20">
+                    <div class="mt-5 md:mt-20">
                         <div class="accordion bg-white rounded-2xl">
                             <div class="accordion-item border border-[#E9E9E9] rounded-t-2xl">
                                 <div

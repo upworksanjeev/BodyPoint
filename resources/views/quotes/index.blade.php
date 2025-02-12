@@ -1,6 +1,6 @@
 <x-mainpage-layout>
     <x-cart-nav />
-    <section class="bg-[#fdffff] py-9 px-3">
+    <section class="bg-[#fdffff] py-6 md:py-9 px-3">
         <header>
             <h2 class="text-lg text-[#00838f] font-bold text-center">
                 All Quotes
@@ -48,7 +48,7 @@
                         @if(!$quotes->isEmpty())
                             @foreach ($quotes as $quote)
                                 <h2 id="accordion-collapse-heading-{{ $quote->id }}" class="">
-                                    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-[16px] focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3" data-accordion-target="#accordion-collapse-body-{{ $quote->id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $quote->id }}">
+                                    <button type="button" class="flex flex-wrap items-center justify-center sm:justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-[16px] focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3" data-accordion-target="#accordion-collapse-body-{{ $quote->id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $quote->id }}">
                                         <span>Quote No: {{ $quote->purchase_order_no }}</span>
                                         @if(!empty($quote->status))
                                             <span>Quote Status: {{ $quote->order_status }}</span>
@@ -151,7 +151,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="py-6 text-right">
+                <div class="pt-4 md:pt-6 pb-2 text-right">
                     <a href="{{ route('home') }}" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2">Continue Shopping
                         <x-icons.next-arrow /></a>
                 </div>
