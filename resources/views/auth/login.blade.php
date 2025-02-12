@@ -1,7 +1,7 @@
 <x-mainpage-layout>
     <!-- Session Status -->
     <div class="pt-[32px] md:pt-[60px] px-4 flex sm:justify-center items-center">
-        <div class="w-full sm:max-w-xl px-6 py-8 border border-[#c0c0c04f] overflow-hidden rounded-lg bg-[#fff]">
+        <div class="w-full sm:max-w-xl px-6 py-8 border border-[#c0c0c04f] overflow-hidden rounded-lg bg-[#f6f6f6]">
             <!-- Display Session Status if any -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
             <form method="POST" @submit.prevent x-data="loginHandler()">

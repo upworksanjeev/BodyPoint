@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <div class="w-full sm:max-w-xl mt-3 md:mt-7 px-6 py-8 overflow-hidden border border-[#c0c0c04f] rounded-lg bg-[#fff]">
+    <div class="w-full sm:max-w-xl mt-3 md:mt-7 px-6 py-8 overflow-hidden border border-[#c0c0c04f] rounded-lg bg-[#f6f6f6]">
         <form id="send-verification" method="post" action="{{ route('verification.send') }}">
          @csrf
         </form>

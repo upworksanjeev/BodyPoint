@@ -10,7 +10,7 @@
     <div class="ctm-container mx-auto px-4 xl:px-8 lg:block hidden pt-1">
         <div class="grid grid-cols-12  top-navbar items-center h-[43px]">
             <div class="col-span-6">
-                <div class="slick-slider">
+                <div class="slick-slider page-load-two">
                     <div>
                         <p class="text-[15px] text-[#fff] font-normal">Thoughtful designs for stronger connections
                             between wheelchairs and people</p>
@@ -76,3 +76,14 @@
         });
     });
 </script>
+
+<script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        const content = document.querySelector('.page-load-two');
+        if (content) {
+          content.style.display = 'block';
+        }
+      }, 100000); // 2-second delay
+    });
+  </script>

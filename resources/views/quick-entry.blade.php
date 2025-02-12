@@ -3,7 +3,7 @@
 @endphp
 <x-mainpage-layout>
   <x-cart-nav />
-  <section class="bg-[#fdffff] py-9 lg:px-0 px-4">
+  <section class="bg-[#fdffff] py-7 lg:py-9 lg:px-0 px-4">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="pb-6">

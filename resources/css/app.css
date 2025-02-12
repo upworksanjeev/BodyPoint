@@ -47,6 +47,11 @@ h1,h2,h3,h4,h5,h6,span,strong,a,button,select,p,div {
     font-family: "Avenir";
 }
 
+.page-load-two {
+    display: none;
+}
+
+
 th.px-4.py-3.font-bold {
     font-weight: 500 !important;
     font-size: 15px;

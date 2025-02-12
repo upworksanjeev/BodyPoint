@@ -1,6 +1,6 @@
 <x-mainpage-layout>
     <x-cart-nav />
-    <section class="bg-[#fdffff] py-9">
+    <section class="bg-[#F6F6F6] py-9">
         <header>
             <h2 class="text-lg text-[#00838f] font-bold text-center">
                 All Orders
@@ -13,7 +13,7 @@
             <div class="max-w-screen-xl mx-auto px-4">
                 <form action="{{ route('order-search') }}" method="post">
                     <input type="hidden" value="<?= csrf_token() ?>" name="_token">
-                    <div class="grid gap-4 sm:gap-6 mb-6 md:grid-cols-3">
+                    <div class="grid gap-4 sm:gap-6 mb-6 lg:grid-cols-3">
                         <div>
                             <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Search By:</label>
                             <input type="text" id="search_input" name="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Order No/ BP Number" value="{{ $search??'' }}" />
@@ -21,14 +21,14 @@
                         <div>
                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date: </label>
                             <div date-rangepicker class="flex items-center gap-3 sm:gap-0 flex-wrap lg:flex-nowrap">
-                                <div class="relative">
+                                <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
                                     <input name="start_date" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
                                 </div>
-                                <span class="mx-4 text-gray-500">to</span>
-                                <div class="relative">
+                                <span class="sm:mx-4 text-gray-500 my-1 sm:my-0 inline-block">to</span>
+                                <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
@@ -36,10 +36,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center mt-0 md:mt-5 gap-2 flex-wrap lg:flex-nowrap">
-                            <button type="submit" name="search_order" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full xs:w-[160px] items-left">Search Order</button>
-                            <a href="{{ route('order') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full xs:w-[160px]">Clear Search</a>
-                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download</button>
+                        <div class="flex items-center mt-0 lg:mt-5 gap-2 flex-wrap ">
+                            <button type="submit" name="search_order" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[150px] items-left">Search Order</button>
+                            <a href="{{ route('order') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[150px]">Clear Search</a>
+                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[150px] ">Download</button>
                         </div>
                     </div>
                 </form>

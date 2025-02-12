@@ -3,11 +3,11 @@
 @endphp
 @if (Route::has('login'))
     @auth
-        <section class="bg-white border-b border-solid border-[#E0E0E0] py-[30px] lg:py-0 px-3">
+        <section class="bg-white border-b border-solid border-[#E0E0E0] py-[25px] lg:py-0 px-3">
             <div class="container mx-auto">
                 <div class="max-w-screen-xl mx-auto">
                     <div class="flex items-center justify-between lg:flex-nowrap flex-wrap pt-1 pb-2">
-                        <div class="text-base font-medium text-center text-[#000] lg:overflow-hidden overflow-x-auto lg:whitespace-pre-wrap whitespace-nowrap lg:mb-0 mb-4">
+                        <div class="text-base font-medium text-center text-[#000] overflow-y-hidden overflow-x-auto lg:whitespace-pre-wrap whitespace-nowrap lg:mb-0 mb-4 flex-auto lg:flex-1">
                             <ul class="flex -mb-px">
                                 <li class="me-2">
                                     <a href="{{ route('cart') }}" class="inline-block p-4 rounded-t-lg <?php if (Request::is('cart')) {
