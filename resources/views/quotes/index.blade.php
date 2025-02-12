@@ -1,6 +1,6 @@
 <x-mainpage-layout>
     <x-cart-nav />
-    <section class="bg-[#F6F6F6] py-9">
+    <section class="bg-[#fdffff] py-6 md:py-9 px-3">
         <header>
             <h2 class="text-lg text-[#00838f] font-bold text-center">
                 All Quotes
@@ -13,12 +13,12 @@
             <div class="lg:max-w-screen-xl mx-auto">
                 <form action="{{ route('quote-search') }}" method="post">
                     @csrf
-                    <div class="lg:grid gap-6 mb-6 md:grid-cols-3">
+                    <div class="lg:grid gap-6 mb-6 lg:grid-cols-3">
                         <div>
                             <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Search By:</label>
                             <input type="text" id="search_input" name="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Quote No/ BP Number" value="{{ $search??'' }}" />
                         </div>
-                        <div class="">
+                        <div class="mt-4 lg:mt-0">
                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date: </label>
                             <div date-rangepicker class="lg:flex items-center">
                                 <div class="relative">
@@ -27,7 +27,7 @@
                                     </div>
                                     <input name="start_date" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
                                 </div>
-                                <span class="mx-4 text-gray-500">to</span>
+                                <span class="sm:mx-4 text-gray-500 text-center my-2 inline-block sm:my-0">to</span>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
@@ -36,10 +36,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="lg:flex items-center mt-5 gap-2">
-                            <button type="submit" name="search_quote" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-[160px] items-left">Search Quote</button>
-                            <a href="{{ route('quotes') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-[160px]">Clear Search</a>
-                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Download</button>
+                        <div class="flex items-baseline md:items-center flex-wrap xl:flex-nowrap mt-4 md:mt-5 gap-4 sm:gap-2">
+                            <button type="submit" name="search_quote" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[145px] items-left">Search Quote</button>
+                            <a href="{{ route('quotes') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[145px]">Clear Search</a>
+                            <button type="submit" name="download" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[145px]">Download</button>
                         </div>
                     </div>
                 </form>
@@ -48,7 +48,7 @@
                         @if(!$quotes->isEmpty())
                             @foreach ($quotes as $quote)
                                 <h2 id="accordion-collapse-heading-{{ $quote->id }}" class="">
-                                    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-[16px] focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3" data-accordion-target="#accordion-collapse-body-{{ $quote->id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $quote->id }}">
+                                    <button type="button" class="flex flex-wrap items-center justify-center sm:justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-[16px] focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3" data-accordion-target="#accordion-collapse-body-{{ $quote->id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ $quote->id }}">
                                         <span>Quote No: {{ $quote->purchase_order_no }}</span>
                                         @if(!empty($quote->status))
                                             <span>Quote Status: {{ $quote->order_status }}</span>
@@ -58,6 +58,7 @@
                                 </h2>
                                 <div id="accordion-collapse-body-{{ $quote->id }}" class="hidden" aria-labelledby="accordion-collapse-heading-{{ $quote->id }}">
                                     <div class="p-5 border border-b-0 border-gray-200">
+                                        <div class="overflow-auto w-full">
                                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                             <thead class="bg-[#00838f] font-semibold text-sm text-white">
                                                 <tr>
@@ -127,17 +128,18 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <div class="flex justify-end align-center mt-4 gap-4">
-                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP</a>
-                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download MSRP and Primary Price</a>
-                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left">Download All Pricing</a>
+                                        </div>
+                                        <div class="flex justify-end align-center mt-4 gap-4 flex-wrap">
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">Download MSRP</a>
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">Download MSRP and Primary Price</a>
+                                            <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">Download All Pricing</a>
                                             @php
                                                 $customer = getCustomer();
                                             @endphp
                                             @if(!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
-                                                <form method="POST" action="{{ route('place-order',$quote->purchase_order_no) }}" class="place_order_form">
+                                                <form method="POST" action="{{ route('place-order',$quote->purchase_order_no) }}" class="place_order_form w-full sm:w-auto">
                                                     @csrf
-                                                    <button class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-[160px] items-left" type="submit">Place Order</button>
+                                                    <button class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left" type="submit">Place Order</button>
                                                 </form>
                                             @endif
                                         </div>
@@ -149,7 +151,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="py-6 text-right">
+                <div class="pt-4 md:pt-6 pb-2 text-right">
                     <a href="{{ route('home') }}" class="text-base text-[#00707B] font-normal leading-[18px] flex items-center justify-end gap-2">Continue Shopping
                         <x-icons.next-arrow /></a>
                 </div>

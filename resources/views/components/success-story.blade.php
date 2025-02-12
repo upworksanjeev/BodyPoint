@@ -1,8 +1,8 @@
 <section class="bg-[#f5f5f7]">
-	<div class="max-w-screen-xl mx-auto py-[30px] md:py-[60px] lg:px-0 px-5">
-		<div class="flex items-center justify-between mb-1 lg:flex-row flex-col">
+	<div class="max-w-screen-xl mx-auto py-[30px] md:py-[60px] px-8">
+		<div class="flex items-center gap-3 justify-between lg:flex-row flex-col">
 			<h2 class="text-[#333] text-[30px] font-[700] lg:mb-0">Success Stories</h2>
-			<button class="bg-[#FE7300] rounded-lg text-white text-base font-medium min-w-[180px] py-2 px-3 lg:block hidden" data-modal-target="share-modal" data-modal-toggle="share-modal">Share Your Story</button>
+			<button class="bg-[#FE7300] rounded-lg text-white text-base font-medium py-2 px-4" data-modal-target="share-modal" data-modal-toggle="share-modal">Share Your Story</button>
 		</div>
 
 		
@@ -33,12 +33,12 @@
 
 <!-- Main modal -->
 <div id="share-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-	<div class="relative p-4 w-full max-w-2xl max-h-full">
+	<div class="relative p-4 w-full max-w-[545px] max-h-full">
 		<!-- Modal content -->
 		<div class="relative bg-white rounded-lg shadow">
 			<!-- Modal header -->
 			<div class="flex items-center justify-between absolute right-0 mt-[-16px] me-[-12px]">
-				<button type="button" class="text-white bg-[#00838f] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="share-modal">
+				<button type="button" class="text-white bg-[#333] w-[40px] h-[40px] rounded-full hover:bg-[#FE7300] hover:text-white text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="share-modal">
 
 					<x-icons.close /> 
 
@@ -47,8 +47,7 @@
 			</div>
 			<!-- Modal body -->
 			<div class="p-4 md:p-6 space-y-4">
-
-				<form class="max-w-sm mx-auto" method="post" action="{{ route('add-success-story') }}" enctype='multipart/form-data'>
+				<form class="mx-auto" method="post" action="{{ route('add-success-story') }}" enctype='multipart/form-data'>
 				 <input type="hidden" value="<?= csrf_token() ?>" name="_token">
 					<div class="mb-5">
 						<label for="title" class="block mb-2 text-sm font-medium text-gray-900">Add Title</label>
@@ -69,7 +68,7 @@
 					<input type="hidden" name="product_id" value="{{ $product['id'] ?? '' }}">
 					<input type="hidden" name="product_slug" value="{{ $product['slug'] ?? '' }}">
 
-					<button type="submit" class="text-white bg-[#FE7300] hover:bg-[#FE7300] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+					<button type="submit" class="text-white bg-[#FE7300] hover:bg-[#FE7300] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2 text-center">Submit</button>
 				</form>
 
 			</div>

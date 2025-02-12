@@ -47,6 +47,16 @@ h1,h2,h3,h4,h5,h6,span,strong,a,button,select,p,div {
     font-family: "Avenir";
 }
 
+.page-load-two {
+    display: none;
+}
+
+
+th.px-4.py-3.font-bold {
+    font-weight: 500 !important;
+    font-size: 15px;
+}
+
 .footer-heading-title {
     color: #333;
     font-family: "Avenir";
@@ -419,7 +429,7 @@ h1,h2,h3,h4,h5,h6,span,strong,a,button,select,p,div {
 }
 
 .attribute_buttons_active {
-    box-shadow: 2px 2px 5px #ff911940;
+    box-shadow: 7px 5px 5px #ff9119;
 }
 
 /* #myTable tr.header, #myTable tr:hover {
@@ -598,6 +608,10 @@ ul.active_campaigns li {
         width: 100%;
     }
 
+    .prodct-Category {
+        gap: 12px;
+    }
+
 }
 
 @media (max-width: 1024px) {
@@ -636,7 +650,13 @@ ul.active_campaigns li {
     }
 
     .ctm-pt {
-        padding-top: 20px;
+        padding-top: 12px;
+    }
+}
+
+@media (min-width: 993px) and (max-width: 1180px) {
+.prodct-Category {
+        gap: 20px;
     }
 }
 
@@ -659,6 +679,7 @@ ul.active_campaigns li {
 @media (min-width: 768px) and (max-width: 992px) {
     .prodct-Category {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .grid-four {
