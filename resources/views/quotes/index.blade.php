@@ -1,6 +1,6 @@
 <x-mainpage-layout>
     <x-cart-nav />
-    <section class="bg-[#fdffff] py-6 md:py-9 px-3">
+    <section class="bg-[#fdffff] py-6 md:py-9 px-4">
         <header>
             <h2 class="text-lg text-[#00838f] font-bold text-center">
                 All Quotes
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="relative overflow-x-auto sm:rounded-2xl mt-10" id="order_list">
+                <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <div id="accordion-collapse" data-accordion="collapse">
                         @if(!$quotes->isEmpty())
                             @foreach ($quotes as $quote)

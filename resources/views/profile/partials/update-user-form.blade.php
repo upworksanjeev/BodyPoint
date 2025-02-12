@@ -1,4 +1,4 @@
-<section class="px-3">
+<section class="px-4">
     <header>
         <h2 class="text-[18px] md:text-[26px] text-[#00838f] font-bold text-center">
             {{ __('Profile Information') }}

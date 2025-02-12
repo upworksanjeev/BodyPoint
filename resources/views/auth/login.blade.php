@@ -14,7 +14,7 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
                     <div class="mt-4 text-right">
-                        <x-primary-button class="text-sm capitalize font-mono font-extralight" @click.prevent="login">
+                        <x-primary-button class="text-sm capitalize font-extralight" @click.prevent="login">
                             {{ __('Continue') }}
                         </x-primary-button>
                     </div>

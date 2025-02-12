@@ -47,6 +47,6 @@
         </div>
     @endif
 </div>
-<div class="my-6">
+<div class="my-4 md:my-6">
     {{ $products->links() }}
 </div>
