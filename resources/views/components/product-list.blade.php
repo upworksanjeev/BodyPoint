@@ -10,7 +10,7 @@
  </div>
  @endforeach
  </div>
-<div class="my-6">
+<div class="my-4 md:my-6">
   {{ $products->links() }}
 </div> --}}
 
@@ -48,7 +48,7 @@
         </div>
     @endforeach
 </div>
-<div class="my-6">
+<div class="my-4 md:my-6">
     {{ $products->links() }}
 </div>
 

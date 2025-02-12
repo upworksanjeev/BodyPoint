@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="relative overflow-x-auto sm:rounded-2xl mt-10" id="order_list">
+                <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <x-cart.order-list :order="$order" />
                 </div>
                 <div class="pt-4 md:pt-6 pb-2 text-right">
