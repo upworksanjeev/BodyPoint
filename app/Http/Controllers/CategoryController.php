@@ -35,10 +35,12 @@ class CategoryController extends Controller
 
             $products = CategoryProduct::with(['product.media'])
                 ->whereIn('category_id', $cat)
+                ->whereHas('product', function ($query) {
+                    $query->whereNull('deleted_at'); 
+                })
                 ->select('product_id')
                 ->groupBy('product_id')
                 ->paginate(16);
-
             return view('category', [
                 'categories' => $categories,
                 'subcategory' => $subcategory,
