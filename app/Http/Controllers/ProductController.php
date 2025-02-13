@@ -64,7 +64,10 @@ class ProductController extends Controller
             $customer_id = getCustomerId();
             $url = 'GetCustomerDetails/' . $customer_id;
             $syspro_products = SysproService::getCustomerDetails($url);
+            if ($syspro_products && $syspro_products['CustomerClass'] && in_array($syspro_products['CustomerClass'], $rolesToCheck)) {
+                $showFindPartnerButton = true;
 
+            }
             if (!empty($syspro_products)) {
                 session()->put('customer_details', $syspro_products);
                 $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
