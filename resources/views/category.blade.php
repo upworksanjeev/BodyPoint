@@ -9,7 +9,9 @@
         </div>
         <div class="prodct-Category my-[15px] md:my-[30px]">
                 <div>
-					 <x-subcat-left-menu  :subcategory="$subcategory"/>
+                    @if($subcategory->isNotEmpty())
+                        <x-subcat-left-menu :subcategory="$subcategory"/>
+                    @endif
                      <x-category-left-menu  :categories="$categories"/>
                      {{-- <x-product-left-menu  :products="$products"/> --}}
                      <button class="p-2 bg-[#fe7300] hover:bg-[#e96a00] text-white text-[20px] font-[500] w-[100%] rounded-[10px]">Reset</button>
