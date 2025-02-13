@@ -3,7 +3,7 @@
     <div class="ctm-container">
 	  <?php if(isset($error)){ echo $error; }else{ ?>
           <div class="prodct-Category my-[15px] md:my-[30px]">
-            <div>
+            <div class="category-sub-cat">
                      <x-category-left-menu  :categories="$categories"/>
                      {{-- <x-product-left-menu  :products="$side_menu_products"/> --}}
             </div>

@@ -676,6 +676,12 @@ ul.active_campaigns li {
     }
 }
 
+@media  (max-width: 992px) {
+.category-sub-cat {
+    display: none;
+}
+}
+
 @media (min-width: 768px) and (max-width: 992px) {
     .prodct-Category {
         grid-template-columns: 1fr;

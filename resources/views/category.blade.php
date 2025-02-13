@@ -8,7 +8,7 @@
                 <div class="mt-[10px] text-[16px] md:text-[18px] text-[#fff] max-w-[670px] z-[1]"><?php echo htmlspecialchars_decode(htmlspecialchars($category['description'])); ?></div>
         </div>
         <div class="prodct-Category my-[15px] md:my-[30px]">
-                <div>
+                <div class="category-sub-cat">
                     @if($subcategory->isNotEmpty())
                         <x-subcat-left-menu :subcategory="$subcategory"/>
                     @endif
