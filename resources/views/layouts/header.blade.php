@@ -68,22 +68,15 @@
                 $('#app-site-header').removeClass('header-small');
             }
         });
-        $(".slick-slider").slick({
+        
+    });
+
+    $(".slick-slider").slick({
             autoplay: true,
             dots: false,
             arrows: false,
             speed: 2000,
         });
-    });
 </script>
 
-<script>
-    window.addEventListener('load', function () {
-      setTimeout(function () {
-        const content = document.querySelector('.page-load-two');
-        if (content) {
-          content.style.display = 'block';
-        }
-      }, 100000); // 2-second delay
-    });
-  </script>
+
