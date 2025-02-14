@@ -5,7 +5,7 @@
 @font-face {
     font-family: "Avenir";
     src: url("/resources/fonts/AvenirLTStd-Roman-c.woff2") format("woff2"),
-         url("/resources/fonts/AvenirLTStd-Roman-c.woff") format("woff");
+        url("/resources/fonts/AvenirLTStd-Roman-c.woff") format("woff");
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -33,8 +33,8 @@
     font-family: "Avenir LT", Sans-serif !important;
     src: url("/resources/fonts/AvenirLTStd-Book.woff2") format("woff2"),
         url("/resources/fonts/AvenirLTStd-Book.woff") format("woff");
-        font-weight: normal;
-        font-style: normal;
+    font-weight: normal;
+    font-style: normal;
     font-display: swap;
 }
 
@@ -43,14 +43,33 @@ body {
     font-weight: normal;
 }
 
-h1,h2,h3,h4,h5,h6,span,strong,a,button,select,p,div {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+strong,
+a,
+button,
+select,
+p,
+div {
     font-family: "Avenir";
+}
+
+a {
+    color: #0378bc;
+}
+
+div#cart_count_div a {
+    color: #fff;
 }
 
 .page-load-two {
     display: none;
 }
-
 
 th.px-4.py-3.font-bold {
     font-weight: 500 !important;
@@ -91,7 +110,6 @@ th.px-4.py-3.font-bold {
     display: block;
 }
 
-
 .ctm-grd-one {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -99,8 +117,6 @@ th.px-4.py-3.font-bold {
     column-gap: 16px;
     row-gap: 0px;
 }
-
-
 
 .dropdown-content {
     display: none;
@@ -112,7 +128,7 @@ th.px-4.py-3.font-bold {
     top: 45px;
     border-radius: 20px;
     border-top: 1px solid #ececec;
-    transition: .8s;
+    transition: 0.8s;
     box-shadow: 0 4px 4px #00000040;
     padding: 40px 50px;
     transform: translateX(-50%);
@@ -290,6 +306,7 @@ th.px-4.py-3.font-bold {
     grid-template-columns: 60px 1fr;
     border: 1px solid #ececec;
     border-radius: 16px;
+    overflow: hidden;
 }
 
 .five-g-img {
@@ -390,12 +407,12 @@ th.px-4.py-3.font-bold {
 }
 
 .order-step .active span {
-    border-color: #31BA32;
-    color: #31BA32;
+    border-color: #31ba32;
+    color: #31ba32;
 }
 
 .order-step .active:after {
-    background-color: #31BA32;
+    background-color: #31ba32;
 }
 
 #myTable {
@@ -403,8 +420,6 @@ th.px-4.py-3.font-bold {
     width: 100%;
     border: 1px solid #ddd;
     font-size: 14px;
-
-
 }
 
 #myTable thead {
@@ -454,8 +469,8 @@ th.px-4.py-3.font-bold {
     top: 0px;
     width: 20px;
     height: 20px;
-    border: 1px solid #CFCFCF;
-    background-color: #ECEDED;
+    border: 1px solid #cfcfcf;
+    background-color: #eceded;
 }
 
 .accordion-item-headers-inner.active,
@@ -508,7 +523,7 @@ th.px-4.py-3.font-bold {
     padding: 3px 7px;
     border-radius: 3px;
     font-weight: 600;
-    letter-spacing: .8px;
+    letter-spacing: 0.8px;
     font-family: system-ui;
     font-size: 14px;
 }
@@ -563,14 +578,15 @@ th.px-4.py-3.font-bold {
 }
 
 .accordion-item-headers.active::after {
-    background-color: #D9FCFF;
+    background-color: #d9fcff;
     background-image: url(https://bodypoint.dev/wp-content/uploads/2024/06/caret-top.svg);
 }
 
 .accordion-item-body {
     transition: max-height 0.2s ease-out;
 }
-.accordion-item-headers-inner::after, .accordion-item-headers-innerchild::after {
+.accordion-item-headers-inner::after,
+.accordion-item-headers-innerchild::after {
     width: 20px;
     height: 20px;
     top: 0;
@@ -578,7 +594,8 @@ th.px-4.py-3.font-bold {
 .accordion-item-headers-innerchild {
     padding: 0 0 0 28px;
 }
-.accordion-item-headers.accordion-item-headers-inner.active, .accordion-item-headers.accordion-item-headers-innerchild.active {
+.accordion-item-headers.accordion-item-headers-inner.active,
+.accordion-item-headers.accordion-item-headers-innerchild.active {
     background-color: transparent;
     color: #000;
 }
@@ -594,7 +611,7 @@ ul.active_campaigns li {
     width: 50px;
     height: 50px;
     background: #fff;
-    border: 1px solid #E3E3E3;
+    border: 1px solid #e3e3e3;
     padding: 6px;
     display: flex;
     align-items: center;
@@ -611,7 +628,6 @@ ul.active_campaigns li {
     .prodct-Category {
         gap: 12px;
     }
-
 }
 
 @media (max-width: 1024px) {
@@ -655,7 +671,7 @@ ul.active_campaigns li {
 }
 
 @media (min-width: 993px) and (max-width: 1180px) {
-.prodct-Category {
+    .prodct-Category {
         gap: 20px;
     }
 }
@@ -676,10 +692,10 @@ ul.active_campaigns li {
     }
 }
 
-@media  (max-width: 992px) {
-.category-sub-cat {
-    display: none;
-}
+@media (max-width: 992px) {
+    .category-sub-cat {
+        display: none;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 992px) {
@@ -792,8 +808,8 @@ ul.active_campaigns li {
     }
 }
 
-@media  (max-width: 400px) {
-.mobileLeft-Sidebar {
+@media (max-width: 400px) {
+    .mobileLeft-Sidebar {
         width: 318px;
     }
 }
