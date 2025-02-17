@@ -17,9 +17,9 @@ jobs:
       - name: Upload code to AWS EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{secrets.SSH_HOST}}
-          key: ${{secrets.SSH_KEY}}
-          username: ${{secrets.SSH_USERNAME}}
+          host: ${{secrets.SSH_STAGING_HOST}}
+          key: ${{secrets.SSH_STAGING_KEY}}
+          username: ${{secrets.SSH_STAGING_USERNAME}}
           script: |
             # Navigate to the directory where you want to upload the code on the EC2 server
             cd /var/www/html
@@ -31,9 +31,9 @@ jobs:
       - name: Install dependencies and run Laravel commands on AWS EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{secrets.SSH_HOST}}
-          key: ${{secrets.SSH_KEY}}
-          username: ${{secrets.SSH_USERNAME}}
+          host: ${{secrets.SSH_STAGING_HOST}}
+          key: ${{secrets.SSH_STAGING_KEY}}
+          username: ${{secrets.SSH_STAGING_USERNAME}}
           script: |
             # Navigate to the Laravel project directory on the EC2 server
             cd /var/www/html
