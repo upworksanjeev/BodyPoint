@@ -88,7 +88,7 @@ if (in_array($productSku, $armSupportSku)) {
         
     </div>
         @if(!$customer->hasPermissionTo('addToCart'))
-         <a href="https://bodypoint.dev/contact-us/"><b class="underline">Contact Bodypoint to Order</b></a>
+         <a href="https://bodypoint.com/contact-us/"><b class="underline">Contact Bodypoint to Order</b></a>
         @endif
 </div>
 @endif

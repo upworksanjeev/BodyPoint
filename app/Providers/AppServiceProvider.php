@@ -20,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->share('partnerPageURl', env('PARTNER_PAGE_URL', 'https://bodypoint.dev/find-a-partner-internationa'));
+        view()->share('partnerPageURl', env('PARTNER_PAGE_URL', 'https://bodypoint.com/find-a-partner-internationa'));
     }
 }
