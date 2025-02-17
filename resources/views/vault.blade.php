@@ -1,5 +1,5 @@
 <x-mainpage-layout>
-
+    @section('title', 'Vault - '.config('app.name', 'Bodypoint'))
     <div class="min-h-[62vh] bg-[#f6f6f6]">
         <section class="bg-[#00838F] text-[#ffffff] px-6 lg:px-10">
             <div class="lg:container mx-auto py-7 md:py-9">

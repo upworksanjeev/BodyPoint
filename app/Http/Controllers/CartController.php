@@ -41,7 +41,7 @@ class CartController extends Controller
                         $msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
                         $price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
                         $discount = $syspro_products['CustomerDiscountPercentage'];
-                        $discount_price = $price * ($discount/100);
+                        $discount_price = $price * ($discount / 100);
                         $discount_price = $price - $discount_price;
                     }
                     if (!$isStockItem) {
@@ -126,9 +126,8 @@ class CartController extends Controller
                         $cart_quantity = $cart->total_items - $cartitems->quantity;
                         CartAttribute::where('cart_item_id', $cartitems->id)->delete();
                         $cartitems->delete();
-                    }
-                    elseif($request->option == 'updateQuantity'){
-                        if($request->quantity != 0 && !empty($request->quantity)){
+                    } elseif ($request->option == 'updateQuantity') {
+                        if ($request->quantity != 0 && !empty($request->quantity)) {
                             $cartitems->update(['quantity' => $request->quantity]);
                             $cart_quantity = CartItem::where('cart_id', $cart->id)->sum('quantity');
                         }
@@ -189,20 +188,59 @@ class CartController extends Controller
     /**
      * search product list in name and stockcode
      */
+    // public function searchProduct(Request $request)
+    // {
+    //     $product = Product::where(function ($query) use ($request) {
+    //         $query->where('sku', 'like', '%' . $request->keys . '%')
+    //               ->orWhere('name', 'like', '%' . $request->keys . '%');
+    //     })
+    //     ->withoutTrashed() 
+    //     ->get();
+    //     $data = '';
+    //     if ($product) {
+    //         foreach ($product as $k => $v) {
+    //             $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $v->sku . '\',' . $v->id . ')"><td>' . $v->sku . '</td><td>' . $v->name . '</td></tr>';
+    //         }
+    //     }
+    //     return $data;
+    // }
+
     public function searchProduct(Request $request)
     {
-        $product = Product::where(function ($query) use ($request) {
+        $products = Product::where(function ($query) use ($request) {
+           
             $query->where('sku', 'like', '%' . $request->keys . '%')
-                  ->orWhere('name', 'like', '%' . $request->keys . '%');
+                  ->orWhere('name', 'like', '%' . $request->keys . '%')
+                 
+                  ->orWhereHas('variation', function ($query) use ($request) {
+                      $query->where('sku', 'like', '%' . $request->keys . '%')
+                            ->orWhere('name', 'like', '%' . $request->keys . '%');
+                  });
         })
         ->withoutTrashed() 
-        ->get();
+        ->get(); 
+    
         $data = '';
-        if ($product) {
-            foreach ($product as $k => $v) {
-                $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $v->sku . '\',' . $v->id . ')"><td>' . $v->sku . '</td><td>' . $v->name . '</td></tr>';
+        if ($products->isNotEmpty()) {
+            foreach ($products as $product) {
+                
+                $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ')">
+                            <td>' . $product->sku . '</td>
+                            <td>' . $product->name . '</td>';
+    
+                
+                if ($product->variation->isNotEmpty()) {
+                    foreach ($product->variation as $variation) {
+                        $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $product->id . ')">
+                                    <td>' . $variation->sku . '</td>
+                                    <td>' . $variation->name . '</td></tr>';
+                    }
+                }
+    
+                $data .= '</tr>';
             }
         }
+    
         return $data;
     }
 
@@ -343,11 +381,11 @@ class CartController extends Controller
             }
         }
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-        
+
         return response()->json([
-        'success' => true,
-        'message' => 'Item added to cart successfully!',
-        'cart' => $cart, // You can pass updated cart data if needed
-    ]);
+            'success' => true,
+            'message' => 'Item added to cart successfully!',
+            'cart' => $cart, // You can pass updated cart data if needed
+        ]);
     }
 }

@@ -1,4 +1,5 @@
 <x-mainpage-layout>
+    @section('title', 'Orders - '.config('app.name', 'Bodypoint'))
     <x-cart-nav />
     <section class="bg-[#F6F6F6] py-9">
         <header>
