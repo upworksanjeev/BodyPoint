@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 	 <script src="https://kit.fontawesome.com/731f6c33b2.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset(Config::get('bodypoint.logo')) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset(Config::get('bodypoint.logo')) }}">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

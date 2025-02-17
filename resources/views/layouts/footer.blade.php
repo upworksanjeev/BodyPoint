@@ -65,7 +65,8 @@
                         </x-responsive-nave-link>
                 </div>
                 <div class="relative flex lg:justify-end justify-center">
-                    <img src="{{ asset('img/small-logo.png') }}" class="" alt="">
+                    {{-- <img src="{{ asset('img/small-logo.png') }}" class="" alt=""> --}}
+                    <img class="max-size-60" src="{{ asset('img/bp-lg-blue-footer.png') }}" class="" alt="">
                 </div>
             </div>
         </div>
