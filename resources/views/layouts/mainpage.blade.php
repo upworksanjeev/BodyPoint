@@ -8,6 +8,8 @@
     <meta name="robots" content="noindex, nofollow" />
 
     <title>@yield('title', config('app.name', 'Bodypoint'))</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset(Config::get('bodypoint.fav')) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset(Config::get('bodypoint.fav')) }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
