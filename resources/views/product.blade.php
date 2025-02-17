@@ -1,5 +1,6 @@
 <x-mainpage-layout>
     @if(isset($product))
+    @section('title', $product['name'] ?? " " . ' - ' . config('app.name', 'Bodypoint'))
         <section class="py-[15px] md:py-[40px]">
             <div class="ctm-container">
                 @if(isset($error))

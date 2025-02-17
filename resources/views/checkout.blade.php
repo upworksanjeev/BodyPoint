@@ -1,4 +1,5 @@
 <x-mainpage-layout>
+    @section('title', 'Checkout - '.config('app.name', 'Bodypoint'))
     @if ($errors->any())
     @foreach ($errors->all() as $error)
     <div id="error_alert" x-data="{ open: true }" x-show="open" class="alert message-alert bg-red-100 text-red-800 border border-red-400 rounded-lg p-4 relative" role="alert">
