@@ -458,7 +458,7 @@ th.px-4.py-3.font-bold {
 .accordion-item-headers.accordion-item-headers-innerchild.active::after {
     background-color: #008c99;
     border: 1px solid #008c99;
-    background-image: url(https://bodypoint.dev/wp-content/uploads/2024/06/caret-white.svg);
+    background-image: url(https://bodypoint.com/wp-content/uploads/2024/06/caret-white.svg);
     color: #fff;
 }
 
@@ -565,7 +565,7 @@ th.px-4.py-3.font-bold {
     right: 15px;
     top: 14px;
     background-color: #f6f6f6;
-    background-image: url(https://bodypoint.dev/wp-content/uploads/2024/06/caret-bottom.svg);
+    background-image: url(https://bodypoint.com/wp-content/uploads/2024/06/caret-bottom.svg);
     background-repeat: no-repeat;
     background-size: 12px;
     background-position: center center;
@@ -579,7 +579,7 @@ th.px-4.py-3.font-bold {
 
 .accordion-item-headers.active::after {
     background-color: #d9fcff;
-    background-image: url(https://bodypoint.dev/wp-content/uploads/2024/06/caret-top.svg);
+    background-image: url(https://bodypoint.com/wp-content/uploads/2024/06/caret-top.svg);
 }
 
 .accordion-item-body {
@@ -813,3 +813,5 @@ ul.active_campaigns li {
         width: 318px;
     }
 }
+
+.max-size-60{max-width: 50px;}
