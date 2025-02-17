@@ -21,7 +21,7 @@ if (in_array($productSku, $armSupportSku)) {
             'attribute_id' => 1481,
             'name' => 'Armrest Mounting Clamp',
             'size' => 'Ø19mm (Ø3/4”)',
-            'image' => 'https://app.bodypoint.dev/storage/d76doqKL3SfBnrG6CTViJq4DmOfm21D7KdUWbBhi.png', 
+            'image' => 'https://app.bodypoint.com/storage/d76doqKL3SfBnrG6CTViJq4DmOfm21D7KdUWbBhi.png', 
             'sku'=>'AS118'
         ],
         [
@@ -29,7 +29,7 @@ if (in_array($productSku, $armSupportSku)) {
             'attribute_id' => 1482,
             'name' => 'Armrest Mounting Clamp',
             'size' => 'Ø22mm & 25mm (Ø7/8” & 1”)',
-            'image' => 'https://app.bodypoint.dev/storage/d76doqKL3SfBnrG6CTViJq4DmOfm21D7KdUWbBhi.png',
+            'image' => 'https://app.bodypoint.com/storage/d76doqKL3SfBnrG6CTViJq4DmOfm21D7KdUWbBhi.png',
             'sku'=>'AS119'
         ],
         [
@@ -37,7 +37,7 @@ if (in_array($productSku, $armSupportSku)) {
             'attribute_id' => 1483,
             'name' => 'Armrest Mounting Plate',
             'size' => 'Flat Armrest',
-            'image' => 'https://app.bodypoint.dev/storage/d76doqKL3SfBnrG6CTViJq4DmOfm21D7KdUWbBhi.png',
+            'image' => 'https://app.bodypoint.com/storage/d76doqKL3SfBnrG6CTViJq4DmOfm21D7KdUWbBhi.png',
             'sku'=>'AS120'
         ]
     ];
@@ -88,7 +88,7 @@ if (in_array($productSku, $armSupportSku)) {
         
     </div>
         @if(!$customer->hasPermissionTo('addToCart'))
-         <a href="https://bodypoint.dev/contact-us/"><b class="underline">Contact Bodypoint to Order</b></a>
+         <a href="https://bodypoint.com/contact-us/"><b class="underline">Contact Bodypoint to Order</b></a>
         @endif
 </div>
 @endif

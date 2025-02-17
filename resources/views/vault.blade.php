@@ -353,7 +353,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 py-4">
-                            <img src="https://bodypoint.dev/wp-content/uploads/2024/06/Vector-10.svg"
+                            <img src="https://bodypoint.com/wp-content/uploads/2024/06/Vector-10.svg"
                                 alt="question" />
                             <p class="text-base font-normal m-0">
                                 Need Assistance? Email our Marketing Team
