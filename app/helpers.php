@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Auth;
 
+
+$APP_URL = env('APP_URL');
+$WP_URL = env('WP_URL');
+
+
 if (!function_exists('getCustomerId')) {
     function getCustomerId()
     {
