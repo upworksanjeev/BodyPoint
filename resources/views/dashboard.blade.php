@@ -1,4 +1,5 @@
 <x-mainpage-layout>
+    @section('title', 'Dashboard - '.config('app.name', 'Bodypoint'))
     <x-cart-nav />
 
     <div class="py-12 min-h-[62vh] ">

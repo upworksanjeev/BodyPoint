@@ -1,4 +1,5 @@
 <x-mainpage-layout>
+    @section('title', 'Quotes - '.config('app.name', 'Bodypoint'))
     <x-cart-nav />
     <section class="bg-[#fdffff] py-6 md:py-9 px-4">
         <header>
