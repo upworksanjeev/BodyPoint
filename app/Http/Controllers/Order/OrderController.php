@@ -27,7 +27,9 @@ class OrderController extends Controller
                 $order = Order::where('purchase_order_no',$order_id)->first();
                 $url = 'GetOrderDetails/' . $order->purchase_order_no;
                 $get_order_details = SysproService::getOrderDetails($url);
-                $order->update(['status' => $get_order_details['response']['Status']]);
+                $order->update(['status' => $get_order_details['response']['Status'],
+                    'customer_po_number' => $get_order_details['response']['CustomerPONumber']    
+                ]);
             }
             DB::commit();
             return redirect()->route('order')->with('success','Order Placed Successfully');
