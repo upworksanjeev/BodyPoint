@@ -15,9 +15,7 @@
                                 Welcome to Partner Vault
                             </h2>
                             <p class="text-lg font-normal mb-4">Partner Resource Central</p>
-                            <iframe class="rounded-2xl"
-                                src="https://www.youtube.com/embed/XHOmBV4js_E?controls=1&rel=0&playsinline=0&modestbranding=0&autoplay=0&enablejsapi=1&origin=https%3A%2F%2Fbodypoint.dev&widgetid=1"
-                                width="100%" height="360" frameborder="0" allowfullscreen></iframe>
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/b979abfe91fc4da2aaf4b253ea39c5ab?sid=e05789c7-9721-4614-a133-0d19dc64ceb9" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
                         </div>
                         <div class="bg-white rounded-2xl mt-8 border border-[#E9E9E9]">
                             <div class="p-6 border-b border-[#E9E9E9]">
