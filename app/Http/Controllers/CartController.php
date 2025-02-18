@@ -208,53 +208,127 @@ class CartController extends Controller
     public function searchProduct(Request $request)
     {
         $products = Product::where(function ($query) use ($request) {
-           
-            $query->where('sku', 'like', '%' . $request->keys . '%')
-                  ->orWhere('name', 'like', '%' . $request->keys . '%')
-                 
-                  ->orWhereHas('variation', function ($query) use ($request) {
-                      $query->where('sku', 'like', '%' . $request->keys . '%')
-                            ->orWhere('name', 'like', '%' . $request->keys . '%');
-                  });
+            $query->where('sku', $request->keys)
+                ->orWhere('name', $request->keys);
         })
-        ->withoutTrashed() 
-        ->get(); 
-    
+            ->orWhere(function ($query) use ($request) {
+                $query->whereHas('variation', function ($query) use ($request) {
+                    $query->where('sku', $request->keys)
+                        ->orWhere('name', $request->keys);
+                });
+            })
+            ->withoutTrashed()
+            ->get();
+
         $data = '';
         if ($products->isNotEmpty()) {
             foreach ($products as $product) {
-                
-                $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ')">
-                            <td>' . $product->sku . '</td>
-                            <td>' . $product->name . '</td>';
-    
-                
+                if (!$product->variation->isNotEmpty()) {
+                    $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ', null)">
+                        <td>' . $product->sku . '</td>
+                        <td>' . $product->name . '</td>
+                      </tr>';
+                }
                 if ($product->variation->isNotEmpty()) {
                     foreach ($product->variation as $variation) {
-                        $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $product->id . ')">
-                                    <td>' . $variation->sku . '</td>
-                                    <td>' . $variation->name . '</td></tr>';
+                        if ($variation->sku === $request->keys || $variation->name === $request->keys) {
+                            $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $variation->product_id . ', ' . $variation->id . ')">
+                                <td>' . $variation->sku . '</td>
+                                <td>' . $variation->name . '</td>
+                              </tr>';
+                        }
                     }
                 }
-    
-                $data .= '</tr>';
             }
         }
-    
+
         return $data;
     }
+
 
 
     /**
      * Add product into cart
      */
+    // public function addToCart(Request $request)
+    // {
+    //     $user = Auth::user();
+    //     if ($request->has('product_id')) {
+    //         $product = Product::where('id', $request->product_id)->first();
+    //         $cart = Cart::where('user_id', $user->id)->first();
+    //         if (!empty(auth()->user()->default_customer_id)) {
+    //             $customer_id = getCustomerId();
+    //             $url = 'GetCustomerDetails/' . $customer_id;
+    //             $syspro_products = SysproService::getCustomerDetails($url);
+    //             if (!empty($syspro_products['PriceList'])) {
+    //                 dd($product->sku,$syspro_products['PriceList']);
+    //                 session()->put('customer_details', $syspro_products);
+    //                 $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
+    //                 $isStockItem = false;
+    //                 $existingKey = array_search($product->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+    //                 if (!empty($existingKey)) {
+    //                     $product->price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
+    //                     $product->msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
+    //                     $isStockItem = true;
+    //                 }
+    //                 if (!$isStockItem) {
+    //                     return response()->json(['success' => false, 'message' => 'Non-Stock Item Cannot be Added To Cart']);
+    //                 }
+    //             }
+    //         }
+    //         if ($cart) {
+    //             $cart->update(['total_items' => $cart->total_items + $request->qty]);
+    //         } else {
+    //             $cart = Cart::create([
+    //                 'user_id' => $user->id,
+    //                 'total_items' => $request->qty,
+    //             ]);
+    //         }
+
+    //         if ($request->variation_id && $request->variation_id != '') {
+    //             $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->where('variation_id', $request->variation_id)->first();
+    //             $var_id = $request->variation_id;
+    //         } else {
+    //             $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->first();
+    //             $var_id = NULL;
+    //         }
+    //         if ($cartitems) {
+    //             $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
+    //         } else {
+    //             if ($product['discount'] != '' && $product['discount'] > 0) {
+    //                 $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+    //                 $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
+    //             } else {
+    //                 $product['discount_price'] = $product['price'];
+    //             }
+    //             $cartitem = CartItem::create([
+    //                 'cart_id' => $cart->id,
+    //                 'product_id' => $request->product_id,
+    //                 'variation_id' => $var_id,
+    //                 'sku' => $product->sku ?? '',
+    //                 'msrp' => $product->msrp ?? null,
+    //                 'price' => $product->price,
+    //                 'discount' => $product['discount_in_price'] ?? 0,
+    //                 'discount_price' => $product['discount_price'],
+    //                 'quantity' => $request->qty,
+    //             ]);
+    //         }
+    //     }
+    //     $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
+    //     return view('components.cart.product-list', ['page' => 'quick-entry', 'cart' => $cart]);
+    // }
+
     public function addToCart(Request $request)
     {
         $user = Auth::user();
+        $sku = $request->sku;
         if ($request->has('product_id')) {
             $product = Product::where('id', $request->product_id)->first();
+            $variations = $product->variation->pluck('sku')->toArray();
+            $skuExists =  in_array($request->sku, $variations) ||  ($product->sku === $request->sku);
+
             $cart = Cart::where('user_id', $user->id)->first();
-            if (!empty(auth()->user()->default_customer_id)) {
+            if (!empty(auth()->user()->default_customer_id) && $skuExists) {
                 $customer_id = getCustomerId();
                 $url = 'GetCustomerDetails/' . $customer_id;
                 $syspro_products = SysproService::getCustomerDetails($url);
@@ -262,10 +336,11 @@ class CartController extends Controller
                     session()->put('customer_details', $syspro_products);
                     $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
                     $isStockItem = false;
-                    $existingKey = array_search($product->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+                    $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
                     if (!empty($existingKey)) {
                         $product->price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
                         $product->msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
+                        $product->sku = $syspro_products['PriceList'][$existingKey]['StockCode'];
                         $isStockItem = true;
                     }
                     if (!$isStockItem) {
@@ -286,7 +361,7 @@ class CartController extends Controller
                 $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->where('variation_id', $request->variation_id)->first();
                 $var_id = $request->variation_id;
             } else {
-                $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->first();
+                $cartitems = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->where('sku', $product->sku ?? '')->first();
                 $var_id = NULL;
             }
             if ($cartitems) {

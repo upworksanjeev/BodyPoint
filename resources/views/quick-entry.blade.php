@@ -46,6 +46,7 @@
               </div>
             </div>
             <input id="selected_product_id" type="hidden">
+            <input id="variation_id" type="hidden">
 
           </div>
 
@@ -100,13 +101,15 @@
       $('#myInput').val('');
       $('#selected_product_id').val('');
       $('#qty').val('');
+      $('#variation_id').val();
     }
 
-    function chooseProduct(sku, product_id) {
+    function chooseProduct(sku, product_id, variation_id) {
       $("#stock_search_div").addClass("hidden");
       $("#stock_search_div").removeClass("block");
       $('#myInput').val(sku);
       $('#selected_product_id').val(product_id);
+      $('#variation_id').val(variation_id)
       $('#qty').val(1);
     }
 
@@ -131,6 +134,8 @@
           data: {
             "_token": "{{ csrf_token() }}",
             product_id: $('#selected_product_id').val(),
+            sku: $('#myInput').val(),
+            variation_id: $('#variation_id').val(),
             qty: $('#qty').val(),
           },
           success: function(response) {
@@ -150,6 +155,7 @@
 
             $('#myInput').val('');
             $('#selected_product_id').val('');
+            $('#variation_id').val()
             $('#qty').val('');
           }
         });
