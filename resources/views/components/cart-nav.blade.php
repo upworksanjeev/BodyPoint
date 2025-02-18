@@ -47,8 +47,7 @@
                         </div>
 
                         <div class="w-full lg:w-auto">
-                            <label for="search-dropdown" class="text-base font-medium text-[#000]">Change Associate
-                                customer</label>
+                            <label for="search-dropdown" class="text-base font-medium text-[#000]">Change Customer Account</label>
                             <div class="relative w-full flex flex-1 mt-1">
                                 @php
                                     $user = auth()
