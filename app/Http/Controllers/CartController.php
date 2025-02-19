@@ -212,17 +212,15 @@ class CartController extends Controller
             return '';
         }
         $keys = strtolower($request->keys);
-        $products = Product::where(function ($query) use ($keys) {
-                $query->where('sku', $keys)
-                      ->orWhere('name', $keys);
-            })
+        $products = Product::whereRaw('LOWER(sku) LIKE ?', ["%{$keys}%"])
+            ->orWhereRaw('LOWER(name) LIKE ?', ["%{$keys}%"])
             ->orWhereHas('variation', function ($query) use ($keys) {
-                $query->where('sku', $keys)
-                      ->orWhere('name', $keys);
+                $query->whereRaw('LOWER(sku) LIKE ?', ["%{$keys}%"])
+                    ->orWhereRaw('LOWER(name) LIKE ?', ["%{$keys}%"]);
             })
             ->withoutTrashed()
             ->get();
-    
+
 
         $data = '';
         if ($products->isNotEmpty()) {
@@ -328,8 +326,17 @@ class CartController extends Controller
         $sku = $request->sku;
         if ($request->has('product_id')) {
             $product = Product::where('id', $request->product_id)->first();
-            $variations = $product->variation->pluck('sku')->toArray();
-            $skuExists =  in_array($request->sku, $variations) ||  ($product->sku === $request->sku);
+            $variations = [];
+            $skuExists = false;
+            if ($product) {  // Check if $product is not null
+                if (!empty($product->variation)) {
+                    $variations = $product->variation->pluck('sku')->toArray();
+                }
+
+                $skuExists = in_array($request->sku, $variations) || ($product->sku === $request->sku);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Product not found.']);
+            }
 
             $cart = Cart::where('user_id', $user->id)->first();
             if (!empty(auth()->user()->default_customer_id) && $skuExists) {
