@@ -40,15 +40,36 @@
  @push('other-scripts')
      <script>
          var total_category = {{ count($category) }};
+         var originalSrcs = {}; 
+
+         $('.slider-for').on('beforeChange', function(event, slick, currentSlide) {
+            console.log('beforeChange');
+             let slideImg = $(slick.$slides[currentSlide]).find('img');
+                console.log($(slick.$slides[currentSlide]));
+             if (slideImg.attr('data-original-src')) {
+                 slideImg.attr('src', slideImg.attr('data-original-src'));
+                 slideImg.removeAttr('data-original-src'); 
+             }
+         });
          /* update attribute detail */
          function changeAttribute(product_att_id, product_id, index, k,  el = null) {
 
             const imgElement = el.querySelector('.five-g-img img');
             const imageUrl = imgElement?.src;
 
-            if (imageUrl && document.querySelector('.slick-slide.slick-current.slick-active img')) {
-                document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
-            }
+            if (imageUrl) {
+                 let activeSlide = $('.slider-for .slick-current.slick-active img');
+                 let slideIndex = $('.slider-for .slick-current.slick-active').index();
+
+                 
+                 if (!originalSrcs[slideIndex] || originalSrcs[slideIndex]) {
+                     originalSrcs[slideIndex] = activeSlide.attr('src');
+                     activeSlide.attr('data-original-src', activeSlide.attr('src'));
+                 }
+
+                 
+                 activeSlide.attr('src', imageUrl);
+             }
             const description = el.getAttribute('data-description');
             const title = el.getAttribute('data-title');
 

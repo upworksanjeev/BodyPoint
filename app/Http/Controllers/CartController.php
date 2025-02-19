@@ -207,18 +207,22 @@ class CartController extends Controller
 
     public function searchProduct(Request $request)
     {
-        $products = Product::where(function ($query) use ($request) {
-            $query->where('sku', $request->keys)
-                ->orWhere('name', $request->keys);
-        })
-            ->orWhere(function ($query) use ($request) {
-                $query->whereHas('variation', function ($query) use ($request) {
-                    $query->where('sku', $request->keys)
-                        ->orWhere('name', $request->keys);
-                });
+        $keys = trim($request->keys);
+        if (empty($keys)) {
+            return '';
+        }
+        $keys = strtolower($request->keys);
+        $products = Product::where(function ($query) use ($keys) {
+                $query->where('sku', $keys)
+                      ->orWhere('name', $keys);
+            })
+            ->orWhereHas('variation', function ($query) use ($keys) {
+                $query->where('sku', $keys)
+                      ->orWhere('name', $keys);
             })
             ->withoutTrashed()
             ->get();
+    
 
         $data = '';
         if ($products->isNotEmpty()) {
