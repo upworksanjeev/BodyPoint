@@ -1091,7 +1091,7 @@ class HomeController extends Controller
             
             $data = $request->all(); 
     
-            Mail::to('upworksanjeev@gmail.com')->send(new VaultMail($data));
+            Mail::to('support@bodypoint.com')->send(new VaultMail($data));
     
             return redirect()->back()->with('success', 'Email sent successfully!');
         } catch (Exception $e) {
