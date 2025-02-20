@@ -114,7 +114,8 @@ class SysproService
     {
         $request = [
             "OrderNumber" => $order_number,
-            "CustomerPoNumber"=> rand(0, 9999999)
+            "CustomerPoNumber"=> rand(0, 9999999),
+            "AllowDuplicatePO"=>"N"
         ];
 
         $response = self::post($url, $request);
