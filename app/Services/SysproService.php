@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 
 class SysproService
 {
-    // Static properties
     protected static $apiUrl;
     protected static $token;
     protected static $session_id;
