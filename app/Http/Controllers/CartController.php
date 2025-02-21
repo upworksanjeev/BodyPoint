@@ -225,7 +225,7 @@ class CartController extends Controller
         $data = '';
         if ($products->isNotEmpty()) {
             foreach ($products as $product) {
-                if (!$product->variation->isNotEmpty()) {
+                if (!$product->variation->isNotEmpty() && !$product->trashed()) {
                     $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ', null)">
                         <td>' . $product->sku . '</td>
                         <td>' . $product->name . '</td>
