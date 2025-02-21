@@ -211,41 +211,51 @@ class CartController extends Controller
         if (empty($keys)) {
             return '';
         }
-        $keys = strtolower($request->keys);
-        $products = Product::whereRaw('LOWER(sku) LIKE ?', ["%{$keys}%"])
-            ->orWhereRaw('LOWER(name) LIKE ?', ["%{$keys}%"])
-            ->orWhereHas('variation', function ($query) use ($keys) {
-                $query->whereRaw('LOWER(sku) LIKE ?', ["%{$keys}%"])
-                    ->orWhereRaw('LOWER(name) LIKE ?', ["%{$keys}%"]);
+    
+        $products = Product::where(function ($query) use ($keys) {
+                $query->where('sku', 'LIKE', "%{$keys}%")
+                      ->orWhere('name', 'LIKE', "%{$keys}%");
             })
             ->withoutTrashed()
             ->get();
-
-
+    
+        
+        $variations = Variation::where(function ($query) use ($keys) {
+                $query->where('sku', 'LIKE', "%{$keys}%")
+                      ->orWhere('name', 'LIKE', "%{$keys}%");
+            })
+            ->whereHas('product', function ($query) {
+                $query->withoutTrashed();
+            })
+            ->get();
+    
         $data = '';
+    
+       
         if ($products->isNotEmpty()) {
             foreach ($products as $product) {
-                if (!$product->variation->isNotEmpty() && !$product->trashed()) {
+                if ($product->variation->isEmpty()) { 
                     $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ', null)">
                         <td>' . $product->sku . '</td>
                         <td>' . $product->name . '</td>
                       </tr>';
                 }
-                if ($product->variation->isNotEmpty()) {
-                    foreach ($product->variation as $variation) {
-                        if ($variation->sku === $request->keys || $variation->name === $request->keys) {
-                            $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $variation->product_id . ', ' . $variation->id . ')">
-                                <td>' . $variation->sku . '</td>
-                                <td>' . $variation->name . '</td>
-                              </tr>';
-                        }
-                    }
-                }
             }
         }
-
+    
+        
+        if ($variations->isNotEmpty()) {
+            foreach ($variations as $variation) {
+                $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $variation->product_id . ', ' . $variation->id . ')">
+                        <td>' . $variation->sku . '</td>
+                        <td>' . $variation->name . '</td>
+                      </tr>';
+            }
+        }
+    
         return $data;
     }
+    
 
 
 
