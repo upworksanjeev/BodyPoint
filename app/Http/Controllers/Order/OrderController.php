@@ -16,7 +16,7 @@ class OrderController extends Controller
         $customer_po_number = $request->customer_po_number;
         $is_duplicate = $request->is_duplicate;
         $idDuplicate = 'N';
-        if($is_duplicate){
+        if($is_duplicate == 'yes'){
             $idDuplicate = 'Y';
         }
         $customer = getCustomer();
