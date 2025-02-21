@@ -113,7 +113,7 @@ class SysproService
     {
         $request = [
             "OrderNumber" => $order_number,
-            "CustomerPoNumber"=> $CustomerPoNumber,
+            "NewCustomerPoNumber"=> $CustomerPoNumber,
             "AllowDuplicatePO"=>$AllowDuplicatePO
         ];
 
