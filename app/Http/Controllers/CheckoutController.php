@@ -108,10 +108,15 @@ class CheckoutController extends Controller
         ]);
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $total = 0;
+        $isDuplicate = 'N';
+        if($request->has('agree_duplicate')){
+            $isDuplicate = 'Y';
+        }
         if (!$request->has('cart_id')) {
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
         }
         $cart = Cart::where('id', $request->cart_id)->first();
+         $cart->update(['purchase_order_no' => $request->customer_po_number]);
         if (!$cart) {
             return redirect()->route('cart')->with('error', 'Cart not found.');
         }
@@ -143,7 +148,8 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate);
+            
             if (!empty($order_syspro['response']['orderNumber'])) {
                 $order->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber'],
@@ -157,7 +163,7 @@ class CheckoutController extends Controller
                 ]);
             } elseif (!empty($order_syspro['response']['Error'])) {
                 DB::rollBack();
-                return redirect()->back()->with('error', $order_syspro['response']['Message']);
+                return redirect()->back()->withInput()->with('error', $order_syspro['response']['Message']);
             }
             $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();

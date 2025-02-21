@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 
 class SysproService
 {
-    // Static properties
     protected static $apiUrl;
     protected static $token;
     protected static $session_id;
@@ -70,7 +69,7 @@ class SysproService
         return $response;
     }
 
-    public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y')
+    public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
     {
         self::initialize();
         if (!$order_id) {
@@ -82,6 +81,7 @@ class SysproService
             'CustomerAccountNumber' => $customer_id,
             'CustomerPoNumber' => $order_id,
             'StraightOrder' => $straight_order,
+            'AllowDuplicatePO' => $isDuplicate,
             'ShipAddressCode' => $address['AddressCode'] ?? 'default_code',
             'ShipAddress1' =>  $address['AddressLine1'] ?? 'default_address1',
             'ShipAddress2' => $address['AddressLine2'] ?? '',
@@ -109,10 +109,12 @@ class SysproService
         return self::returnResponse($response);
     }
 
-    public static function placeOrder($url, $order_number)
+    public static function placeOrder($url, $order_number, $CustomerPoNumber, $AllowDuplicatePO = 'N')
     {
         $request = [
-            "OrderNumber" => $order_number
+            "OrderNumber" => $order_number,
+            "NewCustomerPoNumber"=> $CustomerPoNumber,
+            "AllowDuplicatePO"=>$AllowDuplicatePO
         ];
 
         $response = self::post($url, $request);

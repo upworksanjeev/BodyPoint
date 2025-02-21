@@ -111,12 +111,12 @@
             <tr>
                 <td style="vertical-align: top;width:50%;">
                     <div style="display: flex; gap: 20px; align-items: center;">
-                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No.:</span>
-                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">1</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No. :</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;"> {{ $cart[0]['purchase_order_no'] ?? '' }}</span>
                     </div>
                     <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px;">
-                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Your Purchase Order No.:</span>
-                        <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">{{ $cart[0]['purchase_order_no'] ?? 'Quote' }}</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Your Purchase Order No. :</span>
+                        <span style="background-color: #31ba32; font-size: 14px; font-weight: 500; line-height: 20px; padding: 2px 20px; border-radius: 100px; color: #fff;">Quote</span>
                     </div>
                 </td>
                 <td style="vertical-align: top;width:50%;padding: 0 15px;">
