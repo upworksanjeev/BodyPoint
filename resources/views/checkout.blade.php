@@ -130,6 +130,7 @@
                     '</div>' +
                 '</div>');
                 $('#po-number-modal').hide();
+                $('#confirm-order-form').submit();
             }
         });
 
