@@ -68,9 +68,10 @@
         var error =  @json(session('error'));
         
         var showPoModal = false;
-        if (error && typeof error === "string" && error.includes('Duplicate Purchase order')) {
+        if (error && typeof error === "string" && error.includes('Duplicate Purchase Order')) {
             showPoModal = true;
         }
+        console.log(showPoModal);
         function changePurchaseNo(cart_id) {
             var p_num = $("#purchase_no").val();
             $("#purchase_order_no").val(p_num);
@@ -89,6 +90,7 @@
         }
         if(showPoModal){
             $('#error_alert_po').text(error);
+            $('#error_alert_po').show();
             //var confirmationBox = document.getElementById("duplicate-confirmation");
             //confirmationBox.style.display = "block";
             $('#po-number-modal').show();

@@ -109,12 +109,12 @@ class SysproService
         return self::returnResponse($response);
     }
 
-    public static function placeOrder($url, $order_number)
+    public static function placeOrder($url, $order_number, $CustomerPoNumber, $AllowDuplicatePO = 'N')
     {
         $request = [
             "OrderNumber" => $order_number,
-            "CustomerPoNumber"=> rand(0, 9999999),
-            "AllowDuplicatePO"=>"N"
+            "CustomerPoNumber"=> $CustomerPoNumber,
+            "AllowDuplicatePO"=>$AllowDuplicatePO
         ];
 
         $response = self::post($url, $request);

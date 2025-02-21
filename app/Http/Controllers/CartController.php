@@ -132,7 +132,7 @@ class CartController extends Controller
                             $cart_quantity = CartItem::where('cart_id', $cart->id)->sum('quantity');
                         }
                     }
-                    $cart->update(['total_items' => $cart_quantity]);
+                    $cart->update(['total_items' => $cart_quantity, 'purchase_order_no' => '']);
                 }
             }
         }
