@@ -115,11 +115,15 @@ class CheckoutController extends Controller
         if (!$request->has('cart_id')) {
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
         }
+        
         $cart = Cart::where('id', $request->cart_id)->first();
-         $cart->update(['purchase_order_no' => $request->customer_po_number]);
-        if (!$cart) {
+
+        if ($cart) {
+            $cart->update(['purchase_order_no' => $request->customer_po_number]);
+        } else{
             return redirect()->route('cart')->with('error', 'Cart not found.');
         }
+        
         DB::beginTransaction();
         try {
             $customer_id = getCustomerId();
