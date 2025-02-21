@@ -104,7 +104,7 @@
             event.preventDefault();
             const po_number = $('#customer-po-number').val();
             if (po_number !== "" && po_number !== null) {
-                $('#confirm-order-form').submit();
+                //$('#confirm-order-form').submit();
             }else{
                 $('#po-number-modal').show();
                 $('#po-number-modal').css({
