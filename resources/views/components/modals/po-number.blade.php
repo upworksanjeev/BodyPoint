@@ -14,14 +14,14 @@
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                <div id="error_alert_po" x-data="{ open: true }" x-show="open" class="alert message-alert bg-red-100 text-red-800 border border-red-400 rounded-lg p-4 relative" role="alert">
+                <div id="error_alert_po" style="display: none;" class="alert message-alert bg-red-100 text-red-800 border border-red-400 rounded-lg p-4 relative" role="alert">
                     
-                    <button @click="open = false" type="button" class="absolute top-0 bottom-0 right-0 mr-4 mt-2 text-red-800 focus:outline-none" aria-label="Close">&times;</button>
+                    
                 </div>
                 <form id="{{ $form }}" action="{{ $action }}" method="post">
                     <input type="hidden" value="<?= csrf_token() ?>" name="_token">
                     @if($form == "confirm-order-form")
-                        <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] }}" id="order-cart-id">
+                        <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] ?? '' }}" id="order-cart-id">
                     @endif
                     <input type="text" name="customer_po_number" value="{{ $cart[0]['purchase_order_no'] ?? ''}}" placeholder="Enter PO Number" id="{{ $name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
 
