@@ -274,5 +274,4 @@ let productsAddedToCartModal = 0;
 
 </script>
 
-
 </x-mainpage-layout>
