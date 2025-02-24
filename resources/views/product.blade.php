@@ -273,6 +273,11 @@ let productsAddedToCartModal = 0;
 
 
 </script>
-
-
+@push('other-scripts')
+<script>
+    $(document).ready(function () {
+        $('.productOverviewLeft a[href="https://www.bodypoint.com/ECommerce/product/hbqb/standards.aspx"]').attr("href", "#");
+    });
+</script>
+@endpush
 </x-mainpage-layout>
