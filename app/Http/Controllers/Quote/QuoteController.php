@@ -36,63 +36,63 @@ class QuoteController extends Controller
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
+                ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
-                ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->search_input != '' && $request->start_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
+                ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
-                ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->start_date != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
+                ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
-                ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->search_input != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
+                ->where('status', 'F')
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
-                ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->search_input != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
+                ->where('status', 'F')
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
-                ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->start_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
-                ->where('created_at', '>=', $start_date)
                 ->where('status', 'F')
+                ->where('created_at', '>=', $start_date)
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number',$customer_number)
-                ->where('created_at', '<=', $end_date)
                 ->where('status', 'F')
+                ->where('created_at', '<=', $end_date)
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
