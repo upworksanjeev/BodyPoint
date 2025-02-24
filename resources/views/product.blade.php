@@ -274,10 +274,17 @@ let productsAddedToCartModal = 0;
 
 </script>
 @push('other-scripts')
-<script>
-    $(document).ready(function () {
-        $('.productOverviewLeft a[href="https://www.bodypoint.com/ECommerce/product/hbqb/standards.aspx"]').attr("href", "#");
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.productOverviewLeft a[href="https://www.bodypoint.com/ECommerce/product/hbqb/standards.aspx"]').forEach(link => {
+            let img = link.querySelector('img'); // Get the image inside <a>
+            if (img) {
+                link.replaceWith(img); // Replace <a> with the <img>
+            } else {
+                link.remove(); // If no image, just remove the <a>
+            }
+        });
     });
-</script>
+</script> --}}
 @endpush
 </x-mainpage-layout>
