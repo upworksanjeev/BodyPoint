@@ -18,7 +18,7 @@ class OrderPlacedMail
         try{
             $user = $event->order->user;
             Mail::to($user->email)
-            ->cc('sales@bodypoint.com')
+            ->cc(config('bodypoint.mail_orders_cc'))
             ->send(new MailOrderPlaced($event->order));
         } catch (Exception $e) {
             Log::error('Error sending order placed email: ' . $e->getMessage());
