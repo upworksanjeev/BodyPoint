@@ -8,7 +8,7 @@
       <div class="max-w-screen-xl mx-auto">
        <x-checkout-header page="payment"/>
 
-        <div class="grid grid-cols-2 gap-9">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
           <div class="">
             <div
               class="card bg-white border border-gray-200 rounded-2xl shadow mb-4">

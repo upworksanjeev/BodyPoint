@@ -1,6 +1,6 @@
- <div class="grid grid-cols-1 lg:pb-14 pb-6">
+ <div class="grid grid-cols-1 lg:pb-14 pb-2 sm:pb-6">
           <div class="col-span-2">
-            <ul class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base order-step">
+            <ul class="flex flex-wrap items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base order-step">
               <li
                 class="active flex-1 flex flex-col items-center gap-3 relative after:content-[''] after:absolute after:top-[15px] after:left-[50%] after:w-full after:h-[2px] after:bg-gray-200">
                 <div class="z-10">
@@ -11,7 +11,7 @@
                   </span>
 				  </a>
                 </div>
-                <p class="text-[13px] font-normal text-[#000]"><a href="{{ route('shipping') }}">Shipping Information</a></p>
+                <p class="text-[13px] min-h-[42px] sm:min-h-[auto] font-normal text-[#000]"><a href="{{ route('shipping') }}">Shipping Information</a></p>
               </li>
               <li
                 class="{{ ($page=='payment' || $page=='checkout')?'active':'' }} flex-1 flex flex-col items-center gap-3 relative after:content-[''] after:absolute after:top-[15px] after:left-[50%] after:w-full after:h-[2px] after:bg-gray-200">
@@ -23,7 +23,7 @@
                   </span>
 				  </a>
                 </div>
-                <p class="text-[13px] font-normal text-[{{ ($page=='payment' || $page=='checkout')?'#000':'#717171' }}]"><a href="{{ route('payment') }}">Payment Method</a></p>
+                <p class="text-[13px] min-h-[42px] sm:min-h-[auto] font-normal text-[{{ ($page=='payment' || $page=='checkout')?'#000':'#717171' }}]"><a href="{{ route('payment') }}">Payment Method</a></p>
               </li>
               <li
                 class="{{ ($page=='checkout')?'active':'' }} flex-1 flex flex-col items-center gap-3 relative after:content-[''] after:absolute after:top-[15px] after:left-[50%] after:w-full after:h-[2px] after:bg-gray-200">
@@ -37,7 +37,7 @@
 				  </a>
                 </div>
 				
-                <p class="text-[13px] font-normal text-[{{ ($page=='checkout')?'#000':'#717171' }}]"><a href="{{ route('checkout') }}">Confirm Order </a></p>
+                <p class="text-[13px] min-h-[42px] sm:min-h-[auto] font-normal text-[{{ ($page=='checkout')?'#000':'#717171' }}]"><a href="{{ route('checkout') }}">Confirm Order </a></p>
 				
               </li>
               <li class="flex-1 flex flex-col items-center gap-3">
@@ -47,7 +47,7 @@
                     4
                   </span>
                 </div>
-                <p class="text-[13px] font-normal text-[#717171]">Completion</p>
+                <p class="text-[13px] min-h-[42px] sm:min-h-[auto] font-normal text-[#717171]">Completion</p>
               </li>
             </ul>
           </div>

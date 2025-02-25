@@ -38,7 +38,7 @@
                     <x-shipping-info :cart="$cart" :user="$user" :userDetail="$user_detail" />
                     <x-cart.final-checkout-list :cart="$cart" />
                     <div class="card-body p-6 border-t order-buttons">
-                        <div class="flex items-center justify-end gap-2">
+                        <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
                             <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
                             <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
                             <button id="confirm-order" type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Confirm Order</button>
@@ -101,10 +101,10 @@
             }else {
                 $('.po-number-div').remove();
                 $('.order-buttons').before('<div class="po-number-div flex justify-end gap-3 flex-wrap px-6 pb-6">' +
-                    '<div class="min-w-[250px]">' +
+                    '<div class="min-w-[80px] text-right sm:min-w-[250px]">' +
                         '<span class="text-sm text-[#000] font-bold leading-[17px]">Your PO Number Is:</span>' +
                     '</div>' +
-                    '<div class="min-w-[100px] text-right">' +
+                    '<div class="min-w-[50px] sm:min-w-[100px] text-right">' +
                         '<span class="font-bold mr-2">' + po_number + '</span> ' +
                         '<button data-modal-target="po-number-modal" data-modal-toggle="po-number-modal" class="edit-customer-po-number" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>' +
                     '</div>' +
