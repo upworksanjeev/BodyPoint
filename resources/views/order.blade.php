@@ -26,14 +26,14 @@
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
-                                    <input name="start_date" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
+                                    <input name="start_date" id="start_date" datepicker-max-date="{{ now()->format('d-m-Y') }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
                                 </div>
                                 <span class="sm:mx-4 text-gray-500 my-1 sm:my-0 inline-block">to</span>
                                 <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
-                                    <input name="end_date" id="end_date"  max="{{ now()->format('d-m-Y') }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
+                                    <input name="end_date" id="end_date"  datepicker-max-date="{{ now()->format('d-m-Y') }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
                                 </div>
                             </div>
                         </div>
@@ -59,24 +59,30 @@
     <script>
         $(document).ready(function() {
            
-            let today = new Date();
-            let formattedToday = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
-                                 today.getDate().toString().padStart(2, '0') + '/' + 
-                                 today.getFullYear();
+            // let today = new Date();
+            // let formattedToday = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
+            //                      today.getDate().toString().padStart(2, '0') + '/' + 
+            //                      today.getFullYear();
     
             
-            new Datepicker(document.getElementById('start_date'), {
-                format: "mm/dd/yyyy",
-                autoHide: true
-            });
+            // new Datepicker(document.getElementById('start_date'), {
+            //     format: "mm/dd/yyyy",
+            //     autoHide: true
+            // });
     
         
-            new Datepicker(document.getElementById('end_date'), {
-                format: "mm/dd/yyyy",
-                maxDate: today, 
-                autoHide: true
+            // new Datepicker(document.getElementById('end_date'), {
+            //     format: "mm/dd/yyyy",
+            //     maxDate: today, 
+            //     autoHide: true
+            // });
+            $('#start_date').on('change', function () {
+                let startDate = $(this).val();
+                $('#end_date').attr('datepicker-min-date', startDate); 
             });
+            
         });
+        
     </script>
     @endpush
 </x-mainpage-layout>
