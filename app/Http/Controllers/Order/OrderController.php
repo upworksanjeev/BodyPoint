@@ -39,7 +39,8 @@ class OrderController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('order')->with('success','Order Placed Successfully');
+            //return redirect()->route('order')->with('success','Order Placed Successfully');
+            return view('order-thank-you', ['order' => $order]);
         }
         catch(Exception $e){
             DB::rollBack();
