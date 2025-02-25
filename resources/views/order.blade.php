@@ -55,4 +55,28 @@
             </div>
         </div>
     </section>
+    @push('other-scripts')
+    <script>
+        $(document).ready(function() {
+           
+            let today = new Date();
+            let formattedToday = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
+                                 today.getDate().toString().padStart(2, '0') + '/' + 
+                                 today.getFullYear();
+    
+            
+            new Datepicker(document.getElementById('start_date'), {
+                format: "mm/dd/yyyy",
+                autoHide: true
+            });
+    
+        
+            new Datepicker(document.getElementById('end_date'), {
+                format: "mm/dd/yyyy",
+                maxDate: today, 
+                autoHide: true
+            });
+        });
+    </script>
+    @endpush
 </x-mainpage-layout>
