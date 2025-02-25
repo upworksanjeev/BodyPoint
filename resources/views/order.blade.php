@@ -33,7 +33,7 @@
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
-                                    <input name="end_date" id="end_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
+                                    <input name="end_date" id="end_date"  max="{{ now()->format('d-m-Y') }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
                                 </div>
                             </div>
                         </div>
