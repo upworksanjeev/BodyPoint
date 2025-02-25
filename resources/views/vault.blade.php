@@ -1,5 +1,5 @@
 <x-mainpage-layout>
-
+    @section('title', 'Vault - '.config('app.name', 'Bodypoint'))
     <div class="min-h-[62vh] bg-[#f6f6f6]">
         <section class="bg-[#00838F] text-[#ffffff] px-6 lg:px-10">
             <div class="lg:container mx-auto py-7 md:py-9">
@@ -15,9 +15,7 @@
                                 Welcome to Partner Vault
                             </h2>
                             <p class="text-lg font-normal mb-4">Partner Resource Central</p>
-                            <iframe class="rounded-2xl"
-                                src="https://www.youtube.com/embed/XHOmBV4js_E?controls=1&rel=0&playsinline=0&modestbranding=0&autoplay=0&enablejsapi=1&origin=https%3A%2F%2Fbodypoint.dev&widgetid=1"
-                                width="100%" height="360" frameborder="0" allowfullscreen></iframe>
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/b979abfe91fc4da2aaf4b253ea39c5ab?sid=e05789c7-9721-4614-a133-0d19dc64ceb9" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
                         </div>
                         <div class="bg-white rounded-2xl mt-8 border border-[#E9E9E9]">
                             <div class="p-6 border-b border-[#E9E9E9]">
@@ -353,7 +351,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 py-4">
-                            <img src="https://bodypoint.dev/wp-content/uploads/2024/06/Vector-10.svg"
+                            <img src="https://bodypoint.com/wp-content/uploads/2024/06/Vector-10.svg"
                                 alt="question" />
                             <p class="text-base font-normal m-0">
                                 Need Assistance? Email our Marketing Team

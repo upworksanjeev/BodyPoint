@@ -1,23 +1,27 @@
 <x-mainpage-layout>
     @if(isset($product))
+    @section('title', $product['name'] ?? " " . ' - ' . config('app.name', 'Bodypoint'))
         <section class="py-[15px] md:py-[40px]">
             <div class="ctm-container">
                 @if(isset($error))
                     {{ $error }}
                 @else
+                @php
+                $sortedMedia = collect($product['media'])->sortBy('order_column')->values()->all();
+                @endphp
                     <div class="antialiased">
                         <div class="ctm-container-two">
                             <div class="flex flex-wrap flex-col md:flex-row -mx-4">
                                 <div class="md:flex-1 lg:px-5 product-outer-box">
                                     <div class="product-images-box">
                                         <div class="slider slider-for">
-                                            @foreach ($product['media'] as $media)<div>
+                                            @foreach ($sortedMedia as $media)<div>
                                                 <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}" alt="{{ $product['name'] ?? '' }}"></div>
                                             @endforeach
                                         </div>
                                         <div class="slider slider-nav">
                                             <?php $k = 1; ?>
-                                            @foreach ($product['media'] as $media)
+                                            @foreach ($sortedMedia as $media)
                                                 <div>
                                                     <a href="#" data-id="{{ $k }}">
                                                         <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}">
@@ -269,6 +273,5 @@ let productsAddedToCartModal = 0;
 
 
 </script>
-
 
 </x-mainpage-layout>

@@ -1,4 +1,5 @@
 <x-mainpage-layout>
+  @section('title', 'Shipping - '.config('app.name', 'Bodypoint'))
   <x-cart-nav />
   <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
     <div class="container mx-auto">

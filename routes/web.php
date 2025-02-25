@@ -65,6 +65,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');
 
     Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');
+    Route::get('/confirm-order', function () {
+        return redirect('/order');
+    });
     Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
     Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');
     Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');

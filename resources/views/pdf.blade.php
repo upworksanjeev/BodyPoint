@@ -112,7 +112,7 @@
                 <td style="vertical-align: top;width:50%;">
                     <div style="display: flex; gap: 20px; align-items: center;">
                         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote No.:</span>
-                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">1</span>
+                        <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{$cart[0]->purchase_order_no ?? ''}}</span>
                     </div>
                     <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px;">
                         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Your Purchase Order No.:</span>

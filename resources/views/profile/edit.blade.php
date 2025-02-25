@@ -1,4 +1,5 @@
 <x-mainpage-layout>
+    @section('title', 'Profile - '.config('app.name', 'Bodypoint'))
     <x-cart-nav />
 
     <div class="">

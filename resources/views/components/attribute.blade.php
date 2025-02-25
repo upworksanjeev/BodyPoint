@@ -15,8 +15,7 @@
                  @foreach ($attribute[$k] as $v1)
                      <button type="button" id="button_{{ $k }}_{{ $v1['product_attr_id'] }}"
                          class="grid-five cursor-pointer hover:ring hover:ring-[#FF9119]-300 attribute_buttons_{{ $k }}"
-                         data-description="{{$v1['small_description']}}"
-                         data-title="{{$v1['attribute']}}"
+                         data-description="{{ $v1['small_description'] }}" data-title="{{ $v1['attribute'] }}"
                          onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }}, this)">
                          <div class="five-g-img">
                              <img src="<?php if (isset($v1['image']) && $v1['image'] != '') {
@@ -40,30 +39,74 @@
  @push('other-scripts')
      <script>
          var total_category = {{ count($category) }};
-         /* update attribute detail */
-         function changeAttribute(product_att_id, product_id, index, k,  el = null) {
+         var originalSrcs = {};
 
-            const imgElement = el.querySelector('.five-g-img img');
-            const imageUrl = imgElement?.src;
+         $('.slider-for').on('beforeChange', function(event, slick, currentSlide) {
+             
+             $(slick.$slides).each(function(index, slide) {
+                 let slideImg = $(slide).find('img');
+                 if (!originalSrcs[index]) { 
+                     originalSrcs[index] = slideImg.attr('src');
+                     slideImg.attr('data-original-src', slideImg.attr('src'));
+                 }
+             });
 
-            if (imageUrl && document.querySelector('.slick-slide.slick-current.slick-active img')) {
-                document.querySelector('.slick-slide.slick-current.slick-active img').src = imageUrl;
-            }
-            const description = el.getAttribute('data-description');
-            const title = el.getAttribute('data-title');
+             
+             let currentImg = $(slick.$slides[currentSlide]).find('img');
+             if (currentImg.attr('data-original-src')) {
+                 currentImg.attr('src', currentImg.attr('data-original-src'));
+             }
+         });
+        //  $('.slider-for').on('afterChange', function(event, slick, currentSlide) {
 
-            if (title) {
-                // Select the first section inside .slider-for
-                const firstSection = document.querySelector('.slider-for .slick-current.slick-active img');
+        //      $(slick.$slides).each(function(index, slide) {
+        //          let slideImg = $(slide).find('img');
+        //          if (!originalSrcs[index]) { 
+        //              originalSrcs[index] = slideImg.attr('src');
+        //              slideImg.attr('data-original-src', slideImg.attr('src'));
+        //          }
+        //      });
 
-                if (firstSection) {
-                    const existingDescriptionContainer = document.querySelector('.description-container');
-                    if (existingDescriptionContainer) {
-                        existingDescriptionContainer.remove(); // Remove the existing container
-                    }
-                    const descriptionContainer = document.createElement('div');
-                    descriptionContainer.className = 'description-container';
-                    descriptionContainer.style.cssText = `
+             
+        //      let currentImg = $(slick.$slides[currentSlide]).find('img');
+        //      if (currentImg.attr('data-original-src')) {
+        //          currentImg.attr('src', currentImg.attr('data-original-src'));
+        //      }
+        //  });
+        
+         function changeAttribute(product_att_id, product_id, index, k, el = null) {
+
+             const imgElement = el.querySelector('.five-g-img img');
+             const imageUrl = imgElement?.src;
+
+             if (imageUrl) {
+                 let activeSlide = $('.slider-for .slick-current.slick-active img');
+                 let slideIndex = $('.slider-for .slick-current.slick-active').index();
+
+
+                 if (!originalSrcs[slideIndex]) {
+                     originalSrcs[slideIndex] = activeSlide.attr('src');
+                     activeSlide.attr('data-original-src', activeSlide.attr('src'));
+                 }
+
+
+                 activeSlide.attr('src', imageUrl);
+             }
+             const description = el.getAttribute('data-description');
+             const title = el.getAttribute('data-title');
+
+             if (title) {
+                 
+                 const firstSection = document.querySelector('.slider-for .slick-current.slick-active img');
+
+                 if (firstSection) {
+                     const existingDescriptionContainer = document.querySelector('.description-container');
+                     if (existingDescriptionContainer) {
+                         existingDescriptionContainer.remove(); // Remove the existing container
+                     }
+                     const descriptionContainer = document.createElement('div');
+                     descriptionContainer.className = 'description-container';
+                     descriptionContainer.style.cssText = `
                         border-top: 1px solid #ececec;
                         padding: 15px;
                         margin-top: 20px;
@@ -73,28 +116,28 @@
                         bottom: 0px;                     
                     `;
 
-                    if (title) {
-                        const titleElement = document.createElement('h4');
-                        titleElement.style.cssText = 'margin: 0 0 10px; font-weight: bold; font-size: 18px;';
-                        titleElement.textContent = title;
-                        descriptionContainer.appendChild(titleElement);
-                    }
+                     if (title) {
+                         const titleElement = document.createElement('h4');
+                         titleElement.style.cssText = 'margin: 0 0 10px; font-weight: bold; font-size: 18px;';
+                         titleElement.textContent = title;
+                         descriptionContainer.appendChild(titleElement);
+                     }
 
-                    if (description) {
-                        const descriptionElement = document.createElement('p');
-                        descriptionElement.style.cssText = 'margin: 0; font-size: 14px; color: #555;';
-                        descriptionElement.textContent = description;
-                        descriptionContainer.appendChild(descriptionElement); 
-                    }
+                     if (description) {
+                         const descriptionElement = document.createElement('p');
+                         descriptionElement.style.cssText = 'margin: 0; font-size: 14px; color: #555;';
+                         descriptionElement.textContent = description;
+                         descriptionContainer.appendChild(descriptionElement);
+                     }
 
-                    // descriptionContainer.inner = description;
+                     // descriptionContainer.inner = description;
 
-                    // Insert the container after the first section
-                    // Remove below comment to show variation names under the product image on change
-                    //firstSection.insertAdjacentElement('afterend', descriptionContainer);
-                }
+                     // Insert the container after the first section
+                     // Remove below comment to show variation names under the product image on change
+                     //firstSection.insertAdjacentElement('afterend', descriptionContainer);
+                 }
 
-            }
+             }
 
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
@@ -108,11 +151,10 @@
                      success: function(response) {
                          if (response.product_available || !response.is_auth_user) {
                              $('#variation_price_div').html(response.html);
-                         }
-                         else {
+                         } else {
                              $('#variation_price_div').html(
                                  '<div class="out-off-stock"><h1>Price of this product is not available. Please contact support.</h1></div>'
-                                 );
+                             );
                          }
                      },
                      error: function(xhr) {

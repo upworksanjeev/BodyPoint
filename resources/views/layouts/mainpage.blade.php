@@ -5,9 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(config('bodypoint.no_index'))
     <meta name="robots" content="noindex, nofollow" />
+    @endif
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', config('app.name', 'Bodypoint'))</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset(Config::get('bodypoint.fav')) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset(Config::get('bodypoint.fav')) }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,7 +26,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('other-scripts')
+    
 
 
 
@@ -47,6 +51,7 @@
 	  }
 	});
 	</script>
+  @stack('other-scripts')
 </body>
 
 </html>

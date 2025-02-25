@@ -1,5 +1,5 @@
 <x-mainpage-layout>
-
+  @section('title', 'Payment - '.config('app.name', 'Bodypoint'))
 
   <x-cart-nav />
 

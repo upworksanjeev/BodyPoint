@@ -1,0 +1,48 @@
+name: Deploy Laravel to AWS EC2 Bodypoint Staging
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Upload code to AWS EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_STAGING_HOST}}
+          key: ${{secrets.SSH_STAGING_KEY}}
+          username: ${{secrets.SSH_STAGING_USERNAME}}
+          script: |
+            # Navigate to the directory where you want to upload the code on the EC2 server
+            cd /var/www/html
+
+            # Securely copy the code from the GitHub Actions runner to the EC2 server
+            git checkout development
+            git pull origin development
+
+      - name: Install dependencies and run Laravel commands on AWS EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_STAGING_HOST}}
+          key: ${{secrets.SSH_STAGING_KEY}}
+          username: ${{secrets.SSH_STAGING_USERNAME}}
+          script: |
+            # Navigate to the Laravel project directory on the EC2 server
+            cd /var/www/html
+
+            # Install Composer dependencies (no-dev) and run Laravel commands
+            composer install --no-dev
+            npm install
+            php artisan migrate --force
+            php artisan nova:publish
+            php artisan optimize
+            php artisan route:clear
+            npm run build

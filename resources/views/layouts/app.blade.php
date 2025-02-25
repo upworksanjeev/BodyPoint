@@ -5,9 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(config('bodypoint.no_index'))
     <meta name="robots" content="noindex, nofollow" />
+    @endif
 
-    <title>{{ config('app.name', 'Bodypoint') }}</title>
+    <title>@yield('title', config('app.name', 'Bodypoint'))</title>
+
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,6 +20,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 	 <script src="https://kit.fontawesome.com/731f6c33b2.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset(Config::get('bodypoint.logo')) }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset(Config::get('bodypoint.logo')) }}">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

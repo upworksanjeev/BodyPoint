@@ -108,13 +108,22 @@ class CheckoutController extends Controller
         ]);
         $user = Auth::user()->load(['associateCustomers','getUserDetails']);
         $total = 0;
+        $isDuplicate = 'N';
+        if($request->has('agree_duplicate')){
+            $isDuplicate = 'Y';
+        }
         if (!$request->has('cart_id')) {
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
         }
+        
         $cart = Cart::where('id', $request->cart_id)->first();
-        if (!$cart) {
+
+        if ($cart) {
+            $cart->update(['purchase_order_no' => $request->customer_po_number]);
+        } else{
             return redirect()->route('cart')->with('error', 'Cart not found.');
         }
+        
         DB::beginTransaction();
         try {
             $customer_id = getCustomerId();
@@ -143,7 +152,8 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate);
+            
             if (!empty($order_syspro['response']['orderNumber'])) {
                 $order->update([
                     'purchase_order_no' => $order_syspro['response']['orderNumber'],
@@ -157,7 +167,7 @@ class CheckoutController extends Controller
                 ]);
             } elseif (!empty($order_syspro['response']['Error'])) {
                 DB::rollBack();
-                return redirect()->back()->with('error', $order_syspro['response']['Message']);
+                return redirect()->back()->withInput()->with('error', $order_syspro['response']['Message']);
             }
             $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
@@ -194,19 +204,19 @@ class CheckoutController extends Controller
             $end_date = date('y-m-d 23:59:59', strtotime($request->end_date));
         }
         if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->orderBy('created_at','desc')->get();
         } elseif ($request->search_input != '' && $request->start_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('created_at', '>=', $start_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('created_at', '>=', $start_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->start_date != '' && $request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('status','!=','F')->orWhereNull('status')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->orWhereNull('status')->orderBy('created_at','desc')->get();
         } elseif ($request->search_input != '' && $request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('created_at', '<=', $end_date)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->orderBy('created_at','desc')->get();
         } elseif ($request->search_input != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('purchase_order_no', 'like', "%" . $request->search_input . "%")->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->orderBy('created_at','desc')->get();
         } elseif ($request->start_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '>=', $start_date)->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('created_at', '>=', $start_date)->orderBy('created_at','desc')->get();
         } elseif ($request->end_date != '') {
-            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('created_at', '<=', $end_date)->where('status','!=','F')->orderBy('created_at','desc')->get();
+            $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->where('created_at', '<=', $end_date)->orderBy('created_at','desc')->get();
         } else {
             $order = Order::with('User', 'OrderItem.Product.Media')->where('user_id', $user->id)->where('customer_number',$customer_number)->where('status','!=','F')->orderBy('created_at','desc')->get();
         }
