@@ -80,11 +80,11 @@
            </table>
        </div>
    </div>
-   <div class="flex justify-end gap-3 flex-wrap px-6 pb-6">
-       <div class="min-w-[250px]">
+   <div class="flex justify-end gap-3 flex-wrap pt-3 px-6 pb-6">
+       <div class="min-w-[100px] sm:min-w-[250px]">
            <span class="text-sm text-[#000] font-bold leading-[17px]">Total Before Freight:</span>
        </div>
-       <div class="min-w-[100px] text-right">
+       <div class="min-w-[80px] sm:min-w-[100px] text-right">
            <span class="font-bold">${{ number_format($subtotal + $tax, 2, '.', ',') }}</span>
        </div>
    </div>
