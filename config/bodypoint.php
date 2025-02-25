@@ -7,5 +7,5 @@ return [
     'mail_for_quote' => env('MAIL_FROM_ADDRESS_QUOTE'),
     'mail_for_orders' => env('MAIL_FROM_ADDRESS_ORDERS'),
     'mail_orders_cc' => env('MAIL_ADDRESS_ORDERS_CC'),
-    'no_index' => env('NOINDEX', false),
+    'no_index' => env('NOINDEX', true),
 ];
