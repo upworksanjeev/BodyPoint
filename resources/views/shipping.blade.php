@@ -6,11 +6,11 @@
       <div class="max-w-screen-xl mx-auto">
            <x-checkout-header page="shipping"/>
 
-        <div class="grid grid-cols-2 gap-9">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
           <div class="">
             <div
               class="card bg-white border border-gray-200 rounded-2xl shadow mb-4">
-              <div class="card-header px-6 py-4 flex items-center justify-between border-b ">
+              <div class="card-header px-6 py-4  flex gap-2  sm:gap-0 flex-col sm:flex-row items-start  sm:items-center justify-start sm:justify-between border-b ">
                 <h4>Shipping Information</h4>
                 <button data-modal-target="default-modal" data-modal-toggle="default-modal" type="button"
                   class="py-1.5 px-4 text-sm font-normal text-[#000] focus:outline-none bg-white rounded-full border border-[#000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
@@ -27,14 +27,14 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">{{ session('customer_address')['AddressLine1'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] }} <br>{{ session('customer_address')['AddressLine2'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] }} {{  session('customer_address')['AddressLine3'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] }} <br> {{ session('customer_address')['State'] ?? session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_address')['AddressCode'] ?? session('customer_details')['ShipToAddresses'][0]['AddressCode'] }} {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">{{ session('customer_address')['AddressLine1'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] }} <div>{{ session('customer_address')['AddressLine2'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] }} {{  session('customer_address')['AddressLine3'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] }}</div> <div> {{ session('customer_address')['State'] ?? session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_address')['AddressCode'] ?? session('customer_details')['ShipToAddresses'][0]['AddressCode'] }} {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}</div></span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
                     <span class="text-sm text-[#000] font-normal leading-[17px]"> +1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
                   </li>
                 </ul>
-				<div class="flex items-center mb-4">
+				<div class="flex items-center mb-1 sm:mb-4">
 					<input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-[#00707B]-600 bg-gray-100 border-gray-300 rounded focus:ring-[#00707B]-500 focus:ring-2">
 					<label for="default-checkbox" class="ms-2 text-sm font-medium text-[#00707B]">Make This My Default Address</label>
 				</div>
