@@ -9,7 +9,7 @@
         @csrf
 
         <div class="step" data-step="1" >
-                <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Contact Information') }}</div>
+                <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('New User Registration') }}</div>
                 
                 <div class="flex flex-wrap	">
                     <!-- Name -->
@@ -240,7 +240,7 @@
     </div>
     <div class="flex items-center justify-center mt-4">
     <a class="underline text-sm text-[#00838f] hover:text-[#00838f] rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+                {{ __('Already Registered? Login here') }}
             </a>
     </div>
 
