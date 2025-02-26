@@ -43,7 +43,7 @@ class RegisteredUserController extends Controller
         $get_customer_details = SysproService::getCustomerDetails($url);
         if (!$get_customer_details) {
             return redirect()->back()->withInput()->withErrors([
-                'syspro_customer_id' => 'This Customer Number is not registered with partner portal. Please contact Bodypoint Team.',
+                'syspro_customer_id' => 'This Customer Account Number is not registered with partner portal. Please contact Bodypoint Team.',
             ]);
         }
 
