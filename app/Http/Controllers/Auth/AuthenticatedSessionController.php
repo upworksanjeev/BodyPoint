@@ -44,6 +44,7 @@ class AuthenticatedSessionController extends Controller
     {
         try{
             $user = User::where('email', $request->email)->first();
+
             if ($user && !empty($user->default_customer_id)) {
                     $url = 'GetCustomerDetails/' . $user->default_customer_id;
                     $get_customer_details = SysproService::getCustomerDetails($url);
@@ -54,6 +55,8 @@ class AuthenticatedSessionController extends Controller
                         'message' => 'This email is not registered with partner portal. Please contact support.',
                     ]);
                 }
+
+                
                 if (empty($user->password)) {
                     $status = Password::sendResetLink(
                         $request->only('email')
@@ -97,6 +100,13 @@ class AuthenticatedSessionController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
+            if (!$user->hasVerifiedEmail()) {
+                return response()->json([
+                    'status' => 'unverified',
+                    'message' => 'Your email is not verified. Please check your inbox and verify your email.',
+                    'redirect' => route('verification.notice'),
+                ]);
+            }
             if (!empty(auth()->user()->default_customer_id)) {
                 $url = 'GetCustomerDetails/' . auth()->user()->default_customer_id;
                 $get_customer_details = SysproService::getCustomerDetails($url);

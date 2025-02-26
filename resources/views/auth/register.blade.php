@@ -9,7 +9,7 @@
         @csrf
 
         <div class="step" data-step="1" >
-                <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('Contact Information') }}</div>
+                <div class="text-xl text-[#00838f] pt-5 pb-7 text-center">{{ __('New User Registration') }}</div>
                 
                 <div class="flex flex-wrap	">
                     <!-- Name -->
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
-                        <x-input-label for="syspro_customer_id" :value="__('Customer ID')" />
+                        <x-input-label for="syspro_customer_id" :value="__('Customer Account Number')" />
                         <x-text-input id="syspro_customer_id" class="block mt-1 w-full "  name="syspro_customer_id" :value="old('syspro_customer_id')" required autofocus autocomplete="customer_number"  />
                         <x-input-error :messages="$errors->get('syspro_customer_id')" class="mt-2" />
                     </div>
@@ -240,7 +240,7 @@
     </div>
     <div class="flex items-center justify-center mt-4">
     <a class="underline text-sm text-[#00838f] hover:text-[#00838f] rounded-md focus:outline-none focus:ring-0 focus:ring-offset-0" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+                {{ __('Already Registered? Login here') }}
             </a>
     </div>
 

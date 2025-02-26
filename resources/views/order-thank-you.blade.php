@@ -3,7 +3,7 @@
 
   <x-cart-nav />
 
-  <section class="bg-[#F6F6F6] py-9">
+  <section class="bg-[#F6F6F6] px-4 py-9">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
         <div class="">
@@ -13,9 +13,9 @@
 
 		   <div class="">
    <div class="card bg-white border border-gray-200 rounded-2xl shadow relative overflow-hidden">
-     <div class="card-header px-6 py-4 flex items-center justify-between border-b bg-[#00838f]">
+     <div class="card-header px-6 py-4 flex flex-wrap gap-3 items-center justify-between border-b bg-[#00838f]">
        <h4 class="text-[#fff] text-left">Order Date: {{ date('F j, Y',strtotime($order['created_at'])) }}</h4>
-       <h4 class="text-[#fff] text-center">Order Details</h4>
+       <h4 class="hidden sm:block text-[#fff] text-center">Order Details</h4>
         <h4 class="text-[#fff] text-right">Order No: {{ $order['purchase_order_no'] }}</h4>
        <h4 class="text-[#fff] text-right">Customer PO No: {{ $order['customer_po_number'] ?? '' }}</h4>
      </div>

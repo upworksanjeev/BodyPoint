@@ -40,6 +40,9 @@
     <mainpage>
         @include('partials.messages')
         {{ $slot }}
+        <div id="fullLoader" style="display: none">
+          <div class="loader"></div>
+      </div>
     </mainpage>
 
     @include('layouts.footer')
