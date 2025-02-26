@@ -722,11 +722,18 @@ ul.active_campaigns li {
     .product-grid-three {
         grid-template-columns: 1fr 1fr;
     }
+    .ctm-container {
+        padding-inline: 15px;
+    }
 }
 
 @media (min-width: 300px) and (max-width: 576px) {
     .grid-four {
         grid-template-columns: 1fr;
+    }
+
+    .ctm-container {
+        padding-inline: 15px;
     }
 
     .ctm-price {
