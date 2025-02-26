@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
-                        <x-input-label for="syspro_customer_id" :value="__('Customer ID')" />
+                        <x-input-label for="syspro_customer_id" :value="__('Customer Account Number')" />
                         <x-text-input id="syspro_customer_id" class="block mt-1 w-full "  name="syspro_customer_id" :value="old('syspro_customer_id')" required autofocus autocomplete="customer_number"  />
                         <x-input-error :messages="$errors->get('syspro_customer_id')" class="mt-2" />
                     </div>
