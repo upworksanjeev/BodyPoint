@@ -1,4 +1,4 @@
-<footer class="footer py-5">
+<footer class="footer pt-5 pb-6">
     <div class="ctm-container mx-auto">
         <div class="block lg:flex items-center ">
             <div class="w-full lg:w-3/4">

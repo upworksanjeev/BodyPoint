@@ -692,6 +692,13 @@ ul.active_campaigns li {
     }
 }
 
+@media (max-width: 1024px) {
+    .mobile-dropdown-content {
+        width: calc(100% - 20px);
+        margin-inline: auto;
+    }
+}
+
 @media (max-width: 992px) {
     .category-sub-cat {
         display: none;
