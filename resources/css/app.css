@@ -620,6 +620,10 @@ ul.active_campaigns li {
 }
 /* end vault page */
 
+form#confirm-order-form {
+    margin-top: 0px;
+}
+
 @media (max-width: 991px) {
     .product-outer-box {
         width: 100%;
@@ -722,6 +726,9 @@ ul.active_campaigns li {
 }
 
 @media (min-width: 577px) and (max-width: 767px) {
+    html,body {
+        overflow-x: hidden;
+    }
     .prodct-Category {
         grid-template-columns: 1fr;
     }
@@ -735,6 +742,9 @@ ul.active_campaigns li {
 }
 
 @media (min-width: 300px) and (max-width: 576px) {
+    html,body {
+        overflow-x: hidden;
+    }
     .grid-four {
         grid-template-columns: 1fr;
     }
