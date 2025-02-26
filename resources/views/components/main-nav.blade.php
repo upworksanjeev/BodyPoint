@@ -5,16 +5,14 @@
              class="inset-y-0 left-0 flex items-center lg:hidden justify-end lg:justify-start w-6/12 lg:w-1/12 xl:w-1/12">
              <!-- Mobile menu button-->
              <button @click="open = ! open"
-                 class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition ease-in-out duration-150 text-[40px]">
+                 class="inline-flex items-center justify-center py-2 rounded-md text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset transition ease-in-out duration-150 text-[40px]">
                  <x-icons.mobile-menu />
-
-
              </button>
          </div>
          <div
              class="flex flex-1 items-center justify-start order-first lg:order-none lg:justify-between shift-logo w-6/12 lg:w-6/12 xl:w-9/12 ">
              <div class="flex flex-shrink-0 items-center">
-                 <a href="{{ config('bodypoint.home_url') }}"> <img class="h-[40px] w-auto"
+                 <a href="{{ config('bodypoint.home_url') }}"> <img class="h-[38px] md:h-[45px] w-auto"
                          src="{{ asset('img/logo-1.png') }}" alt="Body Point" /> </a>
              </div>
              <div class="hidden sm:ml-6 lg:block">

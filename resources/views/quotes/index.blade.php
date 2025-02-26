@@ -259,10 +259,12 @@
             function popOpen(e, order_id) {
                 e.preventDefault();
                 orderID = order_id;
+                $('.place_order_button').prop('disabled', true);
                 const po_number = $('#customer-po-number').val();
                 if (po_number !== "" && po_number !== null) {
-                    //$('#form_'+orderID).submit();
+                    $('#form_'+orderID).submit();
                 }else{
+                    $('.place_order_button').prop('disabled', false);
                     $('#po-number-modal').show();
                     $('#po-number-modal').css({
                         'display': 'flex',
@@ -272,10 +274,12 @@
             }
             $(document).on('click','#save-po-number',function(event){
                 event.preventDefault();
+                $('.place_order_button').prop('disabled', true);
                 const po_number = $('#customer-po-number').val();
                 const isDuplicate = $('#agree-duplicate').is(":visible") ? $('#agree-duplicate').val() : null;
                 if (po_number == "" || po_number == null) {
                     toastr.error('Customer PO Number is Required');
+                    $('.place_order_button').prop('disabled', false);
                 }else {
                     $('#po-number-modal').hide();
                     $('#p_o_'+orderID).val(po_number);
