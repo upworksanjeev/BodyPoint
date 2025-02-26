@@ -11,17 +11,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\Country;
-use Validator;
 use App\Http\Requests\StorePostRequest;
 use App\Services\SysproService;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\VerifyEmail;
 
 class RegisteredUserController extends Controller
 {
-
-
     /**
      * Display the registration view.
      */
@@ -38,8 +36,9 @@ class RegisteredUserController extends Controller
      */
     public function store(StorePostRequest $request): RedirectResponse
     {
-
         $validated = $request->validated();
+
+       
         $url = 'GetCustomerDetails/' . $request->syspro_customer_id;
         $get_customer_details = SysproService::getCustomerDetails($url);
         if (!$get_customer_details) {
@@ -47,6 +46,8 @@ class RegisteredUserController extends Controller
                 'syspro_customer_id' => 'This Customer Number is not registered with partner portal. Please contact Bodypoint Team.',
             ]);
         }
+
+      
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -54,11 +55,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-
         Auth::login($user);
 
         if ($user) {
-
+            
             UserDetails::create([
                 "user_id" => $user->id,
                 'primary_phone' => '',
@@ -69,7 +69,7 @@ class RegisteredUserController extends Controller
                 'shipping_address' => $get_customer_details['ShipToAddresses'][0]['AddressLine2'] ?? '',
                 'shipping_city' => $get_customer_details['ShipToAddresses'][0]['AddressLine4'] ?? '',
                 'shipping_state' => $get_customer_details['ShipToAddresses'][0]['State'] ?? '',
-                'shipping_zip' =>  '',
+                'shipping_zip' => '',
                 'shipping_country' => $get_customer_details['ShipToAddresses'][0]['Country'] ?? '',
                 'shipping_phone' => '',
                 'billing_user_name' => $get_customer_details['CustomerName'],
@@ -80,11 +80,14 @@ class RegisteredUserController extends Controller
                 'billing_zip' => $get_customer_details['billAddressPostalCode'] ?? '',
                 'billing_country' => '',
                 'billing_phone' => '',
-
             ]);
 
+            
             event(new Registered($user));
-            return redirect(RouteServiceProvider::HOME);
+
+            $user->sendEmailVerificationNotification();
+
+            return redirect()->route('verification.notice');
         }
     }
 }
