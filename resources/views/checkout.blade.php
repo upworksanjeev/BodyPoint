@@ -106,7 +106,9 @@
             $('#confirm-order').prop('disabled', true);
             if (po_number !== "" && po_number !== null) {
                 $('#confirm-order-form').submit();
+                $("#fullLoader").css("display", "flex");
             }else{
+                $("#fullLoader").css("display", "none");
                 $('#confirm-order').prop('disabled', false);
                 $('#po-number-modal').show();
                 $('#po-number-modal').css({
@@ -120,6 +122,7 @@
             const po_number = $('#customer-po-number').val();
             $('#confirm-order').prop('disabled', true);
             if (po_number == "" || po_number == null) {
+                $("#fullLoader").css("display", "none");
                 toastr.error('Customer PO Number is Required');
                 $('#confirm-order').prop('disabled', false);
             }else {
@@ -135,6 +138,7 @@
                 '</div>');
                 $('#po-number-modal').hide();
                 $('#confirm-order-form').submit();
+                $("#fullLoader").css("display", "flex");
             }
         });
 
