@@ -16,19 +16,19 @@ use Illuminate\View\View;
 use App\Models\Country;
 use Validator;
 use App\Http\Requests\StorePostRequest;
-
+use App\Services\SysproService;
 
 class RegisteredUserController extends Controller
 {
 
-    
+
     /**
      * Display the registration view.
      */
     public function create(): View
     {
         $countries = Country::all();
-        return view('auth.register' ,compact('countries'));
+        return view('auth.register', compact('countries'));
     }
 
     /**
@@ -38,52 +38,53 @@ class RegisteredUserController extends Controller
      */
     public function store(StorePostRequest $request): RedirectResponse
     {
-       
+
         $validated = $request->validated();
-        
+        $url = 'GetCustomerDetails/' . $request->syspro_customer_id;
+        $get_customer_details = SysproService::getCustomerDetails($url);
+        if (!$get_customer_details) {
+            return redirect()->back()->withInput()->withErrors([
+                'syspro_customer_id' => 'This Customer Number is not registered with partner portal. Please contact Bodypoint Team.',
+            ]);
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'default_customer_id' => $request->syspro_customer_id,
             'password' => Hash::make($request->password),
         ]);
 
-       
+
         Auth::login($user);
-    
-        if($user){
+
+        if ($user) {
 
             UserDetails::create([
                 "user_id" => $user->id,
-                'primary_phone' => $request->primary_phone,
-                'alternate_phone' => $request->alternate_phone,
-                'customer_number' => $request->customer_number,
-                'shipping_user_name' => $request->shipping_user_name,
-                'shipping_last_name' => $request->shipping_last_name,
-                'shipping_address' => $request->shipping_address,
-                'shipping_city' => $request->shipping_city,
-                'shipping_state' => $request->shipping_state,
-                'shipping_zip' => $request->shipping_zip,
-                'shipping_country' => $request->shipping_country,
-                'shipping_phone' => $request->shipping_phone,
-                'billing_user_name' => $request->billing_user_name,
-                'billing_last_name' => $request->billing_last_name,
-                'billing_address' => $request->billing_address,
-                'billing_city' => $request->billing_city,
-                'billing_state' => $request->billing_state,
-                'billing_zip' => $request->billing_zip,
-                'billing_country' => $request->billing_country,
-                'billing_phone' => $request->billing_phone,
+                'primary_phone' => '',
+                'alternate_phone' => '',
+                'customer_number' => $get_customer_details['CustomerAccountNumber'],
+                'shipping_user_name' => $get_customer_details['CustomerName'],
+                'shipping_last_name' => '',
+                'shipping_address' => $get_customer_details['ShipToAddresses'][0]['AddressLine2'] ?? '',
+                'shipping_city' => $get_customer_details['ShipToAddresses'][0]['AddressLine4'] ?? '',
+                'shipping_state' => $get_customer_details['ShipToAddresses'][0]['State'] ?? '',
+                'shipping_zip' =>  '',
+                'shipping_country' => $get_customer_details['ShipToAddresses'][0]['Country'] ?? '',
+                'shipping_phone' => '',
+                'billing_user_name' => $get_customer_details['CustomerName'],
+                'billing_last_name' => '',
+                'billing_address' => $get_customer_details['billAddressLine2'] ?? '',
+                'billing_city' => $get_customer_details['billAddressLine4'] ?? '',
+                'billing_state' => $get_customer_details['billAddressLine5'] ?? '',
+                'billing_zip' => $get_customer_details['billAddressPostalCode'] ?? '',
+                'billing_country' => '',
+                'billing_phone' => '',
 
-            ] );
+            ]);
 
-            event(new Registered($user));    
+            event(new Registered($user));
             return redirect(RouteServiceProvider::HOME);
         }
-
-    
-    
     }
-
-
-
 }

@@ -49,13 +49,8 @@
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
 
-                    <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
-                        <x-input-label for="syspro_customer_id" :value="__('Customer ID')" />
-                        <x-text-input id="syspro_customer_id" class="block mt-1 w-full "  name="syspro_customer_id" :value="old('syspro_customer_id')" required autofocus autocomplete="customer_number"  />
-                        <x-input-error :messages="$errors->get('syspro_customer_id')" class="mt-2" />
-                    </div>
 
-                    {{-- <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
+                    <div class="w-full md:w-2/4 pr-0 md:pr-2 mt-4">
                         <x-input-label for="primary_phone" :value="__('Primary Phone')" />
 
                         <x-text-input id="primary_phone" class="block mt-1 w-full"
@@ -74,7 +69,7 @@
                                         name="alternate_phone" :value="old('alternate_phone')"  autofocus autocomplete="alternate_phone"/>
 
                         <x-input-error :messages="$errors->get('alternate_phone')" class="mt-2" />
-                    </div> --}}
+                    </div>
                 </div>
         
         </div>
@@ -231,8 +226,8 @@
     </div>
            
     <div class="flex items-center justify-end mt-4">
-        {{-- <x-primary-button class="ml-4 prev-button focusver:">  {{ __('Previous') }} </x-primary-button>
-        <x-primary-button class="ml-4 next-button focus:border-none ">{{ __('Next') }} </x-primary-button> --}}
+        <x-primary-button class="ml-4 prev-button focusver:">  {{ __('Previous') }} </x-primary-button>
+        <x-primary-button class="ml-4 next-button focus:border-none ">{{ __('Next') }} </x-primary-button>
         <x-primary-button class="ml-4 submit-button">
            {{ __('Register') }}
        </x-primary-button>

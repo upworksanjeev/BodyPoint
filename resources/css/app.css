@@ -692,6 +692,13 @@ ul.active_campaigns li {
     }
 }
 
+@media (max-width: 1024px) {
+    .mobile-dropdown-content {
+        width: calc(100% - 20px);
+        margin-inline: auto;
+    }
+}
+
 @media (max-width: 992px) {
     .category-sub-cat {
         display: none;
@@ -722,11 +729,18 @@ ul.active_campaigns li {
     .product-grid-three {
         grid-template-columns: 1fr 1fr;
     }
+    .ctm-container {
+        padding-inline: 15px;
+    }
 }
 
 @media (min-width: 300px) and (max-width: 576px) {
     .grid-four {
         grid-template-columns: 1fr;
+    }
+
+    .ctm-container {
+        padding-inline: 15px;
     }
 
     .ctm-price {
