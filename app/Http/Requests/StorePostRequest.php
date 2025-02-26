@@ -27,12 +27,13 @@ class StorePostRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'primary_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
-            'alternate_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
-            'shipping_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
-            'billing_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
-            'shipping_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/',
-            'billing_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/'
+            'syspro_customer_id' => ['required', 'string', 'max:255'],
+            // 'primary_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            // 'alternate_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            // 'shipping_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            // 'billing_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
+            // 'shipping_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/',
+            // 'billing_zip' => 'required|regex:/^\d{5}([ \-]\d{4})?$/'
         ];
     }
 

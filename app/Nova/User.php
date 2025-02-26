@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -104,11 +106,24 @@ class User extends Resource
                     }
                 ),
 
-            Text::make('Default Customer Number', 'default_customer_id')
-                ->readonly()
+                Text::make('Customer Number', 'default_customer_id')
                 ->hideFromIndex()
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                ->rules('required', 'max:255')
+                //->creationRules('unique:users,default_customer_id')
+                //->updateRules('unique:users,default_customer_id,{{resourceId}}')
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $customerId = $request->{$attribute};
+            
+                    $url = 'GetCustomerDetails/' . $customerId;
+                    $get_customer_details = SysproService::getCustomerDetails($url);
+                    if (!$get_customer_details) {
+                        throw ValidationException::withMessages([
+                            $attribute => 'Customer Number not found.',
+                        ]);
+                    }
+            
+                    $model->{$attribute} = $customerId;
+                }),
 
             Text::make('Payment Term Description', 'payment_term_description')
                 ->readonly()
