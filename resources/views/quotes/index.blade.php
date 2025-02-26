@@ -30,7 +30,7 @@
                         <div class="mt-4 lg:mt-0">
                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date:
                             </label>
-                            <div date-rangepicker class="lg:flex items-center">
+                            <div date-rangepicker datepicker-max-date="{{ now()->format('m/d/Y') }}" class="lg:flex items-center">
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
@@ -261,7 +261,7 @@
                 orderID = order_id;
                 const po_number = $('#customer-po-number').val();
                 if (po_number !== "" && po_number !== null) {
-                    $('#form_'+orderID).submit();
+                    //$('#form_'+orderID).submit();
                 }else{
                     $('#po-number-modal').show();
                     $('#po-number-modal').css({

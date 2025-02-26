@@ -20,20 +20,21 @@
                             <input type="text" id="search_input" name="search_input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Order No/ BP Number" value="{{ $search??'' }}" />
                         </div>
                         <div>
+                            {{-- <input id="datepicker-format" datepicker datepicker-min-date="02/26/2025" datepicker-max-date="03/05/2025" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"> --}}
                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date: </label>
-                            <div date-rangepicker class="flex items-center gap-3 sm:gap-0 flex-wrap lg:flex-nowrap">
+                            <div date-rangepicker datepicker-max-date="{{ now()->format('m/d/Y') }}" class="flex items-center gap-3 sm:gap-0 flex-wrap lg:flex-nowrap">
                                 <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
-                                    <input name="start_date" id="start_date" datepicker-max-date="{{ now()->format('d-m-Y') }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
+                                    <input name="start_date" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start" value="{{ $start_date??'' }}">
                                 </div>
                                 <span class="sm:mx-4 text-gray-500 my-1 sm:my-0 inline-block">to</span>
                                 <div class="relative w-full sm:w-auto">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
-                                    <input name="end_date" id="end_date"  datepicker-max-date="{{ now()->format('d-m-Y') }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
+                                    <input name="end_date" id="end_date"   type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end" value="{{ $end_date??'' }}">
                                 </div>
                             </div>
                         </div>
@@ -57,31 +58,14 @@
     </section>
     @push('other-scripts')
     <script>
-        $(document).ready(function() {
+        // $(document).ready(function() {
            
-            // let today = new Date();
-            // let formattedToday = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
-            //                      today.getDate().toString().padStart(2, '0') + '/' + 
-            //                      today.getFullYear();
-    
+        //     $('#start_date').on('change', function () {
+        //         let startDate = $(this).val();
+        //         $('#end_date').attr('data-min-date', startDate); 
+        //     });
             
-            // new Datepicker(document.getElementById('start_date'), {
-            //     format: "mm/dd/yyyy",
-            //     autoHide: true
-            // });
-    
-        
-            // new Datepicker(document.getElementById('end_date'), {
-            //     format: "mm/dd/yyyy",
-            //     maxDate: today, 
-            //     autoHide: true
-            // });
-            $('#start_date').on('change', function () {
-                let startDate = $(this).val();
-                $('#end_date').attr('datepicker-min-date', startDate); 
-            });
-            
-        });
+        // });
         
     </script>
     @endpush

@@ -17,6 +17,14 @@
                         <x-primary-button class="text-sm capitalize font-extralight" @click.prevent="login">
                             {{ __('Continue') }}
                         </x-primary-button>
+
+                        <div class="flex items-center sm:justify-end justify-center mt-2">
+                            @if (Route::has('password.request'))
+                                <a class="text-[#00838f] underline text-xs sm:text-sm rounded-md focus:outline-none" href="{{ route('register') }}">
+                                    {{ __('Register Here') }}
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
