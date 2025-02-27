@@ -54,6 +54,12 @@
 		return false;
 	  }
 	});
+  $('#searchinput1').keydown(function (e) {
+	  if (e.which == 13) {
+		$('#formsearch1').submit();
+		return false;
+	  }
+	});
 	</script>
   @stack('other-scripts')
 </body>
