@@ -60,7 +60,7 @@
 
                 </div>
                 <div class="flex justify-center lg:justify-end py-1">
-                    <x-nav-link-custom href="#!" classes="text-base pl-3 leading-[33px] text-[#333333]">
+                    <x-nav-link-custom href="mailto:sales@bodypoint.com" classes="text-base pl-3 leading-[33px] text-[#333333]">
                         {{ __('sales@bodypoint.com') }}
                         </x-responsive-nave-link>
                 </div>
