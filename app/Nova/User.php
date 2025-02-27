@@ -81,6 +81,18 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+            
+            
+            Password::make('Confirm Password')
+            ->onlyOnForms()
+            ->rules('required_with:password', function ($attribute, $value, $fail) use ($request) {
+                if ($request->password !== $value) {
+                    $fail('The Confirm Password must match the Password.');
+                }
+            })
+            ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                // Avoid saving in DB
+            }),
 
             Select::make('Role')
                 ->options(function () {
