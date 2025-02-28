@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class StorePostRequest extends FormRequest
 {
@@ -25,7 +26,14 @@ class StorePostRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->whereNull('deleted_at') // Ignore soft deleted users
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'syspro_customer_id' => ['required', 'string', 'max:255'],
             // 'primary_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|max:10',
