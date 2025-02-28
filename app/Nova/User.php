@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\HasMany;
+use Illuminate\Validation\Rule;
 
 class User extends Resource
 {
@@ -74,8 +75,14 @@ class User extends Resource
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                // ->creationRules('unique:users,email')
+                // ->updateRules('unique:users,email,{{resourceId}}'),
+                ->creationRules([
+                    Rule::unique('users', 'email')->whereNull('deleted_at'), 
+                ])
+                ->updateRules([
+                    Rule::unique('users', 'email')->whereNull('deleted_at')->ignore($this->resource->id),
+                ]),
 
             Password::make('Password')
                 ->onlyOnForms()
