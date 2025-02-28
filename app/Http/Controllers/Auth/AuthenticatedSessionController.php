@@ -52,7 +52,7 @@ class AuthenticatedSessionController extends Controller
                 if (!$get_customer_details) {
                     return response()->json([
                         'status' => 'error',
-                        'message' => 'This email is not registered with partner portal. Please contact support.',
+                        'message' => "If you're having trouble logging in, please reach out to our customer service team for any quote/order requests. Thank you for your patience as we troubleshoot errors on our new website!",
                     ]);
                 }
 
