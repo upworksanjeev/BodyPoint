@@ -4,6 +4,10 @@
         <div class="w-full sm:max-w-xl px-6 py-8 border border-[#c0c0c04f] overflow-hidden rounded-lg bg-[#f6f6f6]">
             <!-- Display Session Status if any -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
+            <div class="mb-4 p-3 text-center text-white rounded-md bg-[rgb(254_115_0_/var(--tw-bg-opacity))]">
+    If you're having trouble logging in, please reach out to our customer service team for any quote/order requests.
+    Thank you for your patience as we troubleshoot errors on our new website!
+</div>
             <form method="POST" @submit.prevent x-data="loginHandler()">
                 @csrf
 
