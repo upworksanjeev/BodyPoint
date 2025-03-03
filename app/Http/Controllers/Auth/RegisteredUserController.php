@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
     {
         $validated = $request->validated();
 
-       
+
         $url = 'GetCustomerDetails/' . $request->syspro_customer_id;
         $get_customer_details = SysproService::getCustomerDetails($url);
         if (!$get_customer_details) {
@@ -47,7 +47,24 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-      
+
+        // Check if email already exists
+        $existingUser = User::withTrashed()->where('email', $request->email)->first();
+        
+        if ($existingUser) {
+            $timestamp = now()->format('Y-m-d_H-i-s');
+            $newDeletedEmail = $request->email . "_deleted_" . $timestamp;
+
+            // Ensure email is truly unique
+            while (User::where('email', $newDeletedEmail)->exists()) {
+                $timestamp = now()->format('Y-m-d_H-i-s') . '_' . rand(1000, 9999);
+                $newDeletedEmail = $request->email . "_deleted_" . $timestamp;
+            }
+
+            $existingUser->update(['email' => $newDeletedEmail]);
+        }
+
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -58,7 +75,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         if ($user) {
-            
+
             UserDetails::create([
                 "user_id" => $user->id,
                 'primary_phone' => '',
@@ -82,7 +99,7 @@ class RegisteredUserController extends Controller
                 'billing_phone' => '',
             ]);
 
-            
+
             event(new Registered($user));
 
             $user->sendEmailVerificationNotification();

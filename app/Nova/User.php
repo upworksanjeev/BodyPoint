@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Services\SysproService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Fields\Gravatar;
@@ -71,11 +72,41 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Email')
+                Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                ->creationRules([
+                    Rule::unique('users', 'email')->whereNull('deleted_at'), 
+                ])
+                ->updateRules([
+                    Rule::unique('users', 'email')->whereNull('deleted_at')->ignore($this->resource->id),
+                ])
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    if (!$model->exists) { 
+                        $email = trim(strtolower($request->{$attribute}));
+            
+                       
+                        $existingUser = \App\Models\User::withTrashed()->where('email', $email)->first();
+                        
+                        if ($existingUser) {
+                            $timestamp = now()->format('Y-m-d_H-i-s'); 
+                            $newDeletedEmail = $email . "_deleted_" . $timestamp;
+            
+                            
+                            while (\App\Models\User::withTrashed()->where('email', $newDeletedEmail)->exists()) {
+                                $timestamp = now()->format('Y-m-d_H-i-s') . '_' . rand(1000, 9999);
+                                $newDeletedEmail = $email . "_deleted_" . $timestamp;
+                            }
+            
+                            
+                            $existingUser->update(['email' => $newDeletedEmail]);
+                        }
+            
+                        
+                        $model->{$attribute} = $email;
+                    }
+                }),
+            
 
             Password::make('Password')
                 ->onlyOnForms()
