@@ -135,6 +135,15 @@ class CheckoutController extends Controller
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
             ]);
+
+            Log::info('Order Created:', [
+                'order_id' => $order->id,
+                'user_id' => $user->id,
+                'purchase_order_no' => $request->purchase_order_no,
+                'total_items' => $cart[0]->total_items,
+                'associate_customer_id' => $customer->id ?? null,
+                'customer_number' => $customer_id,
+            ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
                 OrderItem::create([
