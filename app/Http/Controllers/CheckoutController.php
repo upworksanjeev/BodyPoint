@@ -140,7 +140,7 @@ class CheckoutController extends Controller
                 'order_id' => $order->id,
                 'user_id' => $user->id,
                 'purchase_order_no' => $request->purchase_order_no,
-                'total_items' => $cart[0]->total_items,
+                'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
             ]);
