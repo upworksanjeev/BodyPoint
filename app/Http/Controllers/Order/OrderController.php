@@ -20,6 +20,7 @@ class OrderController extends Controller
             $idDuplicate = 'Y';
         }
         $customer = getCustomer();
+        
         if(!$customer->hasPermissionTo('placeOrders')){
             abort(403);
         }
@@ -39,6 +40,9 @@ class OrderController extends Controller
                 ]);
             }
             DB::commit();
+            Log::info('Place Order:', [
+                'customer' => $customer,
+            ]);
             //return redirect()->route('order')->with('success','Order Placed Successfully');
             return view('order-thank-you', ['order' => $order]);
         }

@@ -36,6 +36,19 @@ class AssociateCustomer extends Resource
         'customer_id',
     ];
 
+     /**
+     * ✅ Redirect back to the User after saving
+     */
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        return "/resources/users/{$resource->user_id}";
+    }
+
+    public static function redirectAfterUpdate(NovaRequest $request, $resource)
+    {
+        return "/resources/users/{$resource->user_id}";
+    }
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         if ($request->user()->isSuperAdmin())
@@ -58,15 +71,30 @@ class AssociateCustomer extends Resource
      * @return array
      */
     public function fields(NovaRequest $request)
-    {
-        return [
-            ID::make()->sortable(),
-            Text::make('Customer Number', 'customer_id')->sortable(),
-            Text::make('Customer Name', 'name')->sortable(),
-            Text::make('First Name', 'first_name')->sortable(),
-            Text::make('Last Name', 'last_name')->sortable(),
-        ];
-    }
+{
+    return [
+        ID::make()->sortable(),
+
+        Text::make('Syspro Customer ID', 'customer_id')
+            ->sortable()
+            ->rules('required', 'max:255') 
+        
+            ->help('Syspro Customer ID cannot be empty.'), 
+
+        Text::make('Customer Name', 'name')
+            ->sortable()
+            ->rules('required', 'max:255')
+            ->help('Customer Name cannot be empty.'), 
+        Text::make('First Name', 'first_name')
+            ->sortable()
+            ->rules('max:255'),
+
+        Text::make('Last Name', 'last_name')
+            ->sortable()
+            ->rules('max:255'),
+    ];
+}
+
 
     /**
      * Get the cards available for the request.
