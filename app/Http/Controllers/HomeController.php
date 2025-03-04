@@ -61,13 +61,14 @@ class HomeController extends Controller
             ],
         ]);
         try {
-            session()->put('customer_id', $request->customer_id);
-            $customer_id = getCustomerId();
+            //session()->put('customer_id', $request->customer_id);
+            $customer_id = $request->customer_id;
             $url = 'GetCustomerDetails/' . $customer_id;
             $get_customer_details = SysproService::getCustomerDetails($url);
-            session()->put('customer_details', $get_customer_details);
-            session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
+           
             if ($get_customer_details) {
+                session()->put('customer_details', $get_customer_details);
+                session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
                 $customer = AssociateCustomer::where([
                     ['user_id', Auth::id()],
                     ['customer_id', $customer_id]
@@ -84,7 +85,7 @@ class HomeController extends Controller
                 }
                 return Response::json(['success' => true, 'message' => 'Customer Changed Successfully']);
             } else {
-                return Response::json(['success' => false, 'message' => 'Something went wrong']);
+                return Response::json(['success' => false, 'message' => 'Customer not found']);
             }
         } catch (Exception $e) {
             return Response::json(['success' => false, 'message' => $e->getMessage()]);

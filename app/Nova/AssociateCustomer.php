@@ -9,6 +9,8 @@ use Laravel\Nova\Fields\Text;
 
 class AssociateCustomer extends Resource
 {
+
+    
     /**
      * The model the resource corresponds to.
      *
@@ -42,6 +44,12 @@ class AssociateCustomer extends Resource
             return $query->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'super-admin');
             });
+    }
+
+ 
+    public static function createButtonLabel()
+    {
+        return 'Attach Associate Customer'; 
     }
     /**
      * Get the fields displayed by the resource.
@@ -115,11 +123,11 @@ class AssociateCustomer extends Resource
     }
     public function authorizedToDelete(Request $request)
     {
-        return false;
+        return true;
     }
 
     public static function authorizedToCreate(Request $request)
     {
-        return false;
+        return true;
     }
 }
