@@ -2,11 +2,13 @@
 
 namespace App\Nova;
 
+//use App\Models\AssociateCustomer;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
+use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -15,6 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Panel;
 
 class User extends Resource
 {
@@ -43,7 +46,7 @@ class User extends Resource
         'email',
     ];
 
-    public static $with = ['getUserDetails','associateCustomers'];
+    public static $with = ['getUserDetails', 'associateCustomers'];
 
     public static function indexQuery(NovaRequest $request, $query)
     {
@@ -72,58 +75,58 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-                Text::make('Email')
+            Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules([
-                    Rule::unique('users', 'email')->whereNull('deleted_at'), 
+                    Rule::unique('users', 'email')->whereNull('deleted_at'),
                 ])
                 ->updateRules([
                     Rule::unique('users', 'email')->whereNull('deleted_at')->ignore($this->resource->id),
                 ])
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    if (!$model->exists) { 
+                    if (!$model->exists) {
                         $email = trim(strtolower($request->{$attribute}));
-            
-                       
+
+
                         $existingUser = \App\Models\User::withTrashed()->where('email', $email)->first();
-                        
+
                         if ($existingUser) {
-                            $timestamp = now()->format('Y-m-d_H-i-s'); 
+                            $timestamp = now()->format('Y-m-d_H-i-s');
                             $newDeletedEmail = $email . "_deleted_" . $timestamp;
-            
-                            
+
+
                             while (\App\Models\User::withTrashed()->where('email', $newDeletedEmail)->exists()) {
                                 $timestamp = now()->format('Y-m-d_H-i-s') . '_' . rand(1000, 9999);
                                 $newDeletedEmail = $email . "_deleted_" . $timestamp;
                             }
-            
-                            
+
+
                             $existingUser->update(['email' => $newDeletedEmail]);
                         }
-            
-                        
+
+
                         $model->{$attribute} = $email;
                     }
                 }),
-            
+
 
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
-            
-            
+
+
             Password::make('Confirm Password')
-            ->onlyOnForms()
-            ->rules('required_with:password', function ($attribute, $value, $fail) use ($request) {
-                if ($request->password !== $value) {
-                    $fail('The Confirm Password must match the Password.');
-                }
-            })
-            ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                // Avoid saving in DB
-            }),
+                ->onlyOnForms()
+                ->rules('required_with:password', function ($attribute, $value, $fail) use ($request) {
+                    if ($request->password !== $value) {
+                        $fail('The Confirm Password must match the Password.');
+                    }
+                })
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    // Avoid saving in DB
+                }),
 
             Select::make('Role')
                 ->options(function () {
@@ -149,14 +152,14 @@ class User extends Resource
                     }
                 ),
 
-                Text::make('Customer Number', 'default_customer_id')
+            Text::make('Customer Number', 'default_customer_id')
                 ->hideFromIndex()
                 ->rules('required', 'max:255')
                 //->creationRules('unique:users,default_customer_id')
                 //->updateRules('unique:users,default_customer_id,{{resourceId}}')
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $customerId = $request->{$attribute};
-            
+
                     $url = 'GetCustomerDetails/' . $customerId;
                     $get_customer_details = SysproService::getCustomerDetails($url);
                     if (!$get_customer_details) {
@@ -164,7 +167,7 @@ class User extends Resource
                             $attribute => 'Customer Number not found.',
                         ]);
                     }
-            
+
                     $model->{$attribute} = $customerId;
                 }),
 
@@ -222,7 +225,10 @@ class User extends Resource
      * @return array
      */
     public function actions(NovaRequest $request)
-    {
-        return [];
-    }
+{
+    return [
+        (new \App\Nova\Actions\AddAssociateCustomer())->onlyOnDetail(),
+    ];
+}
+
 }
