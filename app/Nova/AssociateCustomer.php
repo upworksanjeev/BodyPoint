@@ -11,7 +11,7 @@ use Laravel\Nova\Fields\Text;
 class AssociateCustomer extends Resource
 {
 
-    
+
     /**
      * The model the resource corresponds to.
      *
@@ -37,7 +37,7 @@ class AssociateCustomer extends Resource
         'customer_id',
     ];
 
-     /**
+    /**
      * ✅ Redirect back to the User after saving
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
@@ -60,10 +60,10 @@ class AssociateCustomer extends Resource
             });
     }
 
- 
+
     public static function createButtonLabel()
     {
-        return 'Attach Associate Customer'; 
+        return 'Attach Associate Customer';
     }
     /**
      * Get the fields displayed by the resource.
@@ -72,35 +72,47 @@ class AssociateCustomer extends Resource
      * @return array
      */
     public function fields(NovaRequest $request)
-{
-    return [
-        ID::make()->sortable(),
+    {
+        return [
+            ID::make()->sortable(),
 
-        Text::make('Syspro Customer ID', 'customer_id')
-            ->sortable()
-            ->rules([
-                'required', 'max:255',
-                Rule::unique('associate_customers')->where(function ($query) use ($request) {
-                    // Get the `user_id` from the URL when editing a user
-                    $userId = $request->viaResourceId ?? $request->resourceId;
-                    return $query->where('user_id', $userId);
-                })
-            ])
-            ->help('Syspro Customer ID cannot be empty and must be unique for the user.'),
+            Text::make('Syspro Customer ID', 'customer_id')
+                ->sortable()
+                ->rules([
+                    'required',
+                    'max:255',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $userId = $request->viaResourceId ?? $request->resourceId;
+                        $existingCustomer = \App\Models\AssociateCustomer::where('user_id', $userId)
+                            ->where('customer_id', $value)
+                            ->first();
 
-        Text::make('Customer Name', 'name')
-            ->sortable()
-            ->rules('required', 'max:255')
-            ->help('Customer Name cannot be empty.'), 
-        Text::make('First Name', 'first_name')
-            ->sortable()
-            ->rules('max:255'),
+                        
+                        if ($this->resource && $existingCustomer && $existingCustomer->id === $this->resource->id) {
+                            return;
+                        }
 
-        Text::make('Last Name', 'last_name')
-            ->sortable()
-            ->rules('max:255'),
-    ];
-}
+                        
+                        if ($existingCustomer) {
+                            $fail('This Syspro Customer ID is already associated with this user.');
+                        }
+                    }
+                ])
+                ->help('Syspro Customer ID cannot be empty and must be unique for the user.'),
+
+            Text::make('Customer Name', 'name')
+                ->sortable()
+                ->rules('required', 'max:255')
+                ->help('Customer Name cannot be empty.'),
+            Text::make('First Name', 'first_name')
+                ->sortable()
+                ->rules('max:255'),
+
+            Text::make('Last Name', 'last_name')
+                ->sortable()
+                ->rules('max:255'),
+        ];
+    }
 
 
     /**
