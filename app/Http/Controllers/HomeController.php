@@ -67,6 +67,7 @@ class HomeController extends Controller
             $get_customer_details = SysproService::getCustomerDetails($url);
            
             if ($get_customer_details) {
+                session()->put('customer_id', $request->customer_id);
                 session()->put('customer_details', $get_customer_details);
                 session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
                 $customer = AssociateCustomer::where([
