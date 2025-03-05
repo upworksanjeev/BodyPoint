@@ -34,6 +34,24 @@ class AddAssociateCustomer extends Action
     public function handle(ActionFields $fields, $models)
     {
         foreach ($models as $user) {
+            \Log::info("Checking for existing associate customer:", [
+                'user_id' => $user->id,
+                'customer_id' => $fields->customer_id
+            ]);
+    
+            // Check if the customer is already associated with this user
+            $existingCustomer = AssociateCustomer::where('user_id', $user->id)
+                ->where('customer_id', $fields->customer_id)
+                ->first();
+    
+            if ($existingCustomer) {
+                \Log::warning("Duplicate customer detected for user:", [
+                    'user_id' => $user->id,
+                    'customer_id' => $fields->customer_id
+                ]);
+                return Action::danger('This customer is already attached to the user.');
+            }
+
             AssociateCustomer::create([
                 'user_id' => $user->id, // Ensure this field exists in the model
                 'customer_id' => $fields->customer_id, // Ensure this exists in the AssociateCustomer model
