@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
@@ -77,9 +78,15 @@ class AssociateCustomer extends Resource
 
         Text::make('Syspro Customer ID', 'customer_id')
             ->sortable()
-            ->rules('required', 'max:255') 
-        
-            ->help('Syspro Customer ID cannot be empty.'), 
+            ->rules([
+                'required', 'max:255',
+                Rule::unique('associate_customers')->where(function ($query) use ($request) {
+                    // Get the `user_id` from the URL when editing a user
+                    $userId = $request->viaResourceId ?? $request->resourceId;
+                    return $query->where('user_id', $userId);
+                })
+            ])
+            ->help('Syspro Customer ID cannot be empty and must be unique for the user.'),
 
         Text::make('Customer Name', 'name')
             ->sortable()
