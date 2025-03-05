@@ -1,5 +1,8 @@
 @if (Route::has('login'))
     @auth
+    @php
+    $customer = getCustomer();
+@endphp
         <div class="">
 
             <!-- Settings Dropdown -->
@@ -26,11 +29,11 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Edit My Account') }}
                         </x-dropdown-link>
-                        @if (Auth::user()->hasPermissionTo('orderHistory'))
+                        {{-- @if (Auth::user()->hasPermissionTo('orderHistory') && $customer->hasPermissionTo('orderHistory')) --}}
 						<x-dropdown-link :href="route('order')">
                             {{ __('My Orders') }}
                         </x-dropdown-link>
-                        @endif
+                        {{-- @endif --}}
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

@@ -24,6 +24,12 @@ class QuoteController extends Controller
 {
     public function index(Request $request)
     {
+
+        $customer = getCustomer();
+        if (!$customer->hasPermissionTo('getQuotes')) {
+            return redirect()->route('dashboard');
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {

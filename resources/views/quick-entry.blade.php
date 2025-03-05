@@ -67,8 +67,9 @@
         </div>
 
         <div class="relative overflow-x-auto shadow-md rounded-2xl">
-
+          @if($customer->hasPermissionTo('addToCart'))
           <x-cart-product-list page="cart" :cart="$cart" />
+          @endif
         </div>
       </div>
     </div>

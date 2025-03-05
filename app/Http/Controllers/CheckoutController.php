@@ -202,7 +202,8 @@ class CheckoutController extends Controller
     {
         $customer = getCustomer();
         if(!$customer->hasPermissionTo('orderHistory')){
-            abort(403);
+            //abort(403);
+            return redirect()->route('dashboard');
         }
         $user = Auth::user();
         $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;

@@ -22,7 +22,8 @@ class OrderController extends Controller
         $customer = getCustomer();
         
         if(!$customer->hasPermissionTo('placeOrders')){
-            abort(403);
+            //abort(403);
+            return redirect()->route('dashboard');
         }
         try{
             DB::beginTransaction();
