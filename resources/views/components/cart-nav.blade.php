@@ -57,20 +57,20 @@
                                 <form method="POST" class="w-full lg:w-auto" action="{{ route('change-customer') }}" id="customer-form">
                                     @csrf
                                     <select name="customer_id" id="search-dropdown" class="lg:w-auto w-full rounded-lg">
-                                        <option value="{{ auth()->user()->default_customer_id }}"
-                                            @if (session()->get('customer_id') == auth()->user()->default_customer_id) selected @endif>
-                                            {{ auth()->user()->default_customer_id }} - {{ auth()->user()->name }}
-                                        </option>
                                         @if (!$user->associateCustomers->isEmpty())
                                             @foreach ($user->associateCustomers as $customer)
-                                                @if($customer->customer_id !=  auth()->user()->default_customer_id)
-                                               
-                                                <option value="{{ $customer->customer_id }}"
-                                                    @if (session()->get('customer_id') == $customer->customer_id) selected @endif>
+                                                <option value="{{ $customer->customer_id }}" 
+                                                    @if (session('customer_id', auth()->user()->default_customer_id) == $customer->customer_id) selected @endif>
                                                     {{ $customer->customer_id }} - {{ $customer->name }}
                                                 </option>
-                                                @endif
                                             @endforeach
+                                        @endif
+                                    
+                                        @if (!$user->associateCustomers->contains('customer_id', auth()->user()->default_customer_id))
+                                            <option value="{{ auth()->user()->default_customer_id }}" 
+                                                @if (session('customer_id', auth()->user()->default_customer_id) == auth()->user()->default_customer_id) selected @endif>
+                                                {{ auth()->user()->default_customer_id }} - {{ auth()->user()->name }}
+                                            </option>
                                         @endif
                                     </select>
                                     <button type="submit" id="dropdown-button"
