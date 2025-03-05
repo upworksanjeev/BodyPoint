@@ -135,7 +135,7 @@ class AuthenticatedSessionController extends Controller
                         }
                     }else{
                         $customer = $user->associateCustomers()->where('customer_id', auth()->user()->default_customer_id)->first();
-                        if (!$customer->hasRole($get_customer_details['CustomerClass'])) {
+                        if ($customer && !$customer->hasRole($get_customer_details['CustomerClass'])) {
                             if($get_customer_details['CustomerClass'] == ""){
                                 if (!$customer->hasRole('Public User')) {
                                     $customer->assignRole('Public User');
