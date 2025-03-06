@@ -135,6 +135,15 @@ class CheckoutController extends Controller
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
             ]);
+
+            Log::info('Order Created:', [
+                'order_id' => $order->id,
+                'user_id' => $user->id,
+                'purchase_order_no' => $request->purchase_order_no,
+                'total_items' => $cart->total_items,
+                'associate_customer_id' => $customer->id ?? null,
+                'customer_number' => $customer_id,
+            ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
                 OrderItem::create([
@@ -193,7 +202,8 @@ class CheckoutController extends Controller
     {
         $customer = getCustomer();
         if(!$customer->hasPermissionTo('orderHistory')){
-            abort(403);
+            //abort(403);
+            return redirect()->route('dashboard');
         }
         $user = Auth::user();
         $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;

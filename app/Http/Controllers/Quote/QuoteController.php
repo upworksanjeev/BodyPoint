@@ -24,8 +24,14 @@ class QuoteController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
-        $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
+
+        $customer = getCustomer();
+        if (!$customer->hasPermissionTo('getQuotes')) {
+            return redirect()->route('dashboard');
+        }
+
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
+        $customer_number = session()->get('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
             $start_date = date('y-m-d 00:00:01', strtotime($request->start_date));
         }
@@ -35,7 +41,7 @@ class QuoteController extends Controller
         if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
@@ -45,7 +51,7 @@ class QuoteController extends Controller
         } elseif ($request->search_input != '' && $request->start_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
@@ -54,7 +60,7 @@ class QuoteController extends Controller
         } elseif ($request->start_date != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
@@ -63,7 +69,7 @@ class QuoteController extends Controller
         } elseif ($request->search_input != '' && $request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
@@ -73,7 +79,7 @@ class QuoteController extends Controller
         } elseif ($request->search_input != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
@@ -82,7 +88,7 @@ class QuoteController extends Controller
         } elseif ($request->start_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->orderBy('created_at', 'desc')
@@ -90,7 +96,7 @@ class QuoteController extends Controller
         } elseif ($request->end_date != '') {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '<=', $end_date)
                 ->orderBy('created_at', 'desc')
@@ -98,7 +104,7 @@ class QuoteController extends Controller
         } else {
             $quotes = Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
-                ->where('customer_number',$customer_number)
+                ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -121,7 +127,7 @@ class QuoteController extends Controller
     public function store(Request $request)
     {
         $customer = getCustomer();
-        if(!$customer->hasPermissionTo('getQuotes')){
+        if (!$customer->hasPermissionTo('getQuotes')) {
             abort(403);
         }
         // $request->validate([
@@ -129,7 +135,7 @@ class QuoteController extends Controller
         // ], [
         //     'customer_po_number.required' => 'The PO number is required.',
         // ]);
-        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
@@ -138,7 +144,7 @@ class QuoteController extends Controller
         $orderItems = [];
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
         if ($cart->isEmpty()) {
-            return redirect()->route('quotes')->with('error','Quote Already Generated');
+            return redirect()->route('quotes')->with('error', 'Quote Already Generated');
         }
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
         DB::beginTransaction();
@@ -162,7 +168,17 @@ class QuoteController extends Controller
                         'associate_customer_id' => $customer->id ?? null,
                         'customer_number' => $customer_id
                     ]);
-                    if(!$cartitems->isEmpty()){
+
+                    // ✅ Log the created order details
+                    Log::info('Quote Created:', [
+                        'order_id' => $order->id,
+                        'user_id' => $user->id,
+                        'purchase_order_no' => $order_syspro['response']['orderNumber'],
+                        'total_items' => $cart[0]->total_items,
+                        'associate_customer_id' => $customer->id ?? null,
+                        'customer_number' => $customer_id,
+                    ]);
+                    if (!$cartitems->isEmpty()) {
                         foreach ($cartitems as $cartItem) {
                             $orderItems[] = [
                                 'product_id' => $cartItem->product_id,
@@ -208,9 +224,10 @@ class QuoteController extends Controller
             return redirect()->back()->with('error', 'An error occurred while placing your Quote. Please try again.');
         }
     }
-    public function pdfDownloadQuote(Request $request,$quote_id){
+    public function pdfDownloadQuote(Request $request, $quote_id)
+    {
         set_time_limit(3600);
-        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $price_option = "all_price";
         if ($request->has('price_option')) {
             $price_option = $request->price_option;
@@ -227,13 +244,14 @@ class QuoteController extends Controller
     }
 
 
-    public function saveShippingAddress(Request $request){
+    public function saveShippingAddress(Request $request)
+    {
         $addresses = session('customer_details')['ShipToAddresses'];
         $key = $request->shipping_address_key;
         $get_address = array_key_exists($key, $addresses) ? $addresses[$key] : $addresses[0];
-        if($get_address){
+        if ($get_address) {
             session()->put('customer_address', $get_address);
-            return Response::json(['success' => true,'address' => $get_address]);
+            return Response::json(['success' => true, 'address' => $get_address]);
         }
         return Response::json(['success' => false]);
     }

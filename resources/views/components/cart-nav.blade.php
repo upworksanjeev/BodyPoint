@@ -57,20 +57,33 @@
                                 <form method="POST" class="w-full lg:w-auto" action="{{ route('change-customer') }}" id="customer-form">
                                     @csrf
                                     <select name="customer_id" id="search-dropdown" class="lg:w-auto w-full rounded-lg">
+                                        @php
+                                            $selectedCustomerId = session()->get('customer_id', auth()->user()->default_customer_id);
+                                            $defaultCustomerId = auth()->user()->default_customer_id;
+                                            $defaultCustomerName = auth()->user()->name;
+                                            $hasDefaultCustomer = false;
+                                        @endphp
+                                    
                                         @if (!$user->associateCustomers->isEmpty())
                                             @foreach ($user->associateCustomers as $customer)
-                                                <option value="{{ $customer->customer_id }}"
-                                                    @if (session()->get('customer_id') == $customer->customer_id) selected @endif>
+                                                <option value="{{ $customer->customer_id }}" 
+                                                    @if ($selectedCustomerId == $customer->customer_id) selected @endif>
                                                     {{ $customer->customer_id }} - {{ $customer->name }}
                                                 </option>
+                                                @if ($customer->customer_id == $defaultCustomerId)
+                                                    @php $hasDefaultCustomer = true; @endphp
+                                                @endif
                                             @endforeach
-                                        @else
-                                            <option value="{{ auth()->user()->default_customer_id }}"
-                                                @if (session()->get('customer_id') == auth()->user()->default_customer_id) selected @endif>
-                                                {{ auth()->user()->default_customer_id }} - {{ auth()->user()->name }}
+                                        @endif
+                                    
+                                        @if (!$hasDefaultCustomer)
+                                            <option value="{{ $defaultCustomerId }}" 
+                                                @if ($selectedCustomerId == $defaultCustomerId) selected @endif>
+                                                {{ $defaultCustomerId }} - {{ $defaultCustomerName }}
                                             </option>
                                         @endif
                                     </select>
+                                    
                                     <button type="submit" id="dropdown-button"
                                         class="py-2.5 px-4 text-sm font-medium text-center text-white bg-[#494949] rounded-lg lg:w-auto w-full mt-2">Change
                                         Customer</button>

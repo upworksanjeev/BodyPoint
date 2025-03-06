@@ -899,12 +899,12 @@
                              </div>
 
                              <div class="mt-3 space-y-1">
-                                 @if (Auth::user()->hasPermissionTo('orderHistory'))
+                                 {{-- @if (Auth::user()->hasPermissionTo('orderHistory')) --}}
                                      <x-responsive-nav-link :href="route('order')">
                                          {{ __('My Orders') }}
 
                                      </x-responsive-nav-link>
-                                 @endif
+                                 {{-- @endif --}}
                                  <x-responsive-nav-link :href="route('profile.edit')">
                                      {{ __('Profile') }}
                                  </x-responsive-nav-link>
