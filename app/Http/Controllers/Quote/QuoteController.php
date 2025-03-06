@@ -31,7 +31,7 @@ class QuoteController extends Controller
         }
 
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
-        $customer_number = session('customer_id') ?? auth()->user()->default_customer_id;
+        $customer_number = session()->get('customer_id') ?? auth()->user()->default_customer_id;
         if ($request->start_date != '') {
             $start_date = date('y-m-d 00:00:01', strtotime($request->start_date));
         }
