@@ -102,7 +102,11 @@
                         data: {
                             email: this.email
                         },
+                        beforeSend: function() {
+                            $("#fullLoader").css("display", "flex");
+                        },
                         success: (data) => {
+                            $("#fullLoader").css("display", "none");
                             if (data.status === 'exists') {
                                 this.step = 'password';
                             } else if (data.status === 'mail_sent') {
@@ -123,6 +127,7 @@
                             }
                         },
                         error: (xhr) => {
+                            $("#fullLoader").css("display", "none");
                             this.handleErrors(xhr);
                         }
                     });
@@ -139,7 +144,11 @@
                             email: this.email,
                             password: this.password
                         },
+                        beforeSend: function() {
+                            $("#fullLoader").css("display", "flex");
+                        },
                         success: (data) => {
+                            $("#fullLoader").css("display", "none");
                             if (data.status === 'unverified') {
                                 window.location.href = data.redirect;
                             }else if (data.status === 'success') {
@@ -150,6 +159,7 @@
                             }
                         },
                         error: (xhr) => {
+                            $("#fullLoader").css("display", "none");
                             this.handleErrors(xhr);
                         }
                     });
