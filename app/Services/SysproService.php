@@ -82,13 +82,13 @@ class SysproService
             'CustomerPoNumber' => $order_id,
             'StraightOrder' => $straight_order,
             'AllowDuplicatePO' => $isDuplicate,
-            'ShipAddressCode' => $address['AddressCode'] ?? 'default_code',
+            'ShipAddressCode' => $address['PostalCode'] ?? 'default_code',
             'ShipAddress1' =>  $address['AddressLine1'] ?? 'default_address1',
             'ShipAddress2' => $address['AddressLine2'] ?? '',
             'ShipAddress3' => $address['AddressLine3']  ?? '',
             'ShipAddress4' => $address['AddressLine4']  ?? '',
             'ShipAddress5' => $address['AddressLine5']  ?? '',
-            'ShipPostalCode' => $address['AddressCode'] ?? 'default_postal',
+            'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
         ];
 
         $items = [];
