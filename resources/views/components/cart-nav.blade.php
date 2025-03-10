@@ -45,14 +45,7 @@
                                         } ?>">Quotes</a>
                                 </li>
 
-                                <li class="me-2">
-                                    <a href="{{ route('link-account') }}"
-                                        class="inline-block p-4 rounded-t-lg <?php if (Request::is('link-account')) {
-                                            echo 'text-[#000] border-b-[3px] active border-[#00838f]';
-                                        } else {
-                                            echo 'border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300';
-                                        } ?>">Link Account Number</a>
-                                </li>
+                               
                             </ul>
                         </div>
 
@@ -97,7 +90,7 @@
                                                 {{ $defaultCustomerId }} - {{ $defaultCustomerName }}
                                             </option>
                                         @endif
-                                        <option value="link-account">➕ Link New Account</option>
+                                        {{-- <option value="link-account">➕ Link New Account</option> --}}
                                     </select>
 
                                     <button type="submit" id="dropdown-button"
@@ -151,7 +144,7 @@
             let selectedValue = select.value;
             console.log(selectedValue);
             if (selectedValue === "link-account") {
-                window.location.href = "{{ route('link-account') }}";
+                // window.location.href = "{{ route('link-account') }}";
             } 
         }
     $(document).ready(function() {
