@@ -97,7 +97,7 @@
                                                 {{ $defaultCustomerId }} - {{ $defaultCustomerName }}
                                             </option>
                                         @endif
-                                        <option value="link-account">➕ Link New Account</option>
+                                        {{-- <option value="link-account">➕ Link New Account</option> --}}
                                     </select>
 
                                     <button type="submit" id="dropdown-button"
