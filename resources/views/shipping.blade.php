@@ -27,7 +27,7 @@
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">{{ session('customer_address')['AddressLine1'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] }} <div>{{ session('customer_address')['AddressLine2'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] }} {{  session('customer_address')['AddressLine3'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] }}</div> <div> {{ session('customer_address')['State'] ?? session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_address')['AddressCode'] ?? session('customer_details')['ShipToAddresses'][0]['AddressCode'] }} {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}</div></span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">{{ session('customer_address')['AddressLine1'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] }} <div>{{ session('customer_address')['AddressLine2'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] }} {{  session('customer_address')['AddressLine3'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] }}</div> <div> {{ session('customer_address')['State'] ?? session('customer_details')['ShipToAddresses'][0]['State'] }}  {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }} {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}</div></span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
@@ -100,7 +100,7 @@
                                         {{ $address['AddressLine1'] ?? '' }}<br>
                                         {{ $address['AddressLine2'] ?? '' }}<br>
                                         {{ $address['AddressLine3'] ?? '' }}<br>
-                                        {{ $address['State'] }} {{ $address['AddressCode'] ?? '' }}<br>
+                                        {{ $address['State'] }} {{ $address['PostalCode'] ?? '' }}<br>
                                         {{ $address['Country'] ?? '' }}
                                     </div>
                                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StorePostRequest;
+use App\Models\AssociateCustomer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ use Illuminate\View\View;
 use App\Models\Country;
 use App\Models\UserDetails;
 use App\Models\User;
+use App\Services\SysproService;
 
 class ProfileController extends Controller
 {
@@ -22,7 +24,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $countries = Country::all();
-        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $customer_id = getCustomerId();
         $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
         $userDetail = $customer ?? $user;
@@ -39,23 +41,23 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
-        $user = Auth::user()->load(['associateCustomers','getUserDetails']);
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $customer_id = getCustomerId();
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
         $request->user()->save();
-		if($request->has('profile_img')){
-			$image=Storage::disk('public')->put('user_profile',$request->file('profile_img'));
-		}else{
-			$user_detail=UserDetails::where('user_id', $request->user()->id)->first();
-			if($user_detail){
-				$image=$user_detail->profile_img;
-			}
-		}
-         UserDetails::updateOrCreate(['user_id' =>  $request->user()->id],[
-            'profile_img' => $image??'',
+        if ($request->has('profile_img')) {
+            $image = Storage::disk('public')->put('user_profile', $request->file('profile_img'));
+        } else {
+            $user_detail = UserDetails::where('user_id', $request->user()->id)->first();
+            if ($user_detail) {
+                $image = $user_detail->profile_img;
+            }
+        }
+        UserDetails::updateOrCreate(['user_id' =>  $request->user()->id], [
+            'profile_img' => $image ?? '',
             'primary_phone' => $request->primary_phone,
             'alternate_phone' => $request->alternate_phone,
             'customer_number' => $request->customer_number,
@@ -76,7 +78,7 @@ class ProfileController extends Controller
             'billing_country' => $request->billing_country,
             'billing_phone' => $request->billing_phone,
         ]);
-        $user->associateCustomers()->where('customer_id',$customer_id)->update([
+        $user->associateCustomers()->where('customer_id', $customer_id)->update([
             'primary_phone' => $request->primary_phone,
             'alternate_phone' => $request->alternate_phone,
         ]);
@@ -102,5 +104,46 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+
+    public function linkAccount(Request $request): View
+    {
+        $customers = AssociateCustomer::where('user_id', Auth::id())->get();
+        return view('profile.link_account', compact('customers'));
+    }
+
+
+
+    public function postLinkAccount(Request $request)
+    {
+        $request->validate([
+            'syspro_customer_id' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (AssociateCustomer::where('user_id', Auth::id())->where('customer_id', $value)->exists()) {
+                        $fail('This Syspro Customer ID is already associated with your account.');
+                    }
+                }
+            ],
+            'customer_name' => 'required|string|max:255',
+        ]);
+        $customer_id = $request->syspro_customer_id;
+        $url = 'GetCustomerDetails/' . $customer_id;
+        $get_customer_details = SysproService::getCustomerDetails($url);
+        if ($get_customer_details) {
+            AssociateCustomer::create([
+                'user_id' => Auth::id(),
+                'customer_id' => $request->syspro_customer_id,
+                'name' => $request->customer_name
+            ]);
+
+            return redirect()->route('link-account')->with('success', 'Account linked successfully.');
+        }else{
+            return redirect()->back()->withInput()->with('error', 'This account number not found.');
+        }
+       
     }
 }
