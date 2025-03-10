@@ -45,7 +45,7 @@
                                         } ?>">Quotes</a>
                                 </li>
 
-                               
+                                
                             </ul>
                         </div>
 
@@ -61,7 +61,7 @@
                                 <form method="POST" class="w-full lg:w-auto" action="{{ route('change-customer') }}"
                                     id="customer-form">
                                     @csrf
-                                    <select name="customer_id" id="search-dropdown" onchange="redirectToPage(this)" class="lg:w-auto w-full rounded-lg">
+                                    <select name="customer_id" id="search-dropdown"  class="lg:w-auto w-full rounded-lg">
                                         @php
                                             $selectedCustomerId = session()->get(
                                                 'customer_id',
@@ -90,7 +90,6 @@
                                                 {{ $defaultCustomerId }} - {{ $defaultCustomerName }}
                                             </option>
                                         @endif
-                                        {{-- <option value="link-account">➕ Link New Account</option> --}}
                                     </select>
 
                                     <button type="submit" id="dropdown-button"
@@ -140,13 +139,7 @@
 @endif
 
 <script>
-    function redirectToPage(select) {
-            let selectedValue = select.value;
-            console.log(selectedValue);
-            if (selectedValue === "link-account") {
-                // window.location.href = "{{ route('link-account') }}";
-            } 
-        }
+    
     $(document).ready(function() {
 
         
