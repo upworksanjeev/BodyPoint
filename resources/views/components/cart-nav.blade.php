@@ -7,7 +7,8 @@
             <div class="container mx-auto">
                 <div class="max-w-screen-xl mx-auto">
                     <div class="flex items-center justify-between lg:flex-nowrap flex-wrap pt-1 pb-2">
-                        <div class="text-base font-medium text-center text-[#000] overflow-y-hidden overflow-x-auto lg:whitespace-pre-wrap whitespace-nowrap lg:mb-0 mb-4 flex-auto lg:flex-1">
+                        <div
+                            class="text-base font-medium text-center text-[#000] overflow-y-hidden overflow-x-auto lg:whitespace-pre-wrap whitespace-nowrap lg:mb-0 mb-4 flex-auto lg:flex-1">
                             <ul class="flex -mb-px">
                                 <li class="me-2">
                                     <a href="{{ route('cart') }}" class="inline-block p-4 rounded-t-lg <?php if (Request::is('cart')) {
@@ -43,30 +44,44 @@
                                             echo 'border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300';
                                         } ?>">Quotes</a>
                                 </li>
+
+                                <li class="me-2">
+                                    <a href="{{ route('link-account') }}"
+                                        class="inline-block p-4 rounded-t-lg <?php if (Request::is('link-account')) {
+                                            echo 'text-[#000] border-b-[3px] active border-[#00838f]';
+                                        } else {
+                                            echo 'border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300';
+                                        } ?>">Link Account Number</a>
+                                </li>
                             </ul>
                         </div>
 
                         <div class="w-full lg:w-auto">
-                            <label for="search-dropdown" class="text-base font-medium text-[#000]">Change Customer Account</label>
+                            <label for="search-dropdown" class="text-base font-medium text-[#000]">Change Customer
+                                Account</label>
                             <div class="relative w-full flex flex-1 mt-1">
                                 @php
                                     $user = auth()
                                         ->user()
                                         ->load(['associateCustomers']);
                                 @endphp
-                                <form method="POST" class="w-full lg:w-auto" action="{{ route('change-customer') }}" id="customer-form">
+                                <form method="POST" class="w-full lg:w-auto" action="{{ route('change-customer') }}"
+                                    id="customer-form">
                                     @csrf
-                                    <select name="customer_id" id="search-dropdown" class="lg:w-auto w-full rounded-lg">
+                                    <select name="customer_id" id="search-dropdown" onchange="redirectToPage(this)" class="lg:w-auto w-full rounded-lg">
                                         @php
-                                            $selectedCustomerId = session()->get('customer_id', auth()->user()->default_customer_id);
+                                            $selectedCustomerId = session()->get(
+                                                'customer_id',
+                                                auth()->user()->default_customer_id,
+                                            );
                                             $defaultCustomerId = auth()->user()->default_customer_id;
                                             $defaultCustomerName = auth()->user()->name;
                                             $hasDefaultCustomer = false;
                                         @endphp
-                                    
+
                                         @if (!$user->associateCustomers->isEmpty())
                                             @foreach ($user->associateCustomers as $customer)
-                                                <option value="{{ $customer->customer_id }}" 
+                                                <option value="{{ $customer->customer_id }}"
                                                     @if ($selectedCustomerId == $customer->customer_id) selected @endif>
                                                     {{ $customer->customer_id }} - {{ $customer->name }}
                                                 </option>
@@ -75,15 +90,16 @@
                                                 @endif
                                             @endforeach
                                         @endif
-                                    
+
                                         @if (!$hasDefaultCustomer)
-                                            <option value="{{ $defaultCustomerId }}" 
+                                            <option value="{{ $defaultCustomerId }}"
                                                 @if ($selectedCustomerId == $defaultCustomerId) selected @endif>
                                                 {{ $defaultCustomerId }} - {{ $defaultCustomerName }}
                                             </option>
                                         @endif
+                                        <option value="link-account">➕ Link New Account</option>
                                     </select>
-                                    
+
                                     <button type="submit" id="dropdown-button"
                                         class="py-2.5 px-4 text-sm font-medium text-center text-white bg-[#494949] rounded-lg lg:w-auto w-full mt-2">Change
                                         Customer</button>
@@ -131,14 +147,23 @@
 @endif
 
 <script>
+    function redirectToPage(select) {
+            let selectedValue = select.value;
+            console.log(selectedValue);
+            if (selectedValue === "link-account") {
+                window.location.href = "{{ route('link-account') }}";
+            } 
+        }
     $(document).ready(function() {
+
+        
         $('#customer-form').on('submit', function(event) {
             event.preventDefault();
             const csrfToken = $('input[name="_token"]').val();
             const customerId = $('#search-dropdown').val();
             if (confirm(
                     "Please confirm to switch the customer for your browsing session. \n\n All customer specific store settings will change including: \n - Available product and product categories\n- Product Pricing\n- Available shipping options and addresses\n- Credit Limit Settings\n- Available payment methods\n- Order posting customer account\n- Order history"
-                    )) {
+                )) {
                 $.ajax({
                     url: $(this).attr('action'),
                     method: 'POST',
