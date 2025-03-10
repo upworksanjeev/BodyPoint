@@ -151,7 +151,7 @@
             let selectedValue = select.value;
             console.log(selectedValue);
             if (selectedValue === "link-account") {
-                window.location.href = "{{ route('link-account') }}";
+                // window.location.href = "{{ route('link-account') }}";
             } 
         }
     $(document).ready(function() {
