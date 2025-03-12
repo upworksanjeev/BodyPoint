@@ -42,6 +42,8 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/link-account', [ProfileController::class, 'linkAccount'])->name('link-account');
+    Route::post('/link-account', [ProfileController::class, 'postLinkAccount'])->name('post-link-account');
     Route::post('/cart', [CartController::class, 'index'])->name('cart.save');
     Route::get('/cart', [CartController::class, 'quickEntry'])->name('cart');
     Route::post('/update-cart-item', [CartController::class, 'updateCartItem'])->name('update-cart-item');
