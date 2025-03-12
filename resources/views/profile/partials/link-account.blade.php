@@ -26,7 +26,7 @@
 
                             <!-- Email Address -->
                             <div class="w-full md:w-2/4 pl-0 md:pl-2 mt-4 md:mt-0">
-                                <x-input-label for="customer_name" :value="__('Customer Name')" />
+                                <x-input-label for="customer_name" :value="__('Account Nickname')" />
                                 <x-text-input id="customer_name" required class="block mt-1 w-full" type="email" name="customer_name" :value="old('customer_name')"  />
                                 <x-input-error :messages="$errors->get('customer_name')" class="mt-2" />
                             </div>
