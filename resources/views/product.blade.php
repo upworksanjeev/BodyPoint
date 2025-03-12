@@ -40,6 +40,7 @@
                                         @csrf
                                         <input type="hidden" name="product_id" id="product_id" value="{{ $product['id'] ?? '' }}">
                                         <x-attribute index="0" :attribute="$attribute" :category="$category" :product="$product" />
+                                        
                                         <div id="variation_price_div">
                                             @if(auth()->user())
                                                 @php
@@ -65,7 +66,21 @@
                                                         </div>
                                                     @endif
                                                 @endif
+                                            @else
+                                                @if(empty($attribute))
+                                                <div class="ctm-price mt-[30px]">
+                                                    <div class="left-price">
+                                                        <h6 class="text-[16px] text-[#000] font-[500]">SKU</h6>
+                                                    </div>
+                                                    <div class="right-price">
+                                                        <div class="text-set">
+                                                            <h6 class="text-[16px] text-[#FF9119] font-[500]">{{ $product['sku']??'' }}</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             @endif
+                                           
                                         </div>
                                     </form>
                                     <div class="detactor">
