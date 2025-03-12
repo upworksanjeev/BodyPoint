@@ -138,6 +138,17 @@ class ProductController extends Controller
         }
     }
 
+    private function filterAttributes($data, $sizesToRemove) {
+    foreach ($data as &$subArray) {
+        if (is_array($subArray)) {
+            $subArray = array_values(array_filter($subArray, function ($item) use ($sizesToRemove) {
+                return !in_array($item['attribute'], $sizesToRemove);
+            }));
+        }
+    }
+    return $data;
+}
+
     /**
      * return new attribute according to available variation list for a product
      */
@@ -187,6 +198,24 @@ class ProductController extends Controller
             }
         }
 
+        // Added a static condition to display the correct sizes. This function needs a complete rewrite in the future.
+        if ($request->product_id == 230 && $request->index == 1) {
+            $sizesToRemove = [];
+
+            if ($request->product_att_id == 1429 && in_array($request->rootAttributeId, [1427, 1436])) {
+                $sizesToRemove = ($request->attr_count == 1) ? ['S32', 'M36', 'L62'] : ['S32', 'S38'];
+            } elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1427) {
+                $sizesToRemove = ['S38'];
+            }
+
+            if (!empty($sizesToRemove)) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
+
+
+
+        
         return view('components.attribute', [
             'index' => $request->index + 1,
             'attribute' => $attribute,

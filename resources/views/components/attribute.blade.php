@@ -12,11 +12,12 @@
                  </h6>
              </div>
              <div class="grid-four pb-[10px]">
+                @php $attr_count = count($attribute[$k]); @endphp
                  @foreach ($attribute[$k] as $v1)
                      <button type="button" id="button_{{ $k }}_{{ $v1['product_attr_id'] }}"
                          class="grid-five cursor-pointer hover:ring hover:ring-[#FF9119]-300 attribute_buttons_{{ $k }}"
                          data-description="{{ $v1['small_description'] }}" data-title="{{ $v1['attribute'] }}"
-                         onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }}, this)">
+                         onclick="changeAttribute({{ $v1['product_attr_id'] }},{{ $product['id'] }},{{ $index }},{{ $k }},{{$attr_count}}, this)">
                          <div class="five-g-img">
                              <img src="<?php if (isset($v1['image']) && $v1['image'] != '') {
                                  echo url('storage/' . $v1['image']);
@@ -74,7 +75,7 @@
         //      }
         //  });
         
-         function changeAttribute(product_att_id, product_id, index, k, el = null) {
+         function changeAttribute(product_att_id, product_id, index, k,attr_count = 0, el = null) {
 
              const imgElement = el.querySelector('.five-g-img img');
              const imageUrl = imgElement?.src;
@@ -138,7 +139,7 @@
                  }
 
              }
-
+             var rootAttributeId = $("#pro_att_0").val();
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
@@ -171,6 +172,8 @@
                          product_att_id: product_att_id,
                          product_id: product_id,
                          index: index,
+                         rootAttributeId:rootAttributeId,
+                         attr_count:attr_count
                      },
                      success: function(response) {
                          var j = index + 1;
