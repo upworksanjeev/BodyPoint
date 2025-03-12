@@ -233,6 +233,52 @@ class ProductController extends Controller
             }
         }
 
+        if ($request->product_id == 238 && $request->index == 2) {
+            $sizesToRemove = [];
+
+            $validProductAttIds = [1284, 1285];
+
+            if ($request->product_att_id == 1284 && $request->rootAttributeId == 1289 && $request->attr_count == 1) {
+                $sizesToRemove = ['M46', 'L62'];
+            } elseif (in_array($request->product_att_id, $validProductAttIds) && 
+                    $request->rootAttributeId == 1291 && 
+                    $request->attr_count == 2) {
+
+                if (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1294) {
+                    $sizesToRemove = ['S38', 'L62'];
+                } else {
+                    $sizesToRemove = ['S38'];
+                }
+            } elseif (in_array($request->product_att_id, $validProductAttIds) && 
+                    $request->rootAttributeId == 1292 && 
+                    $request->attr_count == 2) {
+
+                if (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1293) {
+                    $sizesToRemove = ['S38'];
+                } elseif (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1294) {
+                    $sizesToRemove = ['S38', 'L62'];
+                }
+            }
+
+            if (!empty($sizesToRemove)) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
+
+        if ($request->product_id == 213 && $request->index == 1) {
+            $sizesToRemove = match (true) {
+                in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 625 && $request->attr_count == 2 => ['S38'],
+                in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 1304 && $request->attr_count == 2 => ['M36'],
+                default => []
+            };
+
+            if ($sizesToRemove) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
+
+
+
 
 
         

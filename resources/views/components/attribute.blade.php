@@ -140,6 +140,7 @@
 
              }
              var rootAttributeId = $("#pro_att_0").val();
+             var rootAttributeIdChild = $("#pro_att_1").val();
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
@@ -173,7 +174,8 @@
                          product_id: product_id,
                          index: index,
                          rootAttributeId:rootAttributeId,
-                         attr_count:attr_count
+                         attr_count:attr_count,
+                         rootAttributeIdChild:rootAttributeIdChild
                      },
                      success: function(response) {
                          var j = index + 1;
