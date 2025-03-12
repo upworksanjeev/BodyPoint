@@ -124,7 +124,7 @@ class ProfileController extends Controller
                 'max:255',
                 function ($attribute, $value, $fail) {
                     if (AssociateCustomer::where('user_id', Auth::id())->where('customer_id', $value)->exists()) {
-                        $fail('This Syspro Customer ID is already associated with your account.');
+                        $fail('This Customer Account Number is already associated with your account.');
                     }
                 }
             ],
@@ -142,7 +142,7 @@ class ProfileController extends Controller
 
             return redirect()->route('link-account')->with('success', 'Account linked successfully.');
         }else{
-            return redirect()->back()->withInput()->with('error', 'This account number not found.');
+            return redirect()->back()->withInput()->with('error', 'This Account Number not found.');
         }
        
     }
