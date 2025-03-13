@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\OrderAttribute;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\UserDetails;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
@@ -39,7 +41,16 @@ class QuoteController extends Controller
             $end_date = date('y-m-d 23:59:59', strtotime($request->end_date));
         }
         if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -49,7 +60,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->search_input != '' && $request->start_date != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -58,7 +78,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->start_date != '' && $request->end_date != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -67,7 +96,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->search_input != '' && $request->end_date != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -77,7 +115,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->search_input != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -86,7 +133,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->start_date != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -94,7 +150,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->end_date != '') {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -102,7 +167,16 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
-            $quotes = Order::with('User', 'OrderItem.Product.Media')
+            $quotes = Order::with([
+                'User',
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media'
+            ])
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -254,5 +328,166 @@ class QuoteController extends Controller
             return Response::json(['success' => true, 'address' => $get_address]);
         }
         return Response::json(['success' => false]);
+    }
+
+    public function edit(Order $quote)
+    {
+        // Load quote items and any necessary relations
+        $quote = $quote->load([
+            'orderItem' => function ($query) {
+                $query->whereNull('action')
+                    ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+            }
+        ]);
+        return view('quotes.edit-quote', compact('quote'));
+    }
+
+    public function updateQuoteItem(Request $request)
+    {
+        $user = Auth::user();
+        if ($request->has('cart_item_id')) {
+            $orderitems = OrderItem::where('id', $request->cart_item_id)->first();
+            if ($orderitems) {
+                $order = Order::where('id', $orderitems->order_id)->first();
+                if ($order) {
+
+                    if ($request->option == "increment") {
+                        $order_quantity = $order->total_items + 1;
+                        $orderitems->update(['quantity' => $orderitems->quantity + 1, 'action' => OrderItem::ACTION_UPDATE]);
+                    } elseif ($request->option == "decrement") {
+                        $order_quantity = $order->total_items - 1;
+
+                        if ($orderitems->quantity - 1 == 0) {
+                            //OrderAttribute::where('cart_item_id', $orderitems->id)->delete();
+                            //$orderitems->delete();
+                            $orderitems->update(['action' => OrderItem::ACTION_DELETE]);
+                        } else {
+                            $orderitems->update(['quantity' => $orderitems->quantity - 1, 'action' => OrderItem::ACTION_UPDATE]);
+                        }
+                    } elseif ($request->option == "delete") {
+                        $order_quantity = $order->total_items - $orderitems->quantity;
+                        //OrderAttribute::where('cart_item_id', $orderitems->id)->delete();
+                        //$orderitems->delete();
+                        $orderitems->update(['action' =>  OrderItem::ACTION_DELETE]);
+                    } elseif ($request->option == 'updateQuantity') {
+                        if ($request->quantity != 0 && !empty($request->quantity)) {
+                            $orderitems->update(['quantity' => $request->quantity]);
+                            $order_quantity = CartItem::where('cart_id', $order->id)->sum('quantity');
+                        }
+                    }
+                    $order->update(['total_items' => $order_quantity]);
+                }
+            }
+        }
+        //$order = $order->load('orderItem');
+        $order = $order->load([
+            'orderItem' => function ($query) {
+                $query->whereNull('action')
+                    ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+            }
+        ]);
+        return view('components.cart.quote-product-list', ['page' => 'cart', 'quote' => $order]);
+    }
+
+    public function addToQuote(Request $request,  $id)
+    {
+        $user = Auth::user();
+        $sku = $request->sku;
+        if ($request->has('product_id')) {
+            $product = Product::where('id', $request->product_id)->first();
+            $variations = [];
+            $skuExists = false;
+            if ($product) {  // Check if $product is not null
+                if (!empty($product->variation)) {
+                    $variations = $product->variation->pluck('sku')->toArray();
+                }
+
+                $skuExists = in_array($request->sku, $variations) || ($product->sku === $request->sku);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Product not found.']);
+            }
+
+            $order = order::where('id', $id)->first();
+            if (!empty(auth()->user()->default_customer_id) && $skuExists) {
+                $customer_id = getCustomerId();
+                $url = 'GetCustomerDetails/' . $customer_id;
+                $syspro_products = SysproService::getCustomerDetails($url);
+                if (!empty($syspro_products['PriceList'])) {
+                    session()->put('customer_details', $syspro_products);
+                    $product['discount'] = $syspro_products['CustomerDiscountPercentage'];
+                    $isStockItem = false;
+                    $existingKey = array_search($request->sku, array_column($syspro_products['PriceList'], 'StockCode'));
+                    if (!empty($existingKey)) {
+                        $product->price = $syspro_products['PriceList'][$existingKey]['DealerPrice'];
+                        $product->msrp = $syspro_products['PriceList'][$existingKey]['MSRPPrice'];
+                        $product->sku = $syspro_products['PriceList'][$existingKey]['StockCode'];
+                        $isStockItem = true;
+                    }
+                    if (!$isStockItem) {
+                        return response()->json(['success' => false, 'message' => 'Non-Stock Item Cannot be Added To Cart']);
+                    }
+                }
+            }
+            if ($order) {
+                $order->update(['total_items' => $order->total_items + $request->qty]);
+            } else {
+                $order = order::create([
+                    'user_id' => $user->id,
+                    'total_items' => $request->qty,
+                ]);
+            }
+
+            if ($request->variation_id && $request->variation_id != '') {
+                $orderitems = OrderItem::where('order_id', $order->id)
+                    ->where('product_id', $request->product_id)
+                    ->where('variation_id', $request->variation_id)
+                    ->where(function ($query) {
+                        $query->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    })
+                    ->first();
+                $var_id = $request->variation_id;
+            } else {
+                $orderitems = OrderItem::where('order_id', $order->id)
+                    ->where('product_id', $request->product_id)
+                    ->where('sku', $product->sku ?? '')
+                    ->where(function ($query) {
+                        $query->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    })
+                    ->first();
+                $var_id = NULL;
+            }
+            if ($orderitems) {
+                $orderitems->update(['quantity' => $orderitems->quantity + $request->qty]);
+            } else {
+                if ($product['discount'] != '' && $product['discount'] > 0) {
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                    $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
+                } else {
+                    $product['discount_price'] = $product['price'];
+                }
+                $orderitems = OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $request->product_id,
+                    'variation_id' => $var_id,
+                    'sku' => $product->sku ?? '',
+                    'msrp' => $product->msrp ?? null,
+                    'price' => $product->price,
+                    'discount' => $product['discount_in_price'] ?? 0,
+                    'discount_price' => $product['discount_price'],
+                    'quantity' => $request->qty,
+                    'action' => 'A'
+                ]);
+            }
+        }
+        //$order = $order->load('orderItem');
+        $order = $order->load([
+            'orderItem' => function ($query) {
+                $query->whereNull('action')
+                    ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+            }
+        ]);
+        return view('components.cart.quote-product-list', ['page' => 'cart', 'quote' => $order]);
     }
 }
