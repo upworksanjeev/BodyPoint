@@ -277,6 +277,18 @@ class ProductController extends Controller
             }
         }
 
+        if ($request->product_id == 179 && $request->index == 1) {
+            $sizesToRemove = match (true) {
+                in_array($request->product_att_id, [546, 1280]) && $request->rootAttributeId == 554 && $request->attr_count == 2 => ['S38'],
+                in_array($request->product_att_id, [546, 1280]) && $request->rootAttributeId == 560 && $request->attr_count == 2 => ['L62'],
+                default => []
+            };
+
+            if ($sizesToRemove) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
+
 
 
 
