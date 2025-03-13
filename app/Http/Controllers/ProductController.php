@@ -216,17 +216,31 @@ class ProductController extends Controller
         if ($request->product_id == 223 && $request->index == 1) {
             $sizesToRemove = [];
 
-            if ($request->product_att_id == 1400) {
-                if ($request->rootAttributeId == 1397 && $request->attr_count == 3) {
-                    $sizesToRemove = ['L82', 'L92'];
-                } elseif ($request->rootAttributeId == 1398 && $request->attr_count == 2) {
-                    $sizesToRemove = ['S32', 'S38', 'L82', 'L92'];
-                } elseif ($request->rootAttributeId == 1399 && $request->attr_count == 1) {
-                    $sizesToRemove = ['L62', 'L82', 'L92'];
-                }
-            } elseif ($request->product_att_id == 1401 && $request->rootAttributeId == 1398 && $request->attr_count == 2) {
-                $sizesToRemove = ['S38'];
+            if($request->product_att_id == 1400 && $request->rootAttributeId == 1495 && $request->attr_count == 2 || $request->product_att_id == 1401 && $request->rootAttributeId == 1495 && $request->attr_count == 2)
+            {
+                $sizesToRemove = ['M36', 'M40','M46','L62','L82','L92'];
             }
+            else if($request->product_att_id == 1400 && $request->rootAttributeId == 1396 && $request->attr_count == 2 || $request->product_att_id == 1401 && $request->rootAttributeId == 1396 && $request->attr_count == 2)
+            {
+                $sizesToRemove = ['S32', 'S38'];
+            }
+
+            else if($request->product_att_id == 1400 && $request->rootAttributeId == 1397 && $request->attr_count == 3 || $request->product_att_id == 1401 && $request->rootAttributeId == 1397 && $request->attr_count == 3 || $request->product_att_id == 1402 && $request->rootAttributeId == 1397 && $request->attr_count == 3)
+            {
+                $sizesToRemove = ['L82', 'L92'];
+            }
+
+            else if($request->product_att_id == 1400 && $request->rootAttributeId == 1398 && $request->attr_count == 2 || $request->product_att_id == 1401 && $request->rootAttributeId == 1398 && $request->attr_count == 2)
+            {
+                $sizesToRemove = ['S32', 'S38','L82','L92'];
+            }
+
+            else if($request->product_att_id == 1400 && $request->rootAttributeId == 1399 && $request->attr_count == 1 )
+            {
+                $sizesToRemove = [ 'L62','L82','L92'];
+            }
+           
+           
 
             if ($sizesToRemove) {
                 $attribute = $this->filterAttributes($attribute, $sizesToRemove);
