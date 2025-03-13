@@ -141,9 +141,16 @@ class ProfileController extends Controller
             ]);
 
             return redirect()->route('link-account')->with('success', 'Account linked successfully.');
-        }else{
+        } else {
             return redirect()->back()->withInput()->with('error', 'This Account Number not found.');
         }
-       
+    }
+
+    public function unlinkAccount($id)
+    {
+        $account = AssociateCustomer::where('user_id', Auth::id())->findOrFail($id);
+        $account->delete();
+
+        return redirect()->route('link-account')->with('success', 'Customer account unlinked successfully.');
     }
 }

@@ -20,7 +20,7 @@
                             <!-- Name -->
                             <div class="w-full md:w-2/4  pr-0 md:pr-2">
                                 <x-input-label for="syspro_customer_id" :value="__('Customer Account Number')" />
-                                <x-text-input id="syspro_customer_id" required class="block mt-1 w-full" type="text" name="syspro_customer_id" :value="old('syspro_customer_id')"  autofocus  />
+                                <x-text-input id="syspro_customer_id" required class="block mt-1 w-full" type="text" name="syspro_customer_id" :value="old('syspro_customer_id')"  autofocus  oninput="this.value = this.value.toUpperCase()" />
                                 <x-input-error :messages="$errors->get('syspro_customer_id')" class="mt-2" />
                             </div>
 
@@ -49,46 +49,39 @@
 
             </form>
     </div>
-    {{-- <hr> --}}
-
-    <!-- Associate Customers List -->
-    {{-- <h3>Existing Customers</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Syspro Customer ID</th>
-                <th>Name</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($customers as $customer)
-                <tr>
-                    <td>{{ $customer->customer_id }}</td>
-                    <td>{{ $customer->name }}</td>
-                    <td>{{ $customer->first_name }}</td>
-                    <td>{{ $customer->last_name }}</td>
-                    <td>
-                        <!-- Edit Button -->
-                        <form action="" method="POST" style="display:inline;">
-                            @csrf
-                            <input type="text" name="name" value="{{ $customer->name }}" required>
-                            <input type="text" name="first_name" value="{{ $customer->first_name }}">
-                            <input type="text" name="last_name" value="{{ $customer->last_name }}">
-                        <button type="submit" class="btn btn-warning btn-sm">Update</button>
-                        </form>
-
-                        <!-- Delete Button -->
-                        <form action="" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table> --}}
+     
+     <div class="w-full sm:max-w-xl mt-6 px-6 py-8 overflow-hidden border border-gray-200 rounded-lg bg-white">
+        <h3 class="text-lg text-[#00838f] font-bold mb-4">Linked Customer Accounts</h3>
+        @if($customers->isNotEmpty())
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border px-4 py-2">Customer Account Number</th>
+                        <th class="border px-4 py-2">Account Nickname</th>
+                        <th class="border px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($customers as $customerAccount)
+                        <tr>
+                            <td class="border px-4 py-2">{{ $customerAccount->customer_id }}</td>
+                            <td class="border px-4 py-2">{{ $customerAccount->name }}</td>
+                            <td class="border px-4 py-2">
+                                <!-- Unlink Form -->
+                                <form action="{{ route('unlink-account', $customerAccount->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to unlink this account?');" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                        Unlink
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p class="text-center text-gray-600">No customer accounts linked.</p>
+        @endif
+    </div>
 </section>

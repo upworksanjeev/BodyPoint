@@ -40,4 +40,9 @@ class AssociateCustomer extends Model
         'country',
         'zip_code'
     ];
+
+    public function setCustomerIdAttribute($value)
+    {
+        $this->attributes['customer_id'] = strtoupper($value);
+    }
 }
