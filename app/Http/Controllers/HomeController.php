@@ -1076,19 +1076,57 @@ class HomeController extends Controller
             ])->first();
         
             $rolesToCheck = ['VA', 'WC', 'WI', 'WM', 'WR', 'WL'];
-        
-            if ($customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
-                $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
-                    return $item['name'] !== 'Dealer Price List';
-                }));
+            $url = 'GetCustomerDetails/' . $customer_id;
+            $get_customer_details = SysproService::getCustomerDetails($url);
+            if($get_customer_details){
+                $customerType = $get_customer_details['CustomerType'];
             }
+            // if ($customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
+            //     $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+            //         return $item['name'] !== 'Dealer Price List';
+            //     }));
+            // }
             
-            if (Auth::user()->hasAnyRole(['VA', 'WC', 'WI', 'WM', 'WR', 'WL'])) {
-                $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
-                    return $item['name'] !== 'Dealer Price List';
-                }));
+            // if (Auth::user()->hasAnyRole(['VA', 'WC', 'WI', 'WM', 'WR', 'WL'])) {
+            //     $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+            //         return $item['name'] !== 'Dealer Price List';
+            //     }));
+            // }
+
+            switch ($customerType) {
+                case 'Domestic':
+                    
+                    $pricing_guide = array_filter($pricing_guide, function ($item) {
+                        return in_array($item['name'], [
+                            'Americas',
+                            'Dealer Price List',
+                            'Retail Price List',
+                        ]);
+                    });
+                    break;
+        
+                case 'International':
+                   
+                    $pricing_guide = array_filter($pricing_guide, function ($item) {
+                        return in_array($item['name'], [
+                            'International',
+                            'Retail Price List',
+                        ]);
+                    });
+                    break;
+        
+                case 'Manufacturer':
+                    
+                    $pricing_guide = [];
+                    break;
+        
+                default:
+                   
+                    $pricing_guide = [];
+                    break;
             }
         }
+        $pricing_guide = array_values($pricing_guide);
         $data = [
             'frequently_user_files' => $frequently_user_files,
             'newly_added' => $newly_added,
