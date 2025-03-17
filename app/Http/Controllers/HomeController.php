@@ -182,7 +182,8 @@ class HomeController extends Controller
             [
                 [
                     'name' => 'Americas',
-                    'url' => 'https://bodypoint.com/wp-content/uploads/2024/12/Bodypoint-2025-Dealer-Price-List-AMERICAS.xlsx',
+                    //'url' => 'https://bodypoint.com/wp-content/uploads/2024/12/Bodypoint-2025-Dealer-Price-List-AMERICAS.xlsx',
+                    'url' => asset('storage/pricing/Bodypoint-2025-Dealer-Price-List-AMERICAS.xlsx'),
                 ],
                 [
                     'name' => 'International',
