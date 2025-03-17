@@ -98,7 +98,7 @@ class SysproService
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
                 'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
-                "MakeForLine"=>$item->marked_for,
+                "MakeForLine"=>$item->marked_for ?? '',
             ];
         }
 
