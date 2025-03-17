@@ -153,142 +153,88 @@ class ProductController extends Controller
      * return new attribute according to available variation list for a product
      */
     public function getNextAttribute(Request $request)
-    {
-        $product = Product::with(['media'])->where('id', $request->product_id)->first();
-        $var_att_ids = VariationAttribute::select('variation_id')->where('product_attribute_id', $request->product_att_id)->get();
-        $attr = [];
-        $productattr = [];
+{
+    // Get the product with its media.
+    $product = Product::with(['media'])
+        ->where('id', $request->product_id)
+        ->first();
 
-        foreach ($var_att_ids as $k => $v) {
-            $var_att = VariationAttribute::select('product_attribute_id')->where('variation_id', $v->variation_id)->get()->toArray();
-            foreach ($var_att as $k1 => $v1) {
-                if (!in_array($v1['product_attribute_id'], $attr)) {
-                    $attr[] = $v1['product_attribute_id'];
-                    $productattr[] = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
-                        ->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
-                        ->where('product_attributes.id', $v1['product_attribute_id'])->first();
+    // Retrieve all variation IDs that have the provided product attribute.
+    $varAttIds = VariationAttribute::select('variation_id')
+        ->where('product_attribute_id', $request->product_att_id)
+        ->get();
+
+    $attrIds = [];
+    $productAttributes = [];
+
+    // For each variation, retrieve all related product_attribute_ids.
+    foreach ($varAttIds as $var) {
+        $variationAttributes = VariationAttribute::select('product_attribute_id')
+            ->where('variation_id', $var->variation_id)
+            ->get()
+            ->toArray();
+
+        foreach ($variationAttributes as $attrData) {
+            // Only add if this attribute hasn't been added already.
+            if (!in_array($attrData['product_attribute_id'], $attrIds)) {
+                // Join to retrieve related attribute category and attribute details,
+                // ensuring the attribute belongs to the current product.
+                $relatedAttribute = AttributeCategory::leftJoin('attributes', 'attribute_categories.id', '=', 'attributes.att_cat_id')
+                    ->leftJoin('product_attributes', 'attributes.id', '=', 'product_attributes.attr_id')
+                    ->where('product_attributes.id', $attrData['product_attribute_id'])
+                    ->where('product_attributes.prod_id', $request->product_id)
+                    ->first();
+
+                if ($relatedAttribute) {
+                    $attrIds[] = $attrData['product_attribute_id'];
+                    $productAttributes[] = $relatedAttribute;
                 }
             }
         }
-        $i = 0;
-        $category = [];
-        $attribute = [];
-        /* attributes and their categories name for this product */
-        $j = 0;
-
-        $productattr = collect($productattr)->sortBy('attr_order')->values();
-        foreach ($productattr as $k => $v) {
-            if (in_array($v['category'], $category)) {
-                $key = array_search($v['category'], $category);
-                $j++;
-                $attribute[$key][$j]['id'] = $v['attr_id'];
-                $attribute[$key][$j]['product_attr_id'] = $v['id'];
-                $attribute[$key][$j]['attribute'] = $v['attribute'];
-                $attribute[$key][$j]['small_description'] = $v['small_description'];
-                $attribute[$key][$j]['image'] = $v['image'];
-            } else {
-                $j = 0;
-                $category[$i] = $v['category'];
-                $attribute[$i][$j]['id'] = $v['attr_id'];
-                $attribute[$i][$j]['product_attr_id'] = $v['id'];
-                $attribute[$i][$j]['attribute'] = $v['attribute'];
-                $attribute[$i][$j]['small_description'] = $v['small_description'];
-                $attribute[$i][$j]['image'] = $v['image'];
-                $i++;
-            }
-        }
-
-        // Added a static condition to display the correct sizes. This function needs a complete rewrite in the future.
-        if ($request->product_id == 230 && $request->index == 1) {
-            $sizesToRemove = [];
-
-            if ($request->product_att_id == 1429 && in_array($request->rootAttributeId, [1427, 1436])) {
-                $sizesToRemove = ($request->attr_count == 1) ? ['S32', 'M36', 'L62'] : ['S32', 'S38'];
-            } elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1427) {
-                $sizesToRemove = ['S38'];
-            }
-
-            if (!empty($sizesToRemove)) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 223 && $request->index == 1) {
-            $sizesToRemove = [];
-
-            if ($request->product_att_id == 1400) {
-                if ($request->rootAttributeId == 1397 && $request->attr_count == 3) {
-                    $sizesToRemove = ['L82', 'L92'];
-                } elseif ($request->rootAttributeId == 1398 && $request->attr_count == 2) {
-                    $sizesToRemove = ['S32', 'S38', 'L82', 'L92'];
-                } elseif ($request->rootAttributeId == 1399 && $request->attr_count == 1) {
-                    $sizesToRemove = ['L62', 'L82', 'L92'];
-                }
-            } elseif ($request->product_att_id == 1401 && $request->rootAttributeId == 1398 && $request->attr_count == 2) {
-                $sizesToRemove = ['S38'];
-            }
-
-            if ($sizesToRemove) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 238 && $request->index == 2) {
-            $sizesToRemove = [];
-
-            $validProductAttIds = [1284, 1285];
-
-            if ($request->product_att_id == 1284 && $request->rootAttributeId == 1289 && $request->attr_count == 1) {
-                $sizesToRemove = ['M46', 'L62'];
-            } elseif (in_array($request->product_att_id, $validProductAttIds) && 
-                    $request->rootAttributeId == 1291 && 
-                    $request->attr_count == 2) {
-
-                if (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1294) {
-                    $sizesToRemove = ['S38', 'L62'];
-                } else {
-                    $sizesToRemove = ['S38'];
-                }
-            } elseif (in_array($request->product_att_id, $validProductAttIds) && 
-                    $request->rootAttributeId == 1292 && 
-                    $request->attr_count == 2) {
-
-                if (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1293) {
-                    $sizesToRemove = ['S38'];
-                } elseif (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1294) {
-                    $sizesToRemove = ['S38', 'L62'];
-                }
-            }
-
-            if (!empty($sizesToRemove)) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 213 && $request->index == 1) {
-            $sizesToRemove = match (true) {
-                in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 625 && $request->attr_count == 2 => ['S38'],
-                in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 1304 && $request->attr_count == 2 => ['M36'],
-                default => []
-            };
-
-            if ($sizesToRemove) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-
-
-
-
-        
-        return view('components.attribute', [
-            'index' => $request->index + 1,
-            'attribute' => $attribute,
-            'category' => $category,
-            'product' => $product
-        ]);
     }
+
+    // Sort the attributes based on the "attr_order" field and re-index.
+    $productAttributes = collect($productAttributes)->sortBy('attr_order')->values();
+
+    // Group the attributes by their category.
+    $i = 0;
+    $category = [];
+    $attribute = [];
+    $j = 0;
+
+    foreach ($productAttributes as $v) {
+        if (in_array($v->category, $category)) {
+            $key = array_search($v->category, $category);
+            $j++;
+            $attribute[$key][$j] = [
+                'id'                => $v->attr_id,
+                'product_attr_id'   => $v->id,
+                'attribute'         => $v->attribute,
+                'small_description' => $v->small_description,
+                'image'             => $v->image,
+            ];
+        } else {
+            $j = 0;
+            $category[$i] = $v->category;
+            $attribute[$i][$j] = [
+                'id'                => $v->attr_id,
+                'product_attr_id'   => $v->id,
+                'attribute'         => $v->attribute,
+                'small_description' => $v->small_description,
+                'image'             => $v->image,
+            ];
+            $i++;
+        }
+    }
+
+    return view('components.attribute', [
+        'index'     => $request->index + 1,
+        'attribute' => $attribute,
+        'category'  => $category,
+        'product'   => $product
+    ]);
+}
+
 
     /**
      * return list of product on basis of search keyword

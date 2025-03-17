@@ -97,6 +97,7 @@ class SysproService
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
                 'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
+                "MakeForLine"=>$item->marked_for,
             ];
         }
 
@@ -104,7 +105,47 @@ class SysproService
             'Order' => $order_data,
             'Lines' => $items,
         ];
+        $response = self::post($url, $request);
+        return self::returnResponse($response);
+    }
 
+    public static function updateQuote($order_no,$url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
+    {
+        self::initialize();
+        if (!$order_id) {
+            $order_id = rand(0, 9999999);
+        }
+        $address =  session()->get('customer_address');
+        $customer_id = getCustomerId();
+        $order_data = [
+            'OrderNumber' => $order_no,
+            "AllowDuplicatePO" => "Y",
+            'ShipAddressCode' => $address['PostalCode'] ?? 'default_code',
+            'ShipAddress1' =>  $address['AddressLine1'] ?? 'default_address1',
+            'ShipAddress2' => $address['AddressLine2'] ?? '',
+            'ShipAddress3' => $address['AddressLine3']  ?? '',
+            'ShipAddress4' => $address['AddressLine4']  ?? '',
+            'ShipAddress5' => $address['AddressLine5']  ?? '',
+            'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
+        ];
+
+        $items = [];
+        foreach ($cartitems as $key => $item) {
+            $items[$key] = [
+                "SalesOrderLine" => $item->line_number,
+                "Action" => $item->action ?? 'N',
+                'StockCode' => $item->sku,
+                'Qty' => $item->quantity,
+                'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
+                "MakeForLine"=>$item->marked_for
+            ];
+        }
+
+        $request = [
+            'Order' => $order_data,
+            'Lines' => $items,
+        ];
+        dd(json_encode($request));
         $response = self::post($url, $request);
         return self::returnResponse($response);
     }

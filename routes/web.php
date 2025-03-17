@@ -60,8 +60,10 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/generate-quote',[QuoteController::class, 'store'])->name('generateQuote');
     Route::get('/quotes',[QuoteController::class, 'index'])->name('quotes');
     Route::get('/quote/{quote}/edit', [QuoteController::class, 'edit'])->name('quote.edit');
+    Route::get('/quote/{quote}', [QuoteController::class, 'update'])->name('quote.update');
     Route::post('/update-quote-item', [QuoteController::class, 'updateQuoteItem'])->name('update-quote-item');
     Route::post('/add-to-quote/{id}', [QuoteController::class, 'addToQuote'])->name('add-to-quote');
+    Route::post('/update-quote-item-marked', [QuoteController::class, 'updateQuoteItemMarked'])->name('update-quote-item-marked');
     Route::post('/quotes', [QuoteController::class, 'index'])->name('quote-search');
     Route::get('/pdf/{quote_id}', [QuoteController::class, 'pdfDownloadQuote'])->name('pdf-download-quote');
     Route::get('/save-shipping-address', [QuoteController::class, 'saveShippingAddress'])->name('saveShippingAddress');

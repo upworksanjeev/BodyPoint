@@ -56,11 +56,11 @@
 
           <div>
            
-              <button type="button" onclick="updateQuoteItem()" 
+              <button type="button" onclick="addToQuote()" 
                 class="py-2.5 px-5 text-sm font-medium text-white bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">
-                <div class="w-[20px] h-[20px]">
-                  {{-- <x-icons.basket /> --}}
-                </div>
+                {{-- <div class="w-[20px] h-[20px]">
+                  <x-icons.basket />
+                </div> --}}
                 Add To Quote
               </button>
            
@@ -80,6 +80,57 @@
           </a>
         </div>
       </div>
+    </div>
+
+    <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                    <h3 class="text-xl font-semibold text-gray-900">
+                        Change Shipping Address
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="default-modal">
+                       <x-icons.close />
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <ul class="grid w-full gap-6 md:grid-cols-2">
+                        @foreach(session('customer_details')['ShipToAddresses'] as $key => $address)
+                            <li>
+                                <input type="radio" id="shipping-radio-{{ $key }}" name="shipping" class="hidden peer shipping-radio-class" required data-key="{{ $key }}" />
+                                <label for="shipping-radio-{{ $key }}" class="inline-flex items-center justify-between w-full p-3 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-600 hover:bg-gray-100">
+                                    <div class="block">
+                                        <div class="w-full text-normal font-semibold mb-2">{{ session('customer_details')['CustomerName'] }}</div>
+                                        <div class="w-full text-sm font-normal leading-[17px] space-y-1 shipping-address-{{ $key }}">
+                                            {{ $address['AddressLine1'] ?? '' }}<br>
+                                            {{ $address['AddressLine2'] ?? '' }}<br>
+                                            {{ $address['AddressLine3'] ?? '' }}<br>
+                                            {{ $address['State'] }} {{ $address['PostalCode'] ?? '' }}<br>
+                                            {{ $address['Country'] ?? '' }}
+                                        </div>
+                                    </div>
+                                </label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                    <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[100px]">Close</button>
+                    <button
+                        data-modal-hide="default-modal"
+                        type="button"
+                        id="updateShippingAddress"
+                        class="py-2.5 px-5 gap-3  text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex items-center hover:bg-[#FF9119]/80 justify-center w-[100px] ml-2">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
   </section>
 
@@ -120,7 +171,7 @@
       }
 
       // Function to update quote item (similar to addToCart but for quote update)
-      function updateQuoteItem() {
+      function addToQuote() {
         $('#error_alert').remove();
         if($('#selected_product_id').val() === ''){
           $('#myInput').addClass('focus:ring-red-500 focus:border-red-500').focus();
@@ -168,6 +219,36 @@
           $('#stock_search_div').removeClass('block').addClass('hidden');
         }
       });
+
+
+      //change shiping address
+
+      $(document).on('click', '.shipping-radio-class', function () {
+        var key = $(this).attr("data-key");
+        $('#updateShippingAddress').attr("data-key", key);
+    });
+
+    $(document).on('click', '#updateShippingAddress', function () {
+        var key = $(this).attr("data-key");
+        var address = $('.shipping-address-'+key).html();
+        $.ajax({
+            url: '{{ route('saveShippingAddress') }}',
+            type: 'GET',
+            data: {
+                shipping_address_key: key
+            },
+            success: function(response) {
+                if(response.success) {
+                    toastr.success('Customer Address Changed Successfully');
+                    $('.change-shipping-address').html(address);
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error(error);
+            }
+        });
+    });
+
     </script>
   @endpush
 </x-mainpage-layout>

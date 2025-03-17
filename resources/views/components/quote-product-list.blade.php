@@ -101,9 +101,9 @@
         }
 
         /* update cart item details */
-        function updateCartItem(cart_item_id) {
+        function updateQuoteItem(cart_item_id) {
             $.ajax({
-                url: "{{ route('update-cart-item-marked') }}",
+                url: "{{ route('update-quote-item-marked') }}",
                 type: 'POST',
                 data: {
                     "_token": "{{ csrf_token() }}",
@@ -129,7 +129,7 @@
             }
             if (quantity != 0 || quantity != "") {
                 $.ajax({
-                    url: "{{ route('update-cart-item') }}",
+                    url: "{{ route('update-quote-item') }}",
                     type: 'POST',
                     data: {
                         "_token": "{{ csrf_token() }}",

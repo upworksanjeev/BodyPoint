@@ -16,13 +16,13 @@
                     </div>
                     <div class="flex-1">
                       <p class="text-sm font-normal leading-[18px] mb-2"><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
-                      {{-- <div class="flex gap-2">
+                      <div class="flex gap-2">
                         <label class="text-sm font-normal leading-4 text-[#525252]">Marked <br />
                           for:</label>
-                        <input type="text" id="marked_for_{{ $cartitem['id'] }}" value="{{ $cartitem['marked_for'] }}" onchange="updateCartItem({{ $cartitem['id'] }})"
+                        <input type="text" id="marked_for_{{ $cartitem['id'] }}" value="{{ $cartitem['marked_for'] }}" onchange="updateQuoteItem({{ $cartitem['id'] }})"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
                           required />
-                      </div> --}}
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -91,8 +91,13 @@
                 </td> --}}
                 <td class="w-4 p-4" colspan="6">
                   <div class="flex items-center justify-end gap-2">
+                    <button data-modal-target="default-modal" data-modal-toggle="default-modal" type="button"
+                  class="py-1.5 px-4 text-sm font-normal text-[#000] focus:outline-none bg-white rounded-full border border-[#000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center">
+                 <x-icons.map />
+                  Change Address
+                </button>
                     {{-- <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a> --}}
-                    <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Update Quote</a>
+                    <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('quote.update', $quote->id ) }}"> Update Quote</a>
                   </div>
                 </td>
               </tr>
