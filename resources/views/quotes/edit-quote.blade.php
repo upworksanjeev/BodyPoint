@@ -73,12 +73,12 @@
         </div>
 
         <!-- Button to navigate to full quote edit page (if needed) -->
-        <div class="pt-4 md:pt-6 pb-2 text-right">
+        {{-- <div class="pt-4 md:pt-6 pb-2 text-right">
           <a href="{{ route('quote.edit', $quote->id) }}"
              class="text-base text-[#00707B] font-normal flex items-center justify-end gap-2">
              Full Quote Edit <x-icons.next-arrow />
           </a>
-        </div>
+        </div> --}}
       </div>
     </div>
 
