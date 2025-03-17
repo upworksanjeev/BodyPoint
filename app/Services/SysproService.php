@@ -156,7 +156,6 @@ class SysproService
             'Order' => $order_data,
             'Lines' => $items,
         ];
-        //dd(json_encode($request));
         $response = self::post($url, $request);
         return self::returnResponse($response);
     }
