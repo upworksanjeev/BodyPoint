@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\OrderItem;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -117,6 +118,16 @@ class SysproService
         }
         $address =  session()->get('customer_address');
         $customer_id = getCustomerId();
+        $maxLine = OrderItem::where('order_id', $order_no)->max('line_number') ?? 0;
+
+        $items = [];
+        foreach ($cartitems as $key => $item) {
+            // If the item doesn't have a SalesOrderLine, increment the max and assign it
+            if (empty($item->line_number)) {
+                $maxLine++;
+                $item->line_number = $maxLine;
+            }
+        }
         $order_data = [
             'OrderNumber' => $order_no,
             "AllowDuplicatePO" => "Y",
@@ -132,7 +143,7 @@ class SysproService
         $items = [];
         foreach ($cartitems as $key => $item) {
             $items[$key] = [
-                "SalesOrderLine" => $item->line_number,
+                "LineNumber" => $item->line_number,
                 "Action" => $item->action ?? 'N',
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
@@ -145,7 +156,7 @@ class SysproService
             'Order' => $order_data,
             'Lines' => $items,
         ];
-        dd(json_encode($request));
+        //dd(json_encode($request));
         $response = self::post($url, $request);
         return self::returnResponse($response);
     }

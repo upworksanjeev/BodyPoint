@@ -546,7 +546,7 @@ class QuoteController extends Controller
                 $url = 'UpdateQupte';
                 //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
                 $order_syspro = SysproService::updateQuote($order->purchase_order_no, $url, $orderitems, 'QUOTE', 'N', 'Y');
-                dd($order_syspro);
+                
                 if (!empty($order_syspro['response']['OrderNumber'])) {
                    
                     // $order = Order::create([
@@ -566,27 +566,21 @@ class QuoteController extends Controller
                         'associate_customer_id' => $customer->id ?? null,
                         'customer_number' => $customer_id,
                     ]);
-                    // if (!$orderitems->isEmpty()) {
-                    //     foreach ($orderitems as $orderitem) {
-                    //         $orderItems[] = [
-                    //             'product_id' => $orderitem->product_id,
-                    //             'variation_id' => $orderitem->variation_id,
-                    //             'marked_for' => $orderitem->marked_for,
-                    //             'msrp' => $orderitem->msrp,
-                    //             'sku' => $orderitem->sku,
-                    //             'price' => $orderitem->price,
-                    //             'discount' => $orderitem->discount,
-                    //             'discount_price' => $orderitem->discount_price,
-                    //             'quantity' => $orderitem->quantity,
-                    //         ];
-                    //         $total += $orderitem->discount_price * $orderitem->quantity;
-                    //     }
-                    //     $order->orderItem()->createMany($orderItems);
-                    // }
+                    if (!$orderitems->isEmpty()) {
+                        foreach ($orderitems as $orderitem) {
+                            if($orderitem->action != "D"){
+                                
+                                $total += $orderitem->discount_price * $orderitem->quantity;
+                            }
+                        }
+                        $order->orderItem()->createMany($orderItems);
+                    }
                     $url = 'GetOrderDetails/' . $order->purchase_order_no;
                     $response = SysproService::getOrderDetails($url);
+                    
                     if($response && $response['response']['Line']){
                         $lines = $response['response']['Line'];
+                       
                          foreach($lines as $line){
                              $orderItem = $order->orderItem()->where('sku', $line['StockCode'])->first();
                          
@@ -597,10 +591,11 @@ class QuoteController extends Controller
                          }
                          $orderItemsToDelete = $order->orderItem() ->where('action', 'D')->delete();
                      }
+                     
                     $order->update([
                         'status' => $response['response']['Status'],
                         'total' => $total,
-                        'customer_po_number' => $request->customer_po_number ?? null
+                        //'customer_po_number' => $request->customer_po_number ?? null
                     ]);
                 } elseif (!empty($order_syspro['response']['Error'])) {
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
@@ -608,20 +603,21 @@ class QuoteController extends Controller
             }
             $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-            $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
-            $pdf->render();
-            $pdfContent = $pdf->output();
-            FunHelper::saveGenerateQuotePdf($pdfContent, $user);
-            GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
+           // $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
+            //$pdf->render();
+           // $pdfContent = $pdf->output();
+           // FunHelper::saveGenerateQuotePdf($pdfContent, $user);
+           // GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
             //CartItem::where('cart_id', $cart[0]->id)->delete();
             //Cart::where('user_id', $user->id)->delete();
-            session()->put('downloadFile', asset('storage/' . $filePath));
+           // session()->put('downloadFile', asset('storage/' . $filePath));
             DB::commit();
             return redirect()->route('quotes')->with('success', 'Quote Update Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Quote creation failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'An error occurred while placing your Quote. Please try again.');
+            //dd($e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while updating your Quote. Please try again.');
         }
     }
 }
