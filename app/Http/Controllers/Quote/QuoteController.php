@@ -273,11 +273,10 @@ class QuoteController extends Controller
                     }
                     $url = 'GetOrderDetails/' . $order->purchase_order_no;
                     $response = SysproService::getOrderDetails($url);
-                    //dd($response);
                     $order->update([
                         'status' => $response['response']['Status'],
                         'total' => $total,
-                        'customer_po_number' => $response['response']['Status'] ?? null
+                        'customer_po_number' => $response['response']['CustomerPONumber'] ?? null
                     ]);
                 } elseif (!empty($order_syspro['response']['Error'])) {
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
