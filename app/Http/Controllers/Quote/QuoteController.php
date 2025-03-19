@@ -273,7 +273,6 @@ class QuoteController extends Controller
                     }
                     $url = 'GetOrderDetails/' . $order->purchase_order_no;
                     $response = SysproService::getOrderDetails($url);
-                    
                     $order->update([
                         'status' => $response['response']['Status'],
                         'total' => $total,
