@@ -13,8 +13,13 @@ class OrderItem extends Model
 {
     use HasFactory;
 
+    public const ACTION_UPDATE = 'U';
+    public const ACTION_ADD    = 'A';
+    public const ACTION_DELETE = 'D';
+    public const ACTION_NONE   = 'N';
+    
 	 protected $fillable = [
-        'order_id', 'product_id','price','quantity','discount','discount_price','marked_for','sku','variation_id','msrp'
+        'order_id', 'product_id','price','quantity','discount','discount_price','marked_for','sku','variation_id','msrp','action','line_number',
     ];
     protected $casts = [
         'discount' => 'float',

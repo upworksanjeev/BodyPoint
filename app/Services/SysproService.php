@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\OrderItem;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -97,6 +98,7 @@ class SysproService
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
                 'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
+                "MakeForLine"=>$item->marked_for ?? '',
             ];
         }
 
@@ -104,7 +106,56 @@ class SysproService
             'Order' => $order_data,
             'Lines' => $items,
         ];
+        $response = self::post($url, $request);
+        return self::returnResponse($response);
+    }
 
+    public static function updateQuote($order_no,$url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
+    {
+        self::initialize();
+        if (!$order_id) {
+            $order_id = rand(0, 9999999);
+        }
+        $address =  session()->get('customer_address');
+        $customer_id = getCustomerId();
+        $maxLine = OrderItem::where('order_id', $order_no)->max('line_number') ?? 0;
+
+        $items = [];
+        foreach ($cartitems as $key => $item) {
+            // If the item doesn't have a SalesOrderLine, increment the max and assign it
+            if (empty($item->line_number)) {
+                $maxLine++;
+                $item->line_number = $maxLine;
+            }
+        }
+        $order_data = [
+            'OrderNumber' => $order_no,
+            "AllowDuplicatePO" => "Y",
+            'ShipAddressCode' => $address['PostalCode'] ?? 'default_code',
+            'ShipAddress1' =>  $address['AddressLine1'] ?? 'default_address1',
+            'ShipAddress2' => $address['AddressLine2'] ?? '',
+            'ShipAddress3' => $address['AddressLine3']  ?? '',
+            'ShipAddress4' => $address['AddressLine4']  ?? '',
+            'ShipAddress5' => $address['AddressLine5']  ?? '',
+            'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
+        ];
+
+        $items = [];
+        foreach ($cartitems as $key => $item) {
+            $items[$key] = [
+                "LineNumber" => $item->line_number,
+                "Action" => $item->action ?? 'N',
+                'StockCode' => $item->sku,
+                'Qty' => $item->quantity,
+                'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
+                "MakeForLine"=>$item->marked_for
+            ];
+        }
+
+        $request = [
+            'Order' => $order_data,
+            'Lines' => $items,
+        ];
         $response = self::post($url, $request);
         return self::returnResponse($response);
     }
