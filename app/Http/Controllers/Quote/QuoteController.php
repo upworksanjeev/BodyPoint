@@ -277,7 +277,7 @@ class QuoteController extends Controller
                     $order->update([
                         'status' => $response['response']['Status'],
                         'total' => $total,
-                        'customer_po_number' => $request->customer_po_number ?? null
+                        'customer_po_number' => $response['response']['CustomerPONumber'] ?? null
                     ]);
                 } elseif (!empty($order_syspro['response']['Error'])) {
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
@@ -295,7 +295,7 @@ class QuoteController extends Controller
             Cart::where('user_id', $user->id)->delete();
             session()->put('downloadFile', asset('storage/' . $filePath));
             DB::commit();
-           // return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
+            return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Quote creation failed: ' . $e->getMessage());
