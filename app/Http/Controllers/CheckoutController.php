@@ -97,6 +97,8 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
+
+       
         $customer = getCustomer();
         if(!$customer->hasPermissionTo('placeOrders')){
             abort(403);
@@ -163,9 +165,9 @@ class CheckoutController extends Controller
             $url = 'CreateQuote';
             $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate);
             
-            if (!empty($order_syspro['response']['orderNumber'])) {
+            if (!empty($order_syspro['response']['OrderNumber'])) {
                 $order->update([
-                    'purchase_order_no' => $order_syspro['response']['orderNumber'],
+                    'purchase_order_no' => $order_syspro['response']['OrderNumber'],
                     'customer_po_number' => $request->customer_po_number ?? null
                 ]);
                 $url = 'GetOrderDetails/' . $order->purchase_order_no;
