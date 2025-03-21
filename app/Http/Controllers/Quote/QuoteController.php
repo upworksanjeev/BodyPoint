@@ -41,16 +41,7 @@ class QuoteController extends Controller
             $end_date = date('y-m-d 23:59:59', strtotime($request->end_date));
         }
         if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -60,16 +51,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->search_input != '' && $request->start_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -78,16 +60,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
         } elseif ($request->start_date != '' && $request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -96,16 +69,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->search_input != '' && $request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -115,16 +79,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->search_input != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -133,16 +88,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->start_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -150,16 +96,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
@@ -167,16 +104,7 @@ class QuoteController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
+            $quotes =Order::with('User', 'OrderItem.Product.Media')
                 ->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
