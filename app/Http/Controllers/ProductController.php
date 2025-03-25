@@ -208,6 +208,21 @@ class ProductController extends Controller
                 $sizesToRemove = ['S38'];
             }
 
+            elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1497) {
+                $sizesToRemove = ['M40','M46'];
+            }
+             elseif ($request->product_att_id == 1429 && $request->rootAttributeId == 1497) {
+                $sizesToRemove = ['M36','M46','L62'];
+            }
+
+             elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1426) {
+                $sizesToRemove = ['S38'];
+            }
+             elseif ($request->product_att_id == 1429 && $request->rootAttributeId == 1426) {
+                $sizesToRemove = ['S32','S38'];
+            }
+
+
             if (!empty($sizesToRemove)) {
                 $attribute = $this->filterAttributes($attribute, $sizesToRemove);
             }
