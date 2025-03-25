@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
 
         // Check if email already exists
         $existingUser = User::withTrashed()->where('email', $request->email)->first();
-        
+
         if ($existingUser) {
             $timestamp = now()->format('Y-m-d_H-i-s');
             $newDeletedEmail = $request->email . "_deleted_" . $timestamp;
@@ -100,6 +100,35 @@ class RegisteredUserController extends Controller
             ]);
 
 
+            session()->put('customer_id', auth()->user()->default_customer_id);
+            session()->put('customer_details', $get_customer_details);
+            session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
+            auth()->user()->update([
+                'payment_term_description' => $get_customer_details['PaymentTermDescription']
+            ]);
+            // **Assign Role to User**
+            if ($get_customer_details['CustomerClass'] == "") {
+                if (!$user->hasRole('Public User')) {
+                    $user->assignRole('Public User');
+                }
+            } else {
+                if (!$user->hasRole($get_customer_details['CustomerClass'])) {
+                    $user->assignRole($get_customer_details['CustomerClass']);
+                }
+            }
+
+            // **Check for Associated Customers**
+            if (!$user->associateCustomers->isEmpty()) {
+                $customer = $user->associateCustomers()->where('customer_id', $request->syspro_customer_id)->first();
+                if ($customer && !$customer->hasRole($get_customer_details['CustomerClass'])) {
+                    if ($get_customer_details['CustomerClass'] == "") {
+                        if (!$customer->hasRole('Public User')) {
+                            $customer->assignRole('Public User');
+                        }
+                    }
+                    $customer->assignRole($get_customer_details['CustomerClass']);
+                }
+            }
             event(new Registered($user));
 
             $user->sendEmailVerificationNotification();
