@@ -1,5 +1,24 @@
 @php
 $sortedCategories  = collect($categories)->sortBy('name')->values()->all();
+
+
+$customOrder = [
+    'Upper Body' => 1,  
+    'Pelvic Positioning' => 2,     
+    'Lower Body' => 3,   
+    'Power Chair Components' => 4,   
+    'Bath and Shower' => 5,   
+    'Hardware' => 6,   
+    'Tool Free Accessories' => 7,   
+];
+
+$sortedCategories = collect($categories)
+    ->sortBy(function ($category) use ($customOrder) {
+        return $customOrder[$category->name] ?? 999; 
+    })
+    ->values()  
+    ->all();
+@endphp
 @endphp
 <div class="bg-[#fff] px-5 py-5  border border-[#ECECEC] rounded-[15px] mb-4" x-data="{ open: true, toggle() { this.open = !this.open }, redirectcat(cate) { var url = '{{ route('category', ':slug') }}'; url = url.replace(':slug', cate); window.location.href=url;} }">
     <a @click="toggle()" class="text-[#333] text-[20px] font-[400] flex justify-between items-center pb-4 border-b-2 border-[#ececec7a]">Categories <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">

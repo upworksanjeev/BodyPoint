@@ -109,11 +109,11 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="<?php echo url('/category/bath-and-shower'); ?>">Bath And Shower</a>
+                                             href="<?php echo url('/category/bath-and-shower'); ?>">Bath and Shower</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/bath-and-shower/aeromesh-bath-belt'); ?>">Aeromesh Bath Belt</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/bath-and-shower/bath-and-shower-options'); ?>">Bath And Shower Options</a></p>
+                                                 href="<?php echo url('/category/bath-and-shower/bath-and-shower-options'); ?>">Bath and Shower Options</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                  href="<?php echo url('/category/bath-and-shower/shower-chair-calf-supports'); ?>">Shower Chair Calf Supports</a></p>
                                      </div>
