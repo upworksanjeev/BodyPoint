@@ -16,7 +16,7 @@
             <div class="prodct-Category my-[15px] md:my-[30px]">
                 <div class="category-sub-cat">
                     @if ($subcategory->isNotEmpty())
-                        <x-subcat-left-menu :subcategory="$subcategory" />
+                        <x-subcat-left-menu :subcategory="$subcategory" :categoryName="$category['name']" />
                     @endif
                     <x-category-left-menu :categories="$categories" />
                     {{-- <x-product-left-menu  :products="$products"/> --}}
