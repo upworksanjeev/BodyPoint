@@ -231,6 +231,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @if($pricing_guide)
                              <div class="accordion-item border border-[#E9E9E9] border-t-0">
                                 <div
                                     class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
@@ -252,6 +253,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                              <div class="accordion-item border border-[#E9E9E9] border-t-0">
                                 <div
                                     class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">

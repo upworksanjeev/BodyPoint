@@ -231,7 +231,7 @@ class QuoteController extends Controller
                 $url = 'CreateQuote';
                 //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
                 $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, 'QUOTE', 'N', 'Y');
-               
+              
                 if (!empty($order_syspro['response']['OrderNumber'])) {
                    
                     $cart[0]->update([

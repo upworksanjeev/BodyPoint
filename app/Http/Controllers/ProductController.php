@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\AssociateCustomer;
 use Illuminate\View\View;
 use App\Models\Category;
@@ -342,12 +343,37 @@ class ProductController extends Controller
     {
         $search = $request->searchinput;
         if ($search != '') {
-            $categories = Category::all();
+            //$categories = Category::all();
+            $categories = Category::where('parent_cat_id', 0)->get();
             $products = Product::with(['media'])->where('name', 'like', '%' . $request->searchinput . '%')->paginate(16);
             return view('search', ['products' => $products, 'searchinput' => $search, 'categories' => $categories]);
         } else {
             return redirect()->route('home');
         }
+    }
+
+    public function productSearchApi(Request $request)
+    {
+        $search = $request->input('searchinput');
+
+        if (!$search) {
+            return response()->json(['message' => 'Search input is required'], 400);
+        }
+
+        $categories = Category::all();
+        $products = Product::with(['media'])
+            ->where('name', 'like', '%' . $search . '%')
+            ->paginate(16);
+
+        // return response()->json([
+        //     'products' => $products,
+        //     'categories' => $categories
+        // ]);
+
+        return response()->json([
+            'products' => ProductResource::collection($products),
+            'categories' => $categories
+        ]);
     }
 
     /**
