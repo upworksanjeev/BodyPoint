@@ -150,6 +150,8 @@
                                         <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                             href="<?php echo url('/category/tool-free-accessories'); ?>">Tool Free Accessories</a>
                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                href="<?php echo url('/category/tool-free-accessories/elastic-mobility-straps'); ?>">Elastic Mobility Straps</a></p>
+                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                 href="<?php echo url('/category/tool-free-accessories/lifestyle'); ?>">Lifestyle</a></p>
                                     </div>
                                 </div>
