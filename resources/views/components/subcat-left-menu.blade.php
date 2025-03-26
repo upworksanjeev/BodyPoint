@@ -7,8 +7,15 @@ $sortedSubcategory  = collect($subcategory)->sortBy('name')->values()->all();
 </svg></a>
   <div class="filter mt-5" x-show="open">
        @foreach ($sortedSubcategory as $cat)
+
+       @php
+        $formattedSubCategory = str_replace(' ', '-', strtolower(strip_tags(str_replace('-', '_', $cat['name']))));
+        $formattedCategory = !empty($categoryName) ? str_replace(' ', '-', strtolower(strip_tags(str_replace('-', '_', $categoryName)))) : '';
+        $finalSlug = !empty($formattedCategory) ? $formattedCategory . '/' . $formattedSubCategory : $formattedSubCategory;
+       @endphp
+
           <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
-               <input class="cursor-pointer" type="radio" id="{{ $cat['id'] ?? '' }}" name="fav_language" value="{{ $cat['name'] ?? '' }}" @click="redirectcat('<?php echo str_replace(' ', '-', strtolower(strip_tags(str_replace('-', '_', $cat['name'])))); ?>')">
+               <input class="cursor-pointer" type="radio" id="{{ $cat['id'] ?? '' }}" name="fav_language" value="{{ $cat['name'] ?? '' }}" @click="redirectcat('{{ $finalSlug }}')">
 			   <label for="{{ $cat['id'] ?? '' }}" class="cursor-pointer">{{ $cat['name'] ?? '' }}</label>
           </div>
         @endforeach
