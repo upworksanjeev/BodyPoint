@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index($name, Request $request)
     {
-        $name = ucwords(str_replace('-', ' ', $name));
+        $name = ucwords(str_replace('-', ' ', $request->subCategorySlug ?? $name));
         $categories = Category::where('parent_cat_id', 0)->get();
         $category = Category::where('name', $name)->first();
 
