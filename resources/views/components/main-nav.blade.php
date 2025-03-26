@@ -37,11 +37,13 @@
                                          <a class="text-[22px] text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/upper-body'); ?>">Upper Body</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/shoulder-harness'); ?>">Shoulder Harnesses</a></p>
+                                                 href="<?php echo url('/category/upper-body/4-point-upper-body-support'); ?>">4 Point Upper Body Support</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/chest-support'); ?>">Chest Support</a></p>
+                                                 href="<?php echo url('/category/upper-body/2-point-upper-body-support'); ?>">2 Point Upper Body Support</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/arm-supports'); ?>">Arm Supports</a></p>
+                                                 href="<?php echo url('/category/upper-body/arm-supports'); ?>">Arm Supports</a></p>
+                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                 href="<?php echo url('/category/upper-body/upper-body-options'); ?>">Upper Body Options</a></p>
 
                                      </div>
                                  </div>
@@ -56,11 +58,11 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/pelvic-positioning'); ?>">Pelvic Positioning</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/hip-belts'); ?>">Hip Belts</a></p>
+                                                 href="<?php echo url('/category/pelvic-positioning/hip-belts'); ?>">Hip Belts</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/leg-harness'); ?>">Leg Harnesses</a></p>
+                                                 href="<?php echo url('/category/pelvic-positioning/leg-harnesses'); ?>">Leg Harnesses</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/essentials-hip-belt'); ?>">Essentials Hip Belts</a></p>
+                                                 href="<?php echo url('/category/pelvic-positioning/options'); ?>">Pelvic Positioning Options</a></p>
 
                                      </div>
                                  </div>
@@ -75,11 +77,9 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/lower-body'); ?>">Lower Body</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/ankle-huggers'); ?>">Ankle Huggers</a></p>
+                                                 href="<?php echo url('/category/lower-body/ankle-huggers'); ?>">Ankle Huggers</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/calf-supports'); ?>">Calf Supports</a></p>
-                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/elastic-strap'); ?>">Elastic Mobility Straps</a></p>
+                                                 href="<?php echo url('/category/lower-body/calf-supports'); ?>">Calf Supports</a></p>
 
                                      </div>
                                  </div>
@@ -94,14 +94,14 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/power-chair-components'); ?>">Power Chair Components</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/joystick-handles'); ?>">Joystick Handles</a></p>
+                                                 href="<?php echo url('/category/power-chair-components/joystick-handles'); ?>">Joystick Handles</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
+                                                 href="<?php echo url('/category/power-chair-components/midline-joystick-mounting'); ?>">Midline Joystick Mounting</a></p>
 
                                      </div>
                                  </div>
                                  <div class="ctm-grd-two">
-                                     <a class="" href="<?php echo url('/category/specialty'); ?>">
+                                     <a class="" href="<?php echo url('/category/bath-and-shower'); ?>">
                                          <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
                                              <img class="" src="{{ asset('img/Specialty.png') }}"
                                                  alt="Your Company" />
@@ -109,13 +109,13 @@
                                      </a>
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                             href="<?php echo url('/category/specialty'); ?>">Specialty</a>
+                                             href="<?php echo url('/category/bath-and-shower'); ?>">Bath And Shower</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/shower'); ?>">Bath & Shower</a></p>
+                                                 href="<?php echo url('/category/bath-and-shower/aeromesh-bath-belt'); ?>">Aeromesh Bath Belt</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/pediatric'); ?>">Pediatric Users</a></p>
+                                                 href="<?php echo url('/category/bath-and-shower/bath-and-shower-options'); ?>">Bath And Shower Options</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/sports-and-active-users'); ?>">Athletic Users</a></p>
+                                                 href="<?php echo url('/category/bath-and-shower/shower-chair-calf-supports'); ?>">Shower Chair Calf Supports</a></p>
                                      </div>
                                  </div>
 
@@ -130,12 +130,29 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="<?php echo url('/category/hardware'); ?>">Hardware</a>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/clamps'); ?>">Clamps</a></p>
+                                                 href="<?php echo url('/category/hardware/clamps'); ?>">Clamps</a></p>
                                          <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                 href="<?php echo url('/category/mounting-attachments'); ?>">Mounting Attachments</a></p>
+                                                 href="<?php echo url('/category/hardware/mounting-attachments'); ?>">Mounting Attachments</a></p>
+                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                 href="<?php echo url('/category/hardware/hardware-options'); ?>">Hardware Options</a></p>
 
                                      </div>
                                  </div>
+
+                                 <div class="ctm-grd-two">
+                                    <a class="" href="<?php echo url('/category/tool-free-accessories'); ?>">
+                                        <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
+                                            <img class="" src="{{ asset('img/Hardware.png') }}"
+                                                alt="Your Company" />
+                                        </div>
+                                    </a>
+                                    <div class="prd-cntnt">
+                                        <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                            href="<?php echo url('/category/tool-free-accessories'); ?>">Tool Free Accessories</a>
+                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                href="<?php echo url('/category/tool-free-accessories/lifestyle'); ?>">Lifestyle</a></p>
+                                    </div>
+                                </div>
 
                              </div>
                          </div>

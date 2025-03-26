@@ -24,7 +24,8 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::all();
+        //$categories = Category::all();
+        $categories = Category::where('parent_cat_id', 0)->get();
         if (isset($categories)) {
             $products = Product::with(['media'])->paginate(16);
 
@@ -65,14 +66,14 @@ class HomeController extends Controller
             $customer_id = $request->customer_id;
             $url = 'GetCustomerDetails/' . $customer_id;
             $get_customer_details = SysproService::getCustomerDetails($url);
-          
+
             if ($get_customer_details) {
                 session()->put('customer_id', $request->customer_id);
                 session()->put('customer_details', $get_customer_details);
                 session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
                 $customerClass = $get_customer_details['CustomerClass'] ?? '';
 
-            
+
                 $authUser = Auth::user();
                 if ($customerClass === "") {
                     if (!$authUser->hasRole('Public User')) {
@@ -97,7 +98,7 @@ class HomeController extends Controller
                         $customer->assignRole($get_customer_details['CustomerClass']);
                     }
                 }
-                
+
                 return Response::json(['success' => true, 'message' => 'Customer Changed Successfully']);
             } else {
                 return Response::json(['success' => false, 'message' => 'Customer not found']);
@@ -291,7 +292,7 @@ class HomeController extends Controller
                         ],
 
                     ],
-                    'Hardware Instructions'=>[
+                    'Hardware Instructions' => [
                         [
                             'name' => 'BPI009 Grommet Straps',
                             'url' => 'https://bodypoint.com/wp-content/uploads/2024/07/BPI009_Grommet_Straps_2021.2-1.pdf',
@@ -345,7 +346,7 @@ class HomeController extends Controller
                             'url' => 'https://bodypoint.com/wp-content/uploads/2024/07/D20-0806-01_A-1.pdf',
                         ],
                     ],
-                    'Pelvic Instructions'=>[
+                    'Pelvic Instructions' => [
                         [
                             'name' => 'BPI048 Leg Harness',
                             'url' => 'https://bodypoint.com/wp-content/uploads/2024/07/BPI048_Leg_Harness_2021.10-1.pdf',
@@ -1050,84 +1051,136 @@ class HomeController extends Controller
             ];
     }
 
-    public function getActiveCampaigns(){
+    public function getActiveCampaigns()
+    {
         return [
-            ['image' =>'https://bodypoint.com/wp-content/uploads/2024/07/Bath-Postcard-Back.png'],
-            ['image' =>'https://bodypoint.com/wp-content/uploads/2024/07/Bath-Postcard-Front.png'],
+            ['image' => 'https://bodypoint.com/wp-content/uploads/2024/07/Bath-Postcard-Back.png'],
+            ['image' => 'https://bodypoint.com/wp-content/uploads/2024/07/Bath-Postcard-Front.png'],
         ];
     }
 
+    // public function vault(Request $request)
+    // {   
+    //     $customer_id = getCustomerId();
+    //     $frequently_user_files = $this->getFrequentlyUserFiles();
+    //     $newly_added =  $this->getNewlyAdded();
+    //     $media_assets = $this->getMediaAssets();
+    //     $marketing_collateral = $this->getMarketingCollateral();
+    //     $product_and_technical = $this->getProductAndTechnical();
+    //     $pricing_guide = $this->getPricingGuide();
+    //     $presentations = $this->getPresentations();
+    //     $active_campaigns = $this->getActiveCampaigns();
+
+    //     if ($customer_id) {
+    //         $customer = AssociateCustomer::where([
+    //             ['user_id', Auth::id()],
+    //             ['customer_id', $customer_id]
+    //         ])->first();
+
+    //         $rolesToCheck = ['VA', 'WC', 'WI', 'WM', 'WR', 'WL'];
+    //         $url = 'GetCustomerDetails/' . $customer_id;
+    //         $get_customer_details = SysproService::getCustomerDetails($url);
+
+    //         if($get_customer_details){
+    //             $customerType = $get_customer_details['CustomerClass'];
+    //         }
+    //         // if ($customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
+    //         //     $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+    //         //         return $item['name'] !== 'Dealer Price List';
+    //         //     }));
+    //         // }
+
+    //         // if (Auth::user()->hasAnyRole(['VA', 'WC', 'WI', 'WM', 'WR', 'WL'])) {
+    //         //     $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
+    //         //         return $item['name'] !== 'Dealer Price List';
+    //         //     }));
+    //         // }
+
+    //         switch ($customerType) {
+    //             case 'Domestic':
+
+    //                 $pricing_guide = array_filter($pricing_guide, function ($item) {
+    //                     return in_array($item['name'], [
+    //                         'Americas',
+    //                         'Dealer Price List',
+    //                         'Retail Price List',
+    //                     ]);
+    //                 });
+    //                 break;
+
+    //             case 'International':
+
+    //                 $pricing_guide = array_filter($pricing_guide, function ($item) {
+    //                     return in_array($item['name'], [
+    //                         'International',
+    //                         'Retail Price List',
+    //                     ]);
+    //                 });
+    //                 break;
+
+    //             case 'Manufacturer':
+
+    //                 $pricing_guide = [];
+    //                 break;
+
+    //             default:
+
+    //                 $pricing_guide = [];
+    //                 break;
+    //         }
+    //     }
+    //     $pricing_guide = array_values($pricing_guide);
+    //     $data = [
+    //         'frequently_user_files' => $frequently_user_files,
+    //         'newly_added' => $newly_added,
+    //         'media_assets' => $media_assets,
+    //         'marketing_collateral' => $marketing_collateral,
+    //         'product_and_technical' => $product_and_technical,
+    //         'pricing_guide' => $pricing_guide,
+    //         'presentations' => $presentations,
+    //         'active_campaigns' => $active_campaigns,
+    //     ];
+    //     return view('vault', $data);
+    // }
+
     public function vault(Request $request)
-    {   
+    {
         $customer_id = getCustomerId();
         $frequently_user_files = $this->getFrequentlyUserFiles();
-        $newly_added =  $this->getNewlyAdded();
+        $newly_added = $this->getNewlyAdded();
         $media_assets = $this->getMediaAssets();
         $marketing_collateral = $this->getMarketingCollateral();
         $product_and_technical = $this->getProductAndTechnical();
         $pricing_guide = $this->getPricingGuide();
         $presentations = $this->getPresentations();
         $active_campaigns = $this->getActiveCampaigns();
-        
+
         if ($customer_id) {
             $customer = AssociateCustomer::where([
                 ['user_id', Auth::id()],
                 ['customer_id', $customer_id]
             ])->first();
-        
-            $rolesToCheck = ['VA', 'WC', 'WI', 'WM', 'WR', 'WL'];
+
             $url = 'GetCustomerDetails/' . $customer_id;
             $get_customer_details = SysproService::getCustomerDetails($url);
-            if($get_customer_details){
-                $customerType = $get_customer_details['CustomerType'];
-            }
-            // if ($customer && $customer->role && in_array($customer->role, $rolesToCheck)) {
-            //     $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
-            //         return $item['name'] !== 'Dealer Price List';
-            //     }));
-            // }
-            
-            // if (Auth::user()->hasAnyRole(['VA', 'WC', 'WI', 'WM', 'WR', 'WL'])) {
-            //     $pricing_guide = array_values(array_filter($this->getPricingGuide(), function ($item) {
-            //         return $item['name'] !== 'Dealer Price List';
-            //     }));
-            // }
+            $CustomerClass = $get_customer_details['CustomerClass'] ?? null;
 
-            switch ($customerType) {
-                case 'Domestic':
-                    
-                    $pricing_guide = array_filter($pricing_guide, function ($item) {
-                        return in_array($item['name'], [
-                            'Americas',
-                            'Dealer Price List',
-                            'Retail Price List',
-                        ]);
-                    });
-                    break;
-        
-                case 'International':
-                   
-                    $pricing_guide = array_filter($pricing_guide, function ($item) {
-                        return in_array($item['name'], [
-                            'International',
-                            'Retail Price List',
-                        ]);
-                    });
-                    break;
-        
-                case 'Manufacturer':
-                    
-                    $pricing_guide = [];
-                    break;
-        
-                default:
-                   
-                    $pricing_guide = [];
-                    break;
+            if ($CustomerClass) {
+                $pricing_guide = match ($CustomerClass) {
+                    'AM', 'VA', 'WR', 'W', 'WX' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['Americas', 'Retail Price List']))),
+
+                    'WC', 'WS' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['Americas', 'Retail Price List', 'International', 'Dealer Price List']))),
+
+                    'WI' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['International']))),
+
+                    'WM' => [], 
+
+                    default => [],
+                };
             }
         }
-        $pricing_guide = array_values($pricing_guide);
-        $data = [
+
+        return view('vault', [
             'frequently_user_files' => $frequently_user_files,
             'newly_added' => $newly_added,
             'media_assets' => $media_assets,
@@ -1136,18 +1189,18 @@ class HomeController extends Controller
             'pricing_guide' => $pricing_guide,
             'presentations' => $presentations,
             'active_campaigns' => $active_campaigns,
-        ];
-        return view('vault', $data);
+        ]);
     }
+
 
     public function postVault(Request $request)
     {
         try {
-            
-            $data = $request->all(); 
-    
+
+            $data = $request->all();
+
             Mail::to('support@bodypoint.com')->send(new VaultMail($data));
-    
+
             return redirect()->back()->with('success', 'Email sent successfully!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
