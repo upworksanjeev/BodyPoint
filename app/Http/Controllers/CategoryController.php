@@ -66,7 +66,6 @@ class CategoryController extends Controller
             }
 
             $products = $productsQuery->paginate(16);
-            // dd($products->toArray());
             return view('category', [
                 'categories' => $categories,
                 'subcategory' => $subcategory,
