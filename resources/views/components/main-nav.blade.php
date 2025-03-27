@@ -103,7 +103,7 @@
                                  <div class="ctm-grd-two">
                                      <a class="" href="<?php echo url('/category/bath-and-shower'); ?>">
                                          <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                             <img class="" src="{{ asset('img/Specialty.png') }}"
+                                             <img class="" src="{{ asset('img/Shower.png') }}"
                                                  alt="Your Company" />
                                          </div>
                                      </a>
@@ -142,7 +142,7 @@
                                  <div class="ctm-grd-two">
                                     <a class="" href="<?php echo url('/category/tool-free-accessories'); ?>">
                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                            <img class="" src="{{ asset('img/Hardware.png') }}"
+                                            <img class="" src="{{ asset('img/Specialty.png') }}"
                                                 alt="Your Company" />
                                         </div>
                                     </a>
