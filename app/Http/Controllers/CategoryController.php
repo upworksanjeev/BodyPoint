@@ -18,6 +18,7 @@ class CategoryController extends Controller
         $categories = Category::where('parent_cat_id', 0)->get();
         $category = Category::where('name', $name)->first();
 
+
         if (!empty(auth()->user()->default_customer_id)) {
             $url = 'ListStock';
             SysproService::listStock($url);
@@ -33,14 +34,38 @@ class CategoryController extends Controller
                 }
             }
 
-            $products = CategoryProduct::with(['product.media'])
+            $productsQuery = CategoryProduct::with(['product.media'])
                 ->whereIn('category_id', $cat)
                 ->whereHas('product', function ($query) {
-                    $query->whereNull('deleted_at'); 
+                    $query->whereNull('deleted_at');
                 })
                 ->select('product_id')
-                ->groupBy('product_id')
-                ->paginate(16);
+                ->groupBy('product_id');
+
+            // ✅ Manual sorting if sorted_product_ids exists
+            $sortedIds = [];
+            if (!empty($category->sorted_product_ids)) {
+                $decoded = json_decode($category->sorted_product_ids, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $sortedIds = array_filter($decoded, fn($id) => is_numeric($id));
+                }
+            }
+
+            if (!empty($sortedIds)) {
+                // Get all product IDs from current query
+                $allProductIds = (clone $productsQuery)->pluck('product_id')->toArray();
+
+                // Merge: sorted first, then the rest
+                $finalSortedIds = array_values(array_unique(array_merge(
+                    array_intersect($sortedIds, $allProductIds),
+                    array_diff($allProductIds, $sortedIds)
+                )));
+
+                // Apply sorting without filtering anything out
+                $productsQuery->orderByRaw('FIELD(product_id, ' . implode(',', $finalSortedIds) . ')');
+            }
+
+            $products = $productsQuery->paginate(16);
             return view('category', [
                 'categories' => $categories,
                 'subcategory' => $subcategory,
