@@ -347,7 +347,7 @@ class ProductController extends Controller
             $categories = Category::where('parent_cat_id', 0)->get();
             $products = Product::with(['media'])->where('name', 'like', '%' . $request->searchinput . '%')->paginate(16);
             //return view('search', ['products' => $products, 'searchinput' => $search, 'categories' => $categories]);
-            return redirect()->away('https://bodypoint.dev/?s='.$search);
+            return redirect()->away('https://bodypoint.com/?s='.$search);
         } else {
             return redirect()->route('home');
         }
