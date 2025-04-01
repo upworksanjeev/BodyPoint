@@ -16,7 +16,8 @@
 
                         <button class="inline-flex items-center px-2 rounded-md focus:outline-none transition ease-in-out duration-150 text-lg font-normal">
 
-                            <div> {{ Auth::user()->name }}</div>
+                            {{-- <div> {{ Auth::user()->name }}</div> --}}
+                            <div> {{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</div>
 
                             <div class="ml-1">
 							<x-icons.down-arrow />
@@ -69,7 +70,8 @@
                 <!-- Responsive Settings Options -->
                 <div class="pt-4 pb-1 border-t border-gray-200">
                     <div class="px-4">
-                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                        {{-- <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div> --}}
+                        <div class="font-medium text-base text-gray-800">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</div>
                         <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                     </div>
 

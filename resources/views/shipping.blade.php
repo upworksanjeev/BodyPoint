@@ -23,7 +23,7 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside mb-8">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Ship To:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]"> {{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name ??'' }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]"> {{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
@@ -48,7 +48,8 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Name:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name??'' }}</span>
+                    {{-- <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name??'' }}</span> --}}
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</span>
                   </li>
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Address:</span>
