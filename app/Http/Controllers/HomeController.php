@@ -1048,6 +1048,17 @@ class HomeController extends Controller
                     ],
 
                 ],
+                'Photos' => [
+                        [
+                            'name' => 'Lifestyle Photos',
+                            'url' => 'https://www.dropbox.com/scl/fo/97hdfr668dybyn1uk1ddl/AAdRmbjpRqcLWrYWFn1Ngck?rlkey=p6t0w8f8xyze7vvdk9bkourtw&e=1&st=tlc54lqh&dl=0',
+                        ],
+                        [
+                            'name' => 'Product Photos',
+                            'url' => 'https://www.dropbox.com/scl/fo/goq6ocwb477bz5g51ufv7/h?rlkey=umdd0nkhoykeocqkt32di2011&e=1&st=jszrspfg&dl=0',
+                        ],
+                    
+                ],
             ];
     }
 
@@ -1173,7 +1184,7 @@ class HomeController extends Controller
 
                     'WI' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['International']))),
 
-                    'WM' => [], 
+                    'WM' => [],
 
                     default => [],
                 };
