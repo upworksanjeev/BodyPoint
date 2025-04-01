@@ -912,7 +912,8 @@
                                          class="h-[35px] w-[35px] rounded-full object-cover" alt="">
                                  </div>
                                  <div class="px-4">
-                                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                                     {{-- <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div> --}}
+                                     <div class="font-medium text-base text-gray-800">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</div>
                                      <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                                  </div>
                              </div>
