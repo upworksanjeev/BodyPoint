@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Quote\QuoteController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\PhotoController;
 use App\Models\AssociateCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -94,6 +95,11 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
     Route::get('/vault', [HomeController::class,'vault'])->name('vault');
     Route::post('/vault', [HomeController::class,'postVault'])->name('post-vault');
+
+    Route::prefix('photos')->group(function () {
+        Route::get('/lifestyle-photos', [PhotoController::class, 'lifeStyle'])->name('photos.lifestyle');
+        Route::get('/product-photos', [PhotoController::class, 'productImage'])->name('photos.product-photos');
+    });
 
 });
 
