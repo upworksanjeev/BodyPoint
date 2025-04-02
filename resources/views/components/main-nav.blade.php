@@ -140,21 +140,21 @@
                                  </div>
 
                                  <div class="ctm-grd-two">
-                                    <a class="" href="<?php echo url('/category/tool-free-accessories'); ?>">
-                                        <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                            <img class="" src="{{ asset('img/Specialty.png') }}"
-                                                alt="Your Company" />
-                                        </div>
-                                    </a>
-                                    <div class="prd-cntnt">
-                                        <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                            href="<?php echo url('/category/tool-free-accessories'); ?>">Tool Free Accessories</a>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/tool-free-accessories/elastic-mobility-straps'); ?>">Elastic Mobility Straps</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/tool-free-accessories/lifestyle'); ?>">Lifestyle</a></p>
-                                    </div>
-                                </div>
+                                     <a class="" href="<?php echo url('/category/tool-free-accessories'); ?>">
+                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
+                                             <img class="" src="{{ asset('img/Specialty.png') }}"
+                                                 alt="Your Company" />
+                                         </div>
+                                     </a>
+                                     <div class="prd-cntnt">
+                                         <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                             href="<?php echo url('/category/tool-free-accessories'); ?>">Tool-Free Accessories</a>
+                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                 href="<?php echo url('/category/tool-free-accessories/elastic-mobility-straps'); ?>">Elastic Mobility Straps</a></p>
+                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
+                                                 href="<?php echo url('/category/tool-free-accessories/lifestyle'); ?>">Lifestyle</a></p>
+                                     </div>
+                                 </div>
 
                              </div>
                          </div>
@@ -474,14 +474,14 @@
                          @click="open = ! open">X</a>
                  </div>
                  @if (!Auth::check())
-                     <div class="px-3 py-2">
-                         <x-responsive-nav-link :href="route('login')">
-                             <button
-                                 class="rounded-lg flex items-center text-[#333] text-[18px] font-light hover:text-[#fe7300] transition duration-150 ease-in-out">
-                                 <i class="fa fa-lock pr-2 text-[18px]"></i> {{ __('Partner Login') }}
-                             </button>
-                         </x-responsive-nav-link>
-                     </div>
+                 <div class="px-3 py-2">
+                     <x-responsive-nav-link :href="route('login')">
+                         <button
+                             class="rounded-lg flex items-center text-[#333] text-[18px] font-light hover:text-[#fe7300] transition duration-150 ease-in-out">
+                             <i class="fa fa-lock pr-2 text-[18px]"></i> {{ __('Partner Login') }}
+                         </button>
+                     </x-responsive-nav-link>
+                 </div>
                  @endif
 
                  <div class="mobile-dropdown" x-data="{ open: false, toggle() { this.open = !this.open } }">
@@ -904,47 +904,48 @@
                  </div>
 
                  @if (Auth::check())
-                     <div class="px-3 py-2">
-                         <div class="pt-4 pb-1 border-t border-gray-200">
-                             <div class="flex gap-4 items-center">
-                                 <div class="rounded-full h-[35px] w-[35px] overflow-hidden rounded-full">
-                                     <img src="{{ FunHelper::getUserProfile() ? url('storage/' . FunHelper::getUserProfile()) : asset('img/profile.png') }}"
-                                         class="h-[35px] w-[35px] rounded-full object-cover" alt="">
-                                 </div>
-                                 <div class="px-4">
-                                     {{-- <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div> --}}
-                                     <div class="font-medium text-base text-gray-800">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</div>
-                                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                                 </div>
+                 <div class="px-3 py-2">
+                     <div class="pt-4 pb-1 border-t border-gray-200">
+                         <div class="flex gap-4 items-center">
+                             <div class="rounded-full h-[35px] w-[35px] overflow-hidden rounded-full">
+                                 <img src="{{ FunHelper::getUserProfile() ? url('storage/' . FunHelper::getUserProfile()) : asset('img/profile.png') }}"
+                                     class="h-[35px] w-[35px] rounded-full object-cover" alt="">
                              </div>
-
-                             <div class="mt-3 space-y-1">
-                                 {{-- @if (Auth::user()->hasPermissionTo('orderHistory')) --}}
-                                     <x-responsive-nav-link :href="route('order')">
-                                         {{ __('My Orders') }}
-
-                                     </x-responsive-nav-link>
-                                 {{-- @endif --}}
-                                 <x-responsive-nav-link :href="route('profile.edit')">
-                                     {{ __('Profile') }}
-                                 </x-responsive-nav-link>
-
-                                 <!-- Authentication -->
-                                 <form method="POST" action="{{ route('logout') }}">
-                                     @csrf
-
-                                     <x-responsive-nav-link :href="route('logout')"
-                                         onclick="event.preventDefault();
-                        this.closest('form').submit();">
-                                         {{ __('Log Out') }}
-                                     </x-responsive-nav-link>
-                                 </form>
-                             </div>
+                             <div class="px-4">
+                                 {{-- <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}
+                             </div> --}}
+                             <div class="font-medium text-base text-gray-800">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</div>
+                             <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                          </div>
                      </div>
-                 @endif
+
+                     <div class="mt-3 space-y-1">
+                         {{-- @if (Auth::user()->hasPermissionTo('orderHistory')) --}}
+                         <x-responsive-nav-link :href="route('order')">
+                             {{ __('My Orders') }}
+
+                         </x-responsive-nav-link>
+                         {{-- @endif --}}
+                         <x-responsive-nav-link :href="route('profile.edit')">
+                             {{ __('Profile') }}
+                         </x-responsive-nav-link>
+
+                         <!-- Authentication -->
+                         <form method="POST" action="{{ route('logout') }}">
+                             @csrf
+
+                             <x-responsive-nav-link :href="route('logout')"
+                                 onclick="event.preventDefault();
+                        this.closest('form').submit();">
+                                 {{ __('Log Out') }}
+                             </x-responsive-nav-link>
+                         </form>
+                     </div>
+                 </div>
              </div>
+             @endif
          </div>
+     </div>
      </div>
      </div>
  </nav>
