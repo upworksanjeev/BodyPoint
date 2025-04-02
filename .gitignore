@@ -20,3 +20,4 @@ yarn-error.log
 /public/vendor
 /lang/vendor/nova
 /html
+/storage/app/public/vault-photo
