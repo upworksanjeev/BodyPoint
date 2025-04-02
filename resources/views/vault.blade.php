@@ -1,5 +1,5 @@
 <x-mainpage-layout>
-    @section('title', 'Vault - '.config('app.name', 'Bodypoint'))
+    @section('title', 'Vault - ' . config('app.name', 'Bodypoint'))
     <div class="min-h-[62vh] bg-[#f6f6f6]">
         <section class="bg-[#00838F] text-[#ffffff] px-6 lg:px-10">
             <div class="lg:container mx-auto py-7 md:py-9">
@@ -15,7 +15,11 @@
                                 Welcome to Partner Vault
                             </h2>
                             <p class="text-lg font-normal mb-4">Partner Resource Central</p>
-                            <div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/b979abfe91fc4da2aaf4b253ea39c5ab?sid=e05789c7-9721-4614-a133-0d19dc64ceb9" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe
+                                    src="https://www.loom.com/embed/b979abfe91fc4da2aaf4b253ea39c5ab?sid=e05789c7-9721-4614-a133-0d19dc64ceb9"
+                                    frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                            </div>
                         </div>
                         <div class="bg-white rounded-2xl mt-8 border border-[#E9E9E9]">
                             <div class="p-6 border-b border-[#E9E9E9]">
@@ -26,7 +30,7 @@
                                 </p>
                             </div>
                             <div class="py-6 px-7">
-                                <form method="post" action="{{route('post-vault')}}" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('post-vault') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="flex items-start flex-col justify-center w-full mb-6">
                                         <label for="first_name"
@@ -58,7 +62,8 @@
                                                 class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Expected
                                                 Launch Date
                                             </label>
-                                            <input type="text" id="datepicker-format" datepicker datepicker-format="dd-mm-yyyy" name="date"
+                                            <input type="text" id="datepicker-format" datepicker
+                                                datepicker-format="dd-mm-yyyy" name="date"
                                                 class="bg-[#F6F6F6] border border-[#EAEAEA] text-gray-900 text-sm rounded focus:ring-gray-400 focus:border-gray-400 block w-full p-2.5"
                                                 placeholder="03-05-2024" required />
                                         </div>
@@ -164,30 +169,85 @@
                                     <div
                                         class="accordion-item-body-content py-[20px] px-7 leading-normal border-t border-[#E9E9E9]">
                                         <ul>
-                                            @foreach ($media_assets as $key =>  $files)
-                                                <li>
-                                                    <div class="accordion-item">
-                                                        <div
-                                                            class="accordion-item-headers accordion-item-headers-inner accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
-                                                            {{ $key }}
-                                                        </div>
-                                                        <div class="accordion-item-body max-h-full">
+                                            @foreach ($media_assets as $key => $files)
+                                                @if ($key != 'Photos')
+                                                    <li>
+                                                        <div class="accordion-item">
                                                             <div
-                                                                class="accordion-item-body-content accordion-item-body-content-inner leading-normal mb-4">
-                                                                <ul>
-                                                                   @foreach ($files as $key =>  $file)
-                                                                    <li>
-                                                                        <a href="{{ url($file['url']) }}" target="_blank"
-                                                                            class="text-[15px] text-[#00838F] font-normal">
-                                                                            {{ $file['name'] }}
-                                                                        </a>
-                                                                    </li>
-                                                                   @endforeach
-                                                                </ul>
+                                                                class="accordion-item-headers accordion-item-headers-inner accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
+                                                                {{ $key }}
+                                                            </div>
+                                                            <div class="accordion-item-body max-h-full">
+                                                                <div
+                                                                    class="accordion-item-body-content accordion-item-body-content-inner leading-normal mb-4">
+                                                                    <ul>
+                                                                        @foreach ($files as $key => $file)
+                                                                            <li>
+                                                                                <a href="{{ url($file['url']) }}"
+                                                                                    target="_blank"
+                                                                                    class="text-[15px] text-[#00838F] font-normal">
+                                                                                    {{ $file['name'] }}
+                                                                                </a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </li>
+                                                    </li>
+                                                @else
+                                                    <!-- Special handling for Photos -->
+                                                    @foreach ($files as $category => $photoFiles)
+                                                        <li>
+                                                            <div class="accordion-item">
+                                                                <div
+                                                                    class="accordion-item-headers accordion-item-headers-inner accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
+                                                                    {{ $category }}
+                                                                </div>
+                                                                <div class="accordion-item-body max-h-full">
+                                                                    <div
+                                                                        class="accordion-item-body-content accordion-item-body-content-inner leading-normal mb-4">
+                                                                        <ul>
+                                                                            @foreach ($photoFiles as $file)
+                                                                                @if (isset($file['url']))
+                                                                                    <!-- Check if 'url' exists -->
+                                                                                    <li>
+                                                                                        <a href="{{ url($file['url']) }}"
+                                                                                            target="_blank"
+                                                                                            class="text-[15px] text-[#00838F] font-normal">
+                                                                                            {{ $file['name'] }}
+                                                                                        </a>
+                                                                                    </li>
+                                                                                @else
+                                                                                    @foreach ($file as $filed)
+                                                                                        @if (isset($filed['url']))
+                                                                                            <!-- Check if 'url' exists -->
+                                                                                            <li>
+                                                                                                <a href="{{ url($filed['url']) }}"
+                                                                                                    target="_blank"
+                                                                                                    class="text-[15px] text-[#00838F] font-normal">
+                                                                                                    {{ $filed['name'] }}
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        @else
+                                                                                            <li>
+                                                                                                <!-- Handle missing URL case -->
+                                                                                                <span
+                                                                                                    class="text-[15px] text-red-500 font-normal">URL
+                                                                                                    not available
+                                                                                                    for</span>
+                                                                                            </li>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
                                             @endforeach
                                         </ul>
                                     </div>
@@ -202,7 +262,7 @@
                                     <div
                                         class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
                                         <ul>
-                                            @foreach ($marketing_collateral as $key =>  $files)
+                                            @foreach ($marketing_collateral as $key => $files)
                                                 <li>
                                                     <div class="accordion-item">
                                                         <div
@@ -213,14 +273,15 @@
                                                             <div
                                                                 class="accordion-item-body-content accordion-item-body-content-inner leading-normal mb-4">
                                                                 <ul>
-                                                                   @foreach ($files as $key =>  $file)
-                                                                    <li>
-                                                                        <a href="{{ url($file['url']) }}" target="_blank"
-                                                                            class="text-[15px] text-[#00838F] font-normal">
-                                                                            {{ $file['name'] }}
-                                                                        </a>
-                                                                    </li>
-                                                                   @endforeach
+                                                                    @foreach ($files as $key => $file)
+                                                                        <li>
+                                                                            <a href="{{ url($file['url']) }}"
+                                                                                target="_blank"
+                                                                                class="text-[15px] text-[#00838F] font-normal">
+                                                                                {{ $file['name'] }}
+                                                                            </a>
+                                                                        </li>
+                                                                    @endforeach
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -231,30 +292,30 @@
                                     </div>
                                 </div>
                             </div>
-                            @if($pricing_guide)
-                             <div class="accordion-item border border-[#E9E9E9] border-t-0">
-                                <div
-                                    class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
-                                    Pricing Guide
-                                </div>
-                                <div class="accordion-item-body overflow-hidden max-h-0">
+                            @if ($pricing_guide)
+                                <div class="accordion-item border border-[#E9E9E9] border-t-0">
                                     <div
-                                        class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
-                                        <ul>
-                                            @foreach ($pricing_guide as $file)
-                                                <li>
-                                                    <a href="{{ url($file['url']) }}" target="_blank"
-                                                        class="text-[15px] text-[#00838F] font-normal">
-                                                        {{ $file['name'] }}
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                        class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
+                                        Pricing Guide
+                                    </div>
+                                    <div class="accordion-item-body overflow-hidden max-h-0">
+                                        <div
+                                            class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
+                                            <ul>
+                                                @foreach ($pricing_guide as $file)
+                                                    <li>
+                                                        <a href="{{ url($file['url']) }}" target="_blank"
+                                                            class="text-[15px] text-[#00838F] font-normal">
+                                                            {{ $file['name'] }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             @endif
-                             <div class="accordion-item border border-[#E9E9E9] border-t-0">
+                            <div class="accordion-item border border-[#E9E9E9] border-t-0">
                                 <div
                                     class="accordion-item-headers accordion-item-headers-nav flex items-center justify-between p-5 cursor-pointer relative text-base font-medium">
                                     Presentations
@@ -284,7 +345,7 @@
                                     <div
                                         class="accordion-item-body-content p-4 leading-normal border-t border-[#E9E9E9]">
                                         <ul>
-                                            @foreach ($product_and_technical as $key =>  $filesCategories)
+                                            @foreach ($product_and_technical as $key => $filesCategories)
                                                 <li>
                                                     <div class="accordion-item">
                                                         <div
@@ -295,31 +356,33 @@
                                                             <div
                                                                 class="accordion-item-body-content accordion-item-body-content-inner leading-normal">
                                                                 <ul>
-                                                                   @foreach ($filesCategories as $categoryKey =>  $category)
-                                                                    <li>
-                                                                         <div class="accordion-item px-4">
+                                                                    @foreach ($filesCategories as $categoryKey => $category)
+                                                                        <li>
+                                                                            <div class="accordion-item px-4">
                                                                                 <div
                                                                                     class="accordion-item-headers accordion-item-headers-innerchild accordion-item-headers-first flex items-center justify-between ps-8 pb-4 cursor-pointer relative text-base font-medium">
                                                                                     {{ $categoryKey }}
                                                                                 </div>
-                                                                                <div class="accordion-item-body overflow-hidden max-h-0">
+                                                                                <div
+                                                                                    class="accordion-item-body overflow-hidden max-h-0">
                                                                                     <div
                                                                                         class="accordion-item-body-content accordion-item-body-content-inner leading-normal">
                                                                                         <ul>
-                                                                                        @foreach ($category as  $file)
-                                                                                            <li>
-                                                                                                <a href="{{ url($file['url']) }}" target="_blank"
-                                                                                                    class="text-[15px] text-[#00838F] font-normal">
-                                                                                                    {{ $file['name'] }}
-                                                                                                </a>
-                                                                                            </li>
-                                                                                        @endforeach
+                                                                                            @foreach ($category as $file)
+                                                                                                <li>
+                                                                                                    <a href="{{ url($file['url']) }}"
+                                                                                                        target="_blank"
+                                                                                                        class="text-[15px] text-[#00838F] font-normal">
+                                                                                                        {{ $file['name'] }}
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                            @endforeach
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                    </li>
-                                                                   @endforeach
+                                                                        </li>
+                                                                    @endforeach
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -336,8 +399,7 @@
                                     Active Campaigns
                                 </div>
                                 <div class="accordion-item-body overflow-hidden max-h-0">
-                                    <div
-                                        class="accordion-item-body-content leading-normal border-t border-[#E9E9E9]">
+                                    <div class="accordion-item-body-content leading-normal border-t border-[#E9E9E9]">
                                         <ul class="active_campaigns py-1 px-[14px]">
                                             @foreach ($active_campaigns as $file)
                                                 <li>
@@ -366,60 +428,60 @@
         </section>
     </div>
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-    function setupAccordion(accordionHeaders, parentClass) {
-        accordionHeaders.forEach((header) => {
-            header.addEventListener("click", (event) => {
-                // Close other active accordions at the same level
-                const currentlyActive = document.querySelector(
-                    `.${parentClass}.active`
-                );
-                if (currentlyActive && currentlyActive !== header) {
-                    currentlyActive.classList.remove("active");
-                    currentlyActive.nextElementSibling.style.maxHeight = 0;
-                }
+        document.addEventListener("DOMContentLoaded", function() {
+            function setupAccordion(accordionHeaders, parentClass) {
+                accordionHeaders.forEach((header) => {
+                    header.addEventListener("click", (event) => {
+                        // Close other active accordions at the same level
+                        const currentlyActive = document.querySelector(
+                            `.${parentClass}.active`
+                        );
+                        if (currentlyActive && currentlyActive !== header) {
+                            currentlyActive.classList.remove("active");
+                            currentlyActive.nextElementSibling.style.maxHeight = 0;
+                        }
 
-                // Toggle current accordion
-                header.classList.toggle("active");
-                const body = header.nextElementSibling;
+                        // Toggle current accordion
+                        header.classList.toggle("active");
+                        const body = header.nextElementSibling;
 
-                if (header.classList.contains("active")) {
-                    body.style.maxHeight = body.scrollHeight + "px";
-                    updateParentHeight(header);
-                } else {
-                    body.style.maxHeight = 0;
-                    updateParentHeight(header, true);
-                }
-            });
-        });
-    }
-
-    function updateParentHeight(element, isClosing = false) {
-        let parentBody = element.closest(".accordion-item-body");
-        while (parentBody) {
-            if (isClosing) {
-                parentBody.style.maxHeight = parentBody.scrollHeight - element.nextElementSibling.scrollHeight + "px";
-            } else {
-                parentBody.style.maxHeight = parentBody.scrollHeight + element.nextElementSibling.scrollHeight + "px";
+                        if (header.classList.contains("active")) {
+                            body.style.maxHeight = body.scrollHeight + "px";
+                            updateParentHeight(header);
+                        } else {
+                            body.style.maxHeight = 0;
+                            updateParentHeight(header, true);
+                        }
+                    });
+                });
             }
-            parentBody = parentBody.parentElement.closest(".accordion-item-body");
-        }
-    }
 
-    setupAccordion(
-        document.querySelectorAll(".accordion-item-headers-nav"),
-        "accordion-item-headers-nav"
-    );
-    setupAccordion(
-        document.querySelectorAll(".accordion-item-headers-inner"),
-        "accordion-item-headers-inner"
-    );
-    setupAccordion(
-        document.querySelectorAll(".accordion-item-headers-innerchild"),
-        "accordion-item-headers-innerchild"
-    );
-});
+            function updateParentHeight(element, isClosing = false) {
+                let parentBody = element.closest(".accordion-item-body");
+                while (parentBody) {
+                    if (isClosing) {
+                        parentBody.style.maxHeight = parentBody.scrollHeight - element.nextElementSibling
+                            .scrollHeight + "px";
+                    } else {
+                        parentBody.style.maxHeight = parentBody.scrollHeight + element.nextElementSibling
+                            .scrollHeight + "px";
+                    }
+                    parentBody = parentBody.parentElement.closest(".accordion-item-body");
+                }
+            }
 
+            setupAccordion(
+                document.querySelectorAll(".accordion-item-headers-nav"),
+                "accordion-item-headers-nav"
+            );
+            setupAccordion(
+                document.querySelectorAll(".accordion-item-headers-inner"),
+                "accordion-item-headers-inner"
+            );
+            setupAccordion(
+                document.querySelectorAll(".accordion-item-headers-innerchild"),
+                "accordion-item-headers-innerchild"
+            );
+        });
     </script>
 </x-mainpage-layout>
-

@@ -1049,15 +1049,42 @@ class HomeController extends Controller
 
                 ],
                 'Photos' => [
+                    'Lifestyle Photos' => [
                         [
                             'name' => 'Lifestyle Photos',
-                            'url' => 'https://www.dropbox.com/scl/fo/97hdfr668dybyn1uk1ddl/AAdRmbjpRqcLWrYWFn1Ngck?rlkey=p6t0w8f8xyze7vvdk9bkourtw&e=1&st=tlc54lqh&dl=0',
-                        ],
-                        [
-                            'name' => 'Product Photos',
-                            'url' => 'https://www.dropbox.com/scl/fo/goq6ocwb477bz5g51ufv7/h?rlkey=umdd0nkhoykeocqkt32di2011&e=1&st=jszrspfg&dl=0',
-                        ],
-                    
+                            'url' => asset('storage/vault-photo/lifestyle.zip'),
+                        ]
+                    ],
+                    'Product Photos' => [
+                            [
+                                'name' => 'Dealer Tools and Accessories',
+                                'url' => asset('storage/vault-photo/product/Dealer-Tools-and-Accessories.zip'),
+                            ],
+                            [
+                                'name' => 'Hardware',
+                                'url' => asset('storage/vault-photo/product/Hardware.zip'),
+                            ],
+                            [
+                                'name' => 'Lower Body',
+                                'url' => asset('storage/vault-photo/product/Lower-Body.zip'),
+                            ],
+                            [
+                                'name' => 'Pelvic Positioning',
+                                'url' => asset('storage/vault-photo/product/Pelvic-Positioning.zip'),
+                            ],
+                            [
+                                'name' => 'Power Chair Components',
+                                'url' => asset('storage/vault-photo/product/Power-Chair-Components.zip'),
+                            ],
+                            [
+                                'name' => 'Specialty',
+                                'url' => asset('storage/vault-photo/product/Specialty.zip'),
+                            ],
+                            [
+                                'name' => 'Upper Body',
+                                'url' => asset('storage/vault-photo/product/Upper-Body.zip'),
+                            ],
+                    ],
                 ],
             ];
     }

@@ -9,7 +9,7 @@ $customOrder = [
     'Power Chair Components' => 4,   
     'Bath and Shower' => 5,   
     'Hardware' => 6,   
-    'Tool Free Accessories' => 7,   
+    'Tool-Free Accessories' => 7,   
 ];
 
 $sortedCategories = collect($categories)
