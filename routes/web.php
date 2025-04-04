@@ -13,6 +13,7 @@ use App\Http\Controllers\PhotoController;
 use App\Models\AssociateCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +35,23 @@ Route::post('/search', [ProductController::class, 'productSearch'])->name('produ
 Route::get('/search', [ProductController::class, 'productSearch'])->name('product-search-get');
 Route::post('/getVariationPrice', [ProductController::class, 'getVariationPrice'])->name('get-variation-price');
 
-
+Route::get('/cron', function () {
+    Artisan::call('fetch:order-history');
+    return response()->json(['message' => 'Order history command executed successfully!']);
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified.email'])->name('dashboard');
 
 Route::middleware(['auth', 'verified.email'])->group(function () {
+
+    Route::get('/run-history/{customer?}', function ($customer = null) {
+        Artisan::call('fetch:order-history', ['customer' => $customer]);
+        session()->flash('message', 'FetchOrderHistory job triggered successfully!');
+        return back(); 
+    })->name('sync-account');
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

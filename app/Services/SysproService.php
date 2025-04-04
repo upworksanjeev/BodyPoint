@@ -98,7 +98,7 @@ class SysproService
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
                 'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
-                "MakeForLine"=>$item->marked_for ?? '',
+                "MakeForLine" => $item->marked_for ?? '',
             ];
         }
 
@@ -110,7 +110,7 @@ class SysproService
         return self::returnResponse($response);
     }
 
-    public static function updateQuote($order_no,$url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
+    public static function updateQuote($order_no, $url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
     {
         self::initialize();
         if (!$order_id) {
@@ -148,7 +148,7 @@ class SysproService
                 'StockCode' => $item->sku,
                 'Qty' => $item->quantity,
                 'Price' => ($item->discount > 0) ? $item->discount_price : $item->price,
-                "MakeForLine"=>$item->marked_for
+                "MakeForLine" => $item->marked_for
             ];
         }
 
@@ -164,8 +164,8 @@ class SysproService
     {
         $request = [
             "OrderNumber" => $order_number,
-            "NewCustomerPoNumber"=> $CustomerPoNumber,
-            "AllowDuplicatePO"=>$AllowDuplicatePO
+            "NewCustomerPoNumber" => $CustomerPoNumber,
+            "AllowDuplicatePO" => $AllowDuplicatePO
         ];
 
         $response = self::post($url, $request);
@@ -218,5 +218,61 @@ class SysproService
             $stockDetails = [];
         }
         return $stockDetails;
+    }
+
+    public static function orderHistory($url, $toDate, $fromDate, $customer = null)
+    {
+        $request = [
+            "DateFrom" => $fromDate,
+            "DateTo" => $toDate,
+            "Customer" => $customer
+        ];
+
+        $response = self::postCron($url, $request);
+        return self::returnResponseCron($response);
+    }
+
+    public static function postCron($end_point, $request)
+    {
+        self::initialize();
+        $syspro_url = self::$apiUrl . '/' . $end_point;
+        $headers = [
+            'Authorization' => 'Basic ' . self::$token,
+            'Cookie'        => 'ASP.NET_SessionId=' . self::$session_id,
+        ];
+
+        try {
+            $response = Http::withHeaders($headers)->timeout(300)->retry(3, 5000)->post($syspro_url, $request);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return $response;
+    }
+
+    public static function returnResponseCron($response)
+    {
+        if (!is_object($response) || !method_exists($response, 'status')) {
+            // Invalid or error response
+            return [
+                'code'     => 500,
+                'response' => [
+                    'error'   => true,
+                    'message' => is_string($response) ? $response : 'Unexpected response format.'
+                ]
+            ];
+        }
+
+        $statusCode   = $response->status() ?? null;
+        $responseBody = $response->json() ?? [];
+
+        return [
+            'code'     => $statusCode,
+            'response' => $responseBody
+        ];
     }
 }

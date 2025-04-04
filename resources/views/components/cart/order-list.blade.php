@@ -91,6 +91,9 @@
                 </div>
             </div>
         @endforeach
+        <div class="mt-4">
+            {{ $order->links() }} {{-- This generates pagination links --}}
+        </div>
     @else
         <h2>No Orders Found</h2>
     @endif
