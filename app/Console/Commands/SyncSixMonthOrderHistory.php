@@ -86,7 +86,7 @@ class SyncSixMonthOrderHistory extends Command
                         'created_at'            => !empty($orderData['OrderDate']) ? date('Y-m-d H:i:s', strtotime($orderData['OrderDate'])) : now(),
                     ]
                 );
-
+                Log::info("[$cronName] Processed Order: {$order->purchase_order_no}");
                 $order->orderItem()->delete();
 
                 foreach ($orderData['Line'] as $lineItem) {
@@ -117,6 +117,7 @@ class SyncSixMonthOrderHistory extends Command
 
                         Log::info("[$cronName] Stored item: $sku");
                     } catch (\Exception $e) {
+                        Log::info("[$cronName] Processed Order: {$order->purchase_order_no}");
                         Log::error("[$cronName] Error storing line item (SKU: {$lineItem['StockCode']}): " . $e->getMessage());
                     }
                 }
