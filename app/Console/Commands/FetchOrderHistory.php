@@ -100,6 +100,7 @@ class FetchOrderHistory extends Command
 
                         Log::info("[$cronName] OrderItem created for SKU: $sku");
                     } catch (\Exception $e) {
+                        Log::info("[$cronName] Processed Order: {$order->purchase_order_no}");
                         Log::error("[$cronName] Failed to process order line SKU: {$lineItem['StockCode']} - " . $e->getMessage());
                     }
                 }
