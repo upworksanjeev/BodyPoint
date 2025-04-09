@@ -170,7 +170,7 @@
                                         class="accordion-item-body-content py-[20px] px-7 leading-normal border-t border-[#E9E9E9]">
                                         <ul>
                                             @foreach ($media_assets as $key => $files)
-                                                @if ($key != 'Photos')
+                                                {{-- @if ($key != 'Photos') --}}
                                                     <li>
                                                         <div class="accordion-item">
                                                             <div
@@ -195,7 +195,7 @@
                                                             </div>
                                                         </div>
                                                     </li>
-                                                @else
+                                                {{-- @else
                                                     <!-- Special handling for Photos -->
                                                     @foreach ($files as $category => $photoFiles)
                                                         <li>
@@ -247,7 +247,7 @@
                                                             </div>
                                                         </li>
                                                     @endforeach
-                                                @endif
+                                                @endif --}}
                                             @endforeach
                                         </ul>
                                     </div>
