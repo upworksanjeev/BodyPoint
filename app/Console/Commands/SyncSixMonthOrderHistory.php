@@ -72,6 +72,10 @@ class SyncSixMonthOrderHistory extends Command
     protected function storeOrders($orders, $cronName)
     {
         foreach ($orders as $orderData) {
+            if (Order::where('purchase_order_no', $orderData['OrderNumber'])->exists()) {
+                Log::info("[$cronName] Skipped existing order: {$orderData['OrderNumber']}");
+                continue;
+            }
             try {
                 $order = Order::updateOrCreate(
                     ['purchase_order_no' => $orderData['OrderNumber']],
