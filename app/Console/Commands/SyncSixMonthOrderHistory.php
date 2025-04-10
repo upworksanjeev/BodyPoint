@@ -24,7 +24,7 @@ class SyncSixMonthOrderHistory extends Command
 
         $endDate = now()->endOfDay();
 
-        
+
         $progressFile = storage_path('app/order-history-sync.json');
 
         if (file_exists($progressFile)) {
@@ -34,7 +34,7 @@ class SyncSixMonthOrderHistory extends Command
             $currentFrom = now()->subMonths(6)->startOfDay();
         }
 
-        
+
         if ($currentFrom >= $endDate) {
             Log::info("[$cronName] 6-month sync already complete. Skipping.");
             return;
@@ -60,7 +60,7 @@ class SyncSixMonthOrderHistory extends Command
                 Log::info("[$cronName] Orders stored between $dateFrom and $dateTo");
             }
 
-            
+
             file_put_contents($progressFile, json_encode(['last_synced' => $currentTo->toIso8601String()]));
         } catch (\Exception $e) {
             Log::error("[$cronName] Error: " . $e->getMessage());
@@ -73,7 +73,7 @@ class SyncSixMonthOrderHistory extends Command
     {
         foreach ($orders as $orderData) {
             if (Order::where('purchase_order_no', $orderData['OrderNumber'])->exists()) {
-                Log::info("[$cronName] Skipped existing order: {$orderData['OrderNumber']}");
+                //Log::info("[$cronName] Skipped existing order: {$orderData['OrderNumber']}");
                 continue;
             }
             try {
