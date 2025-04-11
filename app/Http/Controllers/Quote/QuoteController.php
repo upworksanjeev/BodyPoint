@@ -51,14 +51,16 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orderBy('created_at', 'desc')
-                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
+                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
+                //->get();
+                ->paginate(10);
         } elseif ($request->search_input != '' && $request->start_date != '') {
             $quotes = Order::with([
                 'User',
@@ -70,13 +72,15 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orderBy('created_at', 'desc')
-                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")->get();
+                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
+                //->get();
+                ->paginate(10);
         } elseif ($request->start_date != '' && $request->end_date != '') {
             $quotes = Order::with([
                 'User',
@@ -88,13 +92,14 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->where('created_at', '<=', $end_date)
                 ->orderBy('created_at', 'desc')
-                ->get();
+                //->get();
+                ->paginate(10);
         } elseif ($request->search_input != '' && $request->end_date != '') {
             $quotes = Order::with([
                 'User',
@@ -106,14 +111,15 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '<=', $end_date)
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
                 ->orderBy('created_at', 'desc')
-                ->get();
+                //->get();
+                ->paginate(10);
         } elseif ($request->search_input != '') {
             $quotes = Order::with([
                 'User',
@@ -125,13 +131,14 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
                 ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
                 ->orderBy('created_at', 'desc')
-                ->get();
+                //->get();
+                ->paginate(10);
         } elseif ($request->start_date != '') {
             $quotes = Order::with([
                 'User',
@@ -143,12 +150,13 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '>=', $start_date)
                 ->orderBy('created_at', 'desc')
-                ->get();
+                //->get();
+                ->paginate(10);
         } elseif ($request->end_date != '') {
             $quotes = Order::with([
                 'User',
@@ -160,12 +168,13 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->where('created_at', '<=', $end_date)
                 ->orderBy('created_at', 'desc')
-                ->get();
+                //->get();
+                ->paginate(10);
         } else {
             $quotes = Order::with([
                 'User',
@@ -177,11 +186,12 @@ class QuoteController extends Controller
                 },
                 'OrderItem.Product.Media'
             ])
-                ->where('user_id', $user->id)
+                //->where('user_id', $user->id)
                 ->where('customer_number', $customer_number)
                 ->where('status', 'F')
                 ->orderBy('created_at', 'desc')
-                ->get();
+                //->get();
+                ->paginate(10);
         }
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
@@ -338,8 +348,8 @@ class QuoteController extends Controller
         $url = 'GetOrderDetails/'. $quote->purchase_order_no;
         
         $response = SysproService::getOrderDetails($url);
-        
-        if($response && $response['response']['Line']){
+        //dd($response, $quote->purchase_order_no);
+        if($response && $response['response'] && $response['response']['Line']){
            $lines = $response['response']['Line'];
             foreach($lines as $line){
                 $orderItem = $quote->orderItem()->where('sku', $line['StockCode'])->first();
@@ -542,7 +552,7 @@ class QuoteController extends Controller
             if (empty($cart->purchase_order_no)) {
                 $customer_id = getCustomerId();
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-                $url = 'UpdateQupte';
+                $url = 'UpdateQuote';
                 //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
                 $order_syspro = SysproService::updateQuote($order->purchase_order_no, $url, $orderitems, 'QUOTE', 'N', 'Y');
                 

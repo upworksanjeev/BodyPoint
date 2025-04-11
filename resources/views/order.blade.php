@@ -45,6 +45,8 @@
                         </div>
                     </div>
                 </form>
+                <a href="{{ route('sync-account', getCustomerId()) }}"
+                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[145px]">Sync Orders</a>
                 <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <x-cart.order-list :order="$order" />
                 </div>
