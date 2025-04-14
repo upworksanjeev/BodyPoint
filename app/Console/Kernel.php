@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             (new PruneStaleAttachments)();
         })->daily();
-        $schedule->command('fetch:order-history')->everyFifteenMinutes(); 
+        $schedule->command('fetch:order-history')->everyThreeHours();
         $schedule->command('sync:six-month-order-history')->everyFiveMinutes();
     }
 
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
