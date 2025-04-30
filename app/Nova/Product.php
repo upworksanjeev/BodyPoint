@@ -69,9 +69,9 @@ class Product extends Resource
             Tabs::make('Product', [
                 Tab::make('General Information', [
                     ID::make()->sortable(),
-                    Text::make('Name','name')->sortable()->required(true)->rules('required', 'max:255'),
-                    Text::make('Tagline','small_description')->maxlength(255)->hideFromIndex(),
-                    Textarea::make('Description','description')->rows(3)->hideFromIndex(),
+                    Text::make('Name', 'name')->sortable()->required(true)->rules('required', 'max:255'),
+                    Text::make('Tagline', 'small_description')->maxlength(255)->hideFromIndex(),
+                    Textarea::make('Description', 'description')->rows(3)->hideFromIndex(),
                     Multiselect::make('Categories', 'categories')->belongsToMany(\App\Nova\Category::class, false),
                     ImageGalleryField::make('Images')
                         ->rules('mimes:jpeg,png,jpg,gif', 'dimensions:min_width=150,min_height=150', 'max:5000')
@@ -82,55 +82,55 @@ class Product extends Resource
                         ])
                         ->help('Min size 150 x 150. Max filesize 5MB.')
                         ->showOnIndex(),
-					Text::make('Video Link','video')->maxlength(255)->hideFromIndex(),
-                    Text::make('Tagline','small_description')->displayUsing(function($id) {
+                    Text::make('Video Link', 'video')->maxlength(255)->hideFromIndex(),
+                    Text::make('Tagline', 'small_description')->displayUsing(function ($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
-                        })->onlyOnIndex(),
+                    })->onlyOnIndex(),
 
-     				Text::make('Description','description')->displayUsing(function($id) {
+                    Text::make('Description', 'description')->displayUsing(function ($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
-                        })->onlyOnIndex(),
+                    })->onlyOnIndex(),
 
 
                 ]),
                 Tab::make('Overview', [
-                    NovaTinyMCE::make('Overview','overview')->hideFromIndex()->alwaysShow()->options([
+                    NovaTinyMCE::make('Overview', 'overview')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
-                        ]),
+                    ]),
                 ]),
-				Tab::make('Sizing', [
-                    NovaTinyMCE::make('Sizing','sizing')->hideFromIndex()->alwaysShow()->options([
+                Tab::make('Sizing', [
+                    NovaTinyMCE::make('Sizing', 'sizing')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
-                        ]),
+                    ]),
                 ]),
                 Tab::make('Instruction of use', [
-                    NovaTinyMCE::make('Instruction of use','instruction_of_use')->hideFromIndex()->alwaysShow()->options([
+                    NovaTinyMCE::make('Instruction of use', 'instruction_of_use')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
-                        ]),
+                    ]),
                 ]),
-                Tab::make('Warranty', [
-                    NovaTinyMCE::make('Warranty','warranty')->hideFromIndex()->alwaysShow()->options([
+                Tab::make('Faq', [
+                    NovaTinyMCE::make('Faq', 'warranty')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
-                        ]),
+                    ]),
                 ]),
-				Tab::make('Price', [
-                     Text::make('SKU','sku')->sortable()->maxlength(255),
+                Tab::make('Price', [
+                    Text::make('SKU', 'sku')->sortable()->maxlength(255),
 
-					 Number::make('MSRP','msrp')->min(1)->max(999999)->step(0.01)->sortable()->hideFromIndex(),
-					 Number::make('Price','price')->min(1)->max(999999)->step(0.01)->sortable(),
-					 Number::make('Discount (in %)','discount')->min(1)->max(100)->step('any')->hideFromIndex(),
+                    Number::make('MSRP', 'msrp')->min(1)->max(999999)->step(0.01)->sortable()->hideFromIndex(),
+                    Number::make('Price', 'price')->min(1)->max(999999)->step(0.01)->sortable(),
+                    Number::make('Discount (in %)', 'discount')->min(1)->max(100)->step('any')->hideFromIndex(),
 
                 ]),
                 Tab::make('Product Attributes', [
-                    Select::make('Product Type','product_type')->options([
+                    Select::make('Product Type', 'product_type')->options([
                         'Single' => 'Single',
                         'Option' => 'Option',
                     ]),
 
-                    HasMany::make('Attribute','attribute',\App\Nova\ProductAttribute::class)->hideFromIndex(),
-                    HasMany::make('Variation','variation',\App\Nova\Variation::class)->hideFromIndex(),
+                    HasMany::make('Attribute', 'attribute', \App\Nova\ProductAttribute::class)->hideFromIndex(),
+                    HasMany::make('Variation', 'variation', \App\Nova\Variation::class)->hideFromIndex(),
                 ]),
             ]),
         ];
@@ -141,7 +141,7 @@ class Product extends Resource
         return true;
     }
 
-	/**
+    /**
      * Get the cards available for the request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -171,7 +171,7 @@ class Product extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [  /*Lenses\ImportCSV::make(),*/ ];
+        return [  /*Lenses\ImportCSV::make(),*/];
     }
 
     /**
@@ -182,12 +182,12 @@ class Product extends Resource
      */
     public function actions(NovaRequest $request)
     {
-		ini_set('max_execution_time', '600');
+        ini_set('max_execution_time', '600');
         return [
-			  (new DownloadExcel)->withFilename('Product-' . time() . '.xlsx')->allFields()->withHeadings("ID","Item_Name","Tagline","Description","Product Overview/Overview","Product Sizing/Sizing","Product Instructions/Instructions for Use","warranty","Item_Type","Categories")->except("video","is_deleted","created_at","updated_at","Images"),
-			  Actions\ImportAllCategory::make(),
-			//Actions\ExportAllCategory::make(),
+            (new DownloadExcel)->withFilename('Product-' . time() . '.xlsx')->allFields()->withHeadings("ID", "Item_Name", "Tagline", "Description", "Product Overview/Overview", "Product Sizing/Sizing", "Product Instructions/Instructions for Use", "warranty", "Item_Type", "Categories")->except("video", "is_deleted", "created_at", "updated_at", "Images"),
+            Actions\ImportAllCategory::make(),
+            //Actions\ExportAllCategory::make(),
 
-		];
+        ];
     }
 }
