@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
             (new PruneStaleAttachments)();
         })->daily();
 
-        $schedule->command('fetch:order-history')->everyFiveMinutes();
+        $schedule->command('fetch:order-history')->hourly();
         // $schedule->command('sync:six-month-order-history')->everyFiveMinutes();
     }
 
