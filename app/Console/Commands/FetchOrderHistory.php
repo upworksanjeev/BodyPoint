@@ -20,8 +20,9 @@ class FetchOrderHistory extends Command
         Log::info("[$cronName] Cron started");
 
         $url = 'OrderHistory';
-        $dateFrom = now()->subDays(2)->startOfDay()->toIso8601String();
+        $dateFrom = now()->subHours(24)->toIso8601String();
         $dateTo   = now()->endOfDay()->toIso8601String();
+
         $customer = $this->argument('customer') ?? null;
 
         try {
