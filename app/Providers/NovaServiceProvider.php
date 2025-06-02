@@ -44,12 +44,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(User::class),
                 ])->icon('user-group')->collapsable(),
 
-                MenuSection::make('Roles & Permissions', [
+                /* MenuSection::make('Roles & Permissions', [
                     MenuItem::resource(Role::class),
                     MenuItem::resource(Permission::class),
                 ])->icon('shield-check')->collapsable()->canSee(function (NovaRequest $request) {
                     return $request->user()->isSuperAdmin();
-                }),
+                }), */
 
                 MenuSection::make('Ecommerce', [
                     MenuItem::resource(Product::class),
@@ -65,8 +65,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuSection::make('Quotes', [
                     MenuItem::resource(Quote::class),
                 ])
-                ->icon('list')
-                ->collapsable(),
+                    ->icon('list')
+                    ->collapsable(),
 
             ];
         });
