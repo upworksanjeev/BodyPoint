@@ -181,17 +181,17 @@
                             <td><span
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
-                            <td><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
-                                    {{ session('customer_address')['AddressLine1'] ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '') . ',' }}
-                                    {{ session('customer_address')['AddressLine2'] ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '') . ',' }}
-                                    {{ session('customer_address')['AddressLine3'] ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ?? '') . ',' }}
-                                    <br>
-                                    {{ session('customer_address')['State'] ? session('customer_address')['State'] . ',' : (session('customer_details')['ShipToAddresses'][0]['State'] ?? '') . ',' }}
-                                    {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
-                                    @if (session('customer_address')['Country'] || !empty(session('customer_details')['ShipToAddresses'][0]['Country']))
-                                        ,
-                                    @endif
-                                    {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}
+                            <td style="padding-top:10px"><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
+                                {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
+                                {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
+                                {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
+                                <br>
+                                {{ !empty(session('customer_address')['State']) ? session('customer_address')['State'] . ',' : (session('customer_details')['ShipToAddresses'][0]['State'] ? session('customer_details')['ShipToAddresses'][0]['State'] . ',' :'')  }}
+                                {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
+                                @if (session('customer_address')['Country'] || !empty(session('customer_details')['ShipToAddresses'][0]['Country']))
+                                    ,
+                                @endif
+                                {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}
                                 </span></td>
                         </tr>
                         <tr>
@@ -231,17 +231,17 @@
                                 <span
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
-                            <td>
+                            <td style="padding-top:10px">
                                 <span
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">
-                                    {{ session('customer_details')['billAddressLine2'] ? session('customer_details')['billAddressLine2'] . ',' : '' }}
+                                    {{ !empty(session('customer_details')['billAddressLine2']) ? session('customer_details')['billAddressLine2'] . ',' : '' }}
                                     <br>
-                                    {{ session('customer_details')['billAddressLine4'] ? session('customer_details')['billAddressLine4'] . ',' : '' }}
-                                    {{ session('customer_details')['billAddressLine1'] ? session('customer_details')['billAddressLine1'] . ',' : '' }}
+                                    {{ !empty(session('customer_details')['billAddressLine4']) ? session('customer_details')['billAddressLine4'] . ',' : '' }}
+                                    {{ !empty(session('customer_details')['billAddressLine1']) ? session('customer_details')['billAddressLine1'] . ',' : '' }}
                                     @if (session('customer_details')['billAddressLine5'] || !empty(session('customer_details')['billAddressLine5']))
-                                        {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
+                                        {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
                                     @else
-                                        {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] : '' }}
+                                        {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] : '' }}
                                     @endif
                                     {{ session('customer_details')['billAddressLine5'] ?? '' }}
                                 </span>
