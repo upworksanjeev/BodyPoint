@@ -14,23 +14,23 @@
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
                      <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">
-                        {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
                         {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
+                        {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
                         {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
                         <br>
-                        {{ !empty(session('customer_address')['State']) ? session('customer_address')['State'] . ',' : (session('customer_details')['ShipToAddresses'][0]['State'] ? session('customer_details')['ShipToAddresses'][0]['State'] . ',' :'')  }}
+                        {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
                         {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
-                        @if (session('customer_address')['Country'] || !empty(session('customer_details')['ShipToAddresses'][0]['Country']))
+                        @if (session('customer_address')['AddressLine5'] || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5']))
                             ,
                         @endif
-                        {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}
+                        {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
                     </span>
                     
                  </li>
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
                      <span
-                         class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? '' }}</span>
+                         class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                  </li>
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
@@ -71,7 +71,7 @@
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
                      <span
-                         class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? '' }}</span>
+                         class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                  </li>
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>

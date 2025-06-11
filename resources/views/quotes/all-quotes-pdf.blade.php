@@ -126,25 +126,25 @@
                                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Address:</span>
                                             </td>
                                             <td style="padding-top:10px"><span
-                                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
-                                                    {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
-                                                    {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
-                                                    {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
-                                                    <br>
-                                                    {{ !empty(session('customer_address')['State']) ? session('customer_address')['State'] . ',' : (session('customer_details')['ShipToAddresses'][0]['State'] ? session('customer_details')['ShipToAddresses'][0]['State'] . ',' :'')  }}
-                                                    {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
-                                                    @if (session('customer_address')['Country'] || !empty(session('customer_details')['ShipToAddresses'][0]['Country']))
-                                                        ,
-                                                    @endif
-                                                    {{ session('customer_address')['Country'] ?? session('customer_details')['ShipToAddresses'][0]['Country'] }}
-                                                </span></td>
+                                                style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
+                                                {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
+                                                {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
+                                                <br>
+                                                {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
+                                                {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
+                                                {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
+                                                @if (session('customer_address')['AddressLine5'] || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5']))
+                                                    ,
+                                                @endif
+                                                {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
+                                            </span></td>
                                         </tr>
                                         <tr>
                                             <td><span
                                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span>
                                             </td>
                                             <td><span
-                                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? '' }}</span>
+                                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -181,8 +181,7 @@
                                             </td>
 
                                             <td style="padding-top:10px">
-                                                <span
-                                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
+                                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">
                                                     {{ !empty(session('customer_details')['billAddressLine2']) ? session('customer_details')['billAddressLine2'] . ',' : '' }}
                                                     <br>
                                                     {{ !empty(session('customer_details')['billAddressLine4']) ? session('customer_details')['billAddressLine4'] . ',' : '' }}
@@ -204,7 +203,7 @@
 
                                             <td>
                                                 <span
-                                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? '' }}</span>
+                                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                                             </td>
 
                                         </tr>
@@ -314,11 +313,17 @@
                                                     style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                                                     EA
                                                 </td>
+                                                @php
+                                                    $discount_in_price = round(($cartitem->price * $cartitem->discount) / 100, 2);
+                                                    $discount_price = ($cartitem->price - $discount_in_price);
+                                                @endphp
                                                 <td
                                                     style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
-                                                    ${{ $cartitem->discount_price ? number_format($cartitem->discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                                    ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
                                                 </td>
-                                                @php $subtotal += $cartitem->discount_price * $cartitem->quantity; @endphp
+                                                @php
+                                                    $subtotal += $discount_price * $cartitem->quantity;
+                                                @endphp
                                             </tr>
                                         @endforeach
                                     @endif
