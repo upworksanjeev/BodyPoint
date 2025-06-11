@@ -199,7 +199,7 @@
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Country:</span>
                             </td>
                             <td><span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->country ?? '' }}</span>
+                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -259,7 +259,7 @@
                             <td>
 
                                 <span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->country ?? '' }}</span>
+                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
 
                             </td>
                         </tr>
