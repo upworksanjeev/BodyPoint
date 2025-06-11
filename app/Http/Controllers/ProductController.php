@@ -243,6 +243,18 @@ class ProductController extends Controller
                 $attribute = $this->filterAttributes($attribute, $sizesToRemove);
             }
         }
+  
+        if ($request->product_id == 1 && $request->index == 1) {
+            $sizesToRemove = [];
+            
+            if ($request->product_att_id == 1471 && $request->rootAttributeId == 1464 && $request->attr_count == 2 || $request->product_att_id == 1472 && $request->rootAttributeId == 1464 && $request->attr_count == 2) {
+                $sizesToRemove = ['Extra Small', 'Small'];
+            } 
+
+            if ($sizesToRemove) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
 
         if ($request->product_id == 238 && $request->index == 2) {
             $sizesToRemove = [];
