@@ -67,14 +67,19 @@
                                     <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                                         EA
                                     </td>
-
+                                    @php
+                                        $discount_in_price = round(($cartitem->price * $cartitem->discount) / 100, 2);
+                                        $discount_price = ($cartitem->price - $discount_in_price);
+                                    @endphp
+                
                                     <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
-                                        ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
+                                        ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
                                     </td>
+                                    @php
+                                        $subtotal += $discount_price * $cartitem->quantity;
+                                    @endphp
                                 </tr>
-                                @php
-                                    $subtotal += $cartitem['discount_price'] * $cartitem['quantity'];
-                                @endphp
+                           
                             @endforeach
                             <tr class="odd:bg-white even:bg-gray-50 border-b">
                                 <td class="w-4 p-4" colspan="2">
