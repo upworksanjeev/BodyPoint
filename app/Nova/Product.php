@@ -105,8 +105,8 @@ class Product extends Resource
                         'use_lfm' => true
                     ]),
                 ]),
-                Tab::make('Instruction of use', [
-                    NovaTinyMCE::make('Instruction of use', 'instruction_of_use')->hideFromIndex()->alwaysShow()->options([
+                Tab::make('Documents', [
+                    NovaTinyMCE::make('Documents', 'instruction_of_use')->hideFromIndex()->alwaysShow()->options([
                         'use_lfm' => true
                     ]),
                 ]),
