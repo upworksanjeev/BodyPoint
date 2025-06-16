@@ -50,13 +50,14 @@ class Quote extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Sales Quote Number', 'purchase_order_no')->sortable()->readonly(),
+            Text::make('Customer Name', function () {
+                return $this->customer ? $this->customer->name : ($this->user ? $this->user->name : null);
+            })->readonly(),
             Text::make('Total Items', 'total_items')->sortable()->readonly(),
             Text::make('Status', 'order_status')->sortable()->readonly(),
             Text::make('Total', 'total')->sortable()->readonly(),
             Text::make('Customer Id', 'customer_number')->readonly()->hideFromIndex(),
-            Text::make('Customer Name', function () {
-                return $this->customer ? $this->customer->name : ($this->user ? $this->user->name : null);
-            })->readonly()->hideFromIndex(),
+
             Text::make('Date', function () {
                 return Carbon::parse($this->created_at)->format('d-m-Y h:i A');
             })->readonly()->hideFromIndex(),
