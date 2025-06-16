@@ -25,16 +25,16 @@ class Quote extends Resource
     public static $search = [
         'id'
     ];
-    public static $with = ['user','customer'];
+    public static $with = ['user', 'customer'];
     public static $clickAction = 'view';
     public static function indexQuery(NovaRequest $request, $query)
     {
         $query = $query->where('status', 'F');
 
-        if($request->user()->isSuperAdmin())
+        if ($request->user()->isSuperAdmin())
             return $query;
-         else
-             return $query->whereDoesntHave('roles', function ($query) {
+        else
+            return $query->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'super-admin');
             });
     }
@@ -49,11 +49,11 @@ class Quote extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Purchase Quote Number','purchase_order_no')->sortable()->readonly(),
-            Text::make('Total Items','total_items')->sortable()->readonly(),
-            Text::make('Status','order_status')->sortable()->readonly(),
-            Text::make('Total','total')->sortable()->readonly(),
-            Text::make('Customer Id','customer_number')->readonly()->hideFromIndex(),
+            Text::make('Sales Quote Number', 'purchase_order_no')->sortable()->readonly(),
+            Text::make('Total Items', 'total_items')->sortable()->readonly(),
+            Text::make('Status', 'order_status')->sortable()->readonly(),
+            Text::make('Total', 'total')->sortable()->readonly(),
+            Text::make('Customer Id', 'customer_number')->readonly()->hideFromIndex(),
             Text::make('Customer Name', function () {
                 return $this->customer ? $this->customer->name : ($this->user ? $this->user->name : null);
             })->readonly()->hideFromIndex(),
@@ -117,6 +117,4 @@ class Quote extends Resource
     {
         return false;
     }
-
-
 }
