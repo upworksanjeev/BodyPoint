@@ -68,9 +68,7 @@
                             EA
                         </td>
                         @php
-                        $discount_price = (empty($cartitem->discount_price))
-                        ? $cartitem->price
-                        : $cartitem->discount_price;
+                        $discount_price = $cartitem->price;
                         @endphp
 
                         <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
