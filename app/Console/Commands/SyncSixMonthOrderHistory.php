@@ -111,7 +111,7 @@ class SyncSixMonthOrderHistory extends Command
                             'price'          => $lineItem['Price'] ?? 0,
                             'quantity'       => $lineItem['Qty'] ?? 0,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
-                            'marked_for'     => null,
+                            'marked_for'     => $lineItem['MakeForLine'] ?? null,
                             'discount'       => 0,
                             'discount_price' => 0,
                             'product_id'     => $product?->id,
