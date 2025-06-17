@@ -146,7 +146,7 @@
                                                     EA
                                                 </td>
                                                 @php
-                                                $discount_price = (empty($cartitem->discount_price))
+                                                $discount_price = ((float) $cartitem->discount_price == 0.00)
                                                 ? $cartitem->price
                                                 : $cartitem->discount_price;
                                                 @endphp
