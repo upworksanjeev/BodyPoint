@@ -68,7 +68,10 @@
                             EA
                         </td>
                         @php
-                        $discount_price = $cartitem->price;
+                        $discount_price = ((float) $cartitem->discount_price == 0.00)
+                        ? $cartitem->price
+                        : $cartitem->discount_price;
+
                         @endphp
 
                         <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
