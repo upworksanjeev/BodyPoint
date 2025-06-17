@@ -81,7 +81,7 @@
             <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
                 <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Order Date:</span>
                 <span
-                    style= "line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ date('F j, Y', strtotime($order['created_at'])) }}</span>
+                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ date('F j, Y', strtotime($order['created_at'])) }}</span>
             </div>
             {{-- <div style="display: flex; gap: 20px; align-items: center; margin-top: 20px;">
         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">BP Number:</span>
@@ -131,7 +131,7 @@
                                         {{ session('customer_address')['AddressLine4'] ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ?? '') . ',' }}
                                         {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
                                         @if (session('customer_address')['AddressLine5'] || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5']))
-                                            ,
+                                        ,
                                         @endif
                                         {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
                                     </span></td>
@@ -185,9 +185,9 @@
                                         {{ session('customer_details')['billAddressLine4'] ? session('customer_details')['billAddressLine4'] . ',' : '' }}
                                         {{ session('customer_details')['billAddressLine1'] ? session('customer_details')['billAddressLine1'] . ',' : '' }}
                                         @if (session('customer_details')['billAddressLine5'] || !empty(session('customer_details')['billAddressLine5']))
-                                            {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
+                                        {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
                                         @else
-                                            {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] : '' }}
+                                        {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] : '' }}
                                         @endif
                                         {{ session('customer_details')['billAddressLine5'] ?? '' }}
                                     </span>
@@ -285,45 +285,44 @@
                         <?php $subtotal = 0;
                         $tax = 0.0; ?>
                         @if (isset($order))
-                            @foreach ($order['OrderItem'] as $cartitem)
-                                <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+                        @foreach ($order['OrderItem'] as $cartitem)
+                        <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
 
-                                    <td
-                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                            <td
+                                style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
 
-                                        {{ $cartitem['Product']['name'] ?? '' }}
-                                    </td>
-                                    <td
-                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                        {{ $cartitem['sku'] ?? '' }}
-                                    </td>
+                                {{ $cartitem['Product']['name'] ?? '' }}
+                            </td>
+                            <td
+                                style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                {{ $cartitem['sku'] ?? '' }}
+                            </td>
 
-                                    <td
-                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                        ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
-                                    </td>
+                            <td
+                                style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
+                            </td>
 
-                                    <td
-                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                        {{ $cartitem['quantity'] ?? '' }}
-                                    </td>
-                                    <td
-                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                        EA
-                                    </td>
-                                    @php
-                                        $discount_in_price = round(($cartitem->price * $cartitem->discount) / 100, 2);
-                                        $discount_price = ($cartitem->price - $discount_in_price);
-                                    @endphp
-                                    <td
-                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
-                                        ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
-                                    </td>
-                                    @php
-                                        $subtotal += $discount_price * $cartitem->quantity;
-                                    @endphp
-                                </tr>
-                            @endforeach
+                            <td
+                                style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                {{ $cartitem['quantity'] ?? '' }}
+                            </td>
+                            <td
+                                style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                EA
+                            </td>
+                            @php
+                            $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0;
+                            @endphp
+                            <td
+                                style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
+                                ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                            </td>
+                            @php
+                            $subtotal += $discount_price * $cartitem->quantity;
+                            @endphp
+                        </tr>
+                        @endforeach
                         @endif
                     </tbody>
                 </table>
