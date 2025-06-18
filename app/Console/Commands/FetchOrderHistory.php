@@ -88,16 +88,19 @@ class FetchOrderHistory extends Command
                         OrderItem::create([
                             'order_id'       => $order->id,
                             'sku'            => $sku ?? null,
-                            'price'          => $lineItem['Price'] ?? 0,
+                            'price'          => $lineItem['DealerPrice'] ?? 0,
                             'quantity'       => $lineItem['Qty'] ?? 0,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
                             'marked_for'     => $lineItem['MakeForLine'] ?? null,
-                            'discount'       => 0,
-                            'discount_price' => 0,
-                            'product_id'     => $productId,
-                            'variation_id'   => $variationId,
-                            'msrp'           => $lineItem['Price'] ?? 0,
+                            'discount'       => isset($lineItem['DealerPrice'], $lineItem['Price'])
+                                ? ($lineItem['DealerPrice'] - $lineItem['Price'])
+                                : 0,
+                            'discount_price' => $lineItem['Price'] ?? 0,
+                            'product_id'     => $product?->id,
+                            'variation_id'   => $product?->variation?->first()?->id,
+                            'msrp'           => $lineItem['MSRPPrice'] ?? 0,
                         ]);
+
 
                         Log::info("[$cronName] OrderItem created for SKU: $sku");
                     } catch (\Exception $e) {
