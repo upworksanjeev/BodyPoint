@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         })->daily();
 
         $schedule->command('fetch:order-history')->hourly();
-        $schedule->command('sync:six-month-order-history')->everyFiveMinutes();
+        //$schedule->command('sync:six-month-order-history')->everyFiveMinutes();
     }
 
     /**
