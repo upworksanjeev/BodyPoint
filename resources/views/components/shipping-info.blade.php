@@ -29,11 +29,17 @@
                      <span
                          class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                  </li>
+                 @php
+                 $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                 @endphp
+
+                 @if(!empty($phone))
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1
-                         {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
                  </li>
+                 @endif
+
              </ul>
          </div>
      </div>
@@ -70,11 +76,17 @@
                      <span
                          class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                  </li>
+                 @php
+                 $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                 @endphp
+
+                 @if(!empty($phone))
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1
-                         {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
                  </li>
+                 @endif
+
              </ul>
          </div>
      </div>

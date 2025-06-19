@@ -171,8 +171,7 @@
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Name:</span>
                             </td>
                             <td><span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->first_name ?? auth()->user()->name }}
-                                    {{ $userDetail->last_name ?? '' }}</span></td>
+                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</span></td>
                         </tr>
                         <tr>
                             <td><span
@@ -197,16 +196,25 @@
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                             </td>
                         </tr>
-                        <tr>
-                            <td><span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span>
-                            </td>
-                            <td><span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1
-                                    {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
-                            </td>
+                        @php
+                        $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                        @endphp
 
+                        @if(!empty($phone))
+                        <tr>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px; vertical-align: top;">
+                                    Phone:
+                                </span>
+                            </td>
+                            <td>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; vertical-align: top;">
+                                    +1 {{ $phone }}
+                                </span>
+                            </td>
                         </tr>
+                        @endif
+
                     </table>
                 </td>
                 <td style="width: 50%;padding: 15px;">
@@ -218,8 +226,7 @@
                             </td>
                             <td>
                                 <span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->first_name ?? auth()->user()->name }}
-                                    {{ $userDetail->last_name ?? '' }}</span>
+                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -252,17 +259,25 @@
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                             </td>
                         </tr>
+                        @php
+                        $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                        @endphp
+
+                        @if(!empty($phone))
                         <tr>
                             <td>
-                                <span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Phone:</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px; vertical-align: top;">
+                                    Phone:
+                                </span>
                             </td>
                             <td>
-                                <span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">+1
-                                    {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; vertical-align: top;">
+                                    +1 {{ $phone }}
+                                </span>
                             </td>
                         </tr>
+                        @endif
+
 
                     </table>
                 </td>
