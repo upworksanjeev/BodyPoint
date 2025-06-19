@@ -159,7 +159,7 @@
       var key = $(this).attr("data-key");
       var address = $('.shipping-address-' + key).html();
       $.ajax({
-        url: '{{ route("saveShippingAddress ") }}',
+        url: '{{ route("saveShippingAddress") }}',
         type: 'GET',
         data: {
           shipping_address_key: key
