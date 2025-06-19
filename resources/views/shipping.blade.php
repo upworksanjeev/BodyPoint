@@ -35,17 +35,21 @@
                       </div>
                       <div>
                         {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
-                        {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
-                        @if (session('customer_address')['AddressLine5'] || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5'])),
-                        @endif
+                        {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }},
                         {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
                       </div>
                     </span>
                   </li>
+                  @php
+                  $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                  @endphp
+
+                  @if(!empty($phone))
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]"> +1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
                   </li>
+                  @endif
                 </ul>
                 <div class="flex items-center mb-1 sm:mb-4">
                   <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-[#00707B]-600 bg-gray-100 border-gray-300 rounded focus:ring-[#00707B]-500 focus:ring-2">
@@ -61,7 +65,6 @@
                 <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Name:</span>
-                    {{-- <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name??'' }}</span> --}}
                     <span class="text-sm text-[#000] font-normal leading-[17px]">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : "" }}</span>
                   </li>
                   <li class="flex items-start gap-5">
@@ -79,10 +82,16 @@
                       {{ session('customer_details')['billAddressLine5'] ?? '' }}
                     </span>
                   </li>
+                  @php
+                  $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                  @endphp
+
+                  @if(!empty($phone))
                   <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px]">Phone:</span>
-                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
                   </li>
+                  @endif
                 </ul>
               </div>
             </div>

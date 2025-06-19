@@ -19,9 +19,7 @@
                          {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
                          <br>
                          {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
-                         {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
-                         @if (session('customer_address')['AddressLine5'] || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5'])),
-                         @endif
+                         {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }},
                          {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
                      </span>
 
@@ -31,11 +29,17 @@
                      <span
                          class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                  </li>
+                 @php
+                 $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                 @endphp
+
+                 @if(!empty($phone))
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1
-                         {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
                  </li>
+                 @endif
+
              </ul>
          </div>
      </div>
@@ -72,11 +76,17 @@
                      <span
                          class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
                  </li>
+                 @php
+                 $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                 @endphp
+
+                 @if(!empty($phone))
                  <li class="flex items-start gap-5">
                      <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1
-                         {{ $userDetail->primary_phone ?? $user->getUserDetails->primary_phone }}</span>
+                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
                  </li>
+                 @endif
+
              </ul>
          </div>
      </div>
