@@ -177,16 +177,16 @@
                             <td><span
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
-                            <td style="padding-top:10px"><span
-                                    style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
-                                    {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
-                                    {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
+                            <td style="padding-top:10px"><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
+                                    {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',' : '') }}
+                                    {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',' : '') }}
                                     <br>
-                                    {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
-                                    {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
-                                    {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }},
-                                    {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
-                                </span></td>
+                                    {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',' : '') }}
+                                    {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' : '') }}
+                                    {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
+                                    {{ !empty(session('customer_address')['AddressLine5']) || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5']) ? ', ' . (session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5']) : '' }}
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td><span
@@ -235,18 +235,15 @@
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
                             <td style="padding-top:10px">
-                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;vertical-align: top;">
+                                <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; vertical-align: top;">
                                     {{ !empty(session('customer_details')['billAddressLine2']) ? session('customer_details')['billAddressLine2'] . ',' : '' }}
                                     <br>
                                     {{ !empty(session('customer_details')['billAddressLine4']) ? session('customer_details')['billAddressLine4'] . ',' : '' }}
                                     {{ !empty(session('customer_details')['billAddressLine1']) ? session('customer_details')['billAddressLine1'] . ',' : '' }}
-                                    @if (session('customer_details')['billAddressLine5'] || !empty(session('customer_details')['billAddressLine5']))
-                                    {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
-                                    @else
                                     {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] : '' }}
-                                    @endif
-                                    {{ session('customer_details')['billAddressLine5'] ?? '' }}
+                                    {{ !empty(session('customer_details')['billAddressLine5']) ? ', ' . session('customer_details')['billAddressLine5'] : '' }}
                                 </span>
+
                             </td>
                         </tr>
                         <tr>
