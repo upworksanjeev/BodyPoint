@@ -184,7 +184,7 @@
                                     {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',' : '') }}
                                     {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' : '') }}
                                     {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }}
-                                    {{ !empty(session('customer_address')['AddressLine5']) || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5']) ? ', ' . (session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5']) : '' }}
+                                    {{ !empty(session('customer_address')['AddressLine5']) || !empty(session('customer_details')['ShipToAddresses'][0]['AddressLine5']) ? ',' . (session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5']) : '' }}
                                 </span>
                             </td>
                         </tr>
@@ -241,7 +241,7 @@
                                     {{ !empty(session('customer_details')['billAddressLine4']) ? session('customer_details')['billAddressLine4'] . ',' : '' }}
                                     {{ !empty(session('customer_details')['billAddressLine1']) ? session('customer_details')['billAddressLine1'] . ',' : '' }}
                                     {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] : '' }}
-                                    {{ !empty(session('customer_details')['billAddressLine5']) ? ', ' . session('customer_details')['billAddressLine5'] : '' }}
+                                    {{ !empty(session('customer_details')['billAddressLine5']) ? ',' . session('customer_details')['billAddressLine5'] : '' }}
                                 </span>
 
                             </td>
