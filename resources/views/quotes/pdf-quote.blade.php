@@ -137,7 +137,7 @@
                         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Quote
                             Date:</span>
                         <span
-                            style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; ">{{ date('m/d/Y') }}</span>
+                            style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; ">{{ isset($cart->created_at) ? date('F j, Y', strtotime($cart->created_at)) : date('m/d/Y') }}</span>
                     </div>
                     <div style="display: flex; align-items: center; margin-top: 5px; justify-content: end;">
                         <span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">Invoice
