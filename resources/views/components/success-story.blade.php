@@ -1,5 +1,5 @@
 @php
-function getYouTubeEmbedUrl($url) {
+function getYouTubeEmbedUrlSuccess($url) {
 $parsedUrl = parse_url($url);
 
 if (!isset($parsedUrl['host']) || strpos($parsedUrl['host'], 'youtube.com') === false) {
@@ -124,7 +124,7 @@ return $embedUrl;
 			<!-- Modal body -->
 			<div class="p-4 md:p-6 space-y-4">
 
-				<iframe class="w-full aspect-video rounded-lg" src="{{ getYouTubeEmbedUrl($v['youtube'] ?? '') }}" title="{{ $v['title'] }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+				<iframe class="w-full aspect-video rounded-lg" src="{{ getYouTubeEmbedUrlSuccess($v['youtube'] ?? '') }}" title="{{ $v['title'] }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
 	</div>
