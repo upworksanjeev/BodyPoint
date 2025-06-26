@@ -35,7 +35,7 @@ class SyncSixMonthOrderHistory extends Command
             return;
         }
 
-        $currentTo = $currentFrom->copy()->addDays(1);
+        $currentTo = $currentFrom->copy()->addDays(15);
         if ($currentTo > $endDate) {
             $currentTo = $endDate;
         }
