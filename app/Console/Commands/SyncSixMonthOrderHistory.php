@@ -108,7 +108,9 @@ class SyncSixMonthOrderHistory extends Command
                         'associate_customer_id' => null,
                         'total_items'           => count($lineItems),
                         'total'                 => $totalDiscounted,
-                        'created_at'            => !empty($orderData['OrderDate']) ? date('Y-m-d H:i:s', strtotime($orderData['OrderDate'])) : now(),
+                        'created_at' => !empty($orderData['OrderDate'])
+                            ? Carbon::parse($orderData['OrderDate'])->startOfDay()
+                            : now(),
                     ]
                 );
 
