@@ -236,6 +236,7 @@ class CheckoutController extends Controller
         $query = Order::with('User', 'OrderItem.Product.Media')
             //->where('user_id', $user->id)
             ->where('customer_number', $customer_number)
+            ->where('status', '!=', 'D')
             ->where('status', '!=', 'F');
 
         // Apply start date filter
