@@ -21,19 +21,14 @@ class SyncSixMonthOrderHistory extends Command
         Log::info("[$cronName] Sync started");
 
         $customer = $this->argument('customer') ?? null;
-
         $endDate = now()->endOfDay();
 
-
         $progressFile = storage_path('app/order-history-sync.json');
+        $lastSynced = file_exists($progressFile)
+            ? json_decode(file_get_contents($progressFile), true)['last_synced'] ?? now()->subMonths(6)->startOfDay()->toIso8601String()
+            : now()->subMonths(6)->startOfDay()->toIso8601String();
 
-        if (file_exists($progressFile)) {
-            $lastSynced = json_decode(file_get_contents($progressFile), true)['last_synced'] ?? now()->subMonths(6)->startOfDay()->toIso8601String();
-            $currentFrom = Carbon::parse($lastSynced);
-        } else {
-            $currentFrom = now()->subMonths(6)->startOfDay();
-        }
-
+        $currentFrom = Carbon::parse($lastSynced);
 
         if ($currentFrom >= $endDate) {
             Log::info("[$cronName] 6-month sync already complete. Skipping.");
@@ -60,7 +55,6 @@ class SyncSixMonthOrderHistory extends Command
                 Log::info("[$cronName] Orders stored between $dateFrom and $dateTo");
             }
 
-
             file_put_contents($progressFile, json_encode(['last_synced' => $currentTo->toIso8601String()]));
         } catch (\Exception $e) {
             Log::error("[$cronName] Error: " . $e->getMessage());
@@ -69,16 +63,41 @@ class SyncSixMonthOrderHistory extends Command
         Log::info("[$cronName] Sync step completed");
     }
 
+    protected function calculateDiscountedPricing($dealerPrice, $discountPercent)
+    {
+        try {
+            $discount = ($discountPercent * $dealerPrice) / 100;
+            $discountedPrice = round($dealerPrice - $discount, 3);
+
+            return [
+                'price' => round($dealerPrice, 3),
+                'discount' => round($discount, 3),
+                'discounted_price' => $discountedPrice,
+            ];
+        } catch (\Exception $e) {
+            Log::error("[sync:six-month-order-history] Error calculating discount: " . $e->getMessage());
+            return [
+                'price' => 0,
+                'discount' => 0,
+                'discounted_price' => 0,
+            ];
+        }
+    }
+
     protected function storeOrders($orders, $cronName)
     {
         foreach ($orders as $orderData) {
-            /*
-            if (Order::where('purchase_order_no', $orderData['OrderNumber'])->exists()) {
-                // Log::info("[$cronName] Skipped existing order: {$orderData['OrderNumber']}");
-                continue;
-            }
-                */
             try {
+                $lineItems = $orderData['Line'] ?? [];
+
+                // Calculate total using discounted prices
+                $totalDiscounted = collect($lineItems)->sum(function ($line) {
+                    $dealerPrice = $line['DealerPrice'] ?? 0;
+                    $discountPercent = $line['DiscPct'] ?? 0;
+                    $discount = ($discountPercent * $dealerPrice) / 100;
+                    return round($dealerPrice - $discount, 3);
+                });
+
                 $order = Order::updateOrCreate(
                     ['purchase_order_no' => $orderData['OrderNumber']],
                     [
@@ -87,17 +106,24 @@ class SyncSixMonthOrderHistory extends Command
                         'purchase_order_no'     => $orderData['OrderNumber'] ?? null,
                         'status'                => $orderData['Status'] ?? null,
                         'associate_customer_id' => null,
-                        'total_items'           => count($orderData['Line'] ?? []),
-                        'total'                 => collect($orderData['Line'])->sum('Price'),
+                        'total_items'           => count($lineItems),
+                        'total'                 => $totalDiscounted,
                         'created_at'            => !empty($orderData['OrderDate']) ? date('Y-m-d H:i:s', strtotime($orderData['OrderDate'])) : now(),
                     ]
                 );
+
                 Log::info("[$cronName] Processed Order: {$order->purchase_order_no}");
+
                 $order->orderItem()->delete();
 
-                foreach ($orderData['Line'] as $lineItem) {
+                foreach ($lineItems as $lineItem) {
                     try {
                         $sku = $lineItem['StockCode'];
+                        $dealerPrice = $lineItem['DealerPrice'] ?? 0;
+                        $discountPercent = $lineItem['DiscPct'] ?? 0;
+
+                        $calculated = $this->calculateDiscountedPricing($dealerPrice, $discountPercent);
+
                         $product = Product::with(['variation' => function ($query) use ($sku) {
                             $query->where('sku', $sku);
                         }])
@@ -110,23 +136,19 @@ class SyncSixMonthOrderHistory extends Command
                         OrderItem::create([
                             'order_id'       => $order->id,
                             'sku'            => $sku ?? null,
-                            'price'          => $lineItem['DealerPrice'] ?? 0,
+                            'price'          => $calculated['Price'],
                             'quantity'       => $lineItem['Qty'] ?? 0,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
                             'marked_for'     => $lineItem['MakeForLine'] ?? null,
-                            'discount'       => isset($lineItem['DealerPrice'], $lineItem['Price'])
-                                ? ($lineItem['DealerPrice'] - $lineItem['Price'])
-                                : 0,
-                            'discount_price' => $lineItem['Price'] ?? 0,
+                            'discount'       => $calculated['discount'],
+                            'discount_price' => $calculated['discounted_price'],
                             'product_id'     => $product?->id,
                             'variation_id'   => $product?->variation?->first()?->id,
                             'msrp'           => $lineItem['MSRPPrice'] ?? 0,
                         ]);
 
-
                         Log::info("[$cronName] Stored item: $sku");
                     } catch (\Exception $e) {
-                        Log::info("[$cronName] Processed Order: {$order->purchase_order_no}");
                         Log::error("[$cronName] Error storing line item (SKU: {$lineItem['StockCode']}): " . $e->getMessage());
                     }
                 }
