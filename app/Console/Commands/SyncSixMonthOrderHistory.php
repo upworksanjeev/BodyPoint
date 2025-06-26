@@ -136,7 +136,7 @@ class SyncSixMonthOrderHistory extends Command
                         OrderItem::create([
                             'order_id'       => $order->id,
                             'sku'            => $sku ?? null,
-                            'price'          => $calculated['Price'],
+                            'price'          => $calculated['price'],
                             'quantity'       => $lineItem['Qty'] ?? 0,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
                             'marked_for'     => $lineItem['MakeForLine'] ?? null,
