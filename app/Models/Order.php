@@ -21,6 +21,7 @@ class Order extends Model
         'total',
         'customer_number',
         'associate_customer_id',
+        'OrderFromWebsite',
         'customer_po_number'
     ];
 
@@ -32,7 +33,7 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->belongsTo(AssociateCustomer::class,'associate_customer_id');
+        return $this->belongsTo(AssociateCustomer::class, 'associate_customer_id');
     }
 
     public function orderItem()

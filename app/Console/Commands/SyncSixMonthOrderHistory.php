@@ -89,13 +89,22 @@ class SyncSixMonthOrderHistory extends Command
         foreach ($orders as $orderData) {
             try {
                 $lineItems = $orderData['Line'] ?? [];
+                $orderFromWebsite = $orderData['OrderFromWebsite'] ?? false;
 
-                // Calculate total using discounted prices
-                $totalDiscounted = collect($lineItems)->sum(function ($line) {
+                // Calculate total based on OrderFromWebsite flag and Qty
+                $totalDiscounted = collect($lineItems)->sum(function ($line) use ($orderFromWebsite) {
+                    $qty = $line['Qty'] ?? 1;
                     $dealerPrice = $line['DealerPrice'] ?? 0;
+                    $price = $line['Price'] ?? 0;
                     $discountPercent = $line['DiscPct'] ?? 0;
-                    $discount = ($discountPercent * $dealerPrice) / 100;
-                    return round($dealerPrice - $discount, 3);
+
+                    if ($orderFromWebsite) {
+                        return round($price * $qty, 3);
+                    } else {
+                        $discount = ($discountPercent * $dealerPrice) / 100;
+                        $discountedPrice = round($dealerPrice - $discount, 3);
+                        return round($discountedPrice * $qty, 3);
+                    }
                 });
 
                 $order = Order::updateOrCreate(
@@ -108,6 +117,7 @@ class SyncSixMonthOrderHistory extends Command
                         'associate_customer_id' => null,
                         'total_items'           => count($lineItems),
                         'total'                 => $totalDiscounted,
+                        'OrderFromWebsite'    => $orderFromWebsite ? 1 : 0,
                         'created_at' => !empty($orderData['OrderDate'])
                             ? Carbon::parse($orderData['OrderDate'])->startOfDay()
                             : now(),
@@ -122,9 +132,21 @@ class SyncSixMonthOrderHistory extends Command
                     try {
                         $sku = $lineItem['StockCode'];
                         $dealerPrice = $lineItem['DealerPrice'] ?? 0;
+                        $price = $lineItem['Price'] ?? 0;
                         $discountPercent = $lineItem['DiscPct'] ?? 0;
+                        $qty = $lineItem['Qty'] ?? 1;
 
-                        $calculated = $this->calculateDiscountedPricing($dealerPrice, $discountPercent);
+                        if ($orderFromWebsite) {
+                            $impliedDiscountPercent = $dealerPrice > 0 ? (100 * (1 - ($price / $dealerPrice))) : 0;
+                            $calculated = [
+                                'price' => round($price, 3),
+                                'discount' => round($dealerPrice - $price, 3),
+                                'discounted_price' => round($price, 3),
+                                'implied_discount' => round($impliedDiscountPercent, 2),
+                            ];
+                        } else {
+                            $calculated = $this->calculateDiscountedPricing($dealerPrice, $discountPercent);
+                        }
 
                         $product = Product::with(['variation' => function ($query) use ($sku) {
                             $query->where('sku', $sku);
@@ -139,7 +161,7 @@ class SyncSixMonthOrderHistory extends Command
                             'order_id'       => $order->id,
                             'sku'            => $sku ?? null,
                             'price'          => $calculated['price'],
-                            'quantity'       => $lineItem['Qty'] ?? 0,
+                            'quantity'       => $qty,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
                             'marked_for'     => $lineItem['MakeForLine'] ?? null,
                             'discount'       => $calculated['discount'],

@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\SysproService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class FetchOrderHistory extends Command
 {
@@ -42,11 +43,50 @@ class FetchOrderHistory extends Command
         }
     }
 
+    protected function calculateDiscountedPricing($dealerPrice, $discountPercent)
+    {
+        try {
+            $discount = ($discountPercent * $dealerPrice) / 100;
+            $discountedPrice = round($dealerPrice - $discount, 3);
+
+            return [
+                'price' => round($dealerPrice, 3),
+                'discount' => round($discount, 3),
+                'discounted_price' => $discountedPrice,
+            ];
+        } catch (\Exception $e) {
+            Log::error("[fetch:order-history] Error calculating discount: " . $e->getMessage());
+            return [
+                'price' => 0,
+                'discount' => 0,
+                'discounted_price' => 0,
+            ];
+        }
+    }
 
     protected function storeOrders($orders, $cronName)
     {
         foreach ($orders as $orderData) {
             try {
+                $lineItems = $orderData['Line'] ?? [];
+                $orderFromWebsite = $orderData['OrderFromWebsite'] ?? false;
+
+                // Calculate total properly
+                $totalDiscounted = collect($lineItems)->sum(function ($line) use ($orderFromWebsite) {
+                    $qty = $line['Qty'] ?? 1;
+                    $dealerPrice = $line['DealerPrice'] ?? 0;
+                    $price = $line['Price'] ?? 0;
+                    $discountPercent = $line['DiscPct'] ?? 0;
+
+                    if ($orderFromWebsite) {
+                        return round($price * $qty, 3);
+                    } else {
+                        $discount = ($discountPercent * $dealerPrice) / 100;
+                        $discountedPrice = round($dealerPrice - $discount, 3);
+                        return round($discountedPrice * $qty, 3);
+                    }
+                });
+
                 $order = Order::updateOrCreate(
                     ['purchase_order_no' => $orderData['OrderNumber']],
                     [
@@ -55,9 +95,12 @@ class FetchOrderHistory extends Command
                         'purchase_order_no'     => $orderData['OrderNumber'] ?? null,
                         'status'                => $orderData['Status'] ?? null,
                         'associate_customer_id' => null,
-                        'total_items'           => count($orderData['Line'] ?? []),
-                        'total'                 => collect($orderData['Line'])->sum('Price'),
-                        'created_at'            => !empty($orderData['OrderDate']) ? date('Y-m-d H:i:s', strtotime($orderData['OrderDate'])) : now(),
+                        'total_items'           => count($lineItems),
+                        'total'                 => $totalDiscounted,
+                        'OrderFromWebsite'    => $orderFromWebsite ? 1 : 0,
+                        'created_at'            => !empty($orderData['OrderDate'])
+                            ? Carbon::parse($orderData['OrderDate'])->startOfDay()
+                            : now(),
                     ]
                 );
 
@@ -66,9 +109,26 @@ class FetchOrderHistory extends Command
                 // Delete previous items
                 $order->orderItem()->delete();
 
-                foreach ($orderData['Line'] as $lineItem) {
+                foreach ($lineItems as $lineItem) {
                     try {
                         $sku = $lineItem['StockCode'];
+                        $dealerPrice = $lineItem['DealerPrice'] ?? 0;
+                        $price = $lineItem['Price'] ?? 0;
+                        $discountPercent = $lineItem['DiscPct'] ?? 0;
+                        $qty = $lineItem['Qty'] ?? 1;
+
+                        if ($orderFromWebsite) {
+                            $impliedDiscountPercent = $dealerPrice > 0 ? (100 * (1 - ($price / $dealerPrice))) : 0;
+                            $calculated = [
+                                'price' => round($price, 3),
+                                'discount' => round($dealerPrice - $price, 3),
+                                'discounted_price' => round($price, 3),
+                                'implied_discount' => round($impliedDiscountPercent, 2),
+                            ];
+                        } else {
+                            $calculated = $this->calculateDiscountedPricing($dealerPrice, $discountPercent);
+                        }
+
                         $product = Product::with(['variation' => function ($query) use ($sku) {
                             $query->where('sku', $sku);
                         }])
@@ -78,33 +138,22 @@ class FetchOrderHistory extends Command
                             })
                             ->first();
 
-                        $productId = $product?->id;
-                        $variationId = $product?->variation?->first()?->id;
-
-                        if (!$product) {
-                            Log::warning("[$cronName] No product found for SKU: $sku");
-                        }
-
                         OrderItem::create([
                             'order_id'       => $order->id,
                             'sku'            => $sku ?? null,
-                            'price'          => $lineItem['DealerPrice'] ?? 0,
-                            'quantity'       => $lineItem['Qty'] ?? 0,
+                            'price'          => $calculated['price'],
+                            'quantity'       => $qty,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
                             'marked_for'     => $lineItem['MakeForLine'] ?? null,
-                            'discount'       => isset($lineItem['DealerPrice'], $lineItem['Price'])
-                                ? ($lineItem['DealerPrice'] - $lineItem['Price'])
-                                : 0,
-                            'discount_price' => $lineItem['Price'] ?? 0,
+                            'discount'       => $calculated['discount'],
+                            'discount_price' => $calculated['discounted_price'],
                             'product_id'     => $product?->id,
                             'variation_id'   => $product?->variation?->first()?->id,
                             'msrp'           => $lineItem['MSRPPrice'] ?? 0,
                         ]);
 
-
                         Log::info("[$cronName] OrderItem created for SKU: $sku");
                     } catch (\Exception $e) {
-                        Log::info("[$cronName] Processed Order: {$order->purchase_order_no}");
                         Log::error("[$cronName] Failed to process order line SKU: {$lineItem['StockCode']} - " . $e->getMessage());
                     }
                 }
