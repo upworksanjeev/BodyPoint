@@ -22,7 +22,8 @@ class Order extends Model
         'customer_number',
         'associate_customer_id',
         'OrderFromWebsite',
-        'customer_po_number'
+        'customer_po_number',
+        'created_at'
     ];
 
 
