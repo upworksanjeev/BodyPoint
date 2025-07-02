@@ -71,14 +71,14 @@ class FetchOrderHistory extends Command
                 $lineItems = $orderData['Line'] ?? [];
                 $orderFromWebsite = $orderData['OrderFromWebsite'] ?? false;
 
-                // Calculate total properly
+                // Calculate total properly with new rule
                 $totalDiscounted = collect($lineItems)->sum(function ($line) use ($orderFromWebsite) {
                     $qty = $line['Qty'] ?? 1;
                     $dealerPrice = $line['DealerPrice'] ?? 0;
                     $price = $line['Price'] ?? 0;
                     $discountPercent = $line['DiscPct'] ?? 0;
 
-                    if ($orderFromWebsite) {
+                    if ($orderFromWebsite || $discountPercent == 0.00) {
                         return round($price * $qty, 3);
                     } else {
                         $discount = ($discountPercent * $dealerPrice) / 100;
@@ -97,7 +97,7 @@ class FetchOrderHistory extends Command
                         'associate_customer_id' => null,
                         'total_items'           => count($lineItems),
                         'total'                 => $totalDiscounted,
-                        'OrderFromWebsite'    => $orderFromWebsite ? 1 : 0,
+                        'OrderFromWebsite'      => $orderFromWebsite ? 1 : 0,
                         'created_at'            => !empty($orderData['OrderDate'])
                             ? Carbon::parse($orderData['OrderDate'])->startOfDay()
                             : now(),
@@ -117,7 +117,7 @@ class FetchOrderHistory extends Command
                         $discountPercent = $lineItem['DiscPct'] ?? 0;
                         $qty = $lineItem['Qty'] ?? 1;
 
-                        if ($orderFromWebsite) {
+                        if ($orderFromWebsite || $discountPercent == 0.00) {
                             $impliedDiscountPercent = $dealerPrice > 0 ? (100 * (1 - ($price / $dealerPrice))) : 0;
                             $calculated = [
                                 'price' => round($price, 3),

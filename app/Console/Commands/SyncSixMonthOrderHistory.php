@@ -63,27 +63,6 @@ class SyncSixMonthOrderHistory extends Command
         Log::info("[$cronName] Sync step completed");
     }
 
-    protected function calculateDiscountedPricing($dealerPrice, $discountPercent)
-    {
-        try {
-            $discount = ($discountPercent * $dealerPrice) / 100;
-            $discountedPrice = round($dealerPrice - $discount, 3);
-
-            return [
-                'price' => round($dealerPrice, 3),
-                'discount' => round($discount, 3),
-                'discounted_price' => $discountedPrice,
-            ];
-        } catch (\Exception $e) {
-            Log::error("[sync:six-month-order-history] Error calculating discount: " . $e->getMessage());
-            return [
-                'price' => 0,
-                'discount' => 0,
-                'discounted_price' => 0,
-            ];
-        }
-    }
-
     protected function storeOrders($orders, $cronName)
     {
         foreach ($orders as $orderData) {
@@ -91,14 +70,14 @@ class SyncSixMonthOrderHistory extends Command
                 $lineItems = $orderData['Line'] ?? [];
                 $orderFromWebsite = $orderData['OrderFromWebsite'] ?? false;
 
-                // Calculate total based on OrderFromWebsite flag and Qty
+                // Calculate total based on new combined rule
                 $totalDiscounted = collect($lineItems)->sum(function ($line) use ($orderFromWebsite) {
                     $qty = $line['Qty'] ?? 1;
                     $dealerPrice = $line['DealerPrice'] ?? 0;
                     $price = $line['Price'] ?? 0;
                     $discountPercent = $line['DiscPct'] ?? 0;
 
-                    if ($orderFromWebsite) {
+                    if ($orderFromWebsite || ($discountPercent == 0.00)) {
                         return round($price * $qty, 3);
                     } else {
                         $discount = ($discountPercent * $dealerPrice) / 100;
@@ -117,7 +96,7 @@ class SyncSixMonthOrderHistory extends Command
                         'associate_customer_id' => null,
                         'total_items'           => count($lineItems),
                         'total'                 => $totalDiscounted,
-                        'OrderFromWebsite'    => $orderFromWebsite ? 1 : 0,
+                        'OrderFromWebsite'      => $orderFromWebsite ? 1 : 0,
                         'created_at' => !empty($orderData['OrderDate'])
                             ? Carbon::parse($orderData['OrderDate'])->startOfDay()
                             : now(),
@@ -136,7 +115,7 @@ class SyncSixMonthOrderHistory extends Command
                         $discountPercent = $lineItem['DiscPct'] ?? 0;
                         $qty = $lineItem['Qty'] ?? 1;
 
-                        if ($orderFromWebsite) {
+                        if ($orderFromWebsite || ($discountPercent == 0.00)) {
                             $impliedDiscountPercent = $dealerPrice > 0 ? (100 * (1 - ($price / $dealerPrice))) : 0;
                             $calculated = [
                                 'price' => round($price, 3),
@@ -179,6 +158,27 @@ class SyncSixMonthOrderHistory extends Command
             } catch (\Exception $e) {
                 Log::error("[$cronName] Error storing order ({$orderData['OrderNumber']}): " . $e->getMessage());
             }
+        }
+    }
+
+    protected function calculateDiscountedPricing($dealerPrice, $discountPercent)
+    {
+        try {
+            $discount = ($discountPercent * $dealerPrice) / 100;
+            $discountedPrice = round($dealerPrice - $discount, 3);
+
+            return [
+                'price' => round($dealerPrice, 3),
+                'discount' => round($discount, 3),
+                'discounted_price' => $discountedPrice,
+            ];
+        } catch (\Exception $e) {
+            Log::error("[sync:six-month-order-history] Error calculating discount: " . $e->getMessage());
+            return [
+                'price' => 0,
+                'discount' => 0,
+                'discounted_price' => 0,
+            ];
         }
     }
 }
