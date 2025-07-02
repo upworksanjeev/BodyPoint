@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Order Place Mail</title>
 </head>
+
 <body style="background:#f6f6f6;">
     <div style="max-width: 600px; width: 100%; margin: 0px auto ; padding-top: 35px;">
         <img style="text-align: center; margin: 0 auto 35px; width:200px; display:block;" src="{{ asset('img/bp-logo-lg-new.png') }}">
@@ -45,10 +47,10 @@
                                                         <div style="display: flex; align-items: center; gap: 10px;">
                                                             <div style="margin-right: 10px;">
                                                                 <img src="<?php if (isset($cartitem['Product']['Media'][0]['id'])) {
-                                              echo url('storage/' . $cartitem['Product']['Media'][0]['id'] . '/' . $cartitem['Product']['Media'][0]['file_name']);
-                                            } else {
-                                              echo '/img/standard-img.png';
-                                            } ?>" alt="product-img" style="width: 60px; height: 60px; object-fit: cover;" />
+                                                                                echo url('storage/' . $cartitem['Product']['Media'][0]['id'] . '/' . $cartitem['Product']['Media'][0]['file_name']);
+                                                                            } else {
+                                                                                echo '/img/standard-img.png';
+                                                                            } ?>" alt="product-img" style="width: 60px; height: 60px; object-fit: cover;" />
                                                             </div>
                                                             <div style="flex: 1;">
                                                                 <p style="font-size: 12px; margin: 0px 0px 5px 0px;"><a style="color: #000;" href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
@@ -57,7 +59,7 @@
                                                         </div>
                                                     </td>
                                                     <td style="font-size: 12px; color: #000; padding: 10px; text-align: right; border-bottom: 1px solid #E5E7EB;">
-                                                        ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
+                                                        ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 3, '.', ','):0 }}
                                                     </td>
                                                     <td></td>
                                                 </tr>
@@ -67,7 +69,7 @@
                                                 <tr style="background-color: #fff;">
                                                     <td style="font-size: 12px; color: #000; padding: 10px 10px 20px 10px;" colspan="2">
                                                         <div style="text-align: right;">
-                                                            <h3 style="font-size: 24px; font-weight: normal; color: #000; margin: 0px;"><span style="font-weight: bold;">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
+                                                            <h3 style="font-size: 24px; font-weight: normal; color: #000; margin: 0px;"><span style="font-weight: bold;">Subtotal:</span> ${{ number_format($subtotal, 3, '.', ',') }}</h3>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -83,4 +85,5 @@
         </section>
     </div>
 </body>
+
 </html>

@@ -377,7 +377,7 @@
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem['msrp'] ? number_format($cartitem['msrp'], 2, '.', ',') : 0 }}
+                            ${{ $cartitem['msrp'] ? number_format($cartitem['msrp'], 3, '.', ',') : 0 }}
                         </td>
 
                         @if ($priceOption == 'msrp_only')
@@ -390,13 +390,13 @@
 
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem['msrp'] ? number_format($cartitem['msrp'] * $cartitem['quantity'], 2, '.', ',') : 0 }}
+                            ${{ $cartitem['msrp'] ? number_format($cartitem['msrp'] * $cartitem['quantity'], 3, '.', ',') : 0 }}
                         </td>
                         <?php $subtotal += $cartitem['msrp'] * $cartitem['quantity']; ?>
                         @elseif($priceOption == 'msrp_primary')
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem['price'] ? number_format($cartitem['price'], 2, '.', ',') : 0 }}
+                            ${{ $cartitem['price'] ? number_format($cartitem['price'], 3, '.', ',') : 0 }}
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -407,17 +407,17 @@
 
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem['price'] ? number_format($cartitem['price'] * $cartitem['quantity'], 2, '.', ',') : 0 }}
+                            ${{ $cartitem['price'] ? number_format($cartitem['price'] * $cartitem['quantity'], 3, '.', ',') : 0 }}
                         </td>
                         <?php $subtotal += $cartitem['price'] * $cartitem['quantity']; ?>
                         @elseif($priceOption == 'all_price')
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem['price'] ? number_format($cartitem['price'], 2, '.', ',') : 0 }}
+                            ${{ $cartitem['price'] ? number_format($cartitem['price'], 3, '.', ',') : 0 }}
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
+                            ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0 }}
                         </td>
 
                         <td
@@ -427,11 +427,11 @@
 
                         </td>
                         @php
-                        $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0;
+                        $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0;
                         @endphp
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                            ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 3, '.', ',') : 0 }}
                         </td>
                         @php
                         $subtotal += $discount_price * $cartitem->quantity;
@@ -464,7 +464,7 @@
                             <td align="right">
                                 <div
                                     style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">
-                                    ${{ number_format($subtotal + $tax, 2, '.', ',') }}</div>
+                                    ${{ number_format($subtotal + $tax, 3, '.', ',') }}</div>
                             </td>
                         </tr>
                     </table>

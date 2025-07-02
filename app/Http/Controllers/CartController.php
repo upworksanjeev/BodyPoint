@@ -211,30 +211,30 @@ class CartController extends Controller
         if (empty($keys)) {
             return '';
         }
-    
+
         $products = Product::where(function ($query) use ($keys) {
-                $query->where('sku', 'LIKE', "%{$keys}%")
-                      ->orWhere('name', 'LIKE', "%{$keys}%");
-            })
+            $query->where('sku', 'LIKE', "%{$keys}%")
+                ->orWhere('name', 'LIKE', "%{$keys}%");
+        })
             ->withoutTrashed()
             ->get();
-    
-        
+
+
         $variations = Variation::where(function ($query) use ($keys) {
-                $query->where('sku', 'LIKE', "%{$keys}%")
-                      ->orWhere('name', 'LIKE', "%{$keys}%");
-            })
+            $query->where('sku', 'LIKE', "%{$keys}%")
+                ->orWhere('name', 'LIKE', "%{$keys}%");
+        })
             ->whereHas('product', function ($query) {
                 $query->withoutTrashed();
             })
             ->get();
-    
+
         $data = '';
-    
-       
+
+
         if ($products->isNotEmpty()) {
             foreach ($products as $product) {
-                if ($product->variation->isEmpty()) { 
+                if ($product->variation->isEmpty()) {
                     $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ', null)">
                         <td>' . $product->sku . '</td>
                         <td>' . $product->name . '</td>
@@ -242,8 +242,8 @@ class CartController extends Controller
                 }
             }
         }
-    
-        
+
+
         if ($variations->isNotEmpty()) {
             foreach ($variations as $variation) {
                 $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $variation->product_id . ', ' . $variation->id . ')">
@@ -252,10 +252,10 @@ class CartController extends Controller
                       </tr>';
             }
         }
-    
+
         return $data;
     }
-    
+
 
 
 
@@ -389,7 +389,7 @@ class CartController extends Controller
                 $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
             } else {
                 if ($product['discount'] != '' && $product['discount'] > 0) {
-                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 3);
                     $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
                 } else {
                     $product['discount_price'] = $product['price'];
@@ -458,7 +458,7 @@ class CartController extends Controller
                 $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
             } else {
                 if ($product['discount'] != '' && $product['discount'] > 0) {
-                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 3);
                     $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
                 } else {
                     $product['discount_price'] = $product['price'];
