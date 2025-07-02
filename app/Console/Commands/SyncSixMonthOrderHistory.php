@@ -70,7 +70,6 @@ class SyncSixMonthOrderHistory extends Command
                 $lineItems = $orderData['Line'] ?? [];
                 $orderFromWebsite = $orderData['OrderFromWebsite'] ?? false;
 
-                // Calculate total based on new combined rule
                 $totalDiscounted = collect($lineItems)->sum(function ($line) use ($orderFromWebsite) {
                     $qty = $line['Qty'] ?? 1;
                     $dealerPrice = $line['DealerPrice'] ?? 0;
@@ -116,15 +115,19 @@ class SyncSixMonthOrderHistory extends Command
                         $qty = $lineItem['Qty'] ?? 1;
 
                         if ($orderFromWebsite || ($discountPercent == 0.00)) {
-                            $impliedDiscountPercent = $dealerPrice > 0 ? (100 * (1 - ($price / $dealerPrice))) : 0;
                             $calculated = [
-                                'price' => round($price, 3),
+                                'price' => round($dealerPrice, 3), // always store original dealer price here
+                                'discounted_price' => round($price, 3), // store discounted price from JSON
                                 'discount' => round($dealerPrice - $price, 3),
-                                'discounted_price' => round($price, 3),
-                                'implied_discount' => round($impliedDiscountPercent, 2),
                             ];
                         } else {
-                            $calculated = $this->calculateDiscountedPricing($dealerPrice, $discountPercent);
+                            $discount = ($discountPercent * $dealerPrice) / 100;
+                            $discountedPrice = round($dealerPrice - $discount, 3);
+                            $calculated = [
+                                'price' => round($dealerPrice, 3),
+                                'discounted_price' => $discountedPrice,
+                                'discount' => round($discount, 3),
+                            ];
                         }
 
                         $product = Product::with(['variation' => function ($query) use ($sku) {
@@ -139,12 +142,12 @@ class SyncSixMonthOrderHistory extends Command
                         OrderItem::create([
                             'order_id'       => $order->id,
                             'sku'            => $sku ?? null,
-                            'price'          => $calculated['price'],
+                            'price'          => $calculated['price'], // store dealer price
                             'quantity'       => $qty,
                             'line_number'    => $lineItem['SalesOrderLine'] ?? null,
                             'marked_for'     => $lineItem['MakeForLine'] ?? null,
                             'discount'       => $calculated['discount'],
-                            'discount_price' => $calculated['discounted_price'],
+                            'discount_price' => $calculated['discounted_price'], // store final discounted price
                             'product_id'     => $product?->id,
                             'variation_id'   => $product?->variation?->first()?->id,
                             'msrp'           => $lineItem['MSRPPrice'] ?? 0,
@@ -158,27 +161,6 @@ class SyncSixMonthOrderHistory extends Command
             } catch (\Exception $e) {
                 Log::error("[$cronName] Error storing order ({$orderData['OrderNumber']}): " . $e->getMessage());
             }
-        }
-    }
-
-    protected function calculateDiscountedPricing($dealerPrice, $discountPercent)
-    {
-        try {
-            $discount = ($discountPercent * $dealerPrice) / 100;
-            $discountedPrice = round($dealerPrice - $discount, 3);
-
-            return [
-                'price' => round($dealerPrice, 3),
-                'discount' => round($discount, 3),
-                'discounted_price' => $discountedPrice,
-            ];
-        } catch (\Exception $e) {
-            Log::error("[sync:six-month-order-history] Error calculating discount: " . $e->getMessage());
-            return [
-                'price' => 0,
-                'discount' => 0,
-                'discounted_price' => 0,
-            ];
         }
     }
 }
