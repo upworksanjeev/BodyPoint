@@ -97,7 +97,7 @@ class SyncSixMonthOrderHistory extends Command
                         'total'                 => $totalDiscounted,
                         'OrderFromWebsite'      => $orderFromWebsite ? 1 : 0,
                         'created_at' => !empty($orderData['OrderDate'])
-                            ? Carbon::parse($orderData['OrderDate'])->startOfDay()
+                            ? Carbon::parse($orderData['OrderDate'])->startOfDay()->format('Y-m-d H:i:s')
                             : now(),
                     ]
                 );

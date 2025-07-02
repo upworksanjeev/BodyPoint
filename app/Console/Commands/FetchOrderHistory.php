@@ -76,8 +76,8 @@ class FetchOrderHistory extends Command
                         'total_items'           => count($lineItems),
                         'total'                 => $totalDiscounted,
                         'OrderFromWebsite'      => $orderFromWebsite ? 1 : 0,
-                        'created_at'            => !empty($orderData['OrderDate'])
-                            ? Carbon::parse($orderData['OrderDate'])->startOfDay()
+                        'created_at' => !empty($orderData['OrderDate'])
+                            ? Carbon::parse($orderData['OrderDate'])->startOfDay()->format('Y-m-d H:i:s')
                             : now(),
                     ]
                 );
