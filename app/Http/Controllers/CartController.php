@@ -389,7 +389,7 @@ class CartController extends Controller
                 $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
             } else {
                 if ($product['discount'] != '' && $product['discount'] > 0) {
-                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 3);
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
                     $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
                 } else {
                     $product['discount_price'] = $product['price'];
@@ -458,7 +458,7 @@ class CartController extends Controller
                 $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
             } else {
                 if ($product['discount'] != '' && $product['discount'] > 0) {
-                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 3);
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
                     $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
                 } else {
                     $product['discount_price'] = $product['price'];
