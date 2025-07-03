@@ -50,13 +50,13 @@
                        </td>
 
                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                           ${{ $cartitem['msrp'] ? number_format($cartitem['msrp'], 3, '.', ',') : 0 }}
+                           ${{ $cartitem['msrp'] ? number_format($cartitem['msrp'], 2, '.', ',') : 0 }}
                        </td>
                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                           ${{ $cartitem['price'] ? number_format($cartitem['price'], 3, '.', ',') : 0 }}
+                           ${{ $cartitem['price'] ? number_format($cartitem['price'], 2, '.', ',') : 0 }}
                        </td>
                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                           ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0 }}
+                           ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
 
                        </td>
                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
@@ -64,13 +64,13 @@
                        </td>
 
                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
-                           ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0 }}
+                           ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
 
                        </td>
 
 
                        <td class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
-                           ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'] * $cartitem['quantity'], 3, '.', ',') : 0 }}
+                           ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'] * $cartitem['quantity'], 2, '.', ',') : 0 }}
                        </td>
                    </tr>
                    <?php $subtotal += $cartitem['discount_price'] * $cartitem['quantity']; ?>
@@ -85,7 +85,7 @@
            <span class="text-sm text-[#000] font-bold leading-[17px]">Total Before Freight:</span>
        </div>
        <div class="min-w-[80px] sm:min-w-[100px] text-right">
-           <span class="font-bold">${{ number_format($subtotal + $tax, 3, '.', ',') }}</span>
+           <span class="font-bold">${{ number_format($subtotal + $tax, 2, '.', ',') }}</span>
        </div>
    </div>
    @if($cart[0]->purchase_order_no != '')

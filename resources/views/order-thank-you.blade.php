@@ -44,7 +44,7 @@
                         </td>
                         <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] text-right">
 
-                          ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 3, '.', ','):0 }}
+                          ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
                         </td>
                       </tr>
                       <?php $subtotal += $cartitem['discount_price'] * $cartitem['quantity']; ?>
@@ -53,7 +53,7 @@
                       <tr class="odd:bg-white even:bg-gray-50 border-b">
                         <td class="min-w-[200px] p-4" colspan="2">
                           <div class="text-right">
-                            <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 3, '.', ',') }}</h3>
+                            <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                           </div>
                         </td>
                       </tr>

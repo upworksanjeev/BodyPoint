@@ -34,13 +34,13 @@
     {{ $cartitem['sku'] }}
   </td>
   <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-    ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 3, '.', ','):0 }}
+    ${{ $cartitem['msrp']?number_format($cartitem['msrp'], 2, '.', ','):0 }}
   </td>
   <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-    ${{ $cartitem['price']?number_format($cartitem['price'], 3, '.', ','):0 }}
+    ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}
   </td>
   <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 3, '.', ','):0 }}
+    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
   </td>
   <td class="px-4 py-4">
     <form class="max-w-xs mx-auto">
@@ -60,13 +60,13 @@
     </form>
   </td>
   <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 3, '.', ','):0 }}
+    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
   </td>
   <td class="px-4 py-4 text-sm leading-[18px] text-[#000] uppercase">
     EA
   </td>
   <td class="px-4 py-4 text-base font-bold leading-[18px] text-[#000] uppercase" id="item_total_{{ $cartitem['id'] }}">
-    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 3, '.', ','):0 }}
+    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
   </td>
   <td class="px-4 py-4">
     <div class="bg-[#E8E7E7] w-[35px] h-[35px] rounded-full flex items-center justify-center"><button onclick="updateProduct('delete',{{ $cartitem['id'] }})">
@@ -82,7 +82,7 @@
 <tr class="odd:bg-white even:bg-gray-50 border-b">
   <td class="w-4 p-4" colspan="10">
     <div class="text-right">
-      <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 3, '.', ',') }}</h3>
+      <h3 class="text-2xl	font-normal text-[#000]" id="subtotal"><span class="font-bold">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
     </div>
   </td>
 </tr>

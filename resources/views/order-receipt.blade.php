@@ -312,7 +312,7 @@
 
                             <td
                                 style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0 }}
+                                ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
                             </td>
 
                             <td
@@ -324,11 +324,11 @@
                                 EA
                             </td>
                             @php
-                            $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0;
+                            $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0;
                             @endphp
                             <td
                                 style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
-                                ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 3, '.', ',') : 0 }}
+                                ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
                             </td>
                             @php
                             $subtotal += $discount_price * $cartitem->quantity;
@@ -373,14 +373,14 @@
 
                                     <div
                                         style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">
-                                        ${{ number_format($subtotal, 3, '.', ',') }}</div>
+                                        ${{ number_format($subtotal, 2, '.', ',') }}</div>
                                     <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">
                                         ${{ $tax }}</div>
                                     <div style="font-size: 14px; font-weight: 400; color: #000; line-height: 24px;">TBD
                                     </div>
                                     <div
                                         style="font-size: 14px; font-weight: 400; color: #000; font-weight: 700; line-height: 24px;">
-                                        ${{ number_format($subtotal + $tax, 3, '.', ',') }}</div>
+                                        ${{ number_format($subtotal + $tax, 2, '.', ',') }}</div>
 
 
                                 </td>

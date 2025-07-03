@@ -152,7 +152,7 @@
                                                 @endphp
                                                 <td
                                                     class="px-4 py-4 text-[13px] font-bold leading-[18px] text-[#000]">
-                                                    ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 3, '.', ',') : 0 }}
+                                                    ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
                                                 </td>
                                             </tr>
                                             @php
@@ -172,7 +172,7 @@
                                                         <h3 class="text-2xl font-normal text-[#000]"
                                                             id="subtotal"><span
                                                                 class="font-bold">Subtotal:</span>
-                                                            ${{ number_format($subtotal, 3, '.', ',') }}</h3>
+                                                            ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                                                     </div>
                                                 </td>
 

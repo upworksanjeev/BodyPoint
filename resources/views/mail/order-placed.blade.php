@@ -59,7 +59,7 @@
                                                         </div>
                                                     </td>
                                                     <td style="font-size: 12px; color: #000; padding: 10px; text-align: right; border-bottom: 1px solid #E5E7EB;">
-                                                        ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 3, '.', ','):0 }}
+                                                        ${{ $cartitem['discount_price']?number_format($cartitem['discount_price']*$cartitem['quantity'], 2, '.', ','):0 }}
                                                     </td>
                                                     <td></td>
                                                 </tr>
@@ -69,7 +69,7 @@
                                                 <tr style="background-color: #fff;">
                                                     <td style="font-size: 12px; color: #000; padding: 10px 10px 20px 10px;" colspan="2">
                                                         <div style="text-align: right;">
-                                                            <h3 style="font-size: 24px; font-weight: normal; color: #000; margin: 0px;"><span style="font-weight: bold;">Subtotal:</span> ${{ number_format($subtotal, 3, '.', ',') }}</h3>
+                                                            <h3 style="font-size: 24px; font-weight: normal; color: #000; margin: 0px;"><span style="font-weight: bold;">Subtotal:</span> ${{ number_format($subtotal, 2, '.', ',') }}</h3>
                                                         </div>
                                                     </td>
                                                 </tr>
