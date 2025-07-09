@@ -243,13 +243,13 @@ class ProductController extends Controller
                 $attribute = $this->filterAttributes($attribute, $sizesToRemove);
             }
         }
-  
+
         if ($request->product_id == 1 && $request->index == 1) {
             $sizesToRemove = [];
-            
+
             if ($request->product_att_id == 1471 && $request->rootAttributeId == 1464 && $request->attr_count == 2 || $request->product_att_id == 1472 && $request->rootAttributeId == 1464 && $request->attr_count == 2) {
                 $sizesToRemove = ['Extra Small', 'Small'];
-            } 
+            }
 
             if ($sizesToRemove) {
                 $attribute = $this->filterAttributes($attribute, $sizesToRemove);
@@ -296,6 +296,18 @@ class ProductController extends Controller
             $sizesToRemove = match (true) {
                 in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 625 && $request->attr_count == 2 => ['S38'],
                 in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 1304 && $request->attr_count == 2 => ['M36'],
+                default => []
+            };
+
+            if ($sizesToRemove) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
+
+        if ($request->product_id == 5 && $request->index == 1) {
+            $sizesToRemove = match (true) {
+                in_array($request->product_att_id, [1274]) && $request->rootAttributeId == 1273 && $request->attr_count == 2 => ['Medium (2-piece only)'],
+                in_array($request->product_att_id, [1274]) && $request->rootAttributeId == 1272 && $request->attr_count == 1 => ['X-Large'],
                 default => []
             };
 
