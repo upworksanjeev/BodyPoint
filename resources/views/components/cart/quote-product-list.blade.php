@@ -40,7 +40,7 @@
     ${{ $cartitem['price']?number_format($cartitem['price'], 2, '.', ','):0 }}
   </td>
   <td class="px-4 py-4 text-sm leading-[18px] text-[#000]">
-    ${{ $cartitem['discount_price']?number_format($cartitem['discount_price'], 2, '.', ','):0 }}
+    ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ','):0 }}
   </td>
   <td class="px-4 py-4">
     <form class="max-w-xs mx-auto">
