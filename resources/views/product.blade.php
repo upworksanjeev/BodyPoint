@@ -228,16 +228,6 @@ return $embedUrl;
                     </div><!-- /.accordion-item-body -->
                 </div>
             </div>
-            @if(!empty($product['3d_image_link']))
-            <div class="mt-8 w-full">
-                <iframe
-                    width="100%"
-                    class="w-full h-[700px] md:h-[600px] sm:h-[400px] rounded-lg border border-[#e5e6e7]"
-                    src="{{ $product['3d_image_link'] }}"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            @endif
         </div>
     </section>
     <x-success-story :product="$product" />

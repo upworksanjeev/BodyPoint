@@ -83,7 +83,6 @@ class Product extends Resource
                         ->help('Min size 150 x 150. Max filesize 5MB.')
                         ->showOnIndex(),
                     Text::make('Video Link', 'video')->maxlength(255)->hideFromIndex(),
-                    Text::make('3D Image Embed Link', '3d_image_link')->maxlength(255)->hideFromIndex(),
                     Text::make('Tagline', 'small_description')->displayUsing(function ($id) {
                         $part = strip_tags(substr($id, 0, 20));
                         return $part . "...";
