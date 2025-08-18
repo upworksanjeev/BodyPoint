@@ -453,6 +453,7 @@ class ProductController extends Controller
             $final_data['variation_id'] = $variation->id;
         }
         $final_data['sku'] = $variation->sku ?? $product->sku;
+        $final_data['product_id'] =  $product->id;
         $final_data['msrp'] = $variation->msrp ?? $product->msrp;
         $final_data['price'] = $variation->price ?? $product->price;
         $final_data['discount'] = $variation->discount ?? $product->discount;
