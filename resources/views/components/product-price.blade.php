@@ -122,7 +122,7 @@ return in_array($productId, $allowedProducts);
 </div>
 @else
 <div class="product-promo-box">
-    <strong style="color:#f36f21;">Special Promotional Price:</strong><br>
+    <strong style="color:#f36f21;">This product has a special promotional price:</strong><br>
     Please contact <a href="mailto:sales@bodypoint.com">sales@bodypoint.com</a>
     for a quote or call <a href="tel:2064054555">206-405-4555</a> for more information.
 </div>
