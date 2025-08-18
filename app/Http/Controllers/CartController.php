@@ -211,30 +211,32 @@ class CartController extends Controller
         if (empty($keys)) {
             return '';
         }
-    
+
         $products = Product::where(function ($query) use ($keys) {
-                $query->where('sku', 'LIKE', "%{$keys}%")
-                      ->orWhere('name', 'LIKE', "%{$keys}%");
-            })
+            $query->where('sku', 'LIKE', "%{$keys}%")
+                ->orWhere('name', 'LIKE', "%{$keys}%");
+        })
+            ->whereNotIn('id', [368, 369, 370, 371, 372, 373, 374, 375, 376, 377])
             ->withoutTrashed()
             ->get();
-    
-        
+
+
         $variations = Variation::where(function ($query) use ($keys) {
-                $query->where('sku', 'LIKE', "%{$keys}%")
-                      ->orWhere('name', 'LIKE', "%{$keys}%");
-            })
+            $query->where('sku', 'LIKE', "%{$keys}%")
+                ->orWhere('name', 'LIKE', "%{$keys}%");
+        })
             ->whereHas('product', function ($query) {
-                $query->withoutTrashed();
+                $query->withoutTrashed()
+                    ->whereNotIn('id', [368, 369, 370, 371, 372, 373, 374, 375, 376, 377]);
             })
             ->get();
-    
+
         $data = '';
-    
-       
+
+
         if ($products->isNotEmpty()) {
             foreach ($products as $product) {
-                if ($product->variation->isEmpty()) { 
+                if ($product->variation->isEmpty()) {
                     $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $product->sku . '\',' . $product->id . ', null)">
                         <td>' . $product->sku . '</td>
                         <td>' . $product->name . '</td>
@@ -242,8 +244,8 @@ class CartController extends Controller
                 }
             }
         }
-    
-        
+
+
         if ($variations->isNotEmpty()) {
             foreach ($variations as $variation) {
                 $data .= '<tr class="cursor-pointer" onclick="chooseProduct(\'' . $variation->sku . '\',' . $variation->product_id . ', ' . $variation->id . ')">
@@ -252,10 +254,10 @@ class CartController extends Controller
                       </tr>';
             }
         }
-    
+
         return $data;
     }
-    
+
 
 
 
