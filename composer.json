@@ -23,6 +23,7 @@
         "maatwebsite/laravel-nova-excel": "^1.3",
         "outl1ne/nova-multiselect-field": "^4.5",
         "sereny/nova-permissions": "^1.3",
+        "intervention/image": "^2.7",
         "unisharp/laravel-filemanager": "^2.6"
     },
     "require-dev": {
