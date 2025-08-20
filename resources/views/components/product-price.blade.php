@@ -41,8 +41,31 @@ $addonProducts = [
 'sku'=>'AS120'
 ]
 ];
-@endphp
 
+function checkProductExists($productId) {
+// Define your allowed product IDs
+$allowedProducts = [368,369, 370,371,372, 373,374,375,376,377];
+
+// Return true if exists, false otherwise
+return in_array($productId, $allowedProducts);
+}
+
+@endphp
+<style>
+    .product-promo-box {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 12px 15px;
+        border-radius: 6px;
+        font-size: 14px;
+        line-height: 1.6;
+        display: block;
+        width: 100%;
+        white-space: normal;
+        height: auto !important;
+        margin-top: 5px;
+    }
+</style>
 <div class="ctm-price mt-[30px]">
     <div class="left-price">
         <h6 class="text-[16px] text-[#000] font-[500]">SKU</h6>
@@ -54,7 +77,9 @@ $addonProducts = [
     </div>
 </div>
 @if($customer)
+@if(!checkProductExists($product['product_id'] ?? $product['id']))
 <div class="ctm-price mt-[30px]">
+
     <div class="left-price">
         @if($customer->hasPermissionTo('viewMsrp'))
         <p class="text-[14px] text-[#6A6D73]">MSRP</p>
@@ -90,7 +115,16 @@ $addonProducts = [
     @if(!$customer->hasPermissionTo('addToCart'))
     <a href="https://bodypoint.com/contact-us/"><b class="underline">Contact Bodypoint to Order</b></a>
     @endif
+
+
 </div>
+@else
+<div class="product-promo-box">
+    <strong style="color:#f36f21;">This product has a special promotional price:</strong><br>
+    Please contact <a href="mailto:sales@bodypoint.com">sales@bodypoint.com</a>
+    for a quote or call <a href="tel:2064054555">206-405-4555</a> for more information.
+</div>
+@endif
 @endif
 
 <!-- Addon Products Popup -->

@@ -28,6 +28,12 @@ use Illuminate\Support\Facades\Artisan;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Test route for file manager
+Route::get('/test-filemanager', function () {
+    return redirect('/filemanager');
+})->name('test-filemanager');
+
 Route::get('/category/{name}/{subCategorySlug?}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{name}', [ProductController::class, 'index'])->name('product');
 Route::post('/getNextAttribute', [ProductController::class, 'getNextAttribute'])->name('product-next-attribute');

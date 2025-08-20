@@ -215,7 +215,7 @@ class CartController extends Controller
         $products = Product::where(function ($query) use ($keys) {
             $query->where('sku', 'LIKE', "%{$keys}%")
                 ->orWhere('name', 'LIKE', "%{$keys}%");
-        })
+        })->whereNotIn('id', [368, 369, 370, 371, 372, 373, 374, 375, 376, 377])
             ->withoutTrashed()
             ->get();
 
@@ -225,7 +225,8 @@ class CartController extends Controller
                 ->orWhere('name', 'LIKE', "%{$keys}%");
         })
             ->whereHas('product', function ($query) {
-                $query->withoutTrashed();
+                $query->withoutTrashed()
+                    ->whereNotIn('id', [368, 369, 370, 371, 372, 373, 374, 375, 376, 377]);
             })
             ->get();
 
