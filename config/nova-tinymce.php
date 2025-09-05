@@ -1,60 +1,112 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Options
-    |--------------------------------------------------------------------------
-    |
-    | Here you can define the options that are passed to all NovaTinyMCE
-    | fields by default.
-    |
-    */
-
     'default_options' => [
         'content_css' => '/vendor/tinymce/skins/ui/oxide/content.min.css',
         'skin_url' => '/vendor/tinymce/skins/ui/oxide',
         'content_css_dark' => '/vendor/tinymce/skins/ui/oxide-dark/content.min.css',
         'skin_url_dark' => '/vendor/tinymce/skins/ui/oxide-dark',
         'path_absolute' => '/',
+
+        // Plugins (link already present; keeping image, lists, etc.)
         'plugins' => [
-            'lists','preview','anchor','pagebreak','image','wordcount','fullscreen','directionality'
+            'lists',
+            'preview',
+            'anchor',
+            'pagebreak',
+            'image',
+            'wordcount',
+            'fullscreen',
+            'directionality',
+            'link'
         ],
-        'toolbar' => 'undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | image | bullist numlist outdent indent | link',
+
+        // Add a custom "document" button next to the image button
+        'toolbar' => 'undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | document image | bullist numlist outdent indent | link',
+
+        // Allow both images and generic files in the picker
         'relative_urls' => false,
         'use_lfm' => true,
         'use_dark' => true,
         'lfm_url' => 'filemanager',
+        'file_picker_types' => 'file image',
+
+        // Unified file picker for images and files (documents)
         'file_picker_callback' => 'function(callback, value, meta) {
-            console.log("File picker callback triggered", meta);
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName("body")[0].clientWidth;
-            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName("body")[0].clientHeight;
-            var cmsURL = "/filemanager" + "?editor=" + meta.fieldname;
-            if (meta.filetype == "image") {
-                cmsURL = cmsURL + "&type=Images";
+            var x = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var y = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+            var cmsURL = "/filemanager?editor=" + (meta.fieldname || "tinymce");
+            if (meta.filetype === "image") {
+                cmsURL += "&type=Images";
             } else {
-                cmsURL = cmsURL + "&type=Files";
+                cmsURL += "&type=Files";
             }
-            console.log("Opening file manager at:", cmsURL);
-            tinyMCE.activeEditor.windowManager.open({
-                file : cmsURL,
-                title : "Filemanager",
-                width : x * 0.8,
-                height : y * 0.8,
-                resizable : "yes",
-                close_previous : "no"
-            }, {
-                oninsert: function(url) {
-                    console.log("File selected:", url);
-                    callback(url);
+
+            var win = tinyMCE.activeEditor.windowManager.openUrl({
+                title: "File Manager",
+                url: cmsURL,
+                width: Math.floor(x * 0.8),
+                height: Math.floor(y * 0.8),
+                onMessage: function (api, details) {
+                    // If your filemanager posts a message back with the URL
+                    if (details.mceAction === "insert" && details.content && details.content.url) {
+                        callback(details.content.url, { text: details.content.text || "" });
+                        api.close();
+                    }
                 }
             });
+
+            // Fallback for filemanagers (like LFM) that call window.SetUrl(url)
+            window.SetUrl = function (url, file_path) {
+                // For images, TinyMCE handles it; for files, we pass link text as filename
+                var filename = (url || "").split("/").pop() || "Document";
+                if (meta.filetype === "image") {
+                    callback(url);
+                } else {
+                    callback(url, { text: filename });
+                }
+                try { win && win.close(); } catch (e) {}
+            };
         }',
+
         'setup' => 'function(editor) {
-            console.log("TinyMCE editor setup");
+            // Add a custom "document" toolbar button (paper/new-document icon)
+            editor.ui.registry.addButton("document", {
+                tooltip: "Insert document",
+                icon: "new-document",
+                onAction: function() {
+                    var x = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                    var y = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+                    var cmsURL = "/filemanager?editor=tinymce&type=Files";
+
+                    var win = editor.windowManager.openUrl({
+                        title: "Select Document",
+                        url: cmsURL,
+                        width: Math.floor(x * 0.8),
+                        height: Math.floor(y * 0.8),
+                        onMessage: function (api, details) {
+                            if (details.mceAction === "insert" && details.content && details.content.url) {
+                                var url = details.content.url;
+                                var filename = (url || "").split("/").pop() || "Document";
+                                editor.insertContent("<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">" + filename + "</a>");
+                                api.close();
+                            }
+                        }
+                    });
+
+                    // Fallback callback for LFM-style integrations
+                    window.SetUrl = function (url, file_path) {
+                        var filename = (url || "").split("/").pop() || "Document";
+                        editor.insertContent("<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">" + filename + "</a>");
+                        try { win && win.close(); } catch (e) {}
+                    };
+                }
+            });
+
             editor.on("init", function() {
-                console.log("TinyMCE editor initialized");
+                // ready
             });
         }',
     ],
