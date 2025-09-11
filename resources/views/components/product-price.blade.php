@@ -139,7 +139,7 @@ return in_array($productId, $allowedProducts);
             @foreach($addonProducts as $addonProduct)
             <div class="addon-item flex items-center justify-between border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-200 ease-in-out">
                 <!-- Image Section -->
-                <img src="{{ $addonProduct['image']; }}" alt="{{ $addonProduct['name'] }}" class="w-20 h-20 object-cover rounded-md">
+                <img src="{{ $addonProduct['image'] }}" alt="{{ $addonProduct['name'] }}" class="w-20 h-20 object-cover rounded-md">
 
                 <!-- Text Section -->
                 <div class="ml-4 flex flex-col justify-between flex-grow">
