@@ -44,7 +44,7 @@ return $embedUrl;
                             <div class="product-images-box">
                                 <div class="slider slider-for">
                                     @foreach ($sortedMedia as $media)<div>
-                                        <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}" alt="{{ $product['name'] ?? '' }}">
+                                        <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']) }}" alt="{{ $product['name'] ?? '' }}">
                                     </div>
                                     @endforeach
                                 </div>
@@ -53,7 +53,7 @@ return $embedUrl;
                                     @foreach ($sortedMedia as $media)
                                     <div>
                                         <a href="#" data-id="{{ $k }}">
-                                            <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}">
+                                            <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']) }}">
                                         </a>
                                     </div>
                                     <?php $k++; ?>
