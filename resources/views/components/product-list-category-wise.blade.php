@@ -10,7 +10,7 @@
     @if ($product->product)
     @php
         // Ensure media is a collection
-        $mediaCollection = $product->media ?? collect();
+        $mediaCollection = $product->product->media ?? collect();
 
         // Get the media sorted by order_column ascending
         $mediaItem = $mediaCollection
