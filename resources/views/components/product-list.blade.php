@@ -40,11 +40,13 @@
     }}">
     @foreach ($products as $product)
         @php
+        // Ensure media is a collection
+            $mediaCollection = $product->media ?? collect();
+
             // Get the media sorted by order_column ascending
-            $mediaItem = $product->media
+            $mediaItem = $mediaCollection
                 ->sortBy('order_column')  // Sort ascending
                 ->first();               // Take the first available
-
             // Determine the image URL
             $imageUrl = $mediaItem
                 ? url('storage/'.$mediaItem->id.'/'.$mediaItem->file_name)
