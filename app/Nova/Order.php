@@ -32,7 +32,7 @@ class Order extends Resource
     ];
     public static function searchableColumns()
     {
-        return ['id', new SearchableRelation('customer', 'name')];
+        return ['id','purchase_order_no', 'customer_po_number', new SearchableRelation('customer', 'name')];
     }
     public static $with = ['user', 'customer'];
     public static $clickAction = 'view';
