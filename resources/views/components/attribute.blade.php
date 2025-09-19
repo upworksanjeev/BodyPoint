@@ -77,12 +77,11 @@
         function hideUnWantedAttr(){
             setTimeout(function(){
                 if ($("#button_0_1454").hasClass('attribute_buttons_active')) {
-                    console.log('in Side---');
                     $('#button_2_1462').hide();  
                 } else{
                     $('#button_2_1462').show();                }
 
-            },200);
+            },20);
         }
          function changeAttribute(product_att_id, product_id, index, k,attr_count = 0, el = null) {
 
