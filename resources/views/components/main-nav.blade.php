@@ -303,6 +303,21 @@
 
                                      </div>
                                  </div>
+                                 <div class="ctm-grd-two">
+                                     <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                         href="{{$partnerPageURl}}">
+                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
+                                             <img class="" src="{{ asset('img/find-a-partner.png') }}"
+                                                 alt="Find a Partner" />
+                                         </div>
+                                     </a>
+                                     <div class="prd-cntnt">
+                                         <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                             href="{{$partnerPageURl}}">Find a Partner</a>
+                                         <p class="text-[14px] text-[#333] font-[400]">Connect with our Partner</p>
+
+                                     </div>
+                                 </div>
 
 
 
@@ -773,6 +788,22 @@
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{ config('bodypoint.home_url') }}/contact-us/">Contact Us</a>
                                          <p class="text-[14px] text-[#333] font-[400]">How can we help?</p>
+
+                                     </div>
+                                 </div>
+                                 </div>
+                                 <div class="ctm-grd-two">
+                                     <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                         href="{{ $partnerPageURl }}">
+                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
+                                             <img class="" src="{{ asset('img/find-a-partner.png') }}"
+                                                 alt="Your Company" />
+                                         </div>
+                                     </a>
+                                     <div class="prd-cntnt">
+                                         <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
+                                             href="{{$partnerPageURl}}">Find a Partner</a>
+                                         <p class="text-[14px] text-[#333] font-[400]">Connect with our Partner</p>
 
                                      </div>
                                  </div>
