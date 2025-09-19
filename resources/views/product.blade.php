@@ -113,12 +113,12 @@ return $embedUrl;
                                 </div>
                             </form>
                             <div class="detactor">
-                                <div class="detactor-left">
+                                {{--<div class="detactor-left">
                                     @if($showFindPartnerButton ?? false)
                                     <p class="text-[#000] flex items-center gap-[10px]"><i class="fas fa-map-marker-alt text-[20px]"></i> <span class="btn text-[18px]"><a href="{{$partnerPageURl}}" target="_blank"><button class="bg-[#FE7300] rounded-lg text-white text-base font-medium min-w-[180px] p-4 lg:block hidden">Find a Partner </button></a></span></p>
                                     @endif
 
-                                </div>
+                                </div> --}}
                                 <div class="detactor-right">
                                     {{-- <button class="bg-[#373B3C] rounded-[3px] py-[8px] px-[30px] text-[#fff] border border-[#373B3C] mr-[8px]">Save</button> --}}
                                     <button onclick="window.print()" class="border border-[#373B3C] text-[#373B3C] py-[8px] px-[30px]">Print</button>
