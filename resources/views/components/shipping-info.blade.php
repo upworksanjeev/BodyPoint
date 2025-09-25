@@ -1,120 +1,120 @@
- <div class="grid lg:grid-cols-2">
-     <div>
-         <div class="card-header px-6 py-2 bg-[#00838f]">
-             <h4 class="text-[#fff]">Ship To:</h4>
-         </div>
-         <div class="card-body p-6">
-             <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
-                     {{-- <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name ??'' }}</span> --}}
-                     <span
-                         class="text-sm text-[#000] font-normal leading-[17px]">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : '' }}</span>
-                 </li>
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">
-                         {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
-                         {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
-                         {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
-                         <br>
-                         {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
-                         {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }},
-                         {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
-                     </span>
+@php
+    $customerDetails = session('customer_details') ?? [];
+    $customerAddress = session('customer_address') ?? [];
+    $shipTo = $customerDetails['ShipToAddresses'][0] ?? [];
+@endphp
 
-                 </li>
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
-                     <span
-                         class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
-                 </li>
-                 @php
-                 $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
-                 @endphp
+<div class="grid lg:grid-cols-2">
 
-                 @if(!empty($phone))
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
-                 </li>
-                 @endif
+    {{-- Ship To --}}
+    <div>
+        <div class="card-header px-6 py-2 bg-[#00838f]">
+            <h4 class="text-[#fff]">Ship To:</h4>
+        </div>
+        <div class="card-body p-6">
+            <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
+                <li class="flex items-start gap-5">
+                    <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">
+                        {{ $customerDetails['CustomerName'] ?? '' }}
+                    </span>
+                </li>
+                <li class="flex items-start gap-5">
+                    <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px] change-shipping-address">
+                        {{ !empty($customerAddress['AddressLine2']) ? $customerAddress['AddressLine2'] . ',' : ($shipTo['AddressLine2'] ?? '') }},
+                        {{ !empty($customerAddress['AddressLine1']) ? $customerAddress['AddressLine1'] . ',' : ($shipTo['AddressLine1'] ?? '') }},
+                        {{ !empty($customerAddress['AddressLine3']) ? $customerAddress['AddressLine3'] . ',' : ($shipTo['AddressLine3'] ?? '') }}<br>
+                        {{ !empty($customerAddress['AddressLine4']) ? $customerAddress['AddressLine4'] . ',' : ($shipTo['AddressLine4'] ?? '') }}
+                        {{ $customerAddress['PostalCode'] ?? $shipTo['PostalCode'] ?? '' }},
+                        {{ $customerAddress['AddressLine5'] ?? $shipTo['AddressLine5'] ?? '' }}
+                    </span>
+                </li>
+                <li class="flex items-start gap-5">
+                    <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">
+                        {{ $userDetail->country ?? $shipTo['AddressLine5'] ?? '' }}
+                    </span>
+                </li>
 
-             </ul>
-         </div>
-     </div>
-     <div>
-         <div class="card-header px-6 py-2 bg-[#00838f]">
-             <h4 class="text-[#fff]">Bill To:</h4>
-         </div>
-         <div class="card-body p-6">
-             <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
-                     {{-- <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->first_name ?? auth()->user()->name }} {{ $userDetail->last_name ??'' }}</span> --}}
-                     <span
-                         class="text-sm text-[#000] font-normal leading-[17px]">{{ session()->get('customer_details') ? session()->get('customer_details')['CustomerName'] : '' }}</span>
-                 </li>
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">
-                         {{ !empty(session('customer_details')['billAddressLine2']) ? session('customer_details')['billAddressLine2'] . ',' : '' }}
-                         <br>
-                         {{ !empty(session('customer_details')['billAddressLine4']) ? session('customer_details')['billAddressLine4'] . ',' : '' }}
-                         {{ !empty(session('customer_details')['billAddressLine1']) ? session('customer_details')['billAddressLine1'] . ',' : '' }}
-                         @if (session('customer_details')['billAddressLine5'] || !empty(session('customer_details')['billAddressLine5']))
-                         {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
-                         @else
-                         {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] : '' }}
-                         @endif
-                         {{ session('customer_details')['billAddressLine5'] ?? '' }}
-                     </span>
+                @php
+                    $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone ?? '';
+                @endphp
+                @if(!empty($phone))
+                    <li class="flex items-start gap-5">
+                        <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone:</span>
+                        <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
+                    </li>
+                @endif
+            </ul>
+        </div>
+    </div>
 
-                 </li>
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country</span>
-                     <span
-                         class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
-                 </li>
-                 @php
-                 $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
-                 @endphp
+    {{-- Bill To --}}
+    <div>
+        <div class="card-header px-6 py-2 bg-[#00838f]">
+            <h4 class="text-[#fff]">Bill To:</h4>
+        </div>
+        <div class="card-body p-6">
+            <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
+                <li class="flex items-start gap-5">
+                    <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $customerDetails['CustomerName'] ?? '' }}</span>
+                </li>
+                <li class="flex items-start gap-5">
+                    <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Address:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">
+                        {{ $customerDetails['billAddressLine2'] ?? '' }}<br>
+                        {{ $customerDetails['billAddressLine4'] ?? '' }}
+                        {{ $customerDetails['billAddressLine1'] ?? '' }},
+                        {{ $customerDetails['billAddressPostalCode'] ?? '' }}
+                        {{ $customerDetails['billAddressLine5'] ?? '' }}
+                    </span>
+                </li>
+                <li class="flex items-start gap-5">
+                    <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Country:</span>
+                    <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $userDetail->country ?? $customerAddress['AddressLine5'] ?? '' }}</span>
+                </li>
 
-                 @if(!empty($phone))
-                 <li class="flex items-start gap-5">
-                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone</span>
-                     <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
-                 </li>
-                 @endif
+                @if(!empty($phone))
+                    <li class="flex items-start gap-5">
+                        <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Phone:</span>
+                        <span class="text-sm text-[#000] font-normal leading-[17px]">+1 {{ $phone }}</span>
+                    </li>
+                @endif
+            </ul>
+        </div>
+    </div>
 
-             </ul>
-         </div>
-     </div>
- </div>
- <div class="card-header px-6 py-2 bg-[#00838f]">
-     <h4 class="text-[#fff]">Payment Method:</h4>
- </div>
- <div class="card-body p-6">
-     <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
-         <li class="flex items-start gap-5">
-             <span
-                 class="text-sm text-[#000] font-normal leading-[17px]">{{ session('customer_details')['PaymentTermDescription'] ?? 'Invoice-30' }}</span>
-         </li>
-     </ul>
- </div>
- <div class="card-header px-6 py-2 bg-[#00838f]">
-     <h4 class="text-[#fff]">Items:</h4>
- </div>
- <div class="card-body p-6">
-     <ul class="space-y-5 text-gray-500 list-disc list-inside">
+</div>
 
-         <li class="flex items-start gap-5">
-             <span class="text-sm text-[#000] font-normal leading-[17px]">Carrier:</span>
-         </li>
-         <li class="flex items-start gap-5">
-             <span class="text-[13px] font-normal leading-[19px]">All orders placed will ship within 5 business days.
-                 Freight cost is calculated at time of shipping. For expedited shipping options please contact customer
-                 service at sales@bodybpoint.com or 206.405.4555</span>
-         </li>
-     </ul>
- </div>
+{{-- Payment Method --}}
+<div class="card-header px-6 py-2 bg-[#00838f]">
+    <h4 class="text-[#fff]">Payment Method:</h4>
+</div>
+<div class="card-body p-6">
+    <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
+        <li class="flex items-start gap-5">
+            <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $customerDetails['PaymentTermDescription'] ?? 'Invoice-30' }}</span>
+        </li>
+    </ul>
+</div>
+
+{{-- Items --}}
+<div class="card-header px-6 py-2 bg-[#00838f]">
+    <h4 class="text-[#fff]">Items:</h4>
+</div>
+<div class="card-body p-6">
+    <ul class="space-y-5 text-gray-500 list-disc list-inside">
+        <li class="flex items-start gap-5">
+            <span class="text-sm text-[#000] font-normal leading-[17px]">Carrier:</span>
+        </li>
+        <li class="flex items-start gap-5">
+            <span class="text-[13px] font-normal leading-[19px]">
+                All orders placed will ship within 5 business days.
+                Freight cost is calculated at time of shipping. For expedited shipping options please contact customer
+                service at sales@bodybpoint.com or 206.405.4555
+            </span>
+        </li>
+    </ul>
+</div>
