@@ -180,12 +180,43 @@ class CheckoutController extends Controller
                 DB::rollBack();
                 return redirect()->back()->withInput()->with('error', $order_syspro['response']['Message']);
             }
-            OrderPlaced::dispatch($order);
             $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-            $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
+            /*$pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
-            FunHelper::saveOrderPlacedPdf($pdfContent, $order);
+            FunHelper::saveOrderPlacedPdf($pdfContent, $order);*/
+
+            $pdfPath = null;
+            try {
+                $pdf = Pdf::loadView('order-receipt', [
+                    'order'      => $order,
+                    'user'       => $user,
+                    'userDetail' => $user_detail,
+                ]);
+                $pdfContent = $pdf->output();
+
+                // If your helper returns a path, capture it; if not, save manually:
+                try {
+                    // preferred if your helper handles storage
+                    FunHelper::saveOrderPlacedPdf($pdfContent, $order);
+                    Log::info('[PDF] Saved via helper', ['order_id' => $order->id]);
+                } catch (\Throwable $e) {
+                    // manual fallback to storage/app/orders/{id}.pdf
+                    $pdfPath = storage_path('app/orders/'.$order->id.'.pdf');
+                    if (!is_dir(dirname($pdfPath))) {
+                        @mkdir(dirname($pdfPath), 0775, true);
+                    }
+                    file_put_contents($pdfPath, $pdfContent);
+                    Log::info('[PDF] Saved manually', ['order_id' => $order->id, 'path' => $pdfPath]);
+                }
+            } catch (\Throwable $e) {
+                Log::error('[PDF] Generation failed', [
+                    'order_id' => $order->id,
+                    'error'    => $e->getMessage(),
+                ]);
+                
+            }
+            OrderPlaced::dispatch($order);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
             DB::commit();
