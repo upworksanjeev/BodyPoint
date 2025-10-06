@@ -24,14 +24,44 @@ class SysproService
 
     public static function returnResponse($response)
     {
-        $statusCode   = $response->status() ?? null;
-        $responseBody = $response->json() ?? [];
-        $data  = [
-            'code'     => $statusCode,
-            'response' => $responseBody
-        ];
+        try {
+            if (!$response || !method_exists($response, 'status')) {
+                Log::warning('[Syspro] Invalid response object', ['response' => $response]);
+                return [
+                    'code'     => null,
+                    'response' => ['error' => 'Invalid response object'],
+                ];
+            }
+            $statusCode = null;
+            try {
+                $statusCode = $response->status();
+            } catch (\Throwable $e) {
+                Log::error('[Syspro] Failed to read status', ['error' => $e->getMessage()]);
+            }
 
-        return $data;
+            $responseBody = [];
+            try {
+                $responseBody = $response->json();
+            } catch (\Throwable $e) {
+                try {
+                    $responseBody = ['raw' => $response->body()];
+                } catch (\Throwable $inner) {
+                    $responseBody = ['error' => 'Unable to read response body'];
+                }
+
+                Log::error('[Syspro] JSON decode failed', ['error' => $e->getMessage()]);
+            }
+            return [
+                'code'     => $statusCode,
+                'response' => $responseBody,
+            ];
+        } catch (\Throwable $e) {
+            Log::critical('[Syspro] returnResponse fatal', ['error' => $e->getMessage()]);
+            return [
+                'code'     => null,
+                'response' => ['error' => 'Unexpected exception in returnResponse'],
+            ];
+        }
     }
 
     public static function get($end_point, array $params = [])
