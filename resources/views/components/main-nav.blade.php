@@ -314,7 +314,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{$partnerPageURl}}">Find a Partner</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">Connect with our Partner</p>
+                                         <p class="text-[14px] text-[#333] font-[400]">Connect with our partners</p>
 
                                      </div>
                                  </div>
@@ -803,7 +803,7 @@
                                      <div class="prd-cntnt">
                                          <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
                                              href="{{$partnerPageURl}}">Find a Partner</a>
-                                         <p class="text-[14px] text-[#333] font-[400]">Connect with our Partner</p>
+                                         <p class="text-[14px] text-[#333] font-[400]">Connect with our partners</p>
 
                                      </div>
                                  </div>
