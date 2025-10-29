@@ -1,29 +1,53 @@
 @php
 function getYouTubeEmbedUrl($url) {
-$parsedUrl = parse_url($url);
-
-if (!isset($parsedUrl['host']) || strpos($parsedUrl['host'], 'youtube.com') === false) {
-return ''; // Not a YouTube URL
+    if (empty($url)) {
+        return '';
+    }
+    
+    $parsedUrl = parse_url($url);
+    
+    // Handle youtu.be URLs
+    if (isset($parsedUrl['host']) && $parsedUrl['host'] === 'youtu.be') {
+        $videoId = ltrim($parsedUrl['path'], '/');
+        if (!empty($videoId)) {
+            return "https://www.youtube.com/embed/" . htmlspecialchars($videoId, ENT_QUOTES, 'UTF-8');
+        }
+    }
+    
+    // Handle youtube.com URLs
+    if (isset($parsedUrl['host']) && (
+        strpos($parsedUrl['host'], 'youtube.com') !== false || 
+        strpos($parsedUrl['host'], 'm.youtube.com') !== false
+    )) {
+        // Check if it's already an embed URL
+        if (strpos($parsedUrl['path'], '/embed/') !== false) {
+            return $url; // Already an embed URL
+        }
+        
+        // Extract video ID from query parameters
+        parse_str($parsedUrl['query'] ?? '', $queryParams);
+        
+        if (isset($queryParams['v'])) {
+            $videoId = $queryParams['v'];
+            $listId = $queryParams['list'] ?? null;
+            
+            $embedUrl = "https://www.youtube.com/embed/" . htmlspecialchars($videoId, ENT_QUOTES, 'UTF-8');
+            
+            if ($listId) {
+                $embedUrl .= "?list=" . htmlspecialchars($listId, ENT_QUOTES, 'UTF-8');
+            }
+            
+            return $embedUrl;
+        }
+    }
+    
+    // If it's already a valid embed URL, return it
+    if (strpos($url, 'youtube.com/embed/') !== false) {
+        return $url;
+    }
+    
+    return ''; // Not a recognized YouTube URL
 }
-
-parse_str($parsedUrl['query'] ?? '', $queryParams);
-
-if (!isset($queryParams['v'])) {
-return ''; // No video ID found
-}
-
-$videoId = $queryParams['v'];
-$listId = $queryParams['list'] ?? null;
-
-$embedUrl = "https://www.youtube.com/embed/" . htmlspecialchars($videoId, ENT_QUOTES, 'UTF-8');
-
-if ($listId) {
-$embedUrl .= "?list=" . htmlspecialchars($listId, ENT_QUOTES, 'UTF-8');
-}
-
-return $embedUrl;
-}
-
 @endphp
 
 <x-mainpage-layout>
