@@ -36,6 +36,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::initialPath('/resources/users');
 
+        // Register app-side Nova fixes script (non-vendor) to safely patch behaviors at runtime
+        Nova::script('nova-fixes', asset('assets/js/nova-fixes.js'));
+        
         //Observable::make(ProductModel::class, ProductObserver::class);
         //Observable::make(ProductAttributeModel::class, ProductAttributeObserver::class);
         Nova::mainMenu(function (Request $request) {
