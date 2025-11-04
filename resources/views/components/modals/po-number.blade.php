@@ -24,7 +24,7 @@
                         <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] ?? '' }}" id="order-cart-id">
                     @endif
                     <input type="text" name="customer_po_number" value="{{ $cart[0]['purchase_order_no'] ?? ''}}" placeholder="Enter PO Number" id="{{ $name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-
+                    <input type="hidden" name="selected_credit_card" id="form_credit_card_data" value="" />
                     <div id="duplicate-confirmation" style="display: none;">
                         <label>
                             <input type="checkbox" name="agree_duplicate" id="agree-duplicate" value="yes">

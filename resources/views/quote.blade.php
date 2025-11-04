@@ -50,13 +50,17 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body p-6 border-t quote-buttons">
-                        <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                            <input type="hidden" value="<?= csrf_token() ?>" name="_token">
-                            <button id="generate-quote" type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
+                    <form id="generate-quote-form" action="{{ route('generateQuote') }}" method="post">
+                        <input type="hidden" value="<?= csrf_token() ?>" name="_token">
+                        <input type="hidden" name="selected_credit_card" id="quote_credit_card_data" value="" />
+                        <input type="hidden" name="price_option" id="quote_price_option" value="all_price" />
+                        <div class="card-body p-6 border-t quote-buttons">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
+                                <button id="generate-quote" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -76,10 +80,40 @@
         function print_window() {
             window.print();
         }
+        // Function to retrieve and add credit card last 4 digits to quote form
+        function addCreditCardToQuoteForm() {
+            const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
+            const form = $('#generate-quote-form');
+            if (selectedCard) {
+                try {
+                    const cardData = JSON.parse(selectedCard);
+                    
+                    // Only send last 4 digits - add as credit_card_last_four for backend extraction
+                    if (cardData.CreditCardLastFourDigit) {
+                        if (!form.find('input[name="credit_card_last_four"]').length) {
+                            form.append('<input type="hidden" name="credit_card_last_four" value="" />');
+                        }
+                        form.find('input[name="credit_card_last_four"]').val(cardData.CreditCardLastFourDigit);
+                        
+                        // Also keep selected_credit_card for backward compatibility
+                        form.find('#quote_credit_card_data').val(selectedCard);
+                    }
+                } catch (e) {
+                    console.error('Error parsing credit card data:', e);
+                }
+            }
+            
+            // Update price option in form
+            const selectedPriceOption = $('.quote-price-option:checked').val();
+            if (selectedPriceOption) {
+                form.find('#quote_price_option').val(selectedPriceOption);
+            }
+        }
 
         $(document).on('click', '#generate-quote', function(event) {
             event.preventDefault();
             const po_number = $('#customer-po-number-quote').val();
+            addCreditCardToQuoteForm();
              $('#generate-quote-form').submit();
             // if (po_number !== "" && po_number !== null) {
             //     $('#generate-quote-form').submit();
@@ -108,6 +142,7 @@
                     '</div>' +
                 '</div>');
                 $('#po-number-modal-quote').hide();
+                addCreditCardToQuoteForm();
             }
         });
 

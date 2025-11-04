@@ -49,8 +49,43 @@ class CheckoutController extends Controller
         $user = Auth::user();
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
 
+        // Fetch customer details from the specified API endpoint
+        $customer_id = getCustomerId(); 
+        $apiUrl = 'GetCustomerDetails/' . $customer_id;
+        $apiCustomerDetails = null;
+        $apiError = null;
+        $creditCardDetails = null;
+        
+        try {
+            // SysproService::getCustomerDetails returns an array, not a response object
+            $customerDetails = SysproService::getCustomerDetails($apiUrl);
+            
+            if (!empty($customerDetails)) {
+                $apiCustomerDetails = $customerDetails;
+                
+                // Extract CreditCardDetails from the customer details array
+                // The structure returned by getCustomerDetails is the Customer object directly
+                if (isset($customerDetails['CreditCardDetails'])) {
+                    $creditCardDetails = $customerDetails['CreditCardDetails'];
+                } elseif (isset($customerDetails['Customer']['CreditCardDetails'])) {
+                    $creditCardDetails = $customerDetails['Customer']['CreditCardDetails'];
+                }
+            } else {
+                $apiError = 'No customer details found or API request failed.';
+            }
+        } catch (\Exception $e) {
+            $apiError = 'Error fetching customer details: ' . $e->getMessage();
+            Log::error('Payment - Error fetching customer details:', [
+                'error' => $e->getMessage(),
+                'customer_id' => $customer_id,
+                'apiUrl' => $apiUrl,
+            ]);
+        }
         return view('payment', array(
             'cart' => $cart,
+            'apiCustomerDetails' => $apiCustomerDetails,
+            'apiError' => $apiError,
+            'creditCardDetails' => $creditCardDetails,
         ));
     }
 
@@ -138,6 +173,31 @@ class CheckoutController extends Controller
                 'customer_number' => $customer_id,
             ]);
 
+            // Extract credit card last 4 digits from request
+            $creditCardLast4 = null;
+            if ($request->has('selected_credit_card') && !empty($request->selected_credit_card)) {
+                try {
+                    $cardData = json_decode($request->selected_credit_card, true);
+                    // Extract only last 4 digits
+                    if (isset($cardData['CreditCardLastFourDigit'])) {
+                        $creditCardLast4 = $cardData['CreditCardLastFourDigit'];
+                    } elseif (isset($request->credit_card_last_four)) {
+                        $creditCardLast4 = $request->credit_card_last_four;
+                    }
+                    
+                    // Log credit card last 4 digits received
+                    Log::info('Order - Credit Card Last 4 Digits Received:', [
+                        'CreditCardLast4Digit' => $creditCardLast4,
+                        'customer_po_number' => $request->customer_po_number,
+                        'user_id' => $user->id,
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Order - Failed to parse credit card data: ' . $e->getMessage());
+                }
+            } else {
+                Log::info('Order - No credit card data provided in request');
+            }
+
             Log::info('Order Created:', [
                 'order_id' => $order->id,
                 'user_id' => $user->id,
@@ -145,6 +205,7 @@ class CheckoutController extends Controller
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
+                'has_credit_card' => !empty($creditCardLast4),
             ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
@@ -163,7 +224,7 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate, $creditCardLast4);
 
             if (!empty($order_syspro['response']['OrderNumber'])) {
                 $order->update([
