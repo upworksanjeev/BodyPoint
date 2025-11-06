@@ -32,19 +32,19 @@
                         <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                                 <div class="flex items-center ps-3">
-                                    <input id="all_price" type="radio" value="all_price" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2" selected>
+                                    <input id="all_price" type="radio" value="all_price" name="price_option" class="quote-price-option w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2" checked>
                                     <label for="all_price" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">All Price</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                                 <div class="flex items-center ps-3">
-                                    <input id="msrp_primary" type="radio" value="msrp_primary" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <input id="msrp_primary" type="radio" value="msrp_primary" name="price_option" class="quote-price-option w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="msrp_primary" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">MSRP and Primary</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                                 <div class="flex items-center ps-3">
-                                    <input id="msrp_only" type="radio" value="msrp_only" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <input id="msrp_only" type="radio" value="msrp_only" name="price_option" class="quote-price-option w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="msrp_only" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">MSRP Only</label>
                                 </div>
                             </li>
@@ -80,6 +80,7 @@
         function print_window() {
             window.print();
         }
+
         // Function to retrieve and add credit card last 4 digits to quote form
         function addCreditCardToQuoteForm() {
             const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
@@ -114,7 +115,7 @@
             event.preventDefault();
             const po_number = $('#customer-po-number-quote').val();
             addCreditCardToQuoteForm();
-             $('#generate-quote-form').submit();
+            $('#generate-quote-form').submit();
             // if (po_number !== "" && po_number !== null) {
             //     $('#generate-quote-form').submit();
             // }else{
