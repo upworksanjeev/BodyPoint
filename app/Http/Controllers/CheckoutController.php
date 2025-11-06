@@ -173,23 +173,20 @@ class CheckoutController extends Controller
                 'customer_number' => $customer_id,
             ]);
 
-            // Extract credit card last 4 digits from request
-            $creditCardLast4 = null;
+            // Extract credit card data from request
+            $cardData = null;
             if ($request->has('selected_credit_card') && !empty($request->selected_credit_card)) {
                 try {
                     $cardData = json_decode($request->selected_credit_card, true);
-                    // Extract only last 4 digits
-                    if (isset($cardData['CreditCardLastFourDigit'])) {
-                        $creditCardLast4 = $cardData['CreditCardLastFourDigit'];
-                    } elseif (isset($request->credit_card_last_four)) {
-                        $creditCardLast4 = $request->credit_card_last_four;
-                    }
                     
-                    // Log credit card last 4 digits received
-                    Log::info('Order - Credit Card Last 4 Digits Received:', [
-                        'CreditCardLast4Digit' => $creditCardLast4,
-                        'customer_po_number' => $request->customer_po_number,
-                        'user_id' => $user->id,
+                    // Log credit card data received
+                    Log::info('Order - Credit Card Data Received:', [
+                        'selected_credit_card' => $request->selected_credit_card,
+                        'credit_card_last_four' => $request->credit_card_last_four,
+                        'credit_card_expiry' => $request->credit_card_expiry,
+                        'credit_card_type' => $request->credit_card_type,
+                        'credit_card_holder_name' => $request->credit_card_holder_name,
+                        'parsed_card_data' => $cardData,
                     ]);
                 } catch (\Exception $e) {
                     Log::error('Order - Failed to parse credit card data: ' . $e->getMessage());
@@ -205,7 +202,7 @@ class CheckoutController extends Controller
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
-                'has_credit_card' => !empty($creditCardLast4),
+                'has_credit_card' => !empty($cardData),
             ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
@@ -224,7 +221,7 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate, $creditCardLast4);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate, $cardData);
 
             if (!empty($order_syspro['response']['OrderNumber'])) {
                 $order->update([
