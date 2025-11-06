@@ -100,7 +100,6 @@
                     'background-color': 'rgb(0 0 0 / 56%)'
                 });
         }
-
         // Function to retrieve and add credit card last 4 digits to form
         function addCreditCardToForm(formId) {
             const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
