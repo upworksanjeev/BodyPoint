@@ -70,7 +70,7 @@ class SysproService
         return $response;
     }
 
-    public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
+    public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N',$creditCardData = null)
     {
         self::initialize();
         if (!$order_id) {
@@ -92,6 +92,36 @@ class SysproService
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
         ];
 
+        // Add credit card information to order data if provided
+        if ($creditCardData && is_array($creditCardData)) {
+            if (isset($creditCardData['CreditCardLastFourDigit'])) {
+                $order_data['CreditCardLastFourDigit'] = $creditCardData['CreditCardLastFourDigit'];
+            }
+            if (isset($creditCardData['ExpiredDate'])) {
+                $order_data['CreditCardExpiryDate'] = $creditCardData['ExpiredDate'];
+            }
+            if (isset($creditCardData['CardType'])) {
+                $order_data['CreditCardType'] = $creditCardData['CardType'];
+            }
+            if (isset($creditCardData['CardHolderName'])) {
+                $order_data['CreditCardHolderName'] = $creditCardData['CardHolderName'];
+            }
+            
+            // Log credit card addition
+            Log::info('[Syspro] Credit card data added to order:', [
+                'has_card_data' => true,
+                'card_fields_added' => array_keys(array_filter([
+                    'CreditCardLastFourDigit' => $order_data['CreditCardLastFourDigit'] ?? null,
+                    'CreditCardExpiryDate' => $order_data['CreditCardExpiryDate'] ?? null,
+                    'CreditCardType' => $order_data['CreditCardType'] ?? null,
+                    'CreditCardHolderName' => $order_data['CreditCardHolderName'] ?? null,
+                ])),
+                'endpoint' => $url,
+            ]);
+        } else {
+            Log::info('[Syspro] No credit card data provided for order');
+        }
+
         $items = [];
         foreach ($cartitems as $key => $item) {
             $items[$key] = [
@@ -106,11 +136,17 @@ class SysproService
             'Order' => $order_data,
             'Lines' => $items,
         ];
+        // Log the complete request payload before sending
+        Log::info('[Syspro] API Request Payload:', [
+            'endpoint' => $url,
+            'request_data' => $request,
+            'has_credit_card' => !empty($creditCardData),
+        ]);
         $response = self::post($url, $request);
         return self::returnResponse($response);
     }
 
-    public static function updateQuote($order_no, $url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N')
+    public static function updateQuote($order_no, $url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N',$creditCardData = null)
     {
         self::initialize();
         if (!$order_id) {
@@ -139,6 +175,34 @@ class SysproService
             'ShipAddress5' => $address['AddressLine5']  ?? '',
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
         ];
+
+        // Add credit card information if provided
+        if ($creditCardData && is_array($creditCardData)) {
+            if (isset($creditCardData['CreditCardLastFourDigit'])) {
+                $order_data['CreditCardLastFourDigit'] = $creditCardData['CreditCardLastFourDigit'];
+            }
+            if (isset($creditCardData['ExpiredDate'])) {
+                $order_data['CreditCardExpiryDate'] = $creditCardData['ExpiredDate'];
+            }
+            if (isset($creditCardData['CardType'])) {
+                $order_data['CreditCardType'] = $creditCardData['CardType'];
+            }
+            if (isset($creditCardData['CardHolderName'])) {
+                $order_data['CreditCardHolderName'] = $creditCardData['CardHolderName'];
+            }
+            
+            // Log credit card addition
+            Log::info('[Syspro] Credit card data added to quote update:', [
+                'has_card_data' => true,
+                'card_fields_added' => array_keys(array_filter([
+                    'CreditCardLastFourDigit' => $order_data['CreditCardLastFourDigit'] ?? null,
+                    'CreditCardExpiryDate' => $order_data['CreditCardExpiryDate'] ?? null,
+                    'CreditCardType' => $order_data['CreditCardType'] ?? null,
+                    'CreditCardHolderName' => $order_data['CreditCardHolderName'] ?? null,
+                ])),
+                'endpoint' => $url,
+            ]);
+        }
 
         $items = [];
         foreach ($cartitems as $key => $item) {

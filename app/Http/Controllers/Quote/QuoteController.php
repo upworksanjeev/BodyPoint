@@ -226,6 +226,31 @@ class QuoteController extends Controller
         }
         $total = 0;
         $orderItems = [];
+
+        // Extract credit card data from request
+        $cardData = null;
+        if ($request->has('selected_credit_card') && !empty($request->selected_credit_card)) {
+            try {
+                $cardData = json_decode($request->selected_credit_card, true);
+                
+                // Log credit card data received
+                Log::info('Quote - Credit Card Data Received:', [
+                    'selected_credit_card' => $request->selected_credit_card,
+                    'credit_card_last_four' => $request->credit_card_last_four,
+                    'credit_card_expiry' => $request->credit_card_expiry,
+                    'credit_card_type' => $request->credit_card_type,
+                    'credit_card_holder_name' => $request->credit_card_holder_name,
+                    'parsed_card_data' => $cardData,
+                    'price_option' => $price_option,
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Quote - Failed to parse credit card data: ' . $e->getMessage());
+            }
+        } else {
+            Log::info('Quote - No credit card data provided in request');
+        }
+        
+
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
         if ($cart->isEmpty()) {
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
@@ -240,7 +265,7 @@ class QuoteController extends Controller
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'CreateQuote';
                 //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
-                $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, 'QUOTE', 'N', 'Y');
+                $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, 'QUOTE', 'N', 'Y', $cardData);
 
                 if (!empty($order_syspro['response']['OrderNumber'])) {
 
