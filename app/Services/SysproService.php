@@ -94,9 +94,28 @@ class SysproService
 
         // Add credit card information to order data if provided
         if ($creditCardData && is_array($creditCardData)) {
+            // Log incoming credit card data structure for debugging
+            Log::info('[Syspro] Incoming credit card data structure:', [
+                'creditCardData_keys' => array_keys($creditCardData),
+                'creditCardData' => $creditCardData,
+            ]);
+            
+            // Handle both field name variations: CreditCardLastFourDigit and CreditCardLast4Digit
+            $lastFourDigit = null;
             if (isset($creditCardData['CreditCardLastFourDigit'])) {
-                $order_data['CreditCardLastFourDigit'] = $creditCardData['CreditCardLastFourDigit'];
+                $lastFourDigit = $creditCardData['CreditCardLastFourDigit'];
+            } elseif (isset($creditCardData['CreditCardLast4Digit'])) {
+                $lastFourDigit = $creditCardData['CreditCardLast4Digit'];
+            } elseif (isset($creditCardData['LastFourDigit'])) {
+                $lastFourDigit = $creditCardData['LastFourDigit'];
+            } elseif (isset($creditCardData['Last4Digit'])) {
+                $lastFourDigit = $creditCardData['Last4Digit'];
             }
+            
+            if ($lastFourDigit) {
+                $order_data['CreditCardLast4Digit'] = $lastFourDigit;
+            }
+            
             if (isset($creditCardData['ExpiredDate'])) {
                 $order_data['CreditCardExpiryDate'] = $creditCardData['ExpiredDate'];
             }
@@ -110,8 +129,9 @@ class SysproService
             // Log credit card addition
             Log::info('[Syspro] Credit card data added to order:', [
                 'has_card_data' => true,
+                'last_four_digit' => $lastFourDigit,
                 'card_fields_added' => array_keys(array_filter([
-                    'CreditCardLastFourDigit' => $order_data['CreditCardLastFourDigit'] ?? null,
+                    'CreditCardLast4Digit' => $order_data['CreditCardLast4Digit'] ?? null,
                     'CreditCardExpiryDate' => $order_data['CreditCardExpiryDate'] ?? null,
                     'CreditCardType' => $order_data['CreditCardType'] ?? null,
                     'CreditCardHolderName' => $order_data['CreditCardHolderName'] ?? null,
@@ -119,7 +139,11 @@ class SysproService
                 'endpoint' => $url,
             ]);
         } else {
-            Log::info('[Syspro] No credit card data provided for order');
+            Log::info('[Syspro] No credit card data provided for order', [
+                'creditCardData_type' => gettype($creditCardData),
+                'creditCardData_is_array' => is_array($creditCardData),
+                'creditCardData_value' => $creditCardData,
+            ]);
         }
 
         $items = [];
@@ -178,9 +202,22 @@ class SysproService
 
         // Add credit card information if provided
         if ($creditCardData && is_array($creditCardData)) {
+            // Handle both field name variations: CreditCardLastFourDigit and CreditCardLast4Digit
+            $lastFourDigit = null;
             if (isset($creditCardData['CreditCardLastFourDigit'])) {
-                $order_data['CreditCardLastFourDigit'] = $creditCardData['CreditCardLastFourDigit'];
+                $lastFourDigit = $creditCardData['CreditCardLastFourDigit'];
+            } elseif (isset($creditCardData['CreditCardLast4Digit'])) {
+                $lastFourDigit = $creditCardData['CreditCardLast4Digit'];
+            } elseif (isset($creditCardData['LastFourDigit'])) {
+                $lastFourDigit = $creditCardData['LastFourDigit'];
+            } elseif (isset($creditCardData['Last4Digit'])) {
+                $lastFourDigit = $creditCardData['Last4Digit'];
             }
+            
+            if ($lastFourDigit) {
+                $order_data['CreditCardLast4Digit'] = $lastFourDigit;
+            }
+            
             if (isset($creditCardData['ExpiredDate'])) {
                 $order_data['CreditCardExpiryDate'] = $creditCardData['ExpiredDate'];
             }
@@ -194,8 +231,9 @@ class SysproService
             // Log credit card addition
             Log::info('[Syspro] Credit card data added to quote update:', [
                 'has_card_data' => true,
+                'last_four_digit' => $lastFourDigit,
                 'card_fields_added' => array_keys(array_filter([
-                    'CreditCardLastFourDigit' => $order_data['CreditCardLastFourDigit'] ?? null,
+                    'CreditCardLast4Digit' => $order_data['CreditCardLast4Digit'] ?? null,
                     'CreditCardExpiryDate' => $order_data['CreditCardExpiryDate'] ?? null,
                     'CreditCardType' => $order_data['CreditCardType'] ?? null,
                     'CreditCardHolderName' => $order_data['CreditCardHolderName'] ?? null,
