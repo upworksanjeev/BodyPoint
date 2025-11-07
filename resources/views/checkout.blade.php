@@ -61,7 +61,11 @@
     form="confirm-order-form"
     :cart="$cart"
     action="{{ route('confirm-order') }}"
-    />
+    :selectedCardJson="$selectedCard['json'] ?? ''"
+    :selectedCardLastFour="$selectedCard['last_four'] ?? ''"
+    :selectedCardExpiry="$selectedCard['expiry'] ?? ''"
+    :selectedCardType="$selectedCard['type'] ?? ''"
+    :selectedCardHolderName="$selectedCard['holder_name'] ?? ''"/>
 
     @push('other-scripts')
     <script>
@@ -100,7 +104,7 @@
                     'background-color': 'rgb(0 0 0 / 56%)'
                 });
         }
-        // Function to retrieve and add credit card data to form
+        // Function to retrieve and add credit card last 4 digits to form
         function addCreditCardToForm(formId) {
             const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
             if (selectedCard) {
@@ -108,49 +112,19 @@
                     const cardData = JSON.parse(selectedCard);
                     const form = $('#' + formId);
                     
-                    // ALWAYS set the selected_credit_card field - this is critical for backend processing
-                    form.find('#form_credit_card_data').val(selectedCard);
-                    
-                    // Add individual fields for easier access
+                    // Only send last 4 digits - add as credit_card_last_four for backend extraction
                     if (cardData.CreditCardLastFourDigit) {
                         if (!form.find('input[name="credit_card_last_four"]').length) {
                             form.append('<input type="hidden" name="credit_card_last_four" value="" />');
                         }
                         form.find('input[name="credit_card_last_four"]').val(cardData.CreditCardLastFourDigit);
+                        
+                        // Also keep selected_credit_card for backward compatibility
+                        form.find('#form_credit_card_data').val(selectedCard);
                     }
-                    
-                    if (cardData.ExpiredDate) {
-                        if (!form.find('input[name="credit_card_expiry"]').length) {
-                            form.append('<input type="hidden" name="credit_card_expiry" value="" />');
-                        }
-                        form.find('input[name="credit_card_expiry"]').val(cardData.ExpiredDate);
-                    }
-                    
-                    if (cardData.CardType) {
-                        if (!form.find('input[name="credit_card_type"]').length) {
-                            form.append('<input type="hidden" name="credit_card_type" value="" />');
-                        }
-                        form.find('input[name="credit_card_type"]').val(cardData.CardType);
-                    }
-                    
-                    if (cardData.CardHolderName) {
-                        if (!form.find('input[name="credit_card_holder_name"]').length) {
-                            form.append('<input type="hidden" name="credit_card_holder_name" value="" />');
-                        }
-                        form.find('input[name="credit_card_holder_name"]').val(cardData.CardHolderName);
-                    }
-                    
-                    // Debug: Log credit card data being added
-                    console.log('Credit Card Data added to form:', {
-                        selected_credit_card: selectedCard,
-                        cardData: cardData,
-                        formId: formId
-                    });
                 } catch (e) {
                     console.error('Error parsing credit card data:', e);
                 }
-            } else {
-                console.warn('No credit card data found in localStorage or sessionStorage');
             }
         }
 

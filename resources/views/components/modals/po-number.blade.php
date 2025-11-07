@@ -1,3 +1,10 @@
+@php
+    $cardJsonValue = $selectedCardJson ?? session('selected_credit_card', '');
+    $cardLastFourValue = $selectedCardLastFour ?? session('selected_credit_card_last_four', '');
+    $cardExpiryValue = $selectedCardExpiry ?? session('selected_credit_card_expiry', '');
+    $cardTypeValue = $selectedCardType ?? session('selected_credit_card_type', '');
+    $cardHolderNameValue = $selectedCardHolderName ?? session('selected_credit_card_holder_name', '');
+@endphp
   <!-- Main modal -->
   <div id="{{ $id }}" data-modal-target='{{ $id }}' tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-lg max-h-full">
@@ -24,7 +31,11 @@
                         <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] ?? '' }}" id="order-cart-id">
                     @endif
                     <input type="text" name="customer_po_number" value="{{ $cart[0]['purchase_order_no'] ?? ''}}" placeholder="Enter PO Number" id="{{ $name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-                    <input type="hidden" name="selected_credit_card" id="form_credit_card_data" value="" />
+                    <input type="hidden" name="selected_credit_card" id="form_credit_card_data" value="{{ $cardJsonValue }}" />
+                    <input type="hidden" name="credit_card_last_four" id="form_credit_card_last_four" value="{{ $cardLastFourValue }}" />
+                    <input type="hidden" name="credit_card_expiry" id="form_credit_card_expiry" value="{{ $cardExpiryValue }}" />
+                    <input type="hidden" name="credit_card_type" id="form_credit_card_type" value="{{ $cardTypeValue }}" />
+                    <input type="hidden" name="credit_card_holder_name" id="form_credit_card_holder_name" value="{{ $cardHolderNameValue }}" />
                     <div id="duplicate-confirmation" style="display: none;">
                         <label>
                             <input type="checkbox" name="agree_duplicate" id="agree-duplicate" value="yes">

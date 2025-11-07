@@ -105,6 +105,7 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');
     Route::post('/update-purchase-no', [CheckoutController::class, 'updatePurchaseNo'])->name('update-purchase-no');
     Route::post('/add-success-story', [ProductController::class, 'addStory'])->name('add-success-story');
+    Route::post('/payment/select-card', [CheckoutController::class, 'storeSelectedCard'])->name('payment.select-card');
 
     //Import Customers
     Route::get('/import-csv-customers', [ImportController::class, 'indexImportCustomer'])->name('import-customers-index');
