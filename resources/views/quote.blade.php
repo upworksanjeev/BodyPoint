@@ -52,7 +52,11 @@
                     </div>
                     <form id="generate-quote-form" action="{{ route('generateQuote') }}" method="post">
                         <input type="hidden" value="<?= csrf_token() ?>" name="_token">
-                        <input type="hidden" name="selected_credit_card" id="quote_credit_card_data" value="" />
+                        <input type="hidden" name="selected_credit_card" id="quote_credit_card_data" value="{{ $selectedCard['json'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_last_four" id="quote_credit_card_last_four" value="{{ $selectedCard['last_four'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_expiry" id="quote_credit_card_expiry" value="{{ $selectedCard['expiry'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_type" id="quote_credit_card_type" value="{{ $selectedCard['type'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_holder_name" id="quote_credit_card_holder_name" value="{{ $selectedCard['holder_name'] ?? '' }}" />
                         <input type="hidden" name="price_option" id="quote_price_option" value="all_price" />
                         <div class="card-body p-6 border-t quote-buttons">
                             <div class="flex items-center justify-end gap-2">
@@ -73,7 +77,12 @@
     id="po-number-modal-quote"
     class="close-po-number-modal-quote"
     form="generate-quote-form"
-    action="{{ route('generateQuote') }}"/>
+    action="{{ route('generateQuote') }}"
+    :selectedCardJson="$selectedCard['json'] ?? ''"
+    :selectedCardLastFour="$selectedCard['last_four'] ?? ''"
+    :selectedCardExpiry="$selectedCard['expiry'] ?? ''"
+    :selectedCardType="$selectedCard['type'] ?? ''"
+    :selectedCardHolderName="$selectedCard['holder_name'] ?? ''"/>
 
     @push('other-scripts')
     <script>
@@ -81,69 +90,23 @@
             window.print();
         }
 
-        // Function to retrieve and add credit card data to quote form
-        function addCreditCardToQuoteForm() {
-            const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
-            const form = $('#generate-quote-form');
-            if (selectedCard) {
-                try {
-                    const cardData = JSON.parse(selectedCard);
-                    
-                    // ALWAYS set the selected_credit_card field - this is critical for backend processing
-                    form.find('#quote_credit_card_data').val(selectedCard);
-                    
-                    // Add individual fields for easier access
-                    if (cardData.CreditCardLastFourDigit) {
-                        if (!form.find('input[name="credit_card_last_four"]').length) {
-                            form.append('<input type="hidden" name="credit_card_last_four" value="" />');
-                        }
-                        form.find('input[name="credit_card_last_four"]').val(cardData.CreditCardLastFourDigit);
-                    }
-                    
-                    if (cardData.ExpiredDate) {
-                        if (!form.find('input[name="credit_card_expiry"]').length) {
-                            form.append('<input type="hidden" name="credit_card_expiry" value="" />');
-                        }
-                        form.find('input[name="credit_card_expiry"]').val(cardData.ExpiredDate);
-                    }
-                    
-                    if (cardData.CardType) {
-                        if (!form.find('input[name="credit_card_type"]').length) {
-                            form.append('<input type="hidden" name="credit_card_type" value="" />');
-                        }
-                        form.find('input[name="credit_card_type"]').val(cardData.CardType);
-                    }
-                    
-                    if (cardData.CardHolderName) {
-                        if (!form.find('input[name="credit_card_holder_name"]').length) {
-                            form.append('<input type="hidden" name="credit_card_holder_name" value="" />');
-                        }
-                        form.find('input[name="credit_card_holder_name"]').val(cardData.CardHolderName);
-                    }
-                    
-                    // Debug: Log credit card data being added
-                    console.log('Credit Card Data added to quote form:', {
-                        selected_credit_card: selectedCard,
-                        cardData: cardData
-                    });
-                } catch (e) {
-                    console.error('Error parsing credit card data:', e);
-                }
-            } else {
-                console.warn('No credit card data found in localStorage or sessionStorage for quote');
-            }
-            
-            // Update price option in form
+        // Function to retrieve and add credit card last 4 digits to quote form
+        function syncQuotePriceOption() {
             const selectedPriceOption = $('.quote-price-option:checked').val();
             if (selectedPriceOption) {
-                form.find('#quote_price_option').val(selectedPriceOption);
+                $('#quote_price_option').val(selectedPriceOption);
             }
         }
 
+        syncQuotePriceOption();
+
+        $(document).on('change', '.quote-price-option', function() {
+            syncQuotePriceOption();
+        });
+
         $(document).on('click', '#generate-quote', function(event) {
             event.preventDefault();
-            const po_number = $('#customer-po-number-quote').val();
-            addCreditCardToQuoteForm();
+            syncQuotePriceOption();
             $('#generate-quote-form').submit();
             // if (po_number !== "" && po_number !== null) {
             //     $('#generate-quote-form').submit();
@@ -172,7 +135,7 @@
                     '</div>' +
                 '</div>');
                 $('#po-number-modal-quote').hide();
-                addCreditCardToQuoteForm();
+                syncQuotePriceOption();
             }
         });
 
