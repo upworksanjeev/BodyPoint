@@ -81,7 +81,7 @@
             window.print();
         }
 
-        // Function to retrieve and add credit card last 4 digits to quote form
+        // Function to retrieve and add credit card data to quote form
         function addCreditCardToQuoteForm() {
             const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
             const form = $('#generate-quote-form');
@@ -89,19 +89,48 @@
                 try {
                     const cardData = JSON.parse(selectedCard);
                     
-                    // Only send last 4 digits - add as credit_card_last_four for backend extraction
+                    // ALWAYS set the selected_credit_card field - this is critical for backend processing
+                    form.find('#quote_credit_card_data').val(selectedCard);
+                    
+                    // Add individual fields for easier access
                     if (cardData.CreditCardLastFourDigit) {
                         if (!form.find('input[name="credit_card_last_four"]').length) {
                             form.append('<input type="hidden" name="credit_card_last_four" value="" />');
                         }
                         form.find('input[name="credit_card_last_four"]').val(cardData.CreditCardLastFourDigit);
-                        
-                        // Also keep selected_credit_card for backward compatibility
-                        form.find('#quote_credit_card_data').val(selectedCard);
                     }
+                    
+                    if (cardData.ExpiredDate) {
+                        if (!form.find('input[name="credit_card_expiry"]').length) {
+                            form.append('<input type="hidden" name="credit_card_expiry" value="" />');
+                        }
+                        form.find('input[name="credit_card_expiry"]').val(cardData.ExpiredDate);
+                    }
+                    
+                    if (cardData.CardType) {
+                        if (!form.find('input[name="credit_card_type"]').length) {
+                            form.append('<input type="hidden" name="credit_card_type" value="" />');
+                        }
+                        form.find('input[name="credit_card_type"]').val(cardData.CardType);
+                    }
+                    
+                    if (cardData.CardHolderName) {
+                        if (!form.find('input[name="credit_card_holder_name"]').length) {
+                            form.append('<input type="hidden" name="credit_card_holder_name" value="" />');
+                        }
+                        form.find('input[name="credit_card_holder_name"]').val(cardData.CardHolderName);
+                    }
+                    
+                    // Debug: Log credit card data being added
+                    console.log('Credit Card Data added to quote form:', {
+                        selected_credit_card: selectedCard,
+                        cardData: cardData
+                    });
                 } catch (e) {
                     console.error('Error parsing credit card data:', e);
                 }
+            } else {
+                console.warn('No credit card data found in localStorage or sessionStorage for quote');
             }
             
             // Update price option in form
