@@ -54,7 +54,9 @@ class CheckoutController extends Controller
         $apiUrl = 'GetCustomerDetails/' . $customer_id;
         $apiCustomerDetails = null;
         $apiError = null;
-        $creditCardDetails = null;
+        $creditCardDetails = [];
+        $paymentTermCode = null;
+        $shouldShowCreditCards = false;
         
         try {
             // SysproService::getCustomerDetails returns an array, not a response object
@@ -62,13 +64,24 @@ class CheckoutController extends Controller
             
             if (!empty($customerDetails)) {
                 $apiCustomerDetails = $customerDetails;
-                
-                // Extract CreditCardDetails from the customer details array
-                // The structure returned by getCustomerDetails is the Customer object directly
-                if (isset($customerDetails['CreditCardDetails'])) {
-                    $creditCardDetails = $customerDetails['CreditCardDetails'];
-                } elseif (isset($customerDetails['Customer']['CreditCardDetails'])) {
-                    $creditCardDetails = $customerDetails['Customer']['CreditCardDetails'];
+                $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
+                $shouldShowCreditCards = $paymentTermCode === 'CC';
+
+                if ($shouldShowCreditCards) {
+                    // Extract CreditCardDetails from the customer details array
+                    // The structure returned by getCustomerDetails is the Customer object directly
+                    if (isset($customerDetails['CreditCardDetails'])) {
+                        $creditCardDetails = $customerDetails['CreditCardDetails'];
+                    } elseif (isset($customerDetails['Customer']['CreditCardDetails'])) {
+                        $creditCardDetails = $customerDetails['Customer']['CreditCardDetails'];
+                    }
+                } else {
+                    $this->clearSelectedCardSession();
+                    Log::info('Payment - Customer payment term is not CC; skipping credit card details.', [
+                        'customer_id' => $customer_id,
+                        'payment_term_code' => $paymentTermCode,
+                    ]);
+                    $creditCardDetails = [];
                 }
             } else {
                 $apiError = 'No customer details found or API request failed.';
@@ -86,6 +99,8 @@ class CheckoutController extends Controller
             'apiCustomerDetails' => $apiCustomerDetails,
             'apiError' => $apiError,
             'creditCardDetails' => $creditCardDetails,
+            'paymentTermCode' => $paymentTermCode,
+            'shouldShowCreditCards' => $shouldShowCreditCards,
         ));
     }
 

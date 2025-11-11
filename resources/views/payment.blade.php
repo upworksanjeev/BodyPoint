@@ -73,19 +73,23 @@
                     </li>
                   </ul>
 
-                  @if(isset($creditCardDetails) && !empty($creditCardDetails))
+                  @php
+                    $canShowCreditCards = $shouldShowCreditCards ?? false;
+                  @endphp
+
+                  @if($canShowCreditCards)
                     <div class="mb-4">
                       <h5 class="text-sm font-semibold text-[#000] mb-3">Saved Cards:</h5>
                       <div class="space-y-3">
                         @php
                           // Handle both array of cards and single card object
-                          $cards = is_array($creditCardDetails) && isset($creditCardDetails[0]) ? $creditCardDetails : []; 
+                          $cards = is_array($creditCardDetails) && isset($creditCardDetails[0]) ? $creditCardDetails : [];
                           if (empty($cards) && !empty($creditCardDetails)) {
                             // If it's a single card object, wrap it in an array
                             $cards = [$creditCardDetails];
                           }
                         @endphp
-                        
+
                         @if(!empty($cards))
                           @foreach($cards as $index => $card)
                             @php
@@ -125,10 +129,6 @@
                           <p class="text-sm text-gray-500">No saved credit cards found.</p>
                         @endif
                       </div>
-                    </div>
-                  @else
-                    <div class="mb-4">
-                      <p class="text-sm text-gray-500">No saved credit cards available.</p>
                     </div>
                   @endif
 
