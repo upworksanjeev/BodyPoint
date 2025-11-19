@@ -15,66 +15,6 @@
         </div>
         @endif
 
-        @if(isset($apiCustomerDetails) && !empty($apiCustomerDetails))
-        <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h4 class="text-blue-800 font-semibold mb-3">Customer Details from API (http://209.119.205.198:25374/api/GetCustomerDetails/105019)</h4>
-          
-          @if(isset($apiCustomerDetails['Customer']))
-            @php
-              $apiCustomer = $apiCustomerDetails['Customer'];
-            @endphp
-            <div class="mb-4">
-              <h5 class="text-sm font-semibold text-[#000] mb-2">Customer Information:</h5>
-              <ul class="text-sm text-[#000] space-y-1">
-                @if(isset($apiCustomer['CustomerName']))
-                <li><span class="font-medium">Name:</span> {{ $apiCustomer['CustomerName'] }}</li>
-                @endif
-                @if(isset($apiCustomer['CustomerAccountNumber']))
-                <li><span class="font-medium">Account Number:</span> {{ $apiCustomer['CustomerAccountNumber'] }}</li>
-                @endif
-                @if(isset($apiCustomer['PaymentTermDescription']))
-                <li><span class="font-medium">Payment Term:</span> {{ $apiCustomer['PaymentTermDescription'] }}</li>
-                @endif
-                @if(isset($apiCustomer['CustomerDiscountPercentage']))
-                <li><span class="font-medium">Discount Percentage:</span> {{ $apiCustomer['CustomerDiscountPercentage'] }}%</li>
-                @endif
-              </ul>
-            </div>
-
-            @if(isset($apiCustomer['ShipToAddresses']) && is_array($apiCustomer['ShipToAddresses']) && !empty($apiCustomer['ShipToAddresses']))
-            <div class="mb-4">
-              <h5 class="text-sm font-semibold text-[#000] mb-2">Shipping Addresses:</h5>
-              @foreach($apiCustomer['ShipToAddresses'] as $index => $address)
-              <div class="mb-3 p-3 bg-white rounded border">
-                <p class="text-xs font-medium text-gray-600 mb-1">Address #{{ $index + 1 }}</p>
-                <ul class="text-sm text-[#000] space-y-1">
-                  @if(isset($address['AddressLine1']))<li>{{ $address['AddressLine1'] }}</li>@endif
-                  @if(isset($address['AddressLine2']))<li>{{ $address['AddressLine2'] }}</li>@endif
-                  @if(isset($address['AddressLine3']))<li>{{ $address['AddressLine3'] }}</li>@endif
-                  @if(isset($address['AddressLine4']))<li>{{ $address['AddressLine4'] }}</li>@endif
-                  @if(isset($address['PostalCode']) || isset($address['AddressLine5']))
-                  <li>
-                    @if(isset($address['PostalCode'])){{ $address['PostalCode'] }}@endif
-                    @if(isset($address['PostalCode']) && isset($address['AddressLine5'])), @endif
-                    @if(isset($address['AddressLine5'])){{ $address['AddressLine5'] }}@endif
-                  </li>
-                  @endif
-                </ul>
-              </div>
-              @endforeach
-            </div>
-            @endif
-          @endif
-
-          <div class="mt-4">
-            <details class="text-sm">
-              <summary class="cursor-pointer text-blue-700 font-medium hover:text-blue-900">View Raw JSON Response</summary>
-              <pre class="mt-2 p-3 bg-white border rounded overflow-auto text-xs" style="max-height: 400px;">{{ json_encode($apiCustomerDetails, JSON_PRETTY_PRINT) }}</pre>
-            </details>
-          </div>
-        </div>
-        @endif
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-9">
           <div class="">
             <div
