@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::get('/save-shipping-address', [QuoteController::class, 'saveShippingAddress'])->name('saveShippingAddress');
 
     //Order Routes
+    Route::get('/place-order-from-quote/{quote_id}',[QuoteController::class,'placeOrderFromQuote'])->name('place-order-from-quote');
     Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');
 
     Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');

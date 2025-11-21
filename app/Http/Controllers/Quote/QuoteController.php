@@ -195,6 +195,19 @@ class QuoteController extends Controller
         }
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+        
+        // Fetch PaymentTermCode to determine which button to show
+        $paymentTermCode = null;
+        try {
+            $apiUrl = 'GetCustomerDetails/' . $customer_id;
+            $customerDetails = SysproService::getCustomerDetails($apiUrl);
+            if (!empty($customerDetails)) {
+                $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
+            }
+        } catch (\Exception $e) {
+            Log::error('Quote Index - Error fetching customer details for PaymentTermCode: ' . $e->getMessage());
+        }
+        
         if ($request->has('download')) {
             $pdf = Pdf::loadView('quotes.all-quotes-pdf', ['quotes' => $quotes, 'user' => $user, 'userDetail' => $user_detail]);
             return $pdf->download();
@@ -204,11 +217,11 @@ class QuoteController extends Controller
                 'start_date' => $request->start_date ?? '',
                 'end_date' => $request->end_date ?? '',
                 'search' => $request->search_input ?? '',
+                'paymentTermCode' => $paymentTermCode,
             ]);
         }
     }
-
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $customer = getCustomer();
         if (!$customer->hasPermissionTo('getQuotes')) {
@@ -226,7 +239,7 @@ class QuoteController extends Controller
         }
         $total = 0;
         $orderItems = [];
-
+        
         // Extract credit card data from request
         $cardData = null;
         if ($request->has('selected_credit_card') && !empty($request->selected_credit_card)) {
@@ -250,7 +263,6 @@ class QuoteController extends Controller
             Log::info('Quote - No credit card data provided in request');
         }
         
-
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', operator: $user->id)->get();
         if ($cart->isEmpty()) {
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
@@ -260,15 +272,15 @@ class QuoteController extends Controller
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
         Storage::disk('public')->delete($filePath);
         try {
-            if (empty($cart->purchase_order_no)) {
+            if (empty($cart[0]->purchase_order_no)) {
                 $customer_id = getCustomerId();
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'CreateQuote';
                 //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
                 $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, 'QUOTE', 'N', 'Y', $cardData);
-
+              
                 if (!empty($order_syspro['response']['OrderNumber'])) {
-
+                   
                     $cart[0]->update([
                         'purchase_order_no' => $order_syspro['response']['OrderNumber']
                     ]);
@@ -317,22 +329,79 @@ class QuoteController extends Controller
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
                 }
             }
-
+           
             $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-            $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
-            $pdf->render();
-            $pdfContent = $pdf->output();
-            FunHelper::saveGenerateQuotePdf($pdfContent, $user);
-            GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
+            
+            // Check PaymentTermCode - skip PDF generation if it's 'CC'
+            // Also ensure customer_details is in session for PDF generation
+            $paymentTermCode = null;
+            try {
+                $apiUrl = 'GetCustomerDetails/' . $customer_id;
+                $customerDetails = SysproService::getCustomerDetails($apiUrl);
+                if (!empty($customerDetails)) {
+                    $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
+                    
+                    // Store customer details in session if not already there (needed for PDF generation)
+                    if (!session()->has('customer_details')) {
+                        session()->put('customer_details', $customerDetails);
+                    }
+                    
+                    // Ensure customer_address is in session if not already there
+                    if (!session()->has('customer_address') && !empty($customerDetails['ShipToAddresses']) && isset($customerDetails['ShipToAddresses'][0])) {
+                        session()->put('customer_address', $customerDetails['ShipToAddresses'][0]);
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error('Quote - Error fetching customer details for PaymentTermCode: ' . $e->getMessage());
+            }
+            
+            // Only generate PDF if PaymentTermCode is NOT 'CC'
+            if ($paymentTermCode !== 'CC') {
+                // Double-check that customer_details is in session before generating PDF
+                if (!session()->has('customer_details')) {
+                    Log::warning('Quote - customer_details not in session, attempting to fetch again');
+                    try {
+                        $apiUrl = 'GetCustomerDetails/' . $customer_id;
+                        $customerDetails = SysproService::getCustomerDetails($apiUrl);
+                        if (!empty($customerDetails)) {
+                            session()->put('customer_details', $customerDetails);
+                            if (!empty($customerDetails['ShipToAddresses']) && isset($customerDetails['ShipToAddresses'][0])) {
+                                session()->put('customer_address', $customerDetails['ShipToAddresses'][0]);
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('Quote - Failed to fetch customer details for PDF: ' . $e->getMessage());
+                    }
+                }
+                
+                $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
+                $pdf->render();
+                $pdfContent = $pdf->output();
+                FunHelper::saveGenerateQuotePdf($pdfContent, $user);
+                // Dispatch event with PDF included
+                GenerateQuote::dispatch($cart, $user, $user_detail, $price_option, true);
+                session()->put('downloadFile', asset('storage/' . $filePath));
+            } else {
+                // For CC customers, dispatch the quote event but skip PDF attachment
+                GenerateQuote::dispatch($cart, $user, $user_detail, $price_option, false);
+                Log::info('Quote - PDF generation skipped for CC payment term customer', [
+                    'customer_id' => $customer_id,
+                    'payment_term_code' => $paymentTermCode,
+                ]);
+            }
+            
             CartItem::where('cart_id', $cart[0]->id)->delete();
             Cart::where('user_id', $user->id)->delete();
-            session()->put('downloadFile', asset('storage/' . $filePath));
             DB::commit();
             return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Quote creation failed: ' . $e->getMessage());
+            Log::error('Quote creation failed: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
             return redirect()->back()->with('error', 'An error occurred while placing your Quote. Please try again.');
         }
     }
@@ -574,7 +643,7 @@ class QuoteController extends Controller
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
         Storage::disk('public')->delete($filePath);
         try {
-            if (empty($cart->purchase_order_no)) {
+            if (empty($order->purchase_order_no)) {
                 $customer_id = getCustomerId();
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'UpdateQuote';
@@ -652,6 +721,81 @@ class QuoteController extends Controller
             Log::error('Quote creation failed: ' . $e->getMessage());
             //dd($e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while updating your Quote. Please try again.');
+        }
+    }
+
+    /**
+     * Convert quote items to cart and redirect to shipping page
+     */
+    public function placeOrderFromQuote($quote_id)
+    {
+        $user = Auth::user();
+        $quote = Order::with([
+            'OrderItem' => function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
+            },
+            'OrderItem.Product.Media'
+        ])->where('id', $quote_id)->first();
+
+        if (!$quote) {
+            return redirect()->route('quotes')->with('error', 'Quote not found.');
+        }
+
+        // Check if user has permission
+        $customer = getCustomer();
+        if (!$customer->hasPermissionTo('placeOrders')) {
+            return redirect()->route('quotes')->with('error', 'You do not have permission to place orders.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Delete existing cart items for this user
+            $existingCart = Cart::where('user_id', $user->id)->first();
+            if ($existingCart) {
+                CartItem::where('cart_id', $existingCart->id)->delete();
+                $existingCart->delete();
+            }
+
+            // Create a new cart
+            $cart = Cart::create([
+                'user_id' => $user->id,
+                'total_items' => $quote->total_items,
+                'purchase_order_no' => $quote->purchase_order_no ?? null,
+            ]);
+
+            // Convert quote items to cart items
+            $quoteItems = $quote->OrderItem;
+            foreach ($quoteItems as $quoteItem) {
+                CartItem::create([
+                    'cart_id' => $cart->id,
+                    'product_id' => $quoteItem->product_id,
+                    'variation_id' => $quoteItem->variation_id,
+                    'marked_for' => $quoteItem->marked_for,
+                    'msrp' => $quoteItem->msrp,
+                    'sku' => $quoteItem->sku,
+                    'price' => $quoteItem->price,
+                    'discount' => $quoteItem->discount,
+                    'discount_price' => $quoteItem->discount_price,
+                    'quantity' => $quoteItem->quantity,
+                ]);
+            }
+
+            // Store quote ID in session so we know it's from a quote
+            session()->put('quote_id', $quote_id);
+            session()->put('quote_purchase_order_no', $quote->purchase_order_no);
+
+            DB::commit();
+
+            // Redirect to shipping page
+            return redirect()->route('shipping');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error converting quote to cart: ' . $e->getMessage());
+            return redirect()->route('quotes')->with('error', 'An error occurred while processing your order. Please try again.');
         }
     }
 }

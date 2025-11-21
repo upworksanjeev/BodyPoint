@@ -184,21 +184,12 @@ class CheckoutController extends Controller
             $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $order = Order::create([
                 'user_id' => $cart->user_id,
-                'purchase_order_no' => $request->purchase_order_no,
+                'purchase_order_no' => $request->purchase_order_no ?? $cart->purchase_order_no,
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
             ]);
 
-            // Log ALL request data for debugging
-            Log::info('Order - All Request Data:', [
-                'all_request_keys' => array_keys($request->all()),
-                'request_all' => $request->all(),
-                'has_selected_credit_card' => $request->has('selected_credit_card'),
-                'selected_credit_card_value' => $request->input('selected_credit_card'),
-                'selected_credit_card_empty' => empty($request->input('selected_credit_card')),
-            ]);
-            
             // Extract credit card data from request
             $cardData = null;
             if ($request->has('selected_credit_card') && !empty($request->selected_credit_card)) {
@@ -213,20 +204,12 @@ class CheckoutController extends Controller
                         'credit_card_type' => $request->credit_card_type,
                         'credit_card_holder_name' => $request->credit_card_holder_name,
                         'parsed_card_data' => $cardData,
-                        'json_decode_success' => $cardData !== null,
                     ]);
                 } catch (\Exception $e) {
-                    Log::error('Order - Failed to parse credit card data: ' . $e->getMessage(), [
-                        'selected_credit_card_raw' => $request->selected_credit_card,
-                        'exception' => $e->getMessage(),
-                    ]);
+                    Log::error('Order - Failed to parse credit card data: ' . $e->getMessage());
                 }
             } else {
-                Log::warning('Order - No credit card data provided in request', [
-                    'has_selected_credit_card' => $request->has('selected_credit_card'),
-                    'selected_credit_card_value' => $request->input('selected_credit_card'),
-                    'selected_credit_card_empty' => empty($request->input('selected_credit_card')),
-                ]);
+                Log::info('Order - No credit card data provided in request');
             }
 
             Log::info('Order Created:', [
@@ -274,14 +257,44 @@ class CheckoutController extends Controller
             }
             $customer_id = getCustomerId();
             $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-            $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
+            /*$pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
             $pdfContent = $pdf->output();
-            FunHelper::saveOrderPlacedPdf($pdfContent, $order);
+            FunHelper::saveOrderPlacedPdf($pdfContent, $order);*/
+
+            $pdfPath = null;
+            try {
+                $pdf = Pdf::loadView('order-receipt', [
+                    'order'      => $order,
+                    'user'       => $user,
+                    'userDetail' => $user_detail,
+                ]);
+                $pdfContent = $pdf->output();
+
+                // If your helper returns a path, capture it; if not, save manually:
+                try {
+                    // preferred if your helper handles storage
+                    FunHelper::saveOrderPlacedPdf($pdfContent, $order);
+                    Log::info('[PDF] Saved via helper', ['order_id' => $order->id]);
+                } catch (\Throwable $e) {
+                    // manual fallback to storage/app/orders/{id}.pdf
+                    $pdfPath = storage_path('app/orders/'.$order->id.'.pdf');
+                    if (!is_dir(dirname($pdfPath))) {
+                        @mkdir(dirname($pdfPath), 0775, true);
+                    }
+                    file_put_contents($pdfPath, $pdfContent);
+                    Log::info('[PDF] Saved manually', ['order_id' => $order->id, 'path' => $pdfPath]);
+                }
+            } catch (\Throwable $e) {
+                Log::error('[PDF] Generation failed', [
+                    'order_id' => $order->id,
+                    'error'    => $e->getMessage(),
+                ]);
+                
+            }
             OrderPlaced::dispatch($order);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
             DB::commit();
-            $this->clearSelectedCardSession();
             return view('order-thank-you', ['order' => $order]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -392,7 +405,7 @@ class CheckoutController extends Controller
         $pdf->render();
         $pdfContent = $pdf->output();
         FunHelper::saveGenerateQuotePdf($pdfContent, $user);
-        GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
+        GenerateQuote::dispatch($cart, $user, $user_detail, $price_option, true);
         $dompdf = $pdf->getDomPDF();
         $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
         $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0, 0, 0));

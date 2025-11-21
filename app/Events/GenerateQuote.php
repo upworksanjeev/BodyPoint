@@ -17,15 +17,17 @@ class GenerateQuote
     public $user;
     public $user_detail;
     public $price_option;
+    public $include_pdf;
     /**
      * Create a new event instance.
      */
-    public function __construct($cart, $user, $user_detail, $price_option)
+    public function __construct($cart, $user, $user_detail, $price_option, $include_pdf = true)
     {
         $this->cart = $cart;
         $this->user = $user;
         $this->user_detail = $user_detail;
         $this->price_option = $price_option;
+        $this->include_pdf = $include_pdf;
     }
 
     /**

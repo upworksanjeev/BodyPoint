@@ -53,19 +53,19 @@
                         <div
                             class="flex items-baseline md:items-center flex-wrap xl:flex-nowrap mt-4 md:mt-5 gap-4 sm:gap-2">
                             <button type="submit" name="search_quote"
-                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[145px] items-left">Search
+                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-[145px]">Search
                                 Quote</button>
                             <a href="{{ route('quotes') }}"
                                 class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[145px]">Clear
                                 Search</a>
                             <button type="submit" name="download"
-                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[145px]">Download</button>
+                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-[145px]">Download</button>
 
                         </div>
                     </div>
                 </form>
                 <a href="{{ route('sync-account', getCustomerId()) }}"
-                    class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-full sm:w-[145px]">Sync Quotes</a>
+                    class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-full sm:w-[145px]">Sync Quotes</a>
                 <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <div id="accordion-collapse" data-accordion="collapse">
                         @if (!$quotes->isEmpty())
@@ -181,37 +181,54 @@
                                     </table>
                                 </div>
                                 <div class="flex justify-end align-center mt-4 gap-4 flex-wrap">
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only"
-                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">Download
-                                        MSRP</a>
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary"
-                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">Download
-                                        MSRP and Primary Price</a>
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price"
-                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">Download
-                                        All Pricing</a>
+
                                     @php
                                     $customer = getCustomer();
+                                    $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
                                     @endphp
-                                    @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
-                                    <form method="POST" id="form_1{{ $quote->purchase_order_no }}"
-                                        action="{{ route('place-order', $quote->purchase_order_no) }}"
-                                        class="place_order_form w-full sm:w-auto">
-                                        @csrf
-                                        <input type="hidden" name="customer_po_number"
-                                            id="p_o_1{{ $quote->purchase_order_no }}">
-                                        <input type="hidden" name="is_duplicate"
-                                            id="is_duplicate_1{{ $quote->purchase_order_no }}">
-                                        {{ request('customer_po_number') }}
-                                        <button
-                                            onclick="popOpen(event, {{ '1' . $quote->purchase_order_no }})"
-                                            class="place_order_button py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left"
-                                            type="button">Place Order</button>
-                                    </form>
+
+                                    @if(!$isCCCustomer)
+                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only"
+                                        class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-auto">Download MSRP</a>
+                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary"
+                                        class="py-2.5 px-5 text-sm font-medium justify-center w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
+                                        ">Download MSRP and Primary Price</a>
+                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price"
+                                        class="py-2.5 px-5 text-sm font-medium justify-center items-left w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
+                                        ">Download All Pricing</a>
                                     @endif
                                     <a href="{{ route('quote.edit', $quote->id) }}"
-                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center items-left w-full sm:w-auto">
+                                        class="py-2.5 px-5 text-sm font-medium w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
+                                        ">
                                         Edit Quote</a>
+
+                                    
+                                    
+                                    @if($isCCCustomer)
+                                        {{-- CC customers see "Place a Order" button --}}
+                                        <a href="{{ route('place-order-from-quote', $quote->id) }}"
+                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left
+                                        ">Place Order</a>
+                                    @else
+                                        {{-- Non-CC customers see "Place Order" button --}}
+                                        @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
+                                        <form method="POST" id="form_1{{ $quote->purchase_order_no }}"
+                                            action="{{ route('place-order', $quote->purchase_order_no) }}"
+                                            class="place_order_form w-full sm:w-auto">
+                                            @csrf
+                                            <input type="hidden" name="customer_po_number"
+                                                id="p_o_1{{ $quote->purchase_order_no }}">
+                                            <input type="hidden" name="is_duplicate"
+                                                id="is_duplicate_1{{ $quote->purchase_order_no }}">
+                                            {{ request('customer_po_number') }}
+                                            <button
+                                                onclick="popOpen(event, {{ '1' . $quote->purchase_order_no }})"
+                                                class="place_order_button py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left"
+                                                type="button">Place Order</button>
+                                        </form>
+                                        @endif
+                                    @endif
+                                    
 
                                 </div>
                             </div>
