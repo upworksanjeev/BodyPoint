@@ -21,12 +21,14 @@ class GenerateQuote extends Mailable
     public $user;
     public $userDetail;
     public $priceOption;
-    public function __construct($cart, $user, $user_detail, $price_option)
+    public $includePdf;
+    public function __construct($cart, $user, $user_detail, $price_option, $include_pdf = true)
     {
         $this->cart = $cart;
         $this->user = $user;
         $this->userDetail = $user_detail;
         $this->priceOption = $price_option;
+        $this->includePdf = $include_pdf;
     }
     /**
      * Get the message envelope.
@@ -56,7 +58,18 @@ class GenerateQuote extends Mailable
      */
     public function attachments(): array
     {
+        // Only attach PDF if includePdf is true and file exists
+        if (!$this->includePdf) {
+            return [];
+        }
+
         $filePath = storage_path('app/public/quotes/quote-generate' . $this->user->id . '.pdf');
+        
+        // Check if file exists before attaching
+        if (!file_exists($filePath)) {
+            return [];
+        }
+
         return [
             Attachment::fromPath($filePath)
                 ->as('Quote.pdf')

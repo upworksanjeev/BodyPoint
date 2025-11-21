@@ -181,13 +181,19 @@
                                     style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;vertical-align: top;">Address:</span>
                             </td>
                             <td style="padding-top:10px"><span style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
-                                    {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine2'] . ',': '') }}
-                                    {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine1'] . ',': '') }}
-                                    {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine3'] . ',': '') }}
+                                    @php
+                                        $customerDetails = session('customer_details', []);
+                                        $customerAddress = session('customer_address', []);
+                                        $shipToAddresses = data_get($customerDetails, 'ShipToAddresses', []);
+                                        $defaultAddress = !empty($shipToAddresses) && isset($shipToAddresses[0]) ? $shipToAddresses[0] : [];
+                                    @endphp
+                                    {{ !empty($customerAddress['AddressLine2']) ? $customerAddress['AddressLine2'] . ',' : (data_get($defaultAddress, 'AddressLine2') ? data_get($defaultAddress, 'AddressLine2') . ',': '') }}
+                                    {{ !empty($customerAddress['AddressLine1']) ? $customerAddress['AddressLine1'] . ',' : (data_get($defaultAddress, 'AddressLine1') ? data_get($defaultAddress, 'AddressLine1') . ',': '') }}
+                                    {{ !empty($customerAddress['AddressLine3']) ? $customerAddress['AddressLine3'] . ',' : (data_get($defaultAddress, 'AddressLine3') ? data_get($defaultAddress, 'AddressLine3') . ',': '') }}
                                     <br>
-                                    {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ? session('customer_details')['ShipToAddresses'][0]['AddressLine4'] . ',' :'')  }}
-                                    {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }},
-                                    {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
+                                    {{ !empty($customerAddress['AddressLine4']) ? $customerAddress['AddressLine4'] . ',' : (data_get($defaultAddress, 'AddressLine4') ? data_get($defaultAddress, 'AddressLine4') . ',' :'')  }}
+                                    {{ $customerAddress['PostalCode'] ?? data_get($defaultAddress, 'PostalCode') }},
+                                    {{ $customerAddress['AddressLine5'] ?? data_get($defaultAddress, 'AddressLine5') }}
                                 </span></td>
                         </tr>
                         <tr>

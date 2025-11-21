@@ -95,7 +95,21 @@
   </td>
   <td class="w-4 p-4" colspan="6">
     <div class="flex items-center justify-end gap-2">
-      <a href="{{ route('shipping') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+      @php
+                      // Check PaymentTermCode from session
+                      $customerDetails = session('customer_details', []);
+                      $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
+                      $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
+                    @endphp
+                    
+                    @if($isCCCustomer)
+                      {{-- CC customers see "Save a Quote" button --}}
+                      <a href="{{ route('quote') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                    @else
+                      {{-- Non-CC customers see "Save Quote" button --}}
+                      <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                    @endif
+      
       <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
     </div>
   </td>

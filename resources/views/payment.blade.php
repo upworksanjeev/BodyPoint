@@ -70,7 +70,7 @@
 
                 @php
                   // Check if we should show credit cards based on PaymentTermCode
-                  $shouldShowCreditCards = isset($shouldShowCreditCards) && $shouldShowCreditCards === true;
+                  $shouldShowCreditCards = isset($shouldShowCreditCards) ? $shouldShowCreditCards : false;
                   $paymentTermIsCC = isset($paymentTermCode) && $paymentTermCode === 'CC';
                   $showCards = $shouldShowCreditCards || $paymentTermIsCC;
                   
