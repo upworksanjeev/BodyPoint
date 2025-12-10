@@ -215,8 +215,7 @@ class CartController extends Controller
         $products = Product::where(function ($query) use ($keys) {
             $query->where('sku', 'LIKE', "%{$keys}%")
                 ->orWhere('name', 'LIKE', "%{$keys}%");
-        })
-            ->whereNotIn('id', [368, 369, 370, 371, 372, 373, 374, 375, 376, 377])
+        })->whereNotIn('id', [368, 369, 370, 371, 372, 373, 374, 375, 376, 377])
             ->withoutTrashed()
             ->get();
 
@@ -393,7 +392,7 @@ class CartController extends Controller
                 $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
             } else {
                 if ($product['discount'] != '' && $product['discount'] > 0) {
-                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 3);
                     $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
                 } else {
                     $product['discount_price'] = $product['price'];
@@ -462,7 +461,7 @@ class CartController extends Controller
                 $cartitems->update(['quantity' => $cartitems->quantity + $request->qty]);
             } else {
                 if ($product['discount'] != '' && $product['discount'] > 0) {
-                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 2);
+                    $product['discount_in_price'] = round(($product['price'] * $product['discount']) / 100, 3);
                     $product['discount_price'] = ($product['price'] - $product['discount_in_price']);
                 } else {
                     $product['discount_price'] = $product['price'];

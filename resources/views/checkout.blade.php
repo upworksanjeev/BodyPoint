@@ -61,7 +61,11 @@
     form="confirm-order-form"
     :cart="$cart"
     action="{{ route('confirm-order') }}"
-    />
+    :selectedCardJson="$selectedCard['json'] ?? ''"
+    :selectedCardLastFour="$selectedCard['last_four'] ?? ''"
+    :selectedCardExpiry="$selectedCard['expiry'] ?? ''"
+    :selectedCardType="$selectedCard['type'] ?? ''"
+    :selectedCardHolderName="$selectedCard['holder_name'] ?? ''"/>
 
     @push('other-scripts')
     <script>
@@ -100,11 +104,36 @@
                     'background-color': 'rgb(0 0 0 / 56%)'
                 });
         }
+        // Function to retrieve and add credit card last 4 digits to form
+        function addCreditCardToForm(formId) {
+            const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
+            if (selectedCard) {
+                try {
+                    const cardData = JSON.parse(selectedCard);
+                    const form = $('#' + formId);
+                    
+                    // Only send last 4 digits - add as credit_card_last_four for backend extraction
+                    if (cardData.CreditCardLastFourDigit) {
+                        if (!form.find('input[name="credit_card_last_four"]').length) {
+                            form.append('<input type="hidden" name="credit_card_last_four" value="" />');
+                        }
+                        form.find('input[name="credit_card_last_four"]').val(cardData.CreditCardLastFourDigit);
+                        
+                        // Also keep selected_credit_card for backward compatibility
+                        form.find('#form_credit_card_data').val(selectedCard);
+                    }
+                } catch (e) {
+                    console.error('Error parsing credit card data:', e);
+                }
+            }
+        }
+
         $(document).on('click', '#confirm-order', function(event) {
             event.preventDefault();
             const po_number = $('#customer-po-number').val();
             $('#confirm-order').prop('disabled', true);
             if (po_number !== "" && po_number !== null) {
+                addCreditCardToForm('confirm-order-form');
                 $('#confirm-order-form').submit();
                 $("#fullLoader").css("display", "flex");
             }else{
@@ -137,6 +166,7 @@
                     '</div>' +
                 '</div>');
                 $('#po-number-modal').hide();
+                addCreditCardToForm('confirm-order-form');
                 $('#confirm-order-form').submit();
                 $("#fullLoader").css("display", "flex");
             }

@@ -33,7 +33,7 @@ class OrderItem extends Resource
                 return $value ?: 'EA';
             }),
             Text::make('Total', function () {
-                return number_format($this->discount_price * $this->quantity,2,'.',',');
+                return number_format($this->discount_price * $this->quantity, 2, '.', ',');
             })->readonly(),
         ];
     }

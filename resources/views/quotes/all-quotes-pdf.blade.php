@@ -326,7 +326,7 @@
                                     EA
                                 </td>
                                 @php
-                                $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0;
+                                $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 3, '.', ',') : 0;
                                 @endphp
                                 <td
                                     style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">

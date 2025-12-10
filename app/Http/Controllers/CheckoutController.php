@@ -49,8 +49,58 @@ class CheckoutController extends Controller
         $user = Auth::user();
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
 
+        // Fetch customer details from the specified API endpoint
+        $customer_id = getCustomerId(); 
+        $apiUrl = 'GetCustomerDetails/' . $customer_id;
+        $apiCustomerDetails = null;
+        $apiError = null;
+        $creditCardDetails = [];
+        $paymentTermCode = null;
+        $shouldShowCreditCards = false;
+        
+        try {
+            // SysproService::getCustomerDetails returns an array, not a response object
+            $customerDetails = SysproService::getCustomerDetails($apiUrl);
+            
+            if (!empty($customerDetails)) {
+                $apiCustomerDetails = $customerDetails;
+                $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
+                $shouldShowCreditCards = $paymentTermCode === 'CC';
+
+                if ($shouldShowCreditCards) {
+                    // Extract CreditCardDetails from the customer details array
+                    // The structure returned by getCustomerDetails is the Customer object directly
+                    if (isset($customerDetails['CreditCardDetails'])) {
+                        $creditCardDetails = $customerDetails['CreditCardDetails'];
+                    } elseif (isset($customerDetails['Customer']['CreditCardDetails'])) {
+                        $creditCardDetails = $customerDetails['Customer']['CreditCardDetails'];
+                    }
+                } else {
+                    $this->clearSelectedCardSession();
+                    Log::info('Payment - Customer payment term is not CC; skipping credit card details.', [
+                        'customer_id' => $customer_id,
+                        'payment_term_code' => $paymentTermCode,
+                    ]);
+                    $creditCardDetails = [];
+                }
+            } else {
+                $apiError = 'No customer details found or API request failed.';
+            }
+        } catch (\Exception $e) {
+            $apiError = 'Error fetching customer details: ' . $e->getMessage();
+            Log::error('Payment - Error fetching customer details:', [
+                'error' => $e->getMessage(),
+                'customer_id' => $customer_id,
+                'apiUrl' => $apiUrl,
+            ]);
+        }
         return view('payment', array(
             'cart' => $cart,
+            'apiCustomerDetails' => $apiCustomerDetails,
+            'apiError' => $apiError,
+            'creditCardDetails' => $creditCardDetails,
+            'paymentTermCode' => $paymentTermCode,
+            'shouldShowCreditCards' => $shouldShowCreditCards,
         ));
     }
 
@@ -71,6 +121,7 @@ class CheckoutController extends Controller
                 'user' => $user,
                 'user_detail' => $user_detail,
                 'purchase_order_no' => $purchase_order_no,
+                'selectedCard' => $this->getSelectedCardFromSession(),
             ));
         }
         return redirect()->route('cart');
@@ -89,6 +140,7 @@ class CheckoutController extends Controller
             'cart' => $cart,
             'user' => $user,
             'user_detail' => $user_detail,
+            'selectedCard' => $this->getSelectedCardFromSession(),
         ));
     }
 
@@ -132,11 +184,33 @@ class CheckoutController extends Controller
             $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $order = Order::create([
                 'user_id' => $cart->user_id,
-                'purchase_order_no' => $request->purchase_order_no,
+                'purchase_order_no' => $request->purchase_order_no ?? $cart->purchase_order_no,
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
             ]);
+
+            // Extract credit card data from request
+            $cardData = null;
+            if ($request->has('selected_credit_card') && !empty($request->selected_credit_card)) {
+                try {
+                    $cardData = json_decode($request->selected_credit_card, true);
+                    
+                    // Log credit card data received
+                    Log::info('Order - Credit Card Data Received:', [
+                        'selected_credit_card' => $request->selected_credit_card,
+                        'credit_card_last_four' => $request->credit_card_last_four,
+                        'credit_card_expiry' => $request->credit_card_expiry,
+                        'credit_card_type' => $request->credit_card_type,
+                        'credit_card_holder_name' => $request->credit_card_holder_name,
+                        'parsed_card_data' => $cardData,
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Order - Failed to parse credit card data: ' . $e->getMessage());
+                }
+            } else {
+                Log::info('Order - No credit card data provided in request');
+            }
 
             Log::info('Order Created:', [
                 'order_id' => $order->id,
@@ -145,6 +219,7 @@ class CheckoutController extends Controller
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
+                'has_credit_card' => !empty($cardData),
             ]);
             $cartitems = CartItem::where('cart_id', $cart->id)->get();
             foreach ($cartitems as $cartItem) {
@@ -163,7 +238,7 @@ class CheckoutController extends Controller
                 $total += $cartItem->discount_price * $cartItem->quantity;
             }
             $url = 'CreateQuote';
-            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate);
+            $order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number, 'Y', $isDuplicate, $cardData);
 
             if (!empty($order_syspro['response']['OrderNumber'])) {
                 $order->update([
@@ -330,7 +405,7 @@ class CheckoutController extends Controller
         $pdf->render();
         $pdfContent = $pdf->output();
         FunHelper::saveGenerateQuotePdf($pdfContent, $user);
-        GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
+        GenerateQuote::dispatch($cart, $user, $user_detail, $price_option, true);
         $dompdf = $pdf->getDomPDF();
         $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
         $dompdf->get_canvas()->page_text(34, 18, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0, 0, 0));
@@ -359,5 +434,59 @@ class CheckoutController extends Controller
         if ($request->has('cart_id')) {
             Cart::where('id', $request->cart_id)->update(['purchase_order_no' => $request->purchase_order_no]);
         }
+    }
+
+    public function storeSelectedCard(Request $request)
+    {
+        $cardJson = $request->input('selected_credit_card');
+
+        if ($cardJson) {
+            $cardData = null;
+            try {
+                $cardData = json_decode($cardJson, true);
+            } catch (\Throwable $e) {
+                Log::warning('Payment - Failed to decode selected credit card JSON', [
+                    'error' => $e->getMessage(),
+                    'selected_credit_card' => $cardJson,
+                ]);
+            }
+
+            session([
+                'selected_credit_card' => $cardJson,
+                'selected_credit_card_last_four' => $request->input('credit_card_last_four'),
+                'selected_credit_card_expiry' => $request->input('credit_card_expiry'),
+                'selected_credit_card_type' => $request->input('credit_card_type'),
+                'selected_credit_card_holder_name' => $request->input('credit_card_holder_name'),
+                'selected_credit_card_decoded' => $cardData,
+            ]);
+        } else {
+            $this->clearSelectedCardSession();
+        }
+
+        return redirect()->route('checkout');
+    }
+
+    protected function getSelectedCardFromSession(): array
+    {
+        return [
+            'json' => session('selected_credit_card'),
+            'last_four' => session('selected_credit_card_last_four'),
+            'expiry' => session('selected_credit_card_expiry'),
+            'type' => session('selected_credit_card_type'),
+            'holder_name' => session('selected_credit_card_holder_name'),
+            'decoded' => session('selected_credit_card_decoded'),
+        ];
+    }
+
+    protected function clearSelectedCardSession(): void
+    {
+        session()->forget([
+            'selected_credit_card',
+            'selected_credit_card_last_four',
+            'selected_credit_card_expiry',
+            'selected_credit_card_type',
+            'selected_credit_card_holder_name',
+            'selected_credit_card_decoded',
+        ]);
     }
 }

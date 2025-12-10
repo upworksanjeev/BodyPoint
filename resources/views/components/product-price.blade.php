@@ -117,8 +117,6 @@ return in_array($productId, $allowedProducts);
     @endif
 
 
-
-
 </div>
 @else
 <div class="product-promo-box">

@@ -32,31 +32,39 @@
                         <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                                 <div class="flex items-center ps-3">
-                                    <input id="all_price" type="radio" value="all_price" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2" selected>
+                                    <input id="all_price" type="radio" value="all_price" name="price_option" class="quote-price-option w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2" checked>
                                     <label for="all_price" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">All Price</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                                 <div class="flex items-center ps-3">
-                                    <input id="msrp_primary" type="radio" value="msrp_primary" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <input id="msrp_primary" type="radio" value="msrp_primary" name="price_option" class="quote-price-option w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="msrp_primary" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">MSRP and Primary</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                                 <div class="flex items-center ps-3">
-                                    <input id="msrp_only" type="radio" value="msrp_only" name="price_option" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                                    <input id="msrp_only" type="radio" value="msrp_only" name="price_option" class="quote-price-option w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                     <label for="msrp_only" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">MSRP Only</label>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body p-6 border-t quote-buttons">
-                        <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                            <input type="hidden" value="<?= csrf_token() ?>" name="_token">
-                            <button id="generate-quote" type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
+                    <form id="generate-quote-form" action="{{ route('generateQuote') }}" method="post">
+                        <input type="hidden" value="<?= csrf_token() ?>" name="_token">
+                        <input type="hidden" name="selected_credit_card" id="quote_credit_card_data" value="{{ $selectedCard['json'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_last_four" id="quote_credit_card_last_four" value="{{ $selectedCard['last_four'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_expiry" id="quote_credit_card_expiry" value="{{ $selectedCard['expiry'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_type" id="quote_credit_card_type" value="{{ $selectedCard['type'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_holder_name" id="quote_credit_card_holder_name" value="{{ $selectedCard['holder_name'] ?? '' }}" />
+                        <input type="hidden" name="price_option" id="quote_price_option" value="all_price" />
+                        <div class="card-body p-6 border-t quote-buttons">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
+                                <button id="generate-quote" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -69,7 +77,12 @@
     id="po-number-modal-quote"
     class="close-po-number-modal-quote"
     form="generate-quote-form"
-    action="{{ route('generateQuote') }}"/>
+    action="{{ route('generateQuote') }}"
+    :selectedCardJson="$selectedCard['json'] ?? ''"
+    :selectedCardLastFour="$selectedCard['last_four'] ?? ''"
+    :selectedCardExpiry="$selectedCard['expiry'] ?? ''"
+    :selectedCardType="$selectedCard['type'] ?? ''"
+    :selectedCardHolderName="$selectedCard['holder_name'] ?? ''"/>
 
     @push('other-scripts')
     <script>
@@ -77,10 +90,24 @@
             window.print();
         }
 
+        // Function to retrieve and add credit card last 4 digits to quote form
+        function syncQuotePriceOption() {
+            const selectedPriceOption = $('.quote-price-option:checked').val();
+            if (selectedPriceOption) {
+                $('#quote_price_option').val(selectedPriceOption);
+            }
+        }
+
+        syncQuotePriceOption();
+
+        $(document).on('change', '.quote-price-option', function() {
+            syncQuotePriceOption();
+        });
+
         $(document).on('click', '#generate-quote', function(event) {
             event.preventDefault();
-            const po_number = $('#customer-po-number-quote').val();
-             $('#generate-quote-form').submit();
+            syncQuotePriceOption();
+            $('#generate-quote-form').submit();
             // if (po_number !== "" && po_number !== null) {
             //     $('#generate-quote-form').submit();
             // }else{
@@ -108,6 +135,7 @@
                     '</div>' +
                 '</div>');
                 $('#po-number-modal-quote').hide();
+                syncQuotePriceOption();
             }
         });
 

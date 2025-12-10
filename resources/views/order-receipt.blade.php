@@ -312,7 +312,7 @@
 
                             <td
                                 style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
+                                ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 3, '.', ',') : 0 }}
                             </td>
 
                             <td
