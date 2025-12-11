@@ -187,7 +187,7 @@
                                     $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
                                     @endphp
 
-                                    @if(!$isCCCustomer)
+                                    
                                     <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only"
                                         class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-auto">Download MSRP</a>
                                     <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary"
@@ -196,7 +196,7 @@
                                     <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price"
                                         class="py-2.5 px-5 text-sm font-medium justify-center items-left w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
                                         ">Download All Pricing</a>
-                                    @endif
+                                    
                                     <a href="{{ route('quote.edit', $quote->id) }}"
                                         class="py-2.5 px-5 text-sm font-medium w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
                                         ">
