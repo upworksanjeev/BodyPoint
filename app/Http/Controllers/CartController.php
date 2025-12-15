@@ -368,6 +368,8 @@ class CartController extends Controller
                     if (!$isStockItem) {
                         return response()->json(['success' => false, 'message' => 'Non-Stock Item Cannot be Added To Cart']);
                     }
+                } else { 
+                    return response()->json(['success' => false, 'message' => 'Non-Stock Item Cannot be Added To Cart']); 
                 }
             }
             if ($cart) {

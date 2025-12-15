@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Query\Search\SearchableRelation;
 
 class Order extends Resource
 {
@@ -25,8 +26,14 @@ class Order extends Resource
      * @var array
      */
     public static $search = [
-        'id'
+        'id',
+        'purchase_order_no',
+        'customer_po_number',
     ];
+    public static function searchableColumns()
+    {
+        return ['id','purchase_order_no', 'customer_po_number', new SearchableRelation('customer', 'name')];
+    }
     public static $with = ['user', 'customer'];
     public static $clickAction = 'view';
     public static function indexQuery(NovaRequest $request, $query)
