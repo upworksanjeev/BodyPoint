@@ -272,9 +272,7 @@
 
                 <div
                     style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 20px;">
-                    All orders placed will ship within 5 business days. Freight cost is calculated at time of
-                    shipping. For expedited shipping options please contact customer service at
-                    Sales@bodypoint.com or 206.405.4555.</div>
+                    All orders ship within 5 business days after your order is processed. Freight charges are calculated when your order ships. For expedited shipping options, please contact Customer Support at Sales@bodypoint.com or 206.405.4555.</div>
 
             </div>
             <div style="padding: 24px;">
