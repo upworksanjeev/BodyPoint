@@ -272,9 +272,7 @@
 
                 <div
                     style="line-height: 19px; color: #6b7280; font-size: 13px; font-weight: 400; margin-top: 20px;">
-                    All orders placed will ship within 5 business days. Freight cost is calculated at time of
-                    shipping. For expedited shipping options please contact customer service at
-                    Sales@bodypoint.com or 206.405.4555.</div>
+                    All orders ship within 5 business days after your order is processed. Freight charges are calculated when your order ships. For expedited shipping options, please contact Customer Support at Sales@bodypoint.com or 206.405.4555.</div>
 
             </div>
             <div style="padding: 24px;">
@@ -313,45 +311,100 @@
                             <?php $subtotal = 0;
                             $tax = 0.0; ?>
                             @if (isset($order))
-                            @foreach ($order['OrderItem'] as $cartitem)
-                            <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
-
-                                <td
-                                    style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                    {{ $cartitem['Product']['name'] ?? '' }}
-                                </td>
-                                <td
-                                    style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                    {{ $cartitem['sku'] ?? '' }}
-                                </td>
-
-                                <td
-                                    style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                    ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
-                                </td>
-
-                                <td
-                                    style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                    {{ $cartitem['quantity'] ?? '' }}
-                                </td>
-                                <td
-                                    style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                    EA
-                                </td>
-                                @php
-
-                                $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0;
-                                @endphp
-                                <td
-                                    style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
-                                    ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
-                                </td>
-                                @php
-                                $subtotal += $discount_price * $cartitem->quantity;
-                                @endphp
-
-                            </tr>
-                            @endforeach
+                            @php
+                                // Find processed items for this order if available
+                                $currentOrderProcessedItems = null;
+                                if (isset($ordersWithComments)) {
+                                    foreach ($ordersWithComments as $orderWithComments) {
+                                        if ($orderWithComments['order']->id == $order->id) {
+                                            $currentOrderProcessedItems = $orderWithComments['processedItems'];
+                                            break;
+                                        }
+                                    }
+                                }
+                            @endphp
+                            @if ($currentOrderProcessedItems && !empty($currentOrderProcessedItems))
+                                @foreach ($currentOrderProcessedItems as $processedItem)
+                                    @php
+                                        $cartitem = $processedItem['orderItem'];
+                                        $comment = $processedItem['comment'] ?? null;
+                                    @endphp
+                                    <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+                                        <td
+                                            style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                            {{ $cartitem['Product']['name'] ?? '' }}
+                                        </td>
+                                        <td
+                                            style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                            {{ $cartitem['sku'] ?? '' }}
+                                        </td>
+                                        <td
+                                            style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                            ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
+                                        </td>
+                                        <td
+                                            style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                            {{ $cartitem['quantity'] ?? '' }}
+                                        </td>
+                                        <td
+                                            style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                            EA
+                                        </td>
+                                        @php
+                                        $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0;
+                                        @endphp
+                                        <td
+                                            style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
+                                            ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                        </td>
+                                        @php
+                                        $subtotal += $discount_price * $cartitem->quantity;
+                                        @endphp
+                                    </tr>
+                                    @if ($comment)
+                                    <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%); background-color: #f9f9f9;">
+                                        <td colspan="6" style="padding: 8px 12px; font-size: 13px; font-style: italic; color: #666;">
+                                            {{ $comment }}
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            @else
+                                @foreach ($order['OrderItem'] as $cartitem)
+                                <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+                                    <td
+                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem['Product']['name'] ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem['sku'] ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0 }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem['quantity'] ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        EA
+                                    </td>
+                                    @php
+                                    $discount_price = $cartitem['discount_price'] ? number_format($cartitem['discount_price'], 2, '.', ',') : 0;
+                                    @endphp
+                                    <td
+                                        style="padding: 12px; font-size: 14px; font-weight: 400; color: #000;">
+                                        ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                    </td>
+                                    @php
+                                    $subtotal += $discount_price * $cartitem->quantity;
+                                    @endphp
+                                </tr>
+                                @endforeach
+                            @endif
                             @endif
                         </tbody>
                     </table>

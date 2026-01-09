@@ -750,6 +750,12 @@ class QuoteController extends Controller
             return redirect()->route('quotes')->with('error', 'You do not have permission to place orders.');
         }
 
+        // Check if customer is CC customer - for CC customers, don't pre-populate PO number
+        // so they are prompted to enter their customer PO number on checkout page
+        $customerDetails = session('customer_details', []);
+        $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
+        $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
+
         try {
             DB::beginTransaction();
 
@@ -761,10 +767,12 @@ class QuoteController extends Controller
             }
 
             // Create a new cart
+            // For CC customers, set purchase_order_no to null so they are prompted to enter
+            // their customer PO number on the checkout page (like normal orders)
             $cart = Cart::create([
                 'user_id' => $user->id,
                 'total_items' => $quote->total_items,
-                'purchase_order_no' => $quote->purchase_order_no ?? null,
+                'purchase_order_no' => $isCCCustomer ? null : ($quote->purchase_order_no ?? null),
             ]);
 
             // Convert quote items to cart items

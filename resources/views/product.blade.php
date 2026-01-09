@@ -1,29 +1,53 @@
 @php
 function getYouTubeEmbedUrl($url) {
-$parsedUrl = parse_url($url);
-
-if (!isset($parsedUrl['host']) || strpos($parsedUrl['host'], 'youtube.com') === false) {
-return ''; // Not a YouTube URL
+    if (empty($url)) {
+        return '';
+    }
+    
+    $parsedUrl = parse_url($url);
+    
+    // Handle youtu.be URLs
+    if (isset($parsedUrl['host']) && $parsedUrl['host'] === 'youtu.be') {
+        $videoId = ltrim($parsedUrl['path'], '/');
+        if (!empty($videoId)) {
+            return "https://www.youtube.com/embed/" . htmlspecialchars($videoId, ENT_QUOTES, 'UTF-8');
+        }
+    }
+    
+    // Handle youtube.com URLs
+    if (isset($parsedUrl['host']) && (
+        strpos($parsedUrl['host'], 'youtube.com') !== false || 
+        strpos($parsedUrl['host'], 'm.youtube.com') !== false
+    )) {
+        // Check if it's already an embed URL
+        if (strpos($parsedUrl['path'], '/embed/') !== false) {
+            return $url; // Already an embed URL
+        }
+        
+        // Extract video ID from query parameters
+        parse_str($parsedUrl['query'] ?? '', $queryParams);
+        
+        if (isset($queryParams['v'])) {
+            $videoId = $queryParams['v'];
+            $listId = $queryParams['list'] ?? null;
+            
+            $embedUrl = "https://www.youtube.com/embed/" . htmlspecialchars($videoId, ENT_QUOTES, 'UTF-8');
+            
+            if ($listId) {
+                $embedUrl .= "?list=" . htmlspecialchars($listId, ENT_QUOTES, 'UTF-8');
+            }
+            
+            return $embedUrl;
+        }
+    }
+    
+    // If it's already a valid embed URL, return it
+    if (strpos($url, 'youtube.com/embed/') !== false) {
+        return $url;
+    }
+    
+    return ''; // Not a recognized YouTube URL
 }
-
-parse_str($parsedUrl['query'] ?? '', $queryParams);
-
-if (!isset($queryParams['v'])) {
-return ''; // No video ID found
-}
-
-$videoId = $queryParams['v'];
-$listId = $queryParams['list'] ?? null;
-
-$embedUrl = "https://www.youtube.com/embed/" . htmlspecialchars($videoId, ENT_QUOTES, 'UTF-8');
-
-if ($listId) {
-$embedUrl .= "?list=" . htmlspecialchars($listId, ENT_QUOTES, 'UTF-8');
-}
-
-return $embedUrl;
-}
-
 @endphp
 
 <x-mainpage-layout>
@@ -44,7 +68,7 @@ return $embedUrl;
                             <div class="product-images-box">
                                 <div class="slider slider-for">
                                     @foreach ($sortedMedia as $media)<div>
-                                        <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}" alt="{{ $product['name'] ?? '' }}">
+                                        <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']) }}" alt="{{ $product['name'] ?? '' }}">
                                     </div>
                                     @endforeach
                                 </div>
@@ -53,7 +77,7 @@ return $embedUrl;
                                     @foreach ($sortedMedia as $media)
                                     <div>
                                         <a href="#" data-id="{{ $k }}">
-                                            <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']); }}">
+                                            <img src="{{ url('storage/' . $media['id'] . '/' . $media['file_name']) }}">
                                         </a>
                                     </div>
                                     <?php $k++; ?>
@@ -113,12 +137,12 @@ return $embedUrl;
                                 </div>
                             </form>
                             <div class="detactor">
-                                <div class="detactor-left">
+                                {{--<div class="detactor-left">
                                     @if($showFindPartnerButton ?? false)
                                     <p class="text-[#000] flex items-center gap-[10px]"><i class="fas fa-map-marker-alt text-[20px]"></i> <span class="btn text-[18px]"><a href="{{$partnerPageURl}}" target="_blank"><button class="bg-[#FE7300] rounded-lg text-white text-base font-medium min-w-[180px] p-4 lg:block hidden">Find a Partner </button></a></span></p>
                                     @endif
 
-                                </div>
+                                </div> --}}
                                 <div class="detactor-right">
                                     {{-- <button class="bg-[#373B3C] rounded-[3px] py-[8px] px-[30px] text-[#fff] border border-[#373B3C] mr-[8px]">Save</button> --}}
                                     <button onclick="window.print()" class="border border-[#373B3C] text-[#373B3C] py-[8px] px-[30px]">Print</button>

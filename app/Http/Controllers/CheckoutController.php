@@ -261,12 +261,16 @@ class CheckoutController extends Controller
             $pdfContent = $pdf->output();
             FunHelper::saveOrderPlacedPdf($pdfContent, $order);*/
 
+            // Process order lines with comments from API response
+            $processedItems = $this->processOrderLinesWithComments($order, $response ?? null);
+            
             $pdfPath = null;
             try {
                 $pdf = Pdf::loadView('order-receipt', [
                     'order'      => $order,
                     'user'       => $user,
                     'userDetail' => $user_detail,
+                    'processedItems' => $processedItems,
                 ]);
                 $pdfContent = $pdf->output();
 
@@ -295,7 +299,14 @@ class CheckoutController extends Controller
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
             DB::commit();
-            return view('order-thank-you', ['order' => $order]);
+            
+            // Process order lines with comments for thank you page
+            $processedItems = $this->processOrderLinesWithComments($order, $response ?? null);
+            
+            return view('order-thank-you', [
+                'order' => $order,
+                'processedItems' => $processedItems
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Order creation failed: ' . $e->getMessage());
@@ -375,7 +386,31 @@ class CheckoutController extends Controller
         $order = $query->orderBy('created_at', 'desc')->paginate(10);
         $user_detail = UserDetails::where('user_id', $user->id)->first();
         if ($request->has('download')) {
-            $pdf = Pdf::loadView('all-order-receipt', ['orders' => $order, 'user' => $user, 'userDetail' => $user_detail]);
+            // Process each order with comments
+            $ordersWithComments = [];
+            foreach ($order as $ord) {
+                $ord = Order::with('User', 'OrderItem.Product.Media')->where('id', $ord->id)->first();
+                $apiResponse = null;
+                if ($ord->purchase_order_no) {
+                    try {
+                        $url = 'GetOrderDetails/' . $ord->purchase_order_no;
+                        $apiResponse = SysproService::getOrderDetails($url);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to fetch order details for all-order-receipt: ' . $e->getMessage());
+                    }
+                }
+                $processedItems = $this->processOrderLinesWithComments($ord, $apiResponse);
+                $ordersWithComments[] = [
+                    'order' => $ord,
+                    'processedItems' => $processedItems
+                ];
+            }
+            $pdf = Pdf::loadView('all-order-receipt', [
+                'orders' => $order, 
+                'user' => $user, 
+                'userDetail' => $user_detail,
+                'ordersWithComments' => $ordersWithComments
+            ]);
             return $pdf->download();
         } else {
             return view('order', array(
@@ -413,6 +448,65 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Process order lines from API response to combine products with comments
+     */
+    private function processOrderLinesWithComments($order, $apiResponse = null)
+    {
+        $orderItems = $order->OrderItem;
+        $processedItems = [];
+        
+        // If API response is provided, use it to get comments
+        if ($apiResponse && isset($apiResponse['response']['Line'])) {
+            $lines = $apiResponse['response']['Line'];
+            
+            // Create a map of comments by SKU from API response
+            // Process lines sequentially - product followed by its comment
+            $commentsBySku = [];
+            $i = 0;
+            while ($i < count($lines)) {
+                $line = $lines[$i];
+                $lineType = isset($line['LineType']) ? (string)$line['LineType'] : '';
+                
+                // If it's a product line (LineType = "1")
+                if ($lineType === '1' && !empty($line['StockCode'])) {
+                    $sku = $line['StockCode'];
+                    
+                    // Check if next line is a comment for this product
+                    if ($i + 1 < count($lines)) {
+                        $nextLine = $lines[$i + 1];
+                        $nextLineType = isset($nextLine['LineType']) ? (string)$nextLine['LineType'] : '';
+                        
+                        if ($nextLineType === '6' && !empty($nextLine['CommentLine'])) {
+                            $commentsBySku[$sku] = $nextLine['CommentLine'];
+                            $i++; // Skip the comment line as we've processed it
+                        }
+                    }
+                }
+                
+                $i++;
+            }
+            
+            // Now process order items and attach comments
+            foreach ($orderItems as $item) {
+                $processedItems[] = [
+                    'orderItem' => $item,
+                    'comment' => $commentsBySku[$item->sku] ?? null
+                ];
+            }
+        } else {
+            // Fallback: if no API response, just use order items without comments
+            foreach ($orderItems as $item) {
+                $processedItems[] = [
+                    'orderItem' => $item,
+                    'comment' => null
+                ];
+            }
+        }
+        
+        return $processedItems;
+    }
+
+    /**
      *  receipt download for orders
      */
     public function receiptDownload(Request $request)
@@ -422,7 +516,26 @@ class CheckoutController extends Controller
         $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $request->order_id)->first();
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-        $pdf = Pdf::loadView('order-receipt', ['order' => $order, 'user' => $user, 'userDetail' => $user_detail]);
+        
+        // Fetch API response to get comments
+        $apiResponse = null;
+        if ($order->purchase_order_no) {
+            try {
+                $url = 'GetOrderDetails/' . $order->purchase_order_no;
+                $apiResponse = SysproService::getOrderDetails($url);
+            } catch (\Exception $e) {
+                Log::error('Failed to fetch order details for receipt: ' . $e->getMessage());
+            }
+        }
+        
+        $processedItems = $this->processOrderLinesWithComments($order, $apiResponse);
+        
+        $pdf = Pdf::loadView('order-receipt', [
+            'order' => $order, 
+            'user' => $user, 
+            'userDetail' => $user_detail,
+            'processedItems' => $processedItems
+        ]);
         return $pdf->download();
     }
 

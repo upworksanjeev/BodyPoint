@@ -74,7 +74,15 @@
         //          currentImg.attr('src', currentImg.attr('data-original-src'));
         //      }
         //  });
-        
+        function hideUnWantedAttr(){
+            setTimeout(function(){
+                if ($("#button_0_1454").hasClass('attribute_buttons_active')) {
+                    $('#button_2_1462').hide();  
+                } else{
+                    $('#button_2_1462').show();                }
+
+            },20);
+        }
          function changeAttribute(product_att_id, product_id, index, k,attr_count = 0, el = null) {
 
              const imgElement = el.querySelector('.five-g-img img');
@@ -158,9 +166,10 @@
                                  '<div class="out-off-stock"><h1>Price of this product is not available. Please contact support.</h1></div>'
                              );
                          }
+                        hideUnWantedAttr(); 
                      },
                      error: function(xhr) {
-
+                        hideUnWantedAttr();
                      }
                  });
              } else {
@@ -183,9 +192,10 @@
                              $('#product_att_' + i).html('');
                          }
                          $('#product_att_' + j).html(response);
+                        hideUnWantedAttr(); 
                      },
                      error: function(xhr) {
-
+                        hideUnWantedAttr();
                      }
                  });
              }

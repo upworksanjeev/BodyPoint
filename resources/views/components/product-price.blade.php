@@ -92,9 +92,9 @@ return in_array($productId, $allowedProducts);
     <div class="right-price">
         <div class="text-set">
             @if($customer->hasPermissionTo('viewMsrp'))
-            <p class="text-[14px] text-[#6A6D73]">@if (isset($product['msrp'])) ${{ number_format($product['msrp'], 2, '.', ',') }} EA @endif</p>
+            <p class="text-[14px] text-[#6A6D73]">@if (isset($product['msrp'])) ${{ number_format($product['msrp'], 2, '.', ',') }} {{ strpos($productSku, 'FT240') !== false ? 'PR' : 'EA' }} @endif</p>
             @endif
-            <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['discount_price'])) ${{ number_format($product['discount_price'], 2, '.', ',')  }} EA @endif</h6>
+            <h6 class="text-[16px] text-[#000] font-[500]">@if (isset($product['discount_price'])) ${{ number_format($product['discount_price'], 2, '.', ',')  }} {{ strpos($productSku, 'FT240') !== false ? 'PR' : 'EA' }} @endif</h6>
             @if ($product['discount'] > 0 && $customer->hasPermissionTo('viewDiscount'))
             <p class="text-[14px] text-[#6A6D73]">{{ calculateDiscountPercentage($product['msrp'],$product['price']) ?? '' }}% + {{ number_format($product['discount'], 2, '.', ',')  }}%</p>
             @endif
@@ -137,7 +137,7 @@ return in_array($productId, $allowedProducts);
             @foreach($addonProducts as $addonProduct)
             <div class="addon-item flex items-center justify-between border p-4 rounded-lg shadow-md hover:shadow-lg transition duration-200 ease-in-out">
                 <!-- Image Section -->
-                <img src="{{ $addonProduct['image']; }}" alt="{{ $addonProduct['name'] }}" class="w-20 h-20 object-cover rounded-md">
+                <img src="{{ $addonProduct['image'] }}" alt="{{ $addonProduct['name'] }}" class="w-20 h-20 object-cover rounded-md">
 
                 <!-- Text Section -->
                 <div class="ml-4 flex flex-col justify-between flex-grow">
