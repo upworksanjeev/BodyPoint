@@ -314,6 +314,10 @@
                         </th>
                         <th scope="col"
                             style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
+                            CommentLine
+                        </th>
+                        <th scope="col"
+                            style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                             MSRP
                         </th>
                         @if ($priceOption == 'msrp_primary')
@@ -363,6 +367,10 @@
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                            {{ $cartitem->comment_line ?? '' }}
+                        </td>
+                        <td
+                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                             ${{ $cartitem->msrp ? number_format($cartitem->msrp, 2, '.', ',') : 0 }}
                         </td>
 
@@ -403,7 +411,7 @@
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 3, '.', ',') : 0 }}
+                            ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0 }}
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -411,7 +419,7 @@
                         </td>
 
                         @php
-                        $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 3, '.', ',') : 0;
+                        $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0;
                         @endphp
                         <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
                             ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
