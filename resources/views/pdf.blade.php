@@ -333,10 +333,6 @@
                         </th>
                         <th scope="col"
                             style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
-                            CommentLine
-                        </th>
-                        <th scope="col"
-                            style="text-align: left;padding: 12px 12px; font-size: 10px; font-weight: 700; color: #fff; border-right: 1px solid rgb(104 104 104 / 28%);width:10px;">
                             MSRP
                         </th>
                         @if ($priceOption == 'msrp_primary')
@@ -367,7 +363,15 @@
                 </thead>
                 <tbody>
                     <?php $subtotal = 0;
-                    $tax = 0.0; ?>
+                    $tax = 0.0;
+                    // Determine how many columns the comment row should span
+                    $commentColspan = 6; // Product, Stock, Mark For, MSRP, Qty, Total
+                    if ($priceOption == 'msrp_primary') {
+                        $commentColspan = 7; // + Primary Discount
+                    } elseif ($priceOption == 'all_price') {
+                        $commentColspan = 8; // + Primary Discount + After Secondary Discount
+                    }
+                    ?>
                     @if (isset($cart[0]))
                     @foreach ($cart[0]['CartItem'] as $cartitem)
                     <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
@@ -384,10 +388,6 @@
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
                             {{ $cartitem['marked_for'] ?? '' }}
 
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem['comment_line'] ?? '' }}
                         </td>
                         <td
                             style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -452,6 +452,13 @@
                         @endphp
                         @endif
                     </tr>
+                    @if (!empty($cartitem['comment_line']))
+                    <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%); background-color: #f9f9f9;">
+                        <td colspan="{{ $commentColspan }}" style="padding: 8px 12px; font-size: 9px; font-style: italic; color: #666;">
+                            {{ $cartitem['comment_line'] }}
+                        </td>
+                    </tr>
+                    @endif
                     @endforeach
                     @endif
                 </tbody>

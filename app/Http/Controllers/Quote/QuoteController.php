@@ -195,6 +195,40 @@ class QuoteController extends Controller
         }
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+
+        // Build comment lines for each quote from Syspro API response
+        $quotesWithComments = [];
+        $quotesComments = [];
+        foreach ($quotes as $quote) {
+            $apiResponse = null;
+            if ($quote->purchase_order_no) {
+                try {
+                    $url = 'GetOrderDetails/' . $quote->purchase_order_no;
+                    $apiResponse = SysproService::getOrderDetails($url);
+                } catch (\Exception $e) {
+                    Log::error('Failed to fetch order details for quote comments: ' . $e->getMessage(), [
+                        'quote_id' => $quote->id,
+                        'purchase_order_no' => $quote->purchase_order_no,
+                    ]);
+                }
+            }
+
+            $processedItems = $this->processOrderLinesWithComments($quote, $apiResponse);
+
+            // Store for PDFs (structure similar to ordersWithComments)
+            $quotesWithComments[] = [
+                'quote' => $quote,
+                'processedItems' => $processedItems,
+            ];
+
+            // Store simple map for listing view (quote_id -> order_item_id -> comment)
+            $itemComments = [];
+            foreach ($processedItems as $processedItem) {
+                $orderItem = $processedItem['orderItem'];
+                $itemComments[$orderItem->id] = $processedItem['comment'] ?? null;
+            }
+            $quotesComments[$quote->id] = $itemComments;
+        }
         
         // Fetch PaymentTermCode to determine which button to show
         $paymentTermCode = null;
@@ -209,7 +243,12 @@ class QuoteController extends Controller
         }
         
         if ($request->has('download')) {
-            $pdf = Pdf::loadView('quotes.all-quotes-pdf', ['quotes' => $quotes, 'user' => $user, 'userDetail' => $user_detail]);
+            $pdf = Pdf::loadView('quotes.all-quotes-pdf', [
+                'quotes' => $quotes,
+                'user' => $user,
+                'userDetail' => $user_detail,
+                'quotesWithComments' => $quotesWithComments,
+            ]);
             return $pdf->download();
         } else {
             return view('quotes.index', [
@@ -218,6 +257,7 @@ class QuoteController extends Controller
                 'end_date' => $request->end_date ?? '',
                 'search' => $request->search_input ?? '',
                 'paymentTermCode' => $paymentTermCode,
+                'quotesComments' => $quotesComments,
             ]);
         }
     }
@@ -416,7 +456,30 @@ class QuoteController extends Controller
         $cart = Order::with('user', 'orderItem.Product.Media')->where('id', $quote_id)->first();
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-        $pdf = Pdf::loadView('quotes.pdf-quote', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
+
+        // Fetch API response to get comments for this quote
+        $apiResponse = null;
+        if ($cart && $cart->purchase_order_no) {
+            try {
+                $url = 'GetOrderDetails/' . $cart->purchase_order_no;
+                $apiResponse = SysproService::getOrderDetails($url);
+            } catch (\Exception $e) {
+                Log::error('Failed to fetch order details for quote PDF: ' . $e->getMessage(), [
+                    'quote_id' => $quote_id,
+                    'purchase_order_no' => $cart->purchase_order_no,
+                ]);
+            }
+        }
+
+        $processedItems = $cart ? $this->processOrderLinesWithComments($cart, $apiResponse) : [];
+
+        $pdf = Pdf::loadView('quotes.pdf-quote', [
+            'cart' => $cart,
+            'user' => $user,
+            'userDetail' => $user_detail,
+            'priceOption' => $price_option,
+            'processedItems' => $processedItems,
+        ]);
         $pdf->render();
         $dompdf = $pdf->getDomPDF();
         $font = $dompdf->getFontMetrics()->get_font("helvetica", "bold");
@@ -722,6 +785,65 @@ class QuoteController extends Controller
             //dd($e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while updating your Quote. Please try again.');
         }
+    }
+
+    /**
+     * Process order/quote lines from API response to combine products with comments
+     */
+    private function processOrderLinesWithComments($order, $apiResponse = null)
+    {
+        $orderItems = $order->OrderItem;
+        $processedItems = [];
+
+        // If API response is provided, use it to get comments
+        if ($apiResponse && isset($apiResponse['response']['Line'])) {
+            $lines = $apiResponse['response']['Line'];
+
+            // Create a map of comments by SKU from API response
+            // Process lines sequentially - product followed by its comment
+            $commentsBySku = [];
+            $i = 0;
+            while ($i < count($lines)) {
+                $line = $lines[$i];
+                $lineType = isset($line['LineType']) ? (string) $line['LineType'] : '';
+
+                // If it's a product line (LineType = "1")
+                if ($lineType === '1' && !empty($line['StockCode'])) {
+                    $sku = $line['StockCode'];
+
+                    // Check if next line is a comment for this product
+                    if ($i + 1 < count($lines)) {
+                        $nextLine = $lines[$i + 1];
+                        $nextLineType = isset($nextLine['LineType']) ? (string) $nextLine['LineType'] : '';
+
+                        if ($nextLineType === '6' && !empty($nextLine['CommentLine'])) {
+                            $commentsBySku[$sku] = $nextLine['CommentLine'];
+                            $i++; // Skip the comment line as we've processed it
+                        }
+                    }
+                }
+
+                $i++;
+            }
+
+            // Now process order items and attach comments
+            foreach ($orderItems as $item) {
+                $processedItems[] = [
+                    'orderItem' => $item,
+                    'comment' => $commentsBySku[$item->sku] ?? null,
+                ];
+            }
+        } else {
+            // Fallback: if no API response, just use order items without comments
+            foreach ($orderItems as $item) {
+                $processedItems[] = [
+                    'orderItem' => $item,
+                    'comment' => null,
+                ];
+            }
+        }
+
+        return $processedItems;
     }
 
     /**
