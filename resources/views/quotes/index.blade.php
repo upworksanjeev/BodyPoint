@@ -120,6 +120,7 @@
                                             @php
                                             $subtotal = 0;
                                             $tax = 0.0;
+                                            $commentsForQuote = $quotesComments[$quote->id] ?? [];
                                             @endphp
 
                                             @foreach ($quote->OrderItem as $cartitem)
@@ -155,6 +156,17 @@
                                                     ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
                                                 </td>
                                             </tr>
+                                            @php
+                                            $comment = $commentsForQuote[$cartitem->id] ?? null;
+                                            @endphp
+                                            @if ($comment)
+                                            <tr class="odd:bg-white even:bg-gray-50 border-b bg-gray-50/70">
+                                                <td colspan="6"
+                                                    class="px-4 py-3 text-xs italic text-gray-600">
+                                                    {{ $comment }}
+                                                </td>
+                                            </tr>
+                                            @endif
                                             @php
                                             $subtotal += $discount_price * $cartitem->quantity;
                                             @endphp
