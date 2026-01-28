@@ -345,83 +345,186 @@
                     @php
                     $subtotal = 0;
                     $tax = 0.0;
+                    // Determine how many columns the comment row should span
+                    $commentColspan = 6; // Product, Stock, Mark For, MSRP, Qty, Total
+                    if ($priceOption == 'msrp_primary') {
+                        $commentColspan = 7; // + Primary Discount
+                    } elseif ($priceOption == 'all_price') {
+                        $commentColspan = 8; // + Primary Discount + After Secondary Discount
+                    }
                     @endphp
                     @if (!empty($cart))
-                    @foreach ($cart['orderItem'] as $cartitem)
-                    <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
-                        <td
-                            style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->Product->name ?? '' }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->sku ?? '' }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->marked_for ?? '' }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->msrp ? number_format($cartitem->msrp, 2, '.', ',') : 0 }}
-                        </td>
+                        @if (isset($processedItems) && !empty($processedItems))
+                            @foreach ($processedItems as $processedItem)
+                                @php
+                                    $cartitem = $processedItem['orderItem'];
+                                    $comment = $processedItem['comment'] ?? null;
+                                @endphp
+                                <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+                                    <td
+                                        style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem->Product->name ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem->sku ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem->marked_for ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem->msrp ? number_format($cartitem->msrp, 2, '.', ',') : 0 }}
+                                    </td>
 
-                        @if ($priceOption == 'msrp_only')
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->quantity ?? '' }}
-                        </td>
+                                    @if ($priceOption == 'msrp_only')
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem->quantity ?? '' }}
+                                    </td>
 
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->msrp ? number_format($cartitem->msrp * $cartitem->quantity, 2, '.', ',') : 0 }}
-                        </td>
-                        @php
-                        $subtotal += $cartitem->msrp * $cartitem->quantity;
-                        @endphp
-                        @elseif($priceOption == 'msrp_primary')
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->quantity ?? '' }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->price ? number_format($cartitem->price * $cartitem->quantity, 2, '.', ',') : 0 }}
-                        </td>
-                        @php
-                        $subtotal += $cartitem->price * $cartitem->quantity;
-                        @endphp
-                        @elseif($priceOption == 'all_price')
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem->msrp ? number_format($cartitem->msrp * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                    </td>
+                                    @php
+                                    $subtotal += $cartitem->msrp * $cartitem->quantity;
+                                    @endphp
+                                    @elseif($priceOption == 'msrp_primary')
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem->quantity ?? '' }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem->price ? number_format($cartitem->price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                    </td>
+                                    @php
+                                    $subtotal += $cartitem->price * $cartitem->quantity;
+                                    @endphp
+                                    @elseif($priceOption == 'all_price')
 
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 3, '.', ',') : 0 }}
-                        </td>
-                        <td
-                            style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                            {{ $cartitem->quantity ?? '' }}
-                        </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0 }}
+                                    </td>
+                                    <td
+                                        style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                        {{ $cartitem->quantity ?? '' }}
+                                    </td>
 
-                        @php
-                        $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 3, '.', ',') : 0;
-                        @endphp
-                        <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
-                            ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
-                        </td>
-                        @php
-                        $subtotal += $discount_price * $cartitem->quantity;
-                        @endphp
+                                    @php
+                                    $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0;
+                                    @endphp
+                                    <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+                                        ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                    </td>
+                                    @php
+                                    $subtotal += $discount_price * $cartitem->quantity;
+                                    @endphp
+                                    @endif
+                                </tr>
+                                @if ($comment)
+                                <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%); background-color: #f9f9f9;">
+                                    <td colspan="{{ $commentColspan }}" style="padding: 8px 12px; font-size: 9px; font-style: italic; color: #666;">
+                                        {{ $comment }}
+                                    </td>
+                                </tr>
+                                @endif
+                            @endforeach
+                        @else
+                            @foreach ($cart['orderItem'] as $cartitem)
+                            <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
+                                <td
+                                    style="padding: 12px 15px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->Product->name ?? '' }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->sku ?? '' }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->marked_for ?? '' }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->msrp ? number_format($cartitem->msrp, 2, '.', ',') : 0 }}
+                                </td>
+
+                                @if ($priceOption == 'msrp_only')
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->quantity ?? '' }}
+                                </td>
+
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->msrp ? number_format($cartitem->msrp * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                </td>
+                                @php
+                                $subtotal += $cartitem->msrp * $cartitem->quantity;
+                                @endphp
+                                @elseif($priceOption == 'msrp_primary')
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->quantity ?? '' }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->price ? number_format($cartitem->price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                </td>
+                                @php
+                                $subtotal += $cartitem->price * $cartitem->quantity;
+                                @endphp
+                                @elseif($priceOption == 'all_price')
+
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->price ? number_format($cartitem->price, 2, '.', ',') : 0 }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0 }}
+                                </td>
+                                <td
+                                    style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
+                                    {{ $cartitem->quantity ?? '' }}
+                                </td>
+
+                                @php
+                                $discount_price = $cartitem->discount_price ? number_format($cartitem->discount_price, 2, '.', ',') : 0;
+                                @endphp
+                                <td style="padding: 12px; font-size: 10px; font-weight: 400; color: #000; border: 1px solid rgb(104 104 104 / 28%);">
+                                    ${{ $discount_price ? number_format($discount_price * $cartitem->quantity, 2, '.', ',') : 0 }}
+                                </td>
+                                @php
+                                $subtotal += $discount_price * $cartitem->quantity;
+                                @endphp
+                                @endif
+                                </tr>
+                                @if (!empty($cartitem->comment_line))
+                                <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%); background-color: #f9f9f9;">
+                                    <td colspan="{{ $commentColspan }}" style="padding: 8px 12px; font-size: 9px; font-style: italic; color: #666;">
+                                        {{ $cartitem->comment_line }}
+                                    </td>
+                                </tr>
+                                @endif
+                            @endforeach
                         @endif
-                    </tr>
-                    @endforeach
                     @endif
                 </tbody>
             </table>
