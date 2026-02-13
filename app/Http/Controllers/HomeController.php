@@ -184,15 +184,15 @@ class HomeController extends Controller
                 [
                     'name' => 'Americas',
                     //'url' => 'https://bodypoint.com/wp-content/uploads/2024/12/Bodypoint-2025-Dealer-Price-List-AMERICAS.xlsx',
-                    'url' => asset('storage/pricing/Bodypoint-2025-Dealer-Price-List-AMERICAS.xlsx'),
+                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/02/Americas-Price-List.xlsx',
                 ],
                 [
                     'name' => 'International',
-                    'url' => 'https://bodypoint.com/wp-content/uploads/2024/12/Bodypoint-2025-Dealer-Price-List-INTERNATIONAL.xlsx',
+                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/02/International-Price-List.xlsx',
                 ],
                 [
                     'name' => 'Dealer Price List',
-                    'url' => 'https://bodypoint.com/wp-content/uploads/2024/12/Dealer-Price-List_BPMC204_2024.pdf',
+                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/02/Dealer-Price-List_BPMC204-2026.34-3.pdf',
                 ],
                 [
                     'name' => 'Retail Price List',
