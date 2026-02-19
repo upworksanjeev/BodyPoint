@@ -1214,7 +1214,9 @@ class HomeController extends Controller
 
             if ($CustomerClass) {
                 $pricing_guide = match ($CustomerClass) {
-                    'AM', 'VA', 'WR', 'W', 'WX' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['Americas', 'Retail Price List']))),
+                    'VA', 'W', 'WL', 'WQ', 'WR', 'WX',  => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['Americas', 'Retail Price List', 'Dealer Price List']))),
+
+                    'AM' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['Americas', 'Retail Price List']))),
 
                     'WC', 'WS' => array_values(array_filter($pricing_guide, fn($item) => in_array($item['name'], ['Americas', 'Retail Price List', 'International', 'Dealer Price List']))),
 
