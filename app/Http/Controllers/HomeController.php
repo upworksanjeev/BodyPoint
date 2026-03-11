@@ -114,8 +114,7 @@ class HomeController extends Controller
             [
                 [
                     'name' => 'Product Guide',
-                    //'url' => 'https://bodypoint.com/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES.pdf',
-                    'url' => 'https://bodypoint.com/wp-content/uploads/2025/01/product-guide-catalog.pdf',
+                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/03/Catalog-Product-Guide-BMM002.pdf',
                 ],
                 [
                     'name' => 'Dynamic Arm Support Brochure',
@@ -196,7 +195,7 @@ class HomeController extends Controller
                 ],
                 [
                     'name' => 'Retail Price List',
-                    'url' => 'https://bodypoint.com/wp-content/uploads/2024/12/Retail_Price_List_BPMC301_2024.pdf',
+                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/03/Retail-Price-List_BPMC301-2026.34-2.pdf',
                 ],
             ];
     }
@@ -966,11 +965,11 @@ class HomeController extends Controller
                 ],
                 'Catalog' => [
                     [
-                        'name' => 'Catalog (product guide) BMM002 (Volume 8.4) (HI RES)',
-                        'url' => 'https://bodypoint.com/wp-content/uploads/2024/07/Catalog_product_guide_BMM002_Volume_8.4_HI_RES-1.pdf',
+                        'name' => 'Catalog (product guide) BMM002 (Volume 8.7) (HI RES)',
+                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/03/Catalog-Product-Guide-BMM002.pdf',
                     ],
                     [
-                        'name' => 'Catalog (product guide) BMM002 (Volume 8.4)',
+                        'name' => 'Catalog (product guide) BMM002 (Volume 8.7)',
                         'url' => '/',
                     ],
 
