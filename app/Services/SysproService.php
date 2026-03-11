@@ -226,6 +226,17 @@ class SysproService
                 $item->line_number = $maxLine;
             }
         }
+
+        // Ensure items are ordered by LineNumber (ascending) before building the request payload
+        if ($cartitems instanceof \Illuminate\Support\Collection) {
+            $cartitems = $cartitems->sortBy('line_number')->values();
+        } else {
+            // If $cartitems is a plain array, sort it using usort
+            usort($cartitems, function ($a, $b) {
+                return ($a->line_number ?? 0) <=> ($b->line_number ?? 0);
+            });
+        }
+        
         $order_data = [
             'OrderNumber' => $order_no,
             "AllowDuplicatePO" => "Y",
