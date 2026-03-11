@@ -122,6 +122,14 @@ class SysproService
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
         ];
 
+        // For straight-through orders, send OrderType = 5 and ShipDate = 5 business days after OrderDate
+        if ($straight_order === 'Y') {
+            $orderDate = now();
+            $order_data['OrderType'] = 5;
+            $order_data['OrderDate'] = $orderDate->toDateString();
+            $order_data['ShipDate']  = self::calculateShipDate($orderDate);
+        }
+
         // Add credit card information to order data if provided
         if ($creditCardData && is_array($creditCardData)) {
             // Log incoming credit card data structure for debugging
@@ -406,5 +414,20 @@ class SysproService
             'code'     => $statusCode,
             'response' => $responseBody
         ];
+    }
+
+    protected static function calculateShipDate($orderDate): string
+    {
+        $date = $orderDate instanceof \DateTimeInterface ? clone $orderDate : now();
+        $daysAdded = 0;
+
+        while ($daysAdded < 5) {
+            $date->addDay();
+            if (!in_array($date->dayOfWeekIso, [6, 7], true)) {
+                $daysAdded++;
+            }
+        }
+
+        return $date->toDateString();
     }
 }
