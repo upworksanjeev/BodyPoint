@@ -244,7 +244,7 @@ function getYouTubeEmbedUrl($url) {
                     <div class="accordion-item-body">
                         <div class="accordion-item-body-content border-t-0">
                             @if(!empty($product->warranty))
-                            {!! $product->warranty !!}
+                            {!! filterMsrpFaq($product->warranty) !!}
                             @else
                             No Data Exists
                             @endif
