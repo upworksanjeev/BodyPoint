@@ -180,7 +180,7 @@ function getYouTubeEmbedUrl($url) {
     <section class="py-[30px] md:pt-[20px] md:pb-[60px]">
         <div class="max-w-screen-xl mx-auto ctm-accordion xl:px-0 lg:px-8 md:px-6 px-4">
             <div class="accordion" id="accordion">
-                <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg">
+                <div class="accordion-item border border-solid border-[#e5e6e7] rounded-lg faq-accordion-item">
                     <div class="accordion-item-header items-center bg-[#00838f] text-[#fff] rounded-lg">
                         <span class="w-[28px] h-[28px] mr-4">
                             <x-icons.eye />
@@ -241,8 +241,8 @@ function getYouTubeEmbedUrl($url) {
                         </span>
                         FAQ's
                     </div><!-- /.accordion-item-header -->
-                    <div class="accordion-item-body">
-                        <div class="accordion-item-body-content border-t-0">
+                    <div class="accordion-item-body faq-accordion-body">
+                        <div class="accordion-item-body-content border-t-0 faq-accordion-body-content">
                             @if(!empty($product->warranty))
                             {!! $product->warranty !!}
                             @else
@@ -297,6 +297,45 @@ function getYouTubeEmbedUrl($url) {
 
             });
         });
+
+        // Hide only the MSRP/Retail FAQ entry on the product FAQ accordion,
+        // without modifying any other questions/answers.
+        (function hideMsrpFaq() {
+            // Scope: only run on pages that actually have the FAQ accordion
+            const faqContainer = document.querySelector('.faq-accordion-body-content');
+            if (!faqContainer) return;
+
+            // Short, specific fragment to match (case-insensitive)
+            const fragment = 'where can i find the msrp/retail price';
+
+            // Check all paragraphs/spans inside FAQ content
+            const candidates = faqContainer.querySelectorAll('p, span');
+
+            for (const node of candidates) {
+                const text = (node.textContent || '')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
+
+                if (!text.includes(fragment)) continue;
+
+                // Hide the containing paragraph (Q + A live together)
+                let container = node;
+                while (container && container.tagName && container.tagName.toLowerCase() !== 'p') {
+                    if (container.parentElement === faqContainer || !container.parentElement) break;
+                    container = container.parentElement;
+                }
+
+                if (container && container.tagName && container.tagName.toLowerCase() === 'p') {
+                    container.style.display = 'none';
+                } else {
+                    node.style.display = 'none';
+                }
+
+                // We found and hid the target Q/A; nothing else to do
+                break;
+            }
+        })();
     </script>
     <script>
         $('.slider-for').slick({

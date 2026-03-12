@@ -52,26 +52,3 @@ if (!function_exists('calculateDiscountPercentage')) {
         return round($discountPercentage, 2);
     }
 }
-
-if (!function_exists('filterMsrpFaq')) {
-    function filterMsrpFaq($faqContent)
-    {
-        if (empty($faqContent)) return $faqContent;
-
-        /**
-         * The Logic:
-         * 1. Look for a <p> or <span> tag.
-         * 2. Ensure it contains the MSRP phrase.
-         * 3. Use [^>]*? to handle any classes/attributes.
-         * 4. Use (?!<p) to prevent the regex from jumping across multiple paragraphs.
-         */
-        $pattern = '/<(p|span)[^>]*>(?:(?!<\/\1>).)*?Where can I find the MSRP\/Retail price.*?<\/\1>/is';
-
-        $filtered = preg_replace($pattern, '', $faqContent);
-
-        // Clean up any double empty paragraphs or trailing spaces left behind
-        $filtered = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $filtered);
-        
-        return trim($filtered);
-    }
-}
