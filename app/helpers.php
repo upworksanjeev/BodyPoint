@@ -54,52 +54,24 @@ if (!function_exists('calculateDiscountPercentage')) {
 }
 
 if (!function_exists('filterMsrpFaq')) {
-    function filterMsrpFaq($html)
+    function filterMsrpFaq($faqContent)
     {
-        if (empty($html)) return $html;
-
-        $dom = new \DOMDocument();
-        libxml_use_internal_errors(true);
-        
-        // Wrap in div and convert encoding
-        $dom->loadHTML(mb_convert_encoding('<div>' . $html . '</div>', 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $xpath = new \DOMXPath($dom);
-
-        // Search for the specific question
-        $question = "Where can I find the MSRP/Retail price for this product?";
-        
-        // Use normalize-space() to ignore extra &nbsp; or random spaces inside the tag
-        $nodes = $xpath->query("//*[contains(normalize-space(.), '$question')]");
-
-        foreach ($nodes as $node) {
-            $container = $node;
-            // Traverse up to find the main container (<p> or <span>) inside our <div>
-            while ($container->parentNode && $container->parentNode->nodeName !== 'div') {
-                $container = $container->parentNode;
-            }
-            
-            if ($container->parentNode) {
-                $container->parentNode->removeChild($container);
-            }
-        }
-
-        // Convert back to string
-        $output = $dom->saveHTML();
-        $output = str_replace(['<div>', '</div>'], '', $output);
+        if (empty($faqContent)) return $faqContent;
 
         /**
-         * SMART CLEANUP FOR MIDDLE CONTENT
+         * The Logic:
+         * 1. Look for a <p> or <span> tag.
+         * 2. Ensure it contains the MSRP phrase.
+         * 3. Use [^>]*? to handle any classes/attributes.
+         * 4. Use (?!<p) to prevent the regex from jumping across multiple paragraphs.
          */
+        $pattern = '/<(p|span)[^>]*>(?:(?!<\/\1>).)*?Where can I find the MSRP\/Retail price.*?<\/\1>/is';
+
+        $filtered = preg_replace($pattern, '', $faqContent);
+
+        // Clean up any double empty paragraphs or trailing spaces left behind
+        $filtered = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $filtered);
         
-        // 1. Remove paragraphs that contain ONLY non-breaking spaces or BR tags
-        // This removes the "empty" lines often left by editors between questions
-        $output = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $output);
-
-        // 2. Fix "Triple Spacing"
-        // If removing the item created too much white space, collapse it.
-        // This converts 3+ newlines into just 2.
-        $output = preg_replace('/(\r?\n\s*){3,}/', "\n\n", $output);
-
-        return trim($output);
+        return trim($filtered);
     }
 }
