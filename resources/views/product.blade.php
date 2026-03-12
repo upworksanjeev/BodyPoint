@@ -300,37 +300,41 @@ function getYouTubeEmbedUrl($url) {
 
         // Hide only the MSRP/Retail FAQ entry on the product FAQ accordion,
         // without modifying any other questions/answers.
-        (function () {
-            // Use the FAQ tab's body content as scope
+        (function hideMsrpFaq() {
+            // Scope: only run on pages that actually have the FAQ accordion
             const faqContainer = document.querySelector('.faq-accordion-body-content');
-            console.log('[MSRP FAQ HIDE] faqContainer found:', !!faqContainer);
             if (!faqContainer) return;
 
-            const targetFragment = 'where can i find the msrp/retail price';
-            const nodes = faqContainer.querySelectorAll('p, span');
+            // Short, specific fragment to match (case-insensitive)
+            const fragment = 'where can i find the msrp/retail price';
 
-            nodes.forEach(node => {
-                const rawText = node.textContent || '';
-                const text = rawText.replace(/\s+/g, ' ').trim().toLowerCase();
-                console.log('[MSRP FAQ HIDE] checking node text:', text);
+            // Check all paragraphs/spans inside FAQ content
+            const candidates = faqContainer.querySelectorAll('p, span');
 
-                if (text.includes(targetFragment)) {
-                    // Find nearest <p> ancestor so we hide the entire Q/A block.
-                    let container = node;
-                    while (container && container.tagName && container.tagName.toLowerCase() !== 'p') {
-                        if (container.parentElement === faqContainer || !container.parentElement) break;
-                        container = container.parentElement;
-                    }
+            for (const node of candidates) {
+                const text = (node.textContent || '')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
 
-                    if (container && container.tagName && container.tagName.toLowerCase() === 'p') {
-                        console.log('[MSRP FAQ HIDE] hiding paragraph:', container.innerHTML);
-                        container.style.display = 'none';
-                    } else {
-                        console.log('[MSRP FAQ HIDE] hiding node fallback:', node.innerHTML || node.textContent);
-                        node.style.display = 'none';
-                    }
+                if (!text.includes(fragment)) continue;
+
+                // Hide the containing paragraph (Q + A live together)
+                let container = node;
+                while (container && container.tagName && container.tagName.toLowerCase() !== 'p') {
+                    if (container.parentElement === faqContainer || !container.parentElement) break;
+                    container = container.parentElement;
                 }
-            });
+
+                if (container && container.tagName && container.tagName.toLowerCase() === 'p') {
+                    container.style.display = 'none';
+                } else {
+                    node.style.display = 'none';
+                }
+
+                // We found and hid the target Q/A; nothing else to do
+                break;
+            }
         })();
     </script>
     <script>
