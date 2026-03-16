@@ -152,7 +152,6 @@
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
-
              const isMonoflexUnderarm =
                  String($('#product_id').val()) === '336' &&
                  String($('#pro_att_0').val()) === '1453';
@@ -197,8 +196,34 @@
                          for (var i = j; i < total_category; i++) {
                              $('#product_att_' + i).html('');
                          }
-                         $('#product_att_' + j).html(response);
-                        hideUnWantedAttr(); 
+                         // Check if response has actual content (buttons or input fields), not just empty divs
+                         var hasContent = response && response.trim() !== '' && (
+                             response.includes('button') || 
+                             response.includes('input') || 
+                             response.includes('Select')
+                         );
+                         if (hasContent) {
+                             $('#product_att_' + j).html(response);
+                         } else {
+                             // If response is empty or only contains empty divs (no more attributes), get the price
+                             $.ajax({
+                                 url: "{{ route('get-variation-price') }}",
+                                 type: 'POST',
+                                 data: $("#addtocart").serialize(),
+                                 success: function(priceResponse) {
+                                     if (priceResponse.product_available || !priceResponse.is_auth_user) {
+                                         $('#variation_price_div').html(priceResponse.html);
+                                     } else {
+                                         $('#variation_price_div').html(
+                                             '<div class="out-off-stock"><h1>Price of this product is not available. Please contact support.</h1></div>'
+                                         );
+                                     }
+                                 },
+                                 error: function(xhr) {
+
+                                 }
+                             });
+                         }
                      },
                      error: function(xhr) {
                         hideUnWantedAttr();
