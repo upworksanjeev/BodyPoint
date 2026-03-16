@@ -152,7 +152,13 @@
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
-             if (index == total_category - 1) {
+
+             const isMonoflexUnderarm =
+                 String($('#product_id').val()) === '336' &&
+                 String($('#pro_att_0').val()) === '1453';
+             const isAttachmentStepForMonoflex = isMonoflexUnderarm && index === 2;
+
+             if (index == total_category - 1 || isAttachmentStepForMonoflex) {
                  //Get Variation Price
                  $.ajax({
                      url: "{{ route('get-variation-price') }}",
