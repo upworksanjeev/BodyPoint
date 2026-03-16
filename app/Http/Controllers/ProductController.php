@@ -320,10 +320,26 @@ class ProductController extends Controller
             }
         }
 
+        if ($request->product_id == 336 && (int) $request->rootAttributeId === 1453) {
+            $filteredCategory = [];
+            $filteredAttribute = [];
+            $i = 0;
 
+            foreach ($category as $key => $catName) {
+                if (stripos($catName, 'buckle') !== false) {
+                    continue;
+                }
 
+                $filteredCategory[$i] = $catName;
+                if (isset($attribute[$key])) {
+                    $filteredAttribute[$i] = $attribute[$key];
+                }
+                $i++;
+            }
 
-
+            $category  = $filteredCategory;
+            $attribute = $filteredAttribute;
+        }
 
         return view('components.attribute', [
             'index' => $request->index + 1,
