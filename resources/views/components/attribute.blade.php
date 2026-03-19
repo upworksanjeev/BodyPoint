@@ -74,21 +74,14 @@
         //          currentImg.attr('src', currentImg.attr('data-original-src'));
         //      }
         //  });
-        function hideUnWantedAttr() {
-            // Product 336 (Monoflex) special-case:
-            // If "Center Release" (product_attribute_id 1454) is selected in the first step,
-            // hide "Grommet Strap (-B3)" (product_attribute_id 1462) regardless of step index.
-            setTimeout(function () {
-                const isMonoflex = String($('#product_id').val()) === '336';
-                if (!isMonoflex) return;
+        function hideUnWantedAttr(){
+            setTimeout(function(){
+                if ($("#button_0_1454").hasClass('attribute_buttons_active')) {
+                    $('#button_2_1462').hide();  
+                } else{
+                    $('#button_2_1462').show();                }
 
-                const isCenterReleaseSelected = $("#button_0_1454").hasClass('attribute_buttons_active');
-                const grommetButtons = document.querySelectorAll('[id^="button_"][id$="_1462"]');
-
-                grommetButtons.forEach((btn) => {
-                    btn.style.display = isCenterReleaseSelected ? 'none' : '';
-                });
-            }, 20);
+            },20);
         }
          function changeAttribute(product_att_id, product_id, index, k,attr_count = 0, el = null) {
 
@@ -154,13 +147,11 @@
                  }
 
              }
+             var rootAttributeId = $("#pro_att_0").val();
+             var rootAttributeIdChild = $("#pro_att_1").val();
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
-             // Root attributes must reflect the current selection.
-             // When changing the first step (k === 0), the new root is product_att_id.
-             var rootAttributeId = (k === 0) ? product_att_id : $("#pro_att_0").val();
-             var rootAttributeIdChild = (k === 1) ? product_att_id : $("#pro_att_1").val();
              const isMonoflexUnderarm =
                  String($('#product_id').val()) === '336' &&
                  String($('#pro_att_0').val()) === '1453';
