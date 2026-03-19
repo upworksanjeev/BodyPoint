@@ -149,6 +149,55 @@ class ProductController extends Controller
         return $data;
     }
 
+    private function removeCategoryByKeyword(array $category, array $attribute, string $keyword): array
+    {
+        $filteredCategory = [];
+        $filteredAttribute = [];
+        $i = 0;
+
+        foreach ($category as $key => $catName) {
+            if (stripos($catName, $keyword) !== false) {
+                continue;
+            }
+
+            $filteredCategory[$i] = $catName;
+            if (isset($attribute[$key])) {
+                $filteredAttribute[$i] = $attribute[$key];
+            }
+            $i++;
+        }
+
+        return [$filteredCategory, $filteredAttribute];
+    }
+
+    private function removeAttachmentOptions(array $category, array $attribute, int $excludedProductAttrId, array $nameNeedles = []): array
+    {
+        foreach ($category as $key => $catName) {
+            if (stripos($catName, 'attachment') === false || !isset($attribute[$key])) {
+                continue;
+            }
+
+            $attribute[$key] = array_values(array_filter($attribute[$key], function ($item) use ($excludedProductAttrId, $nameNeedles) {
+                $name = strtolower((string) ($item['attribute'] ?? ''));
+                $productAttrId = (int) ($item['product_attr_id'] ?? 0);
+
+                if ($productAttrId === $excludedProductAttrId) {
+                    return false;
+                }
+
+                foreach ($nameNeedles as $needle) {
+                    if (stripos($name, strtolower($needle)) !== false) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }));
+        }
+
+        return $attribute;
+    }
+
     /**
      * return new attribute according to available variation list for a product
      */
@@ -321,24 +370,12 @@ class ProductController extends Controller
         }
 
         if ($request->product_id == 336 && (int) $request->rootAttributeId === 1453) {
-            $filteredCategory = [];
-            $filteredAttribute = [];
-            $i = 0;
+            [$category, $attribute] = $this->removeCategoryByKeyword($category, $attribute, 'buckle');
+        }
 
-            foreach ($category as $key => $catName) {
-                if (stripos($catName, 'buckle') !== false) {
-                    continue;
-                }
-
-                $filteredCategory[$i] = $catName;
-                if (isset($attribute[$key])) {
-                    $filteredAttribute[$i] = $attribute[$key];
-                }
-                $i++;
-            }
-
-            $category  = $filteredCategory;
-            $attribute = $filteredAttribute;
+        // For Monoflex center release, do not show Grommet Strap (-B3) in attachments.
+        if ($request->product_id == 336 && (int) $request->rootAttributeId === 1454) {
+            $attribute = $this->removeAttachmentOptions($category, $attribute, 1462, ['grommet strap', '-b3']);
         }
 
         return view('components.attribute', [
