@@ -74,18 +74,14 @@
         //          currentImg.attr('src', currentImg.attr('data-original-src'));
         //      }
         //  });
-        function hideUnWantedAttr() {
-            setTimeout(function () {
-                const isMonoflex = String($('#product_id').val()) === '336';
-                if (!isMonoflex) return;
+        function hideUnWantedAttr(){
+            setTimeout(function(){
+                if ($("#button_0_1454").hasClass('attribute_buttons_active')) {
+                    $('#button_2_1462').hide();  
+                } else{
+                    $('#button_2_1462').show();                }
 
-                const isCenterReleaseSelected = $("#button_0_1454").hasClass('attribute_buttons_active');
-                const grommetButtons = document.querySelectorAll('[id^="button_"][id$="_1462"]');
-
-                grommetButtons.forEach((btn) => {
-                    btn.style.display = isCenterReleaseSelected ? 'none' : '';
-                });
-            }, 20);
+            },20);
         }
          function changeAttribute(product_att_id, product_id, index, k,attr_count = 0, el = null) {
 
