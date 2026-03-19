@@ -74,14 +74,18 @@
         //          currentImg.attr('src', currentImg.attr('data-original-src'));
         //      }
         //  });
-        function hideUnWantedAttr(){
-            setTimeout(function(){
-                if ($("#button_0_1454").hasClass('attribute_buttons_active')) {
-                    $('#button_2_1462').hide();  
-                } else{
-                    $('#button_2_1462').show();                }
+        function hideUnWantedAttr() {
+            setTimeout(function () {
+                const isMonoflex = String($('#product_id').val()) === '336';
+                if (!isMonoflex) return;
 
-            },20);
+                const isCenterReleaseSelected = $("#button_0_1454").hasClass('attribute_buttons_active');
+                const grommetButtons = document.querySelectorAll('[id^="button_"][id$="_1462"]');
+
+                grommetButtons.forEach((btn) => {
+                    btn.style.display = isCenterReleaseSelected ? 'none' : '';
+                });
+            }, 20);
         }
          function changeAttribute(product_att_id, product_id, index, k,attr_count = 0, el = null) {
 
@@ -147,11 +151,11 @@
                  }
 
              }
-             var rootAttributeId = $("#pro_att_0").val();
-             var rootAttributeIdChild = $("#pro_att_1").val();
              $("#pro_att_" + k).val(product_att_id);
              $(".attribute_buttons_" + k).removeClass('attribute_buttons_active');
              $("#button_" + k + "_" + product_att_id).addClass('attribute_buttons_active');
+             var rootAttributeId = (k === 0) ? product_att_id : $("#pro_att_0").val();
+             var rootAttributeIdChild = (k === 1) ? product_att_id : $("#pro_att_1").val();
              const isMonoflexUnderarm =
                  String($('#product_id').val()) === '336' &&
                  String($('#pro_att_0').val()) === '1453';
