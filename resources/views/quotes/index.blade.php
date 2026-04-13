@@ -127,7 +127,7 @@
                                             <tr class="odd:bg-white even:bg-gray-50 border-b">
                                                 <td
                                                     class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e">
-                                                    {{ $cartitem->Product->name }}
+                                                    <x-syspro-product-name :sku="$cartitem->sku ?? null" :fallback="$cartitem->Product->name ?? ''" />
                                                 </td>
                                                 <td
                                                     class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">

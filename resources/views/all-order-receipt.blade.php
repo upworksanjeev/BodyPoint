@@ -332,7 +332,7 @@
                                     <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
                                         <td
                                             style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                            {{ $cartitem['Product']['name'] ?? '' }}
+                                            <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
                                         </td>
                                         <td
                                             style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -374,7 +374,7 @@
                                 <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
                                     <td
                                         style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                        {{ $cartitem['Product']['name'] ?? '' }}
+                                    <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
                                     </td>
                                     <td
                                         style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
