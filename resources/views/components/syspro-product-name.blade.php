@@ -5,9 +5,22 @@
 
 @php
   $skuKey = is_string($sku) ? trim($sku) : (is_null($sku) ? '' : (string) $sku);
-  $stock = (!empty($skuKey) && isset($sysproStockByCode) && is_array($sysproStockByCode))
-      ? ($sysproStockByCode[$skuKey] ?? null)
-      : null;
+  $stock = null;
+  if (!empty($skuKey)) {
+      $stockDetails = session('stock_details', []);
+      if (is_array($stockDetails)) {
+          foreach ($stockDetails as $row) {
+              if (!is_array($row)) {
+                  continue;
+              }
+              $code = $row['StockCode'] ?? $row['stockCode'] ?? null;
+              if ((string) $code === $skuKey) {
+                  $stock = $row;
+                  break;
+              }
+          }
+      }
+  }
 
   // Syspro field names vary by payload; try common variants safely.
   $description = is_array($stock)
