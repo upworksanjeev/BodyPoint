@@ -42,7 +42,11 @@
                                             } ?>" alt="product-img" class="w-[48px] h-[48px] object-cover" />
                                 </div>
                                 <div class="flex-1">
-                                  <p class="text-sm font-normal leading-[18px] mb-2"><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
+                                  <p class="text-sm font-normal leading-[18px] mb-2">
+                                    <a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
+                                      <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+                                    </a>
+                                  </p>
                                   <span class="bg-[#E4E4E4] text-gray-800 text-[11px] leading-[18px] font-medium me-2 px-2.5 py-0.5 rounded-full">Qty:{{ $cartitem['quantity'] }}</span>
                                   @if ($comment)
                                   <div class="mt-2 text-xs italic text-gray-600">
@@ -71,7 +75,11 @@
                                           } ?>" alt="product-img" class="w-[48px] h-[48px] object-cover" />
                               </div>
                               <div class="flex-1">
-                                <p class="text-sm font-normal leading-[18px] mb-2"><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
+                                <p class="text-sm font-normal leading-[18px] mb-2">
+                                  <a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
+                                    <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+                                  </a>
+                                </p>
                                 <span class="bg-[#E4E4E4] text-gray-800 text-[11px] leading-[18px] font-medium me-2 px-2.5 py-0.5 rounded-full">Qty:{{ $cartitem['quantity'] }}</span>
                               </div>
                             </div>
