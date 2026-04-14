@@ -19,7 +19,11 @@
                     } ?>" alt="product-img" class="w-[48px] h-[48px] object-cover" /></a>
       </div>
       <div class="flex-1">
-        <p class="text-sm font-normal leading-[18px] mb-2"><a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
+        <p class="text-sm font-normal leading-[18px] mb-2">
+          <a href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
+            <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+          </a>
+        </p>
         <div class="flex gap-2">
           <label class="text-sm font-normal leading-4 text-[#525252]">Marked <br />
             for:</label>

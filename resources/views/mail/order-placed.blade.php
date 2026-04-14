@@ -53,7 +53,11 @@
                                                                             } ?>" alt="product-img" style="width: 60px; height: 60px; object-fit: cover;" />
                                                             </div>
                                                             <div style="flex: 1;">
-                                                                <p style="font-size: 12px; margin: 0px 0px 5px 0px;"><a style="color: #000;" href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">{{ $cartitem['Product']['name'] }}</a></p>
+                                                                <p style="font-size: 12px; margin: 0px 0px 5px 0px;">
+                                                                    <a style="color: #000;" href="{{ route('product',$cartitem['Product']['slug']??$cartitem['Product']['name']) }}" target="_blank">
+                                                                        <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+                                                                    </a>
+                                                                </p>
                                                                 <span style="background-color: #E4E4E4; color: #000000; font-size: 10px; padding-left: 10px; padding-right: 11px;padding-top: 4px;padding-bottom: 4px;border-radius: 20px;display: inline-block;line-height: 1.5em;">Qty:{{ $cartitem['quantity'] }}</span>
                                                             </div>
                                                         </div>
