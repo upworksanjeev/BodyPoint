@@ -184,7 +184,8 @@ class CheckoutController extends Controller
             $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
             $order = Order::create([
                 'user_id' => $cart->user_id,
-                'purchase_order_no' => $request->purchase_order_no ?? $cart->purchase_order_no,
+                'purchase_order_no' => null,
+                'customer_po_number' => $request->customer_po_number ?? null,
                 'total_items' => $cart->total_items,
                 'associate_customer_id' => $customer->id ?? null,
                 'customer_number' => $customer_id,
