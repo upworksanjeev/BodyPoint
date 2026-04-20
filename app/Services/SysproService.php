@@ -108,6 +108,7 @@ class SysproService
         }
         $address =  session()->get('customer_address');
         $customer_id = getCustomerId();
+        $orderDate = now();
         $order_data = [
             'CustomerAccountNumber' => $customer_id,
             'CustomerPoNumber' => $order_id,
@@ -120,15 +121,10 @@ class SysproService
             'ShipAddress4' => $address['AddressLine4']  ?? '',
             'ShipAddress5' => $address['AddressLine5']  ?? '',
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
+            'OrderType' => 5,
+            'OrderDate' => $orderDate->toDateString(),
+            'ShipDate'  => self::calculateShipDate($orderDate),
         ];
-
-        // For straight-through orders, send OrderType = 5 and ShipDate = 5 business days after OrderDate
-        if ($straight_order === 'Y') {
-            $orderDate = now();
-            $order_data['OrderType'] = 5;
-            $order_data['OrderDate'] = $orderDate->toDateString();
-            $order_data['ShipDate']  = self::calculateShipDate($orderDate);
-        }
 
         // Add credit card information to order data if provided
         if ($creditCardData && is_array($creditCardData)) {
@@ -237,6 +233,7 @@ class SysproService
             });
         }
         
+        $orderDate = now();
         $order_data = [
             'OrderNumber' => $order_no,
             "AllowDuplicatePO" => "Y",
@@ -247,6 +244,9 @@ class SysproService
             'ShipAddress4' => $address['AddressLine4']  ?? '',
             'ShipAddress5' => $address['AddressLine5']  ?? '',
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
+            'OrderType' => 5,
+            'OrderDate' => $orderDate->toDateString(),
+            'ShipDate'  => self::calculateShipDate($orderDate),
         ];
 
         // Add credit card information if provided
