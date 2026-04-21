@@ -121,9 +121,9 @@ class SysproService
             'ShipAddress4' => $address['AddressLine4']  ?? '',
             'ShipAddress5' => $address['AddressLine5']  ?? '',
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
-            'OrderType' => 5,
-            'OrderDate' => $orderDate->toDateString(),
-            'ShipDate'  => self::calculateShipDate($orderDate),
+            // 'OrderType' => 5,
+            // 'OrderDate' => $orderDate->toDateString(),
+            // 'ShipDate'  => self::calculateShipDate($orderDate),
         ];
 
         // Add credit card information to order data if provided
@@ -244,9 +244,9 @@ class SysproService
             'ShipAddress4' => $address['AddressLine4']  ?? '',
             'ShipAddress5' => $address['AddressLine5']  ?? '',
             'ShipPostalCode' => $address['PostalCode'] ?? 'default_postal',
-            'OrderType' => 5,
-            'OrderDate' => $orderDate->toDateString(),
-            'ShipDate'  => self::calculateShipDate($orderDate),
+            // 'OrderType' => 5,
+            // 'OrderDate' => $orderDate->toDateString(),
+            // 'ShipDate'  => self::calculateShipDate($orderDate),
         ];
 
         // Add credit card information if provided
