@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Mail\EmergencyModeStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class EmergencyModeSetting extends Model
@@ -79,10 +80,18 @@ class EmergencyModeSetting extends Model
                 return;
             }
 
-            Mail::to($to)->send(new EmergencyModeStatusChanged(
-                $setting,
-                $eventType
-            ));
+            try {
+                Mail::to($to)->send(new EmergencyModeStatusChanged(
+                    $setting,
+                    $eventType
+                ));
+            } catch (\Throwable $e) {
+                Log::error('Emergency mode notification email failed', [
+                    'event_type' => $eventType,
+                    'recipient' => $to,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         });
     }
 

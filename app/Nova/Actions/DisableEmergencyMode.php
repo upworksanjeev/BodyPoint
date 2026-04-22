@@ -38,12 +38,9 @@ class DisableEmergencyMode extends Action
 
     public function authorizedToRun($request, $model)
     {
-        return $model->is_enabled;
-    }
-
-    public function canSee(NovaRequest $request)
-    {
-        return true;
+        $user = $request->user();
+        $isAllowedRole = $user && ($user->isSuperAdmin() || $user->isAdmin());
+        return $isAllowedRole && $model->is_enabled;
     }
 
     public function fields(NovaRequest $request)

@@ -36,9 +36,13 @@ class EmergencyModeSetting extends Resource
                 return $this->is_enabled ? 'Enabled' : 'Disabled';
             })->sortable()->readonly()->exceptOnForms(),
 
+            Text::make('Current Status', function () {
+                return $this->is_enabled ? 'Enabled' : 'Disabled';
+            })->readonly()->onlyOnForms(),
+
             Boolean::make('Emergency Mode Enabled', 'is_enabled')
                 ->hideFromIndex()
-                ->help('When enabled, the global emergency banner is displayed on Vault, Cart, and Quotes pages.'),
+                ->help('Toggle this to enable or disable emergency mode.'),
 
             Text::make('Banner Message', function () {
                 return Str::limit($this->banner_message, 100);
@@ -88,8 +92,8 @@ class EmergencyModeSetting extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new EnableEmergencyMode())->showInline(),
-            (new DisableEmergencyMode())->showInline(),
+            (new EnableEmergencyMode())->showOnTableRow()->showOnDetail(),
+            (new DisableEmergencyMode())->showOnTableRow()->showOnDetail(),
         ];
     }
 
@@ -106,5 +110,11 @@ class EmergencyModeSetting extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->where('id', 1);
+    }
+
+    public function authorizedToUpdate(\Illuminate\Http\Request $request)
+    {
+        $user = $request->user();
+        return $user->isSuperAdmin() || $user->isAdmin();
     }
 }
