@@ -17,6 +17,7 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
 use App\Models\OrderAttribute;
+use App\Models\EmergencyModeSetting;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -149,6 +150,9 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->back()->with('error', emergencyModeMessage());
+        }
 
 
         $customer = getCustomer();

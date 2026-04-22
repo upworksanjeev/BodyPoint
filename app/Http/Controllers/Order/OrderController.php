@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmergencyModeSetting;
 use App\Models\Order;
 use App\Services\SysproService;
 use Exception;
@@ -13,6 +14,10 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     public function PlaceOrder(Request $request, $order_id){
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->back()->with('error', emergencyModeMessage());
+        }
+
         $customer_po_number = $request->customer_po_number;
         $is_duplicate = $request->is_duplicate;
         $idDuplicate = 'N';

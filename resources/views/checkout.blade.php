@@ -1,5 +1,9 @@
 <x-mainpage-layout>
     @section('title', 'Checkout - '.config('app.name', 'Bodypoint'))
+    @php
+        $isEmergencyMode = \App\Models\EmergencyModeSetting::current()->is_enabled;
+        $emergencyHint = emergencyModeMessage();
+    @endphp
     @if ($errors->any())
     @foreach ($errors->all() as $error)
     <div id="error_alert" x-data="{ open: true }" x-show="open" class="alert message-alert bg-red-100 text-red-800 border border-red-400 rounded-lg p-4 relative" role="alert">
@@ -41,9 +45,13 @@
                     <x-cart.final-checkout-list :cart="$cart" />
                     <div class="card-body p-6 border-t order-buttons">
                         <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
-                            <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                            @if($isEmergencyMode)
+                                <button type="button" title="{{ $emergencyHint }}" disabled class="py-2.5 px-5 text-sm font-medium text-gray-500 cursor-not-allowed focus:outline-none bg-[#E5E7EB] rounded-full border border-[#D1D5DB] flex gap-3 items-center justify-center w-[160px]"> Save a Quote</button>
+                            @else
+                                <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                            @endif
                             <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                            <button id="confirm-order" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Confirm Order</button>
+                            <button id="confirm-order" type="button" @if($isEmergencyMode) disabled title="{{ $emergencyHint }}" @endif class="py-2.5 px-5 text-sm font-medium @if($isEmergencyMode) text-gray-500 cursor-not-allowed bg-[#E5E7EB] border-[#D1D5DB] @else text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 @endif focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center justify-center w-[160px]">Confirm Order</button>
                         </div>
                     </div>
                 </div>

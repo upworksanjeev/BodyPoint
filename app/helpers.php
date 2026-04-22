@@ -52,3 +52,21 @@ if (!function_exists('calculateDiscountPercentage')) {
         return round($discountPercentage, 2);
     }
 }
+
+if (!function_exists('emergencyModeMessage')) {
+    function emergencyModeMessage(): string
+    {
+        $default = 'Online ordering is temporarily paused while we resolve a technical issue. To place an order, please email sales@bodypoint.com or call 1-800-547-5716. Thank you for your patience.';
+
+        try {
+            $setting = \App\Models\EmergencyModeSetting::query()->first();
+            if (!$setting) {
+                return $default;
+            }
+
+            return trim((string) $setting->banner_message) !== '' ? $setting->banner_message : $default;
+        } catch (\Throwable $e) {
+            return $default;
+        }
+    }
+}
