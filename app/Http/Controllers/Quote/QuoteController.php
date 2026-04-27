@@ -806,25 +806,27 @@ class QuoteController extends Controller
                 return;
             }
 
-            $customerDetails = SysproService::getCustomerDetails('GetCustomerDetails/' . $customerId);
-            if (empty($customerDetails) || empty($customerDetails['PriceList']) || !is_array($customerDetails['PriceList'])) {
-                return;
-            }
-
-            $customerDiscountPct = (float) ($customerDetails['CustomerDiscountPercentage'] ?? 0);
-            $priceListBySku = [];
-            foreach ($customerDetails['PriceList'] as $priceRow) {
-                if (!empty($priceRow['StockCode'])) {
-                    $priceListBySku[$priceRow['StockCode']] = $priceRow;
-                }
-            }
-
             $activeItems = $quote->orderItem()
                 ->where(function ($q) {
                     $q->whereNull('action')
                         ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
                 })
                 ->get();
+            if ($activeItems->isEmpty()) {
+                return;
+            }
+
+            $customerDetails = SysproService::getCustomerDetails('GetCustomerDetails/' . $customerId);
+            if (empty($customerDetails) || empty($customerDetails['PriceList']) || !is_array($customerDetails['PriceList'])) {
+                return;
+            }
+
+            $customerDiscountPct = (float) ($customerDetails['CustomerDiscountPercentage'] ?? 0);
+            $quoteSkus = $activeItems->pluck('sku')->filter()->unique()->mapWithKeys(function ($sku) {
+                return [$sku => true];
+            })->all();
+            $priceListBySku = array_column($customerDetails['PriceList'], null, 'StockCode');
+            $priceListBySku = array_intersect_key($priceListBySku, $quoteSkus);
 
             foreach ($activeItems as $item) {
                 $sku = $item->sku;
