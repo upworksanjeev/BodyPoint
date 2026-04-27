@@ -200,6 +200,17 @@ class QuoteController extends Controller
         $quotesWithComments = [];
         $quotesComments = [];
         foreach ($quotes as $quote) {
+            $this->syncQuoteItemPricingFromSyspro($quote);
+            $quote->load([
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media',
+            ]);
+
             $apiResponse = null;
             if ($quote->purchase_order_no) {
                 try {
