@@ -200,6 +200,17 @@ class QuoteController extends Controller
         $quotesWithComments = [];
         $quotesComments = [];
         foreach ($quotes as $quote) {
+            $this->syncQuoteItemPricingFromSyspro($quote);
+            $quote->load([
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media',
+            ]);
+
             $apiResponse = null;
             if ($quote->purchase_order_no) {
                 try {
@@ -505,7 +516,7 @@ class QuoteController extends Controller
         $url = 'GetOrderDetails/' . $quote->purchase_order_no;
 
         $response = SysproService::getOrderDetails($url);
-        //dd($response, $quote->purchase_order_no);
+        // dd($response, $quote->purchase_order_no);
         if ($response && $response['response'] && $response['response']['Line']) {
             $lines = $response['response']['Line'];
             foreach ($lines as $line) {
@@ -518,10 +529,14 @@ class QuoteController extends Controller
             }
         }
 
+        $this->syncQuoteItemPricingFromSyspro($quote);
+
         $quote = $quote->load([
             'orderItem' => function ($query) {
-                $query->whereNull('action')
-                    ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
             }
         ]);
         return view('quotes.edit-quote', compact('quote'));
@@ -701,6 +716,10 @@ class QuoteController extends Controller
         if (!$order) {
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
         }
+
+        // Re-sync active line pricing before sending quote update to Syspro.
+        $this->syncQuoteItemPricingFromSyspro($order);
+
         $orderitems = OrderItem::where('order_id', $id)->get();
         DB::beginTransaction();
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
@@ -784,6 +803,78 @@ class QuoteController extends Controller
             Log::error('Quote creation failed: ' . $e->getMessage());
             //dd($e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while updating your Quote. Please try again.');
+        }
+    }
+
+    /**
+     * Sync active quote line pricing from Syspro price list and persist.
+     */
+    private function syncQuoteItemPricingFromSyspro(Order $quote): void
+    {
+        try {
+            $customerId = getCustomerId();
+            if (empty($customerId)) {
+                return;
+            }
+
+            $activeItems = $quote->orderItem()
+                ->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                })
+                ->get();
+            if ($activeItems->isEmpty()) {
+                return;
+            }
+
+            $customerDetails = SysproService::getCustomerDetails('GetCustomerDetails/' . $customerId);
+            if (empty($customerDetails) || empty($customerDetails['PriceList']) || !is_array($customerDetails['PriceList'])) {
+                return;
+            }
+
+            $customerDiscountPct = (float) ($customerDetails['CustomerDiscountPercentage'] ?? 0);
+            $quoteSkus = $activeItems->pluck('sku')->filter()->unique()->mapWithKeys(function ($sku) {
+                return [$sku => true];
+            })->all();
+            $priceListBySku = array_column($customerDetails['PriceList'], null, 'StockCode');
+            $priceListBySku = array_intersect_key($priceListBySku, $quoteSkus);
+
+            foreach ($activeItems as $item) {
+                $sku = $item->sku;
+                if (empty($sku) || !isset($priceListBySku[$sku])) {
+                    continue;
+                }
+
+                $sysproRow = $priceListBySku[$sku];
+                $msrp = (float) ($sysproRow['MSRPPrice'] ?? 0);
+                $price = (float) ($sysproRow['DealerPrice'] ?? 0);
+                if ($price <= 0) {
+                    continue;
+                }
+
+                $discountAmount = 0.0;
+                if ($customerDiscountPct > 0) {
+                    $discountAmount = round(($price * $customerDiscountPct) / 100, 3);
+                }
+                $discountPrice = round(max($price - $discountAmount, 0), 3);
+
+                // Guard against invalid persisted zero-net price when base price is available.
+                if ($discountPrice <= 0 && $price > 0) {
+                    $discountPrice = round($price, 3);
+                    $discountAmount = 0.0;
+                }
+
+                $item->update([
+                    'msrp' => $msrp,
+                    'price' => $price,
+                    'discount' => $discountAmount,
+                    'discount_price' => $discountPrice,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Quote pricing sync skipped: ' . $e->getMessage(), [
+                'quote_id' => $quote->id ?? null,
+            ]);
         }
     }
 
