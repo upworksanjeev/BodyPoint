@@ -717,7 +717,6 @@ class QuoteController extends Controller
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
         }
 
-        // Re-sync active line pricing before sending quote update to Syspro.
         $this->syncQuoteItemPricingFromSyspro($order);
 
         $orderitems = OrderItem::where('order_id', $id)->get();
@@ -725,32 +724,13 @@ class QuoteController extends Controller
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
         Storage::disk('public')->delete($filePath);
         try {
-            if (empty($order->purchase_order_no)) {
+            if (!empty($order->purchase_order_no)) {
                 $customer_id = getCustomerId();
                 $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
                 $url = 'UpdateQuote';
-                //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
                 $order_syspro = SysproService::updateQuote($order->purchase_order_no, $url, $orderitems, 'QUOTE', 'N', 'Y');
 
                 if (!empty($order_syspro['response']['OrderNumber'])) {
-
-                    // $order = Order::create([
-                    //     'user_id' => $user->id,
-                    //     'purchase_order_no' => $order_syspro['response']['orderNumber'],
-                    //     'total_items' => $cart[0]->total_items,
-                    //     'associate_customer_id' => $customer->id ?? null,
-                    //     'customer_number' => $customer_id
-                    // ]);
-
-                    // ✅ Log the created order details
-                    Log::info('Quote Updated:', [
-                        'order_id' => $order->id,
-                        'user_id' => $user->id,
-                        'purchase_order_no' => $order_syspro['response']['OrderNumber'],
-                        'total_items' => $order->total_items,
-                        'associate_customer_id' => $customer->id ?? null,
-                        'customer_number' => $customer_id,
-                    ]);
                     if (!$orderitems->isEmpty()) {
                         foreach ($orderitems as $orderitem) {
                             if ($orderitem->action != "D") {
@@ -785,17 +765,10 @@ class QuoteController extends Controller
                 } elseif (!empty($order_syspro['response']['Error'])) {
                     return redirect()->back()->with('error', $order_syspro['response']['Message']);
                 }
+            } else {
+                return redirect()->back()->with('error', 'Quote number is not found from api. Please sync quotes and try again.');
             }
-            $customer_id = getCustomerId();
-            $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-            // $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
-            //$pdf->render();
-            // $pdfContent = $pdf->output();
-            // FunHelper::saveGenerateQuotePdf($pdfContent, $user);
-            // GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
-            //CartItem::where('cart_id', $cart[0]->id)->delete();
-            //Cart::where('user_id', $user->id)->delete();
-            // session()->put('downloadFile', asset('storage/' . $filePath));
+
             DB::commit();
             return redirect()->route('quotes')->with('success', 'Quote Update Successfully');
         } catch (\Exception $e) {
