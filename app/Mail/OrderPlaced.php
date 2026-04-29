@@ -18,9 +18,11 @@ class OrderPlaced extends Mailable
      * Create a new message instance.
      */
     public $order;
-    public function __construct($order)
+    public $pdfContent;
+    public function __construct($order, ?string $pdfContent = null)
     {
         $this->order = $order;
+        $this->pdfContent = $pdfContent;
     }
 
     /**
@@ -51,7 +53,28 @@ class OrderPlaced extends Mailable
      */
     public function attachments(): array
     {
+        if (!empty($this->pdfContent)) {
+            return [
+                Attachment::fromData(fn () => $this->pdfContent, 'order.pdf')
+                    ->withMime('application/pdf'),
+            ];
+        }
+
         $filePath = storage_path('app/public/orders/order_receipt_' . $this->order->id . '.pdf');
+        if (!file_exists($filePath)) {
+            return [];
+        }
+
+        $fileSize = @filesize($filePath) ?: 0;
+        if ($fileSize < 1024) {
+            return [];
+        }
+
+        $header = @file_get_contents($filePath, false, null, 0, 5);
+        if ($header !== '%PDF-') {
+            return [];
+        }
+
         return [
             Attachment::fromPath($filePath)
                 ->as('order.pdf')

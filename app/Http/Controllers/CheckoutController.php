@@ -266,6 +266,7 @@ class CheckoutController extends Controller
             $processedItems = $this->processOrderLinesWithComments($order, $response ?? null);
             
             $pdfPath = null;
+            $pdfContent = null;
             try {
                 $pdf = Pdf::loadView('order-receipt', [
                     'order'      => $order,
@@ -296,7 +297,19 @@ class CheckoutController extends Controller
                 ]);
                 
             }
-            OrderPlaced::dispatch($order);
+            // Only pass valid PDF content for email attachment.
+            if (!empty($pdfContent)) {
+                $isPdf = str_starts_with($pdfContent, '%PDF-');
+                if (!$isPdf || strlen($pdfContent) < 1024) {
+                    Log::warning('[PDF] Invalid PDF content for email, falling back to file attachment path', [
+                        'order_id' => $order->id,
+                        'bytes' => strlen($pdfContent),
+                        'is_pdf_header' => $isPdf,
+                    ]);
+                    $pdfContent = null;
+                }
+            }
+            OrderPlaced::dispatch($order, $pdfContent);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
             DB::commit();
