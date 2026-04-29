@@ -806,15 +806,30 @@ class QuoteController extends Controller
             }
 
             $customerDiscountPct = (float) ($customerDetails['CustomerDiscountPercentage'] ?? 0);
-            $quoteSkus = $activeItems->pluck('sku')->filter()->unique()->mapWithKeys(function ($sku) {
-                return [$sku => true];
-            })->all();
-            $priceListBySku = array_column($customerDetails['PriceList'], null, 'StockCode');
-            $priceListBySku = array_intersect_key($priceListBySku, $quoteSkus);
+            $quoteSkus = $activeItems->pluck('sku')
+                ->filter()
+                ->map(function ($sku) {
+                    return strtoupper(trim((string) $sku));
+                })
+                ->filter()
+                ->unique()
+                ->mapWithKeys(function ($sku) {
+                    return [$sku => true];
+                })
+                ->all();
+
+            $priceListBySku = [];
+            foreach ($customerDetails['PriceList'] as $priceListItem) {
+                $normalizedStockCode = strtoupper(trim((string) ($priceListItem['StockCode'] ?? '')));
+                if ($normalizedStockCode === '' || !isset($quoteSkus[$normalizedStockCode])) {
+                    continue;
+                }
+                $priceListBySku[$normalizedStockCode] = $priceListItem;
+            }
 
             foreach ($activeItems as $item) {
-                $sku = $item->sku;
-                if (empty($sku) || !isset($priceListBySku[$sku])) {
+                $sku = strtoupper(trim((string) $item->sku));
+                if ($sku === '' || !isset($priceListBySku[$sku])) {
                     continue;
                 }
 
