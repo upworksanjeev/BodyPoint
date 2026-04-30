@@ -235,7 +235,7 @@
                                             {{ request('customer_po_number') }}
                                             <button
                                                 onclick="popOpen(event, {{ '1' . $quote->purchase_order_no }})"
-                                                class="place_order_button py-2.5 px-5 text-sm font-medium text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 justify-center w-full sm:w-[160px] items-left"
+                                                class="place_order_button py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left"
                                                 type="button">Place Order</button>
                                         </form>
                                         @endif

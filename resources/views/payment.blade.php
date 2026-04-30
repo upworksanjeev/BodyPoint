@@ -154,7 +154,7 @@
 
       <div>
             {{-- Next Button - shown when PaymentTermCode is NOT CC, or when a saved card is selected (if CC) --}}
-            <button id="next-button" type="button" onclick="proceedToCheckout()" class="py-2.5 px-5 text-sm font-medium text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? 'hidden' : '' }}">
+            <button id="next-button" type="button" onclick="proceedToCheckout()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? 'hidden' : '' }}">
               Next
             </button>
             {{-- Save a Quote Button - shown only when PaymentTermCode is CC and Add New Card is selected --}}
