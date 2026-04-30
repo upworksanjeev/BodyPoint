@@ -150,9 +150,11 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
-        if (EmergencyModeSetting::current()->is_enabled) {
-            return redirect()->back()->with('error', emergencyModeMessage());
-        }
+        // Phase 1 behavior: do not block active/in-progress submit flows server-side.
+        // Re-enable this guard in Phase 2 along with full emergency-mode UX controls.
+        // if (EmergencyModeSetting::current()->is_enabled) {
+        //     return redirect()->back()->with('error', emergencyModeMessage());
+        // }
 
 
         $customer = getCustomer();

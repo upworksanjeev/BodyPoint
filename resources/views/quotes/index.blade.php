@@ -1,8 +1,4 @@
 <x-mainpage-layout>
-    @php
-        $isEmergencyMode = \App\Models\EmergencyModeSetting::current()->is_enabled;
-        $emergencyHint = emergencyModeMessage();
-    @endphp
     @if(session()->has('customer_po_number'))
     @php
     // dd(session()->get('customer_po_number') );
@@ -222,13 +218,9 @@
                                     
                                     @if($isCCCustomer)
                                         {{-- CC customers see "Place a Order" button --}}
-                                        @if($isEmergencyMode)
-                                            <button type="button" title="{{ $emergencyHint }}" disabled class="py-2.5 px-5 text-sm font-medium text-gray-500 cursor-not-allowed focus:outline-none bg-[#E5E7EB] rounded-full border border-[#D1D5DB] flex gap-3 justify-center w-full sm:w-[160px] items-left">Place Order</button>
-                                        @else
-                                            <a href="{{ route('place-order-from-quote', $quote->id) }}"
-                                            class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left
-                                            ">Place Order</a>
-                                        @endif
+                                        <a href="{{ route('place-order-from-quote', $quote->id) }}"
+                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left
+                                        ">Place Order</a>
                                     @else
                                         {{-- Non-CC customers see "Place Order" button --}}
                                         @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
@@ -243,8 +235,7 @@
                                             {{ request('customer_po_number') }}
                                             <button
                                                 onclick="popOpen(event, {{ '1' . $quote->purchase_order_no }})"
-                                                @if($isEmergencyMode) disabled title="{{ $emergencyHint }}" @endif
-                                                class="place_order_button py-2.5 px-5 text-sm font-medium @if($isEmergencyMode) text-gray-500 cursor-not-allowed bg-[#E5E7EB] border-[#D1D5DB] @else text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 @endif focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 justify-center w-full sm:w-[160px] items-left"
+                                                class="place_order_button py-2.5 px-5 text-sm font-medium text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 justify-center w-full sm:w-[160px] items-left"
                                                 type="button">Place Order</button>
                                         </form>
                                         @endif

@@ -1,8 +1,4 @@
 <?php $subtotal = 0; ?>
-@php
-  $isEmergencyMode = \App\Models\EmergencyModeSetting::current()->is_enabled;
-  $emergencyHint = emergencyModeMessage();
-@endphp
 @if(isset($cart[0]))
 @foreach ($cart[0]['CartItem'] as $cartitem)
 <tr class="odd:bg-white even:bg-gray-50 border-b" id="tr_{{ $cartitem['id'] }}">
@@ -112,25 +108,13 @@
                     
                     @if($isCCCustomer)
                       {{-- CC customers see "Save a Quote" button --}}
-                      @if($isEmergencyMode)
-                        <button type="button" title="{{ $emergencyHint }}" disabled class="py-2.5 px-5 text-sm font-medium text-gray-500 cursor-not-allowed focus:outline-none bg-[#E5E7EB] rounded-full border border-[#D1D5DB] flex gap-3 items-center justify-center w-[160px]"> Save a Quote</button>
-                      @else
-                        <a href="{{ route('quote') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
-                      @endif
+                      <a href="{{ route('quote') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
                     @else
                       {{-- Non-CC customers see "Save Quote" button --}}
-                      @if($isEmergencyMode)
-                        <button type="button" title="{{ $emergencyHint }}" disabled class="py-2.5 px-5 text-sm font-medium text-gray-500 cursor-not-allowed focus:outline-none bg-[#E5E7EB] rounded-full border border-[#D1D5DB] flex gap-3 items-center justify-center w-[160px]"> Save a Quote</button>
-                      @else
-                        <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
-                      @endif
+                      <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
                     @endif
-      
-      @if($isEmergencyMode)
-        <button type="button" title="{{ $emergencyHint }}" disabled class="py-2.5 px-5 text-sm font-medium text-gray-500 cursor-not-allowed focus:outline-none bg-[#E5E7EB] rounded-full border border-[#D1D5DB] flex gap-3 items-center justify-center w-[160px]"> Check Out</button>
-      @else
-        <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
-      @endif
+
+      <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
     </div>
   </td>
 </tr>

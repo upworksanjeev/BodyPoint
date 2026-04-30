@@ -1,9 +1,5 @@
 <x-mainpage-layout>
   @section('title', 'Payment - '.config('app.name', 'Bodypoint'))
-  @php
-    $isEmergencyMode = \App\Models\EmergencyModeSetting::current()->is_enabled;
-    $emergencyHint = emergencyModeMessage();
-  @endphp
 
   <x-cart-nav />
 
@@ -158,19 +154,13 @@
 
       <div>
             {{-- Next Button - shown when PaymentTermCode is NOT CC, or when a saved card is selected (if CC) --}}
-            <button id="next-button" type="button" onclick="proceedToCheckout()" @if($isEmergencyMode) disabled title="{{ $emergencyHint }}" @endif class="py-2.5 px-5 text-sm font-medium @if($isEmergencyMode) text-gray-500 cursor-not-allowed bg-[#E5E7EB] border-[#D1D5DB] @else text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 @endif focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? 'hidden' : '' }}">
+            <button id="next-button" type="button" onclick="proceedToCheckout()" class="py-2.5 px-5 text-sm font-medium text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? 'hidden' : '' }}">
               Next
             </button>
             {{-- Save a Quote Button - shown only when PaymentTermCode is CC and Add New Card is selected --}}
-            @if($isEmergencyMode)
-              <button id="save-quote-button" type="button" disabled title="{{ $emergencyHint }}" class="py-2.5 px-5 text-sm font-medium text-gray-500 cursor-not-allowed focus:outline-none bg-[#E5E7EB] rounded-full border border-[#D1D5DB] flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? '' : 'hidden' }}">
-                Save a Quote
-              </button>
-            @else
-              <a id="save-quote-button" href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? '' : 'hidden' }}">
-                Save a Quote
-              </a>
-            @endif
+            <a id="save-quote-button" href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? '' : 'hidden' }}">
+              Save a Quote
+            </a>
           </div>
           </div>
          <x-cart.checkout-list :cart="$cart" />

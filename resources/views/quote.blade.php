@@ -1,8 +1,4 @@
 <x-mainpage-layout>
-    @php
-        $isEmergencyMode = \App\Models\EmergencyModeSetting::current()->is_enabled;
-        $emergencyHint = emergencyModeMessage();
-    @endphp
     <x-cart-nav />
     <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
         <div class="container mx-auto">
@@ -65,7 +61,7 @@
                         <div class="card-body p-6 border-t quote-buttons">
                             <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                                <button id="generate-quote" type="button" @if($isEmergencyMode) disabled title="{{ $emergencyHint }}" @endif class="py-2.5 px-5 text-sm font-medium @if($isEmergencyMode) text-gray-500 cursor-not-allowed bg-[#E5E7EB] border-[#D1D5DB] @else text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 @endif focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center justify-center w-[160px]">Generate Quote</button>
+                                <button id="generate-quote" type="button" class="py-2.5 px-5 text-sm font-medium text-white bg-[#FF9119] border-[#FF9119] hover:bg-[#FF9119]/80 focus:outline-none rounded-full border focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center justify-center w-[160px]">Generate Quote</button>
                             </div>
                         </div>
                     </form>
