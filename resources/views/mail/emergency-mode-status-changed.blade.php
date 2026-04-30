@@ -38,31 +38,31 @@
 
     <table cellpadding="8" cellspacing="0" border="0" style="border-collapse: collapse; width: 100%; max-width: 760px;">
         <tr>
-            <td style="background: #f3f4f6; width: 220px; font-weight: 700;">Current Emergency State</td>
-            <td style="background: #ffffff;">{{ $isEnabledState ? 'Enabled' : 'Disabled' }}</td>
+            <td style="width: 220px; font-weight: 700;">Current Emergency State</td>
+            <td>{{ $isEnabledState ? 'Enabled' : 'Disabled' }}</td>
         </tr>
 
         @if($isEnabledState)
             <tr>
-                <td style="background: #f9fafb; font-weight: 700;">Banner Message</td>
-                <td style="background: #ffffff;">{{ $setting->banner_message }}</td>
+                <td style="font-weight: 700;">Banner Message</td>
+                <td>{{ $setting->banner_message }}</td>
             </tr>
             <tr>
-                <td style="background: #f3f4f6; font-weight: 700;">Enabled At</td>
-                <td style="background: #ffffff;">{{ $setting->last_enabled_at?->toDateTimeString() ?? '-' }}</td>
+                <td style="font-weight: 700;">Enabled At</td>
+                <td>{{ $setting->last_enabled_at?->toDateTimeString() ?? '-' }}</td>
             </tr>
             <tr>
-                <td style="background: #f9fafb; font-weight: 700;">Enabled By</td>
-                <td style="background: #ffffff;">{{ $formatUser($setting->enabledBy) }}</td>
+                <td style="font-weight: 700;">Enabled By</td>
+                <td>{{ $formatUser($setting->enabledBy) }}</td>
             </tr>
         @else
             <tr>
-                <td style="background: #f3f4f6; font-weight: 700;">Disabled At</td>
-                <td style="background: #ffffff;">{{ $setting->last_disabled_at?->toDateTimeString() ?? '-' }}</td>
+                <td style="font-weight: 700;">Disabled At</td>
+                <td>{{ $setting->last_disabled_at?->toDateTimeString() ?? '-' }}</td>
             </tr>
             <tr>
-                <td style="background: #f9fafb; font-weight: 700;">Disabled By</td>
-                <td style="background: #ffffff;">{{ $formatUser($setting->disabledBy) }}</td>
+                <td style="font-weight: 700;">Disabled By</td>
+                <td>{{ $formatUser($setting->disabledBy) }}</td>
             </tr>
         @endif
     </table>
