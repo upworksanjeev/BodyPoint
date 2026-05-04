@@ -202,7 +202,7 @@
                                     $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
                                     @endphp
 
-                                    
+                                    {{-- PDFs + Edit Quote: always full links; emergency mode never removes these. --}}
                                     <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only"
                                         class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-auto">Download MSRP</a>
                                     <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary"
@@ -217,7 +217,7 @@
                                         ">
                                         Edit Quote</a>
 
-                                    
+                                    {{-- Place Order is disabled (same visible slot) during emergency; Email Order appears only then as the alternate path. --}}
                                     @php
                                         $quoteMailtoHref = $emergencyModeQuotes ? \App\Support\EmergencyOrderMailto::buildQuoteMailtoHref($quote) : null;
                                         $quotePoTip = \App\Support\EmergencyOrderMailto::quotePlaceOrderDisabledTooltip((string) ($quote->purchase_order_no ?? ''));
@@ -227,14 +227,14 @@
                                     @if($isCCCustomer)
                                         {{-- CC customers see "Place Order" button --}}
                                         @if ($emergencyModeQuotes)
-                                            <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary />
+                                            <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary wide />
                                             @if ($quoteMailtoHref)
                                                 <a href="{{ $quoteMailtoHref }}"
                                                     class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-auto sm:min-w-[200px] items-center text-center whitespace-nowrap">
                                                     Email Order from this Quote
                                                 </a>
                                             @else
-                                                <x-emergency.faux-button label="Email Order from this Quote" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary />
+                                                <x-emergency.faux-button label="Email Order from this Quote" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary wide />
                                             @endif
                                             @if ($quoteCopyText !== '')
                                                 <button type="button" class="py-2 text-sm font-medium text-[#00838f] underline" data-bp-quote-copy="{{ base64_encode($quoteCopyText) }}" onclick="(function(b){var t=atob(b.getAttribute('data-bp-quote-copy'));navigator.clipboard.writeText(t).then(function(){if(window.toastr){toastr.success('Quote text copied');}}).catch(function(){});})(this)">Copy quote text</button>
@@ -249,14 +249,14 @@
                                         {{-- Non-CC customers see "Place Order" button --}}
                                         @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
                                             @if ($emergencyModeQuotes)
-                                                <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary />
+                                                <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary wide />
                                                 @if ($quoteMailtoHref)
                                                     <a href="{{ $quoteMailtoHref }}"
                                                         class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-auto sm:min-w-[200px] items-center text-center whitespace-nowrap">
                                                         Email Order from this Quote
                                                     </a>
                                                 @else
-                                                    <x-emergency.faux-button label="Email Order from this Quote" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary />
+                                                    <x-emergency.faux-button label="Email Order from this Quote" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary wide />
                                                 @endif
                                                 @if ($quoteCopyText !== '')
                                                     <button type="button" class="py-2 text-sm font-medium text-[#00838f] underline" data-bp-quote-copy="{{ base64_encode($quoteCopyText) }}" onclick="(function(b){var t=atob(b.getAttribute('data-bp-quote-copy'));navigator.clipboard.writeText(t).then(function(){if(window.toastr){toastr.success('Quote text copied');}}).catch(function(){});})(this)">Copy quote text</button>
@@ -385,18 +385,17 @@
     @endpush
 </x-mainpage-layout>
 @if (session('downloadFile'))
+@php
+    $downloadFileUrl = session('downloadFile');
+    session()->forget('downloadFile');
+@endphp
 <script>
     window.onload = function() {
-        const downloadUrl = "{{ session('downloadFile') }}";
+        const downloadUrl = @json($downloadFileUrl);
         const link = document.createElement('a');
         link.href = downloadUrl;
         link.download = 'quote.pdf';
         link.click();
-        {
-            {
-                session() - > forget('downloadFile')
-            }
-        }
     };
 </script>
 @endif
