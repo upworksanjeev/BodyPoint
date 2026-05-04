@@ -31,6 +31,10 @@ class CheckoutController extends Controller
      */
     public function index(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = getCustomerId();
@@ -47,6 +51,10 @@ class CheckoutController extends Controller
      */
     public function payment(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user();
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
 
@@ -110,6 +118,10 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         if (isset($cart[0])) {
@@ -133,6 +145,10 @@ class CheckoutController extends Controller
      */
     public function quote(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = getCustomerId();
@@ -150,12 +166,9 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
-        // Phase 1 behavior: do not block active/in-progress submit flows server-side.
-        // Re-enable this guard in Phase 2 along with full emergency-mode UX controls.
-        // if (EmergencyModeSetting::current()->is_enabled) {
-        //     return redirect()->back()->with('error', emergencyModeMessage());
-        // }
-
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->back()->with('error', emergencyModeMessage());
+        }
 
         $customer = getCustomer();
         if (!$customer->hasPermissionTo('placeOrders')) {

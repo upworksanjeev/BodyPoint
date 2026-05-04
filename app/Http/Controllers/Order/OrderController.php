@@ -13,12 +13,11 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function PlaceOrder(Request $request, $order_id){
-        // Phase 1 behavior: do not block active/in-progress submit flows server-side.
-        // Re-enable this guard in Phase 2 along with full emergency-mode UX controls.
-        // if (EmergencyModeSetting::current()->is_enabled) {
-        //     return redirect()->back()->with('error', emergencyModeMessage());
-        // }
+    public function PlaceOrder(Request $request, $order_id)
+    {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->back()->with('error', emergencyModeMessage());
+        }
 
         $customer_po_number = $request->customer_po_number;
         $is_duplicate = $request->is_duplicate;
