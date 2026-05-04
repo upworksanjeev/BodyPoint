@@ -61,12 +61,15 @@ class EmergencyModeSetting extends Resource
                 ->hideFromIndex()
                 ->help('Optional. When Emergency Mode is enabled, it will automatically turn off after this many hours.'),
 
-            DateTime::make('Auto Disable At', 'auto_disable_at')->readonly()->onlyOnDetail(),
-            DateTime::make('Last Enabled At', 'last_enabled_at')->readonly()->onlyOnDetail(),
+            DateTime::make('Auto Disable At (UTC)', 'auto_disable_at')
+                ->readonly()
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Last Enabled At (UTC)', 'last_enabled_at')->readonly()->onlyOnDetail(),
             Text::make('Last Enabled By', function () {
                 return $this->enabledBy?->email ?? '-';
             })->readonly()->onlyOnDetail(),
-            DateTime::make('Last Disabled At', 'last_disabled_at')->readonly()->onlyOnDetail(),
+            DateTime::make('Last Disabled At (UTC)', 'last_disabled_at')->readonly()->onlyOnDetail(),
             Text::make('Last Disabled By', function () {
                 return $this->disabledBy?->email ?? '-';
             })->readonly()->onlyOnDetail(),
