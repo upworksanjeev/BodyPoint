@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderAttribute;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\EmergencyModeSetting;
 use App\Models\UserDetails;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
@@ -274,6 +275,12 @@ class QuoteController extends Controller
     }
      public function store(Request $request)
     {
+        // Phase 1 behavior: do not block active/in-progress submit flows server-side.
+        // Re-enable this guard in Phase 2 along with full emergency-mode UX controls.
+        // if (EmergencyModeSetting::current()->is_enabled) {
+        //     return redirect()->route('quotes')->with('error', emergencyModeMessage());
+        // }
+
         $customer = getCustomer();
         if (!$customer->hasPermissionTo('getQuotes')) {
             abort(403);
@@ -915,6 +922,12 @@ class QuoteController extends Controller
      */
     public function placeOrderFromQuote($quote_id)
     {
+        // Phase 1 behavior: do not block active/in-progress submit flows server-side.
+        // Re-enable this guard in Phase 2 along with full emergency-mode UX controls.
+        // if (EmergencyModeSetting::current()->is_enabled) {
+        //     return redirect()->route('quotes')->with('error', emergencyModeMessage());
+        // }
+
         $user = Auth::user();
         $quote = Order::with([
             'OrderItem' => function ($query) {

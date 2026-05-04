@@ -20,6 +20,7 @@ use App\Nova\Order;
 use App\Nova\Quote;
 use App\Nova\Role;
 use App\Nova\Permission;
+use App\Nova\EmergencyModeSetting;
 
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -38,6 +39,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         // Register app-side Nova fixes script (non-vendor) to safely patch behaviors at runtime
         Nova::script('nova-fixes', asset('assets/js/nova-fixes.js'));
+        Nova::script('nova-emergency-toggle', asset('assets/js/nova-emergency-toggle.js'));
         
         //Observable::make(ProductModel::class, ProductObserver::class);
         //Observable::make(ProductAttributeModel::class, ProductAttributeObserver::class);
@@ -70,6 +72,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])
                     ->icon('list')
                     ->collapsable(),
+
+                MenuSection::make('Operations', [
+                    MenuItem::resource(EmergencyModeSetting::class),
+                ])->icon('exclamation-circle')->collapsable(),
 
             ];
         });
