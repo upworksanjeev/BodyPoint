@@ -30,7 +30,7 @@ class EmergencyModeSetting extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable()->readonly(),
+            ID::make()->sortable()->readonly()->hideFromDetail(),
 
             Text::make('Status', function () {
                 return $this->is_enabled ? 'Enabled' : 'Disabled';
