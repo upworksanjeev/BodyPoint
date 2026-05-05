@@ -52,7 +52,7 @@ class EmergencyModeSetting extends Resource
                 ->rows(4)
                 ->rules('required', 'string')
                 ->hideFromIndex()
-                ->help('This copy is displayed in the emergency banner and can be updated without code changes.'),
+                ->help('This text is displayed in the emergency banner.'),
 
             Number::make('Auto Disable After (Hours)', 'auto_disable_hours')
                 ->min(1)
