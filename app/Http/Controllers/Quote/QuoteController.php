@@ -197,11 +197,8 @@ class QuoteController extends Controller
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
 
-        // Build comment lines for each quote from Syspro API response.
-        // Quotes purged from Syspro (e.g. after ~90 days) are omitted from the list and PDF export.
         $quotesWithComments = [];
         $quotesComments = [];
-        $visibleQuotes = collect();
         foreach ($quotes as $quote) {
             $apiResponse = null;
             if ($quote->purchase_order_no) {
@@ -215,15 +212,8 @@ class QuoteController extends Controller
                 }
             }
 
-            if (!$this->sysproQuoteDetailsAreAvailable($apiResponse)) {
-                Log::debug('Quote omitted from listing: not available in Syspro', [
-                    'quote_id' => $quote->id,
-                    'purchase_order_no' => $quote->purchase_order_no,
-                ]);
-                continue;
-            }
+            $isSysproAvailable = $this->sysproQuoteDetailsAreAvailable($apiResponse);
 
-            $this->syncQuoteItemPricingFromSyspro($quote);
             $quote->load([
                 'OrderItem' => function ($query) {
                     $query->where(function ($q) {
@@ -234,7 +224,11 @@ class QuoteController extends Controller
                 'OrderItem.Product.Media',
             ]);
 
-            $processedItems = $this->processOrderLinesWithComments($quote, $apiResponse);
+            if ($isSysproAvailable) {
+                $this->syncQuoteItemPricingFromSyspro($quote);
+            }
+
+            $processedItems = $this->processOrderLinesWithComments($quote, $isSysproAvailable ? $apiResponse : null);
 
             // Store for PDFs (structure similar to ordersWithComments)
             $quotesWithComments[] = [
@@ -249,10 +243,7 @@ class QuoteController extends Controller
                 $itemComments[$orderItem->id] = $processedItem['comment'] ?? null;
             }
             $quotesComments[$quote->id] = $itemComments;
-            $visibleQuotes->push($quote);
         }
-
-        $quotes->setCollection($visibleQuotes->values());
         
         // Fetch PaymentTermCode to determine which button to show
         $paymentTermCode = null;
