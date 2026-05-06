@@ -33,7 +33,7 @@ class ProcessEmergencyModeState extends Command
             return self::SUCCESS;
         }
 
-        $recipient = config('bodypoint.mail_for_emergency');
+        $recipient = $setting->notificationRecipients();
         if (!$recipient) {
             return self::SUCCESS;
         }
