@@ -54,6 +54,12 @@ class EmergencyModeSetting extends Resource
                 ->hideFromIndex()
                 ->help('This text is displayed in the emergency banner.'),
 
+            Textarea::make('Notification Emails', 'notification_emails')
+                ->rows(2)
+                ->hideFromIndex()
+                ->rules('required', 'string')
+                ->help('Comma-separated list of email addresses to notify when Emergency Mode is enabled/disabled and for daily reminders.'),
+
             Number::make('Auto Disable After (Hours)', 'auto_disable_hours')
                 ->min(1)
                 ->step(1)
