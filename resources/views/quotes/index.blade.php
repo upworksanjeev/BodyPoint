@@ -15,6 +15,9 @@
             <p class="mt-1 text-sm text-gray-600 text-center">
                 List of all your Quotes
             </p>
+            <p class="mt-2 text-sm text-gray-600 text-center">
+                Quotes expire after 90 days.
+            </p>
         </header>
         <div class="container mx-auto mt-9">
             <div class="lg:max-w-screen-xl mx-auto">

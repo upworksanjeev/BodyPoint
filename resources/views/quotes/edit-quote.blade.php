@@ -18,6 +18,9 @@
             <li>2. Select the product, adjust quantity and other details.</li>
             <li>3. Click "Update Quote" to refresh your quote.</li>
           </ol>
+          <p class="text-sm text-gray-600 mt-3">
+            Note: Quotes expire after 90 days.
+          </p>
         </div>
 
         <!-- Search and Add/Edit Item Section -->
