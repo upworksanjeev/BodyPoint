@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 /**
  * Builds mailto links and plain-text bodies for emergency-mode email ordering.
- * Recipient address comes only from config `bodypoint.emergency_order_email` (env MAIL_EMERGENCY_ORDER_EMAIL).
+ * Recipient comes only from Emergency Mode “Send Email Order” in Nova ({@see EmergencyModeSetting::orderRequestRecipientEmail()}).
  */
 class EmergencyOrderMailto
 {
@@ -18,13 +18,7 @@ class EmergencyOrderMailto
 
     public static function recipientEmail(): ?string
     {
-        $email = config('bodypoint.emergency_order_email');
-        if (!is_string($email)) {
-            return null;
-        }
-        $email = trim($email);
-
-        return $email !== '' ? $email : null;
+        return \App\Models\EmergencyModeSetting::current()->orderRequestRecipientEmail();
     }
 
     public static function cartDisabledTooltip(): string
@@ -35,7 +29,7 @@ class EmergencyOrderMailto
             return $base . ' or email ' . $email . '.';
         }
 
-        return $base . '.';
+        return $base . '. Save a valid Send Email Order address in Emergency Mode settings.';
     }
 
     public static function emptyCartEmailTooltip(): string
@@ -51,18 +45,17 @@ class EmergencyOrderMailto
             return $base . ' or email ' . $email . ' and reference Quote #' . $quoteNumber . '.';
         }
 
-        return $base . ' and reference Quote #' . $quoteNumber . '.';
+        return $base . ' and reference Quote #' . $quoteNumber . '. Save Send Email Order in Emergency Mode settings.';
     }
 
-    /** Shown when cart has items but MAIL_EMERGENCY_ORDER_EMAIL is not set (mailto cannot be built). */
+    /** Shown when mailto cannot be built (Send Email Order missing or invalid in admin). */
     public static function emailOrderUnavailableTooltip(): string
     {
-        return 'Email order is unavailable. Please call 1-800-547-5716.';
+        return 'Send Email Order is not set in Emergency Mode settings. Add a valid address in the admin panel.';
     }
 
     /**
      * Helper line when mailto may not open the partner's mail client (HTML-safe for {!! !!}).
-     * Uses {@see recipientEmail()} — align with partner mailto recipient (e.g. sales@bodypoint.com via env).
      */
     public static function partnerMailtoHelpHtml(): string
     {
