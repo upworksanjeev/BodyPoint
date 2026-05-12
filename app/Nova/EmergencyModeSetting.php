@@ -30,7 +30,7 @@ class EmergencyModeSetting extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable()->readonly(),
+            ID::make()->sortable()->readonly()->hideFromDetail(),
 
             Text::make('Status', function () {
                 return $this->is_enabled ? 'Enabled' : 'Disabled';
@@ -52,7 +52,13 @@ class EmergencyModeSetting extends Resource
                 ->rows(4)
                 ->rules('required', 'string')
                 ->hideFromIndex()
-                ->help('This copy is displayed in the emergency banner and can be updated without code changes.'),
+                ->help('This text is displayed in the emergency banner.'),
+
+            Textarea::make('Notification Emails', 'notification_emails')
+                ->rows(2)
+                ->hideFromIndex()
+                ->rules('required', 'string')
+                ->help('Comma-separated list of email addresses to notify when Emergency Mode is enabled/disabled and for daily reminders.'),
 
             Number::make('Auto Disable After (Hours)', 'auto_disable_hours')
                 ->min(1)

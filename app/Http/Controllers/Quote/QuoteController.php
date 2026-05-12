@@ -197,15 +197,13 @@ class QuoteController extends Controller
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
 
-        // Build comment lines for each quote from Syspro API response
         $quotesWithComments = [];
         $quotesComments = [];
         foreach ($quotes as $quote) {
             $apiResponse = null;
             if ($quote->purchase_order_no) {
                 try {
-                    $url = 'GetOrderDetails/' . $quote->purchase_order_no;
-                    $apiResponse = SysproService::getOrderDetails($url);
+                    $apiResponse = SysproService::getOrderDetails('GetOrderDetails/' . $quote->purchase_order_no);
                 } catch (\Exception $e) {
                     Log::error('Failed to fetch order details for quote comments: ' . $e->getMessage(), [
                         'quote_id' => $quote->id,
@@ -214,7 +212,23 @@ class QuoteController extends Controller
                 }
             }
 
-            $processedItems = $this->processOrderLinesWithComments($quote, $apiResponse);
+            $isSysproAvailable = $this->sysproQuoteDetailsAreAvailable($apiResponse);
+
+            $quote->load([
+                'OrderItem' => function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereNull('action')
+                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                    });
+                },
+                'OrderItem.Product.Media',
+            ]);
+
+            if ($isSysproAvailable) {
+                $this->syncQuoteItemPricingFromSyspro($quote);
+            }
+
+            $processedItems = $this->processOrderLinesWithComments($quote, $isSysproAvailable ? $apiResponse : null);
 
             // Store for PDFs (structure similar to ordersWithComments)
             $quotesWithComments[] = [
@@ -476,6 +490,10 @@ class QuoteController extends Controller
             }
         }
 
+        if (!$cart || !$this->sysproQuoteDetailsAreAvailable($apiResponse)) {
+            return $this->redirectQuotesSysproUnavailable();
+        }
+
         $processedItems = $cart ? $this->processOrderLinesWithComments($cart, $apiResponse) : [];
 
         $pdf = Pdf::loadView('quotes.pdf-quote', [
@@ -510,7 +528,10 @@ class QuoteController extends Controller
         $url = 'GetOrderDetails/' . $quote->purchase_order_no;
 
         $response = SysproService::getOrderDetails($url);
-        //dd($response, $quote->purchase_order_no);
+        if (!$this->sysproQuoteDetailsAreAvailable($response)) {
+            return $this->redirectQuotesSysproUnavailable();
+        }
+        // dd($response, $quote->purchase_order_no);
         if ($response && $response['response'] && $response['response']['Line']) {
             $lines = $response['response']['Line'];
             foreach ($lines as $line) {
@@ -523,10 +544,14 @@ class QuoteController extends Controller
             }
         }
 
+        $this->syncQuoteItemPricingFromSyspro($quote);
+
         $quote = $quote->load([
             'orderItem' => function ($query) {
-                $query->whereNull('action')
-                    ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
             }
         ]);
         return view('quotes.edit-quote', compact('quote'));
@@ -706,82 +731,68 @@ class QuoteController extends Controller
         if (!$order) {
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
         }
+
+        if (empty($order->purchase_order_no)) {
+            return $this->redirectQuotesSysproUnavailable();
+        }
+        $sysproDetails = SysproService::getOrderDetails('GetOrderDetails/' . $order->purchase_order_no);
+        if (!$this->sysproQuoteDetailsAreAvailable($sysproDetails)) {
+            return $this->redirectQuotesSysproUnavailable();
+        }
+
+        $this->syncQuoteItemPricingFromSyspro($order);
+
         $orderitems = OrderItem::where('order_id', $id)->get();
         DB::beginTransaction();
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
         Storage::disk('public')->delete($filePath);
         try {
-            if (empty($order->purchase_order_no)) {
-                $customer_id = getCustomerId();
-                $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-                $url = 'UpdateQuote';
-                //$order_syspro = SysproService::placeQuoteWithOrder($url, $cartitems, $request->customer_po_number ?? null, 'N', 'Y');
-                $order_syspro = SysproService::updateQuote($order->purchase_order_no, $url, $orderitems, 'QUOTE', 'N', 'Y');
-
-                if (!empty($order_syspro['response']['OrderNumber'])) {
-
-                    // $order = Order::create([
-                    //     'user_id' => $user->id,
-                    //     'purchase_order_no' => $order_syspro['response']['orderNumber'],
-                    //     'total_items' => $cart[0]->total_items,
-                    //     'associate_customer_id' => $customer->id ?? null,
-                    //     'customer_number' => $customer_id
-                    // ]);
-
-                    // ✅ Log the created order details
-                    Log::info('Quote Updated:', [
-                        'order_id' => $order->id,
-                        'user_id' => $user->id,
-                        'purchase_order_no' => $order_syspro['response']['OrderNumber'],
-                        'total_items' => $order->total_items,
-                        'associate_customer_id' => $customer->id ?? null,
-                        'customer_number' => $customer_id,
-                    ]);
-                    if (!$orderitems->isEmpty()) {
-                        foreach ($orderitems as $orderitem) {
-                            if ($orderitem->action != "D") {
-
-                                $total += $orderitem->discount_price * $orderitem->quantity;
-                            }
-                        }
-                        $order->orderItem()->createMany($orderItems);
-                    }
-                    $url = 'GetOrderDetails/' . $order->purchase_order_no;
-                    $response = SysproService::getOrderDetails($url);
-
-                    if ($response && $response['response']['Line']) {
-                        $lines = $response['response']['Line'];
-
-                        foreach ($lines as $line) {
-                            $orderItem = $order->orderItem()->where('sku', $line['StockCode'])->first();
-
-                            if ($orderItem) {
-
-                                $orderItem->update(['line_number' => $line['SalesOrderLine'], 'action' => 'N']);
-                            }
-                        }
-                        $orderItemsToDelete = $order->orderItem()->where('action', 'D')->delete();
-                    }
-
-                    $order->update([
-                        'status' => $response['response']['Status'],
-                        'total' => $total,
-                        //'customer_po_number' => $request->customer_po_number ?? null
-                    ]);
-                } elseif (!empty($order_syspro['response']['Error'])) {
-                    return redirect()->back()->with('error', $order_syspro['response']['Message']);
-                }
-            }
             $customer_id = getCustomerId();
-            $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-            // $pdf = Pdf::loadView('pdf', ['cart' => $cart, 'user' => $user, 'userDetail' => $user_detail, 'priceOption' => $price_option]);
-            //$pdf->render();
-            // $pdfContent = $pdf->output();
-            // FunHelper::saveGenerateQuotePdf($pdfContent, $user);
-            // GenerateQuote::dispatch($cart, $user, $user_detail, $price_option);
-            //CartItem::where('cart_id', $cart[0]->id)->delete();
-            //Cart::where('user_id', $user->id)->delete();
-            // session()->put('downloadFile', asset('storage/' . $filePath));
+            $customer = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+            $url = 'UpdateQuote';
+            $order_syspro = SysproService::updateQuote($order->purchase_order_no, $url, $orderitems, 'QUOTE', 'N', 'Y');
+
+            if (!empty($order_syspro['response']['OrderNumber'])) {
+                if (!$orderitems->isEmpty()) {
+                    foreach ($orderitems as $orderitem) {
+                        if ($orderitem->action != "D") {
+
+                            $total += $orderitem->discount_price * $orderitem->quantity;
+                        }
+                    }
+                    $order->orderItem()->createMany($orderItems);
+                }
+                $url = 'GetOrderDetails/' . $order->purchase_order_no;
+                $response = SysproService::getOrderDetails($url);
+
+                if ($response && $response['response']['Line']) {
+                    $lines = $response['response']['Line'];
+
+                    foreach ($lines as $line) {
+                        $orderItem = $order->orderItem()->where('sku', $line['StockCode'])->first();
+
+                        if ($orderItem) {
+
+                            $orderItem->update(['line_number' => $line['SalesOrderLine'], 'action' => 'N']);
+                        }
+                    }
+                    $orderItemsToDelete = $order->orderItem()->where('action', 'D')->delete();
+                }
+
+                $order->update([
+                    'status' => $response['response']['Status'],
+                    'total' => $total,
+                    //'customer_po_number' => $request->customer_po_number ?? null
+                ]);
+            } elseif (!empty($order_syspro['response']['Error'])) {
+                $updateErrMsg = (string) ($order_syspro['response']['Message'] ?? '');
+                if ($this->sysproMessageIndicatesUnavailableOrder($updateErrMsg)) {
+                    DB::rollBack();
+                    return $this->redirectQuotesSysproUnavailable();
+                }
+                return redirect()->back()->with('error', $order_syspro['response']['Message']);
+            }
+
             DB::commit();
             return redirect()->route('quotes')->with('success', 'Quote Update Successfully');
         } catch (\Exception $e) {
@@ -789,6 +800,125 @@ class QuoteController extends Controller
             Log::error('Quote creation failed: ' . $e->getMessage());
             //dd($e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while updating your Quote. Please try again.');
+        }
+    }
+
+    /**
+     * Quotes list + friendly notice when Syspro no longer has the quote (e.g. purged after ~90 days).
+     */
+    private function redirectQuotesSysproUnavailable()
+    {
+        return redirect()->route('quotes')->with(
+            'warning',
+            'This quote is no longer available in our system and cannot be updated. Quotes are removed after about 90 days.'
+        );
+    }
+
+    /**
+     * Whether GetOrderDetails returned a usable quote/order payload from Syspro.
+     * Aligns with OrderController::PlaceOrder checks for missing or error responses.
+     */
+    private function sysproQuoteDetailsAreAvailable(?array $orderDetails): bool
+    {
+        if ($orderDetails === null) {
+            return false;
+        }
+        if (!empty($orderDetails['code']) && (int) $orderDetails['code'] >= 400) {
+            return false;
+        }
+        $response = $orderDetails['response'] ?? null;
+        if (empty($response) || !is_array($response)) {
+            return false;
+        }
+        if (!empty($response['Error'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * True when Syspro's message indicates the quote/order no longer exists (e.g. purged).
+     */
+    private function sysproMessageIndicatesUnavailableOrder(string $message): bool
+    {
+        $m = strtolower($message);
+
+        return str_contains($m, 'not available')
+            || str_contains($m, 'not found')
+            || str_contains($m, 'does not exist')
+            || str_contains($m, 'order detail not available');
+    }
+
+    /**
+     * Sync active quote line pricing from Syspro price list and persist.
+     */
+    private function syncQuoteItemPricingFromSyspro(Order $quote): void
+    {
+        try {
+            $customerId = getCustomerId();
+            if (empty($customerId)) {
+                return;
+            }
+
+            $activeItems = $quote->orderItem()
+                ->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                })
+                ->get();
+            if ($activeItems->isEmpty()) {
+                return;
+            }
+
+            $customerDetails = SysproService::getCustomerDetails('GetCustomerDetails/' . $customerId);
+            if (empty($customerDetails) || empty($customerDetails['PriceList']) || !is_array($customerDetails['PriceList'])) {
+                return;
+            }
+
+            $customerDiscountPct = (float) ($customerDetails['CustomerDiscountPercentage'] ?? 0);
+            $quoteSkus = $activeItems->pluck('sku')->filter()->unique()->mapWithKeys(function ($sku) {
+                return [$sku => true];
+            })->all();
+            $priceListBySku = array_column($customerDetails['PriceList'], null, 'StockCode');
+            $priceListBySku = array_intersect_key($priceListBySku, $quoteSkus);
+
+            foreach ($activeItems as $item) {
+                $sku = $item->sku;
+                if (empty($sku) || !isset($priceListBySku[$sku])) {
+                    continue;
+                }
+
+                $sysproRow = $priceListBySku[$sku];
+                $msrp = (float) ($sysproRow['MSRPPrice'] ?? 0);
+                $price = (float) ($sysproRow['DealerPrice'] ?? 0);
+                if ($price <= 0) {
+                    continue;
+                }
+
+                $discountAmount = 0.0;
+                if ($customerDiscountPct > 0) {
+                    $discountAmount = round(($price * $customerDiscountPct) / 100, 3);
+                }
+                $discountPrice = round(max($price - $discountAmount, 0), 3);
+
+                // Guard against invalid persisted zero-net price when base price is available.
+                if ($discountPrice <= 0 && $price > 0) {
+                    $discountPrice = round($price, 3);
+                    $discountAmount = 0.0;
+                }
+
+                $item->update([
+                    'msrp' => $msrp,
+                    'price' => $price,
+                    'discount' => $discountAmount,
+                    'discount_price' => $discountPrice,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Quote pricing sync skipped: ' . $e->getMessage(), [
+                'quote_id' => $quote->id ?? null,
+            ]);
         }
     }
 
@@ -873,6 +1003,15 @@ class QuoteController extends Controller
 
         if (!$quote) {
             return redirect()->route('quotes')->with('error', 'Quote not found.');
+        }
+
+        if (!empty($quote->purchase_order_no)) {
+            $quoteSyspro = SysproService::getOrderDetails('GetOrderDetails/' . $quote->purchase_order_no);
+            if (!$this->sysproQuoteDetailsAreAvailable($quoteSyspro)) {
+                return $this->redirectQuotesSysproUnavailable();
+            }
+        } else {
+            return $this->redirectQuotesSysproUnavailable();
         }
 
         // Check if user has permission

@@ -15,6 +15,7 @@ class EmergencyModeSetting extends Model
     protected $fillable = [
         'is_enabled',
         'banner_message',
+        'notification_emails',
         'auto_disable_hours',
         'auto_disable_at',
         'last_enabled_at',
@@ -75,7 +76,7 @@ class EmergencyModeSetting extends Model
                 ],
             ]);
 
-            $to = config('bodypoint.mail_for_emergency');
+            $to = $setting->notificationRecipients();
             if (!$to) {
                 return;
             }
@@ -93,6 +94,15 @@ class EmergencyModeSetting extends Model
                 ]);
             }
         });
+    }
+
+    public function notificationRecipients(): array
+    {
+        $raw = trim((string) $this->notification_emails);
+        if ($raw !== '') {
+            return array_values(array_filter(array_map('trim', explode(',', $raw))));
+        }
+        return [];
     }
 
     public function enabledBy()
