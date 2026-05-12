@@ -1,3 +1,12 @@
+@php
+    $emergencyMode = \App\Models\EmergencyModeSetting::current()->is_enabled;
+    $emCartTooltip = \App\Support\EmergencyOrderMailto::cartDisabledTooltip();
+    $emEmptyCartTooltip = \App\Support\EmergencyOrderMailto::emptyCartEmailTooltip();
+    $emCartMailto = $emergencyMode ? \App\Support\EmergencyOrderMailto::buildCartMailtoHref($cart) : null;
+    $emCartCopy = ($emergencyMode && \App\Support\EmergencyOrderMailto::cartHasItems($cart))
+        ? \App\Support\EmergencyOrderMailto::buildCartEmailBody($cart)
+        : '';
+@endphp
 <?php $subtotal = 0; ?>
 @if(isset($cart[0]))
 @foreach ($cart[0]['CartItem'] as $cartitem)
@@ -98,25 +107,67 @@
     </div>
   </td>
   <td class="w-4 p-4" colspan="6">
-    <div class="flex items-center justify-end gap-2">
+    <div class="flex flex-wrap items-center justify-end gap-2">
       @php
                       // Check PaymentTermCode from session
                       $customerDetails = session('customer_details', []);
                       $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
                       $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
                     @endphp
-                    
-                    @if($isCCCustomer)
-                      {{-- CC customers see "Save a Quote" button --}}
-                      <a href="{{ route('quote') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+
+                    @if ($emergencyMode)
+                      <x-emergency.faux-button label="Save a Quote" :tooltip="$emCartTooltip" />
+                      <x-emergency.faux-button label="Check Out" :tooltip="$emCartTooltip" primary />
+                      @if (\App\Support\EmergencyOrderMailto::cartHasItems($cart))
+                        @if ($emCartMailto)
+                          <a
+                            href="{{ $emCartMailto }}"
+                            class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]"
+                          >Send Email Order</a>
+                          @if ($emCartCopy !== '')
+                            <button
+                              type="button"
+                              class="py-2 text-sm font-medium text-[#00838f] underline decoration-[#00838f] hover:text-[#005f66]"
+                              data-bp-cart-copy="{{ base64_encode($emCartCopy) }}"
+                              onclick="(function(b){var t=atob(b.getAttribute('data-bp-cart-copy'));navigator.clipboard.writeText(t).then(function(){if(window.toastr){toastr.success('Order text copied');}}).catch(function(){});})(this)"
+                            >Copy order text</button>
+                          @endif
+                        @else
+                          <x-emergency.faux-button label="Send Email Order" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary />
+                        @endif
+                      @else
+                        <x-emergency.faux-button label="Send Email Order" :tooltip="$emEmptyCartTooltip" primary />
+                      @endif
                     @else
-                      {{-- Non-CC customers see "Save Quote" button --}}
-                      <a href="{{ route('shipping') }}"class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                      @if($isCCCustomer)
+                        {{-- CC customers see "Save a Quote" button --}}
+                        <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                      @else
+                        {{-- Non-CC customers see "Save Quote" button --}}
+                        <a href="{{ route('shipping') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                      @endif
+
+                      <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
                     @endif
-      
-      <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
+                    @if ($emergencyMode)
+                      <p class="w-full basis-full text-right text-xs sm:text-sm text-gray-600 mt-3 max-w-2xl ml-auto leading-snug">{!! \App\Support\EmergencyOrderMailto::partnerMailtoHelpHtml() !!}</p>
+                    @endif
     </div>
   </td>
 </tr>
 
+@elseif($emergencyMode)
+<tr class="odd:bg-white even:bg-gray-50 border-b">
+  <td class="w-4 p-4" colspan="5">
+    <span class="text-sm text-gray-600">Your cart is empty.</span>
+  </td>
+  <td class="w-4 p-4" colspan="6">
+    <div class="flex flex-wrap items-center justify-end gap-2">
+      <x-emergency.faux-button label="Save a Quote" :tooltip="$emCartTooltip" />
+      <x-emergency.faux-button label="Check Out" :tooltip="$emCartTooltip" primary />
+      <x-emergency.faux-button label="Send Email Order" :tooltip="$emEmptyCartTooltip" primary />
+      <p class="w-full basis-full text-right text-xs sm:text-sm text-gray-600 mt-3 max-w-2xl ml-auto leading-snug">{!! \App\Support\EmergencyOrderMailto::partnerMailtoHelpHtml() !!}</p>
+    </div>
+  </td>
+</tr>
 @endif
