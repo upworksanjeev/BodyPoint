@@ -7,6 +7,7 @@ use App\Nova\Actions\EnableEmergencyMode;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -55,10 +56,35 @@ class EmergencyModeSetting extends Resource
                 ->help('This text is displayed in the emergency banner.'),
 
             Textarea::make('Notification Emails', 'notification_emails')
+                ->required(true)
                 ->rows(2)
                 ->hideFromIndex()
-                ->rules('required', 'string')
-                ->help('Comma-separated list of email addresses to notify when Emergency Mode is enabled/disabled and for daily reminders.'),
+                ->rules(
+                    'required',
+                    'string',
+                    function (string $attribute, mixed $value, \Closure $fail): void {
+                        $emails = array_values(array_filter(array_map('trim', explode(',', (string) $value))));
+                        if (count($emails) === 0) {
+                            $fail('Enter at least one valid notification email address.');
+
+                            return;
+                        }
+                        foreach ($emails as $email) {
+                            if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                $fail('Invalid notification email: ' . $email);
+
+                                return;
+                            }
+                        }
+                    }
+                )
+                ->help('Required. Comma-separated addresses for internal alerts when Emergency Mode is toggled and for daily reminders.'),
+
+            Email::make('Send Email Order', 'order_request_email')
+                ->required(true)
+                ->rules('required', 'email:filter')
+                ->hideFromIndex()
+                ->help('Required. To: address for partner “Send Email Order” and “Email Order from this Quote” mailto links when emergency mode is on.'),
 
             Number::make('Auto Disable After (Hours)', 'auto_disable_hours')
                 ->min(1)

@@ -16,6 +16,7 @@ class EmergencyModeSetting extends Model
         'is_enabled',
         'banner_message',
         'notification_emails',
+        'order_request_email',
         'auto_disable_hours',
         'auto_disable_at',
         'last_enabled_at',
@@ -138,6 +139,19 @@ class EmergencyModeSetting extends Model
                 'banner_message' => 'Online ordering is temporarily paused while we resolve a technical issue. To place an order, please email sales@bodypoint.com or call 1-800-547-5716. Thank you for your patience.',
             ]
         );
+    }
+
+    /**
+     * To: address for emergency mailto links — stored from Nova (“Send Email Order”).
+     */
+    public function orderRequestRecipientEmail(): ?string
+    {
+        $email = trim((string) ($this->order_request_email ?? ''));
+        if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return null;
+        }
+
+        return $email;
     }
 
     public function getBannerMessageHtmlAttribute(): string
