@@ -156,27 +156,6 @@
                                      </div>
                                  </div>
 
-                                 <div class="ctm-grd-two">
-                                    <a class="" href="<?php echo url('/category/limited-hand-function'); ?>">
-                                        <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                            <img class="" src="{{ asset('img/Specialty.png') }}"
-                                                alt="Your Company" />
-                                        </div>
-                                    </a>
-                                    <div class="prd-cntnt">
-                                        <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                            href="<?php echo url('/category/limited-hand-function'); ?>">Limited Hand Function</a>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/belts-with-duralatch'); ?>">Belts with DuraLatch™</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/belts-with-rehab-latch'); ?>">Belts with Rehab Latch™</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/anchoring-mobility-supports'); ?>">Anchoring & Mobility Supports</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/power-chair-driving'); ?>">Power Chair Driving</a></p>
-                                    </div>
-                                 </div>
-
                              </div>
                          </div>
                      </div>
@@ -659,27 +638,6 @@
                                                  href="<?php echo url('/category/tool-free-accessories/lifestyle'); ?>">Lifestyle</a></p>
 
                                      </div>
-                                 </div>
-
-                                 <div class="ctm-grd-two">
-                                    <a class="" href="<?php echo url('/category/limited-hand-function'); ?>">
-                                        <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                            <img class="" src="{{ asset('img/Specialty.png') }}"
-                                                alt="Your Company" />
-                                        </div>
-                                    </a>
-                                    <div class="prd-cntnt">
-                                        <a class="text-[22px]  text-[#333] hover:text-[#00838f] mb-2"
-                                            href="<?php echo url('/category/limited-hand-function'); ?>">Limited Hand Function</a>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/belts-with-duralatch'); ?>">Belts with DuraLatch™</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/belts-with-rehab-latch'); ?>">Belts with Rehab Latch™</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/anchoring-mobility-supports'); ?>">Anchoring & Mobility Supports</a></p>
-                                        <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
-                                                href="<?php echo url('/category/limited-hand-function/power-chair-driving'); ?>">Power Chair Driving</a></p>
-                                    </div>
                                  </div>
 
                              </div>
