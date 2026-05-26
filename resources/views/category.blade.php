@@ -26,9 +26,9 @@
                 <div class="product-details">
                     <h5 class="text-[#233049] text-[24px] capitalize mb-[15px] ">
                         {{ $category['name'] ?? '' }} Products</h5>
-                    @if (!empty($productGroups))
+                    @if (isset($productGroups))
                         <x-product-list-category-wise-grouped :productGroups="$productGroups" />
-                    @else
+                    @elseif (isset($products))
                         <x-product-list-category-wise :products="$products" />
                     @endif
                 </div>
