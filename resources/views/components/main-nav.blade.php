@@ -159,7 +159,7 @@
                                  <div class="ctm-grd-two">
                                     <a class="" href="<?php echo url('/category/limited-hand-function'); ?>">
                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                            <img class="" src="{{ asset('img/Specialty.png') }}"
+                                            <img class="" src="{{ asset('img/Limited Hand Function.png') }}"
                                                 alt="Your Company" />
                                         </div>
                                     </a>
@@ -664,7 +664,7 @@
                                  <div class="ctm-grd-two">
                                     <a class="" href="<?php echo url('/category/limited-hand-function'); ?>">
                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
-                                            <img class="" src="{{ asset('img/Specialty.png') }}"
+                                            <img class="" src="{{ asset('img/Limited Hand Function.png') }}"
                                                 alt="Your Company" />
                                         </div>
                                     </a>

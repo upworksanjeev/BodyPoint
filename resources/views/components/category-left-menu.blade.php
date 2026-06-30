@@ -10,6 +10,7 @@ $customOrder = [
 'Bath and Shower' => 5,
 'Hardware' => 6,
 'Tool-Free Accessories' => 7,
+'Limited Hand Function' => 8,
 ];
 
 $sortedCategories = collect($categories)
