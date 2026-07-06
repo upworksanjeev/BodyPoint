@@ -48,6 +48,12 @@
 <body class="font-['Avenir'] antialiased pb-14">
 
     @include('layouts.header')
+    @php
+        $emergencyMode = \App\Models\EmergencyModeSetting::current();
+    @endphp
+    @if ($emergencyMode->is_enabled)
+        <x-emergency-banner :messageHtml="$emergencyMode->banner_message_html" />
+    @endif
 
     <mainpage>
         @include('partials.messages')

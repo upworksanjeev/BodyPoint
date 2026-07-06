@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Order;
 use App\Models\OrderItem;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SysproService
 {
@@ -103,6 +105,7 @@ class SysproService
     public static function placeQuoteWithOrder($url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N',$creditCardData = null)
     {
         self::initialize();
+        $traceId = (string) Str::uuid();
         if (!$order_id) {
             $order_id = rand(0, 9999999);
         }
@@ -194,19 +197,32 @@ class SysproService
             'Order' => $order_data,
             'Lines' => $items,
         ];
-        // Log the complete request payload before sending
-        Log::info('[Syspro] API Request Payload:', [
-            'endpoint' => $url,
-            'request_data' => $request,
-            'has_credit_card' => !empty($creditCardData),
-        ]);
         $response = self::post($url, $request);
-        return self::returnResponse($response);
+        $parsed = self::returnResponse($response);
+
+        $eventType = ($straight_order === 'Y') ? 'create_order' : 'create_quote';
+        SysproAudit::logSyspro([
+            'event_type' => $eventType,
+            'trace_id' => $traceId,
+            'endpoint' => $url,
+            'request_payload' => $request,
+            'parsed_response' => $parsed,
+            'syspro_order_no' => $parsed['response']['OrderNumber'] ?? null,
+            'customer_number' => $customer_id ?: null,
+            'meta' => [
+                'straight_order' => $straight_order,
+                'allow_duplicate_po' => $isDuplicate,
+                'customer_po_number' => $order_id,
+            ],
+        ]);
+
+        return $parsed;
     }
 
     public static function updateQuote($order_no, $url, $cartitems, $order_id = null, $straight_order = 'Y', $isDuplicate = 'N',$creditCardData = null)
     {
         self::initialize();
+        $traceId = (string) Str::uuid();
         if (!$order_id) {
             $order_id = rand(0, 9999999);
         }
@@ -277,18 +293,6 @@ class SysproService
                 $order_data['CreditCardHolderName'] = $creditCardData['CardHolderName'];
             }
             
-            // Log credit card addition
-            Log::info('[Syspro] Credit card data added to quote update:', [
-                'has_card_data' => true,
-                'last_four_digit' => $lastFourDigit,
-                'card_fields_added' => array_keys(array_filter([
-                    'CreditCardLast4Digit' => $order_data['CreditCardLast4Digit'] ?? null,
-                    'CreditCardExpiryDate' => $order_data['CreditCardExpiryDate'] ?? null,
-                    'CreditCardType' => $order_data['CreditCardType'] ?? null,
-                    'CreditCardHolderName' => $order_data['CreditCardHolderName'] ?? null,
-                ])),
-                'endpoint' => $url,
-            ]);
         }
 
         $items = [];
@@ -308,11 +312,27 @@ class SysproService
             'Lines' => $items,
         ];
         $response = self::post($url, $request);
-        return self::returnResponse($response);
+        $parsed = self::returnResponse($response);
+
+        SysproAudit::logSyspro([
+            'event_type' => 'update_quote',
+            'trace_id' => $traceId,
+            'endpoint' => $url,
+            'request_payload' => $request,
+            'parsed_response' => $parsed,
+            'syspro_order_no' => $order_no,
+            'customer_number' => getCustomerId() ?: null,
+            'meta' => [
+                'line_count' => is_array($items) ? count($items) : null,
+            ],
+        ]);
+
+        return $parsed;
     }
 
     public static function placeOrder($url, $order_number, $CustomerPoNumber, $AllowDuplicatePO = 'N')
     {
+        $traceId = (string) Str::uuid();
         $request = [
             "OrderNumber" => $order_number,
             "NewCustomerPoNumber" => $CustomerPoNumber,
@@ -320,7 +340,20 @@ class SysproService
         ];
 
         $response = self::post($url, $request);
-        return self::returnResponse($response);
+        $parsed = self::returnResponse($response);
+
+        SysproAudit::logSyspro([
+            'event_type' => 'place_order',
+            'trace_id' => $traceId,
+            'endpoint' => $url,
+            'request_payload' => $request,
+            'parsed_response' => $parsed,
+            'syspro_order_no' => $order_number,
+            'customer_number' => getCustomerId() ?: null,
+            'customer_po_number' => $CustomerPoNumber,
+        ]);
+
+        return $parsed;
     }
 
     public static function getOrderDetails($url): array

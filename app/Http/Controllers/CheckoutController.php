@@ -17,6 +17,7 @@ use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
 use App\Models\OrderAttribute;
+use App\Models\EmergencyModeSetting;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,10 @@ class CheckoutController extends Controller
      */
     public function index(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = getCustomerId();
@@ -46,6 +51,10 @@ class CheckoutController extends Controller
      */
     public function payment(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user();
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
 
@@ -109,6 +118,10 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         if (isset($cart[0])) {
@@ -132,6 +145,10 @@ class CheckoutController extends Controller
      */
     public function quote(Request $request)
     {
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->route('cart')->with('error', emergencyModeMessage());
+        }
+
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = getCustomerId();
@@ -149,7 +166,9 @@ class CheckoutController extends Controller
      */
     public function saveOrder(Request $request)
     {
-
+        if (EmergencyModeSetting::current()->is_enabled) {
+            return redirect()->back()->with('error', emergencyModeMessage());
+        }
 
         $customer = getCustomer();
         if (!$customer->hasPermissionTo('placeOrders')) {
@@ -266,6 +285,7 @@ class CheckoutController extends Controller
             $processedItems = $this->processOrderLinesWithComments($order, $response ?? null);
             
             $pdfPath = null;
+            $pdfContent = null;
             try {
                 $pdf = Pdf::loadView('order-receipt', [
                     'order'      => $order,
@@ -296,7 +316,19 @@ class CheckoutController extends Controller
                 ]);
                 
             }
-            OrderPlaced::dispatch($order);
+            // Only pass valid PDF content for email attachment.
+            if (!empty($pdfContent)) {
+                $isPdf = str_starts_with($pdfContent, '%PDF-');
+                if (!$isPdf || strlen($pdfContent) < 1024) {
+                    Log::warning('[PDF] Invalid PDF content for email, falling back to file attachment path', [
+                        'order_id' => $order->id,
+                        'bytes' => strlen($pdfContent),
+                        'is_pdf_header' => $isPdf,
+                    ]);
+                    $pdfContent = null;
+                }
+            }
+            OrderPlaced::dispatch($order, $pdfContent);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
             DB::commit();

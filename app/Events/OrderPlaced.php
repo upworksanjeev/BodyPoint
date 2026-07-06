@@ -15,12 +15,14 @@ class OrderPlaced
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
+    public $pdfContent;
     /**
      * Create a new event instance.
      */
-    public function __construct($order)
+    public function __construct($order, ?string $pdfContent = null)
     {
         $this->order = $order;
+        $this->pdfContent = $pdfContent;
     }
 
     /**
