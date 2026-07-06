@@ -75,7 +75,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Operations', [
                     MenuItem::resource(EmergencyModeSetting::class),
-                ])->icon('exclamation-circle')->collapsable(),
+                ])->icon('exclamation-circle')->collapsable()->canSee(function (NovaRequest $request) {
+                    return $request->user()->isSuperAdmin() || $request->user()->isAdmin();
+                }),
 
             ];
         });
