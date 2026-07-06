@@ -156,7 +156,7 @@
                                      </div>
                                  </div>
 
-                                 <div class="ctm-grd-two">
+                                 <!--<div class="ctm-grd-two">
                                     <a class="" href="<?php echo url('/category/limited-hand-function'); ?>">
                                         <div class="prd-img px-2 rounded flex items-center justify-center  bg-[#fff]">
                                             <img class="" src="{{ asset('img/Limited Hand Function.png') }}"
@@ -175,7 +175,7 @@
                                         <p><a class="text-[14px] text-[#333] font-[400] hover:text-[#00838f]"
                                                 href="<?php echo url('/category/limited-hand-function/power-chair-driving'); ?>">Power Chair Driving</a></p>
                                     </div>
-                                 </div>
+                                 </div> -->
 
                              </div>
                          </div>
