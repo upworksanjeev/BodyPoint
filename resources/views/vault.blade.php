@@ -403,7 +403,7 @@
                                         <ul class="active_campaigns py-1 px-[14px]">
                                             @foreach ($active_campaigns as $file)
                                                 <li>
-                                                    <a href="{{ url($file['image']) }}" target="_blank"
+                                                    <a href="{{ url($file['url'] ?? $file['image']) }}" target="_blank"
                                                         class="text-[15px] text-[#00838F] font-normal">
                                                         <img decoding="async" src="{{ url($file['image']) }}">
                                                     </a>
