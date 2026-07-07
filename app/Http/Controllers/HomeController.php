@@ -132,6 +132,10 @@ class HomeController extends Controller
         return
             [
                 [
+                    'name' => 'Pediatric Campaign Kit — Everything you need to promote Bodypoint\'s pediatric line — social graphics, email templates, the pediatric catalog, and print-ready files. (ZIP)',
+                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
+                ],
+                [
                     'name' => 'Trifold Brochure',
                     'url' => 'https://bodypoint.com/wp-content/uploads/2024/07/Trifold-Brochure-BMM347-2024.02.pdf',
                 ],
@@ -972,6 +976,14 @@ class HomeController extends Controller
                         'name' => 'Catalog (product guide) BMM002 (Volume 8.7)',
                         'url' => '/',
                     ],
+                    [
+                        'name' => 'Pediatric Catalog (PDF)',
+                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatrics_Catalog_.pdf',
+                    ],
+                    [
+                        'name' => 'Pediatric Catalog — Print-Ready Files (ZIP)',
+                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Catalog_Print_Assets.zip',
+                    ],
 
                 ],
             ];
@@ -1100,8 +1112,10 @@ class HomeController extends Controller
     public function getActiveCampaigns()
     {
         return [
-            ['image' => 'https://bodypoint.com/wp-content/uploads/2024/07/Bath-Postcard-Back.png'],
-            ['image' => 'https://bodypoint.com/wp-content/uploads/2024/07/Bath-Postcard-Front.png'],
+            [
+                'image' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Catalog_Cover.png',
+                'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
+            ],
         ];
     }
 
