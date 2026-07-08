@@ -9,9 +9,8 @@ $sortedSubcategory  = collect($subcategory)->sortBy('name')->values()->all();
        @foreach ($sortedSubcategory as $cat)
 
        @php
-        $formattedSubCategory = str_replace(' ', '-', strtolower(strip_tags(str_replace('-', '_', $cat['name']))));
-        $formattedCategory = !empty($categoryName) ? str_replace(' ', '-', strtolower(strip_tags(str_replace('-', '_', $categoryName)))) : '';
-        $finalSlug = !empty($formattedCategory) ? $formattedCategory . '/' . $formattedSubCategory : $formattedSubCategory;
+        $parentSlug = $parentSlug ?? '';
+        $finalSlug = $parentSlug !== '' ? $parentSlug . '/' . ($cat['slug'] ?? '') : ($cat['slug'] ?? '');
        @endphp
 
           <div class="border border-[#ECECEC] rounded-[5px] p-[10px] flex gap-[15px] mb-[10px]">
