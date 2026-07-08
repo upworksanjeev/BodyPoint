@@ -13,6 +13,10 @@ class CategoryController extends Controller
 {
     private const LHF_PARENT_SLUG = 'limited-hand-function';
 
+    private const LHF_META_TITLE = 'Limited Hand Function | Bodypoint';
+
+    private const LHF_META_DESCRIPTION = 'Bodypoint\'s Limited Hand Function portfolio: belts, harnesses, joystick handles, and positioning supports engineered for users with limited grip, dexterity, or one-handed function.';
+
     /** Client-defined sub-category display order on the LHF parent page. */
     private const LHF_SUB_CATEGORY_SLUG_ORDER = [
         'belts-with-duralatch',
@@ -55,6 +59,8 @@ class CategoryController extends Controller
                     'subcategory' => $subcategory,
                     'category' => $category,
                     'productGroups' => $this->getLimitedHandFunctionProductGroups($subcategory),
+                    'pageTitle' => self::LHF_META_TITLE,
+                    'metaDescription' => self::LHF_META_DESCRIPTION,
                 ]);
             }
 
