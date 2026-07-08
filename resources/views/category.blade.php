@@ -1,5 +1,8 @@
 <x-mainpage-layout>
-    @section('title', $category['name'] ?? '' . ' - ' . config('app.name', 'Bodypoint'))
+    @section('title', $pageTitle ?? (($category['name'] ?? '') . ' - ' . config('app.name', 'Bodypoint')))
+    @if (!empty($metaDescription))
+        @section('meta_description', $metaDescription)
+    @endif
     <section class="py-5">
         <div class="ctm-container">
             <?php if(isset($error)){ echo $error; }else{ ?>
