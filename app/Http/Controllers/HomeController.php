@@ -133,7 +133,7 @@ class HomeController extends Controller
             [
                 [
                     'name' => 'Pediatric Campaign Kit — Everything you need to promote Bodypoint\'s pediatric line — social graphics, email templates, the pediatric catalog, and print-ready files. (ZIP)',
-                    'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
+                    'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
                 ],
                 [
                     'name' => 'Trifold Brochure',
@@ -982,7 +982,7 @@ class HomeController extends Controller
                     ],
                     [
                         'name' => 'Pediatric Catalog — Print-Ready Files (ZIP)',
-                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Catalog_Print_Assets.zip',
+                        'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Catalog_Print_Assets.zip',
                     ],
 
                 ],
@@ -1114,7 +1114,7 @@ class HomeController extends Controller
         return [
             [
                 'image' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Catalog_Cover.png',
-                'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
+                'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
             ],
         ];
     }
