@@ -10,6 +10,9 @@
     @endif
 
     <title>@yield('title', config('app.name', 'Bodypoint'))</title>
+    @hasSection('meta_description')
+        <meta name="description" content="@yield('meta_description')">
+    @endif
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset(Config::get('bodypoint.fav')) }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset(Config::get('bodypoint.fav')) }}">
 
