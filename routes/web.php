@@ -52,9 +52,20 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified.email'])->group(function () {
 
     Route::get('/run-history/{customer?}', function ($customer = null) {
-        Artisan::call('fetch:order-history', ['customer' => $customer]);
-        session()->flash('message', 'FetchOrderHistory job triggered successfully!');
-        return back(); 
+        $from = request('sync_from');
+        $to = request('sync_to');
+
+        $params = ['customer' => $customer];
+        if (!empty($from) && !empty($to)) {
+            $params['--from'] = $from;
+            $params['--to'] = $to;
+        }
+
+        Artisan::call('fetch:order-history', $params);
+        session()->flash('message', !empty($from) && !empty($to)
+            ? 'Orders synced for the selected date range.'
+            : 'FetchOrderHistory job triggered successfully!');
+        return back();
     })->name('sync-account');
 
 
