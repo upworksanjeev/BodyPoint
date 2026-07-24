@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class FetchOrderHistory extends Command
 {
-    protected $signature = 'fetch:order-history {customer?}';
+    protected $signature = 'fetch:order-history {customer?} {--from=} {--to=}';
     protected $description = 'Fetch order history from external API';
 
     public function handle()
@@ -21,8 +21,7 @@ class FetchOrderHistory extends Command
         Log::info("[$cronName] Cron started");
 
         $url = 'OrderHistory';
-        $dateFrom = now()->subHours(24)->toIso8601String();
-        $dateTo   = now()->endOfDay()->toIso8601String();
+        [$dateFrom, $dateTo] = $this->resolveDateRange();
 
         $customer = $this->argument('customer') ?? null;
 
@@ -41,6 +40,33 @@ class FetchOrderHistory extends Command
         } catch (\Exception $e) {
             Log::error("[$cronName] Cron failed: " . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
         }
+    }
+
+    /**
+     * Use --from/--to when provided; otherwise default to last 24 hours.
+     *
+     * @return array{0: string, 1: string}
+     */
+    protected function resolveDateRange(): array
+    {
+        $fromOption = $this->option('from');
+        $toOption = $this->option('to');
+
+        if (!empty($fromOption) && !empty($toOption)) {
+            $dateFrom = Carbon::parse($fromOption)->startOfDay();
+            $dateTo = Carbon::parse($toOption)->endOfDay();
+
+            if ($dateFrom->gt($dateTo)) {
+                [$dateFrom, $dateTo] = [$dateTo->copy()->startOfDay(), $dateFrom->copy()->endOfDay()];
+            }
+
+            return [$dateFrom->toIso8601String(), $dateTo->toIso8601String()];
+        }
+
+        return [
+            now()->subHours(24)->toIso8601String(),
+            now()->endOfDay()->toIso8601String(),
+        ];
     }
 
     protected function storeOrders($orders, $cronName)
