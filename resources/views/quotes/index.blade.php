@@ -70,8 +70,37 @@
                         </div>
                     </div>
                 </form>
-                <a href="{{ route('sync-account', getCustomerId()) }}"
-                    class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-full sm:w-[145px]">Sync Quotes</a>
+                <form action="{{ route('sync-account', getCustomerId()) }}" method="get" class="mt-4 mb-2">
+                    <div class="lg:grid gap-6 mb-4 lg:grid-cols-3 items-end">
+                        <div>
+                            <label for="sync_from" class="block mb-2 text-sm font-medium text-gray-900">Sync From Date:</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <x-icons.date />
+                                </div>
+                                <input name="sync_from" id="sync_from" type="text" datepicker datepicker-format="mm/dd/yyyy" datepicker-max-date="{{ now()->format('m/d/Y') }}"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                                    placeholder="Select sync start date" value="{{ request('sync_from', now()->subDay()->format('m/d/Y')) }}" required>
+                            </div>
+                        </div>
+                        <div class="mt-4 lg:mt-0">
+                            <label for="sync_to" class="block mb-2 text-sm font-medium text-gray-900">Sync To Date:</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <x-icons.date />
+                                </div>
+                                <input name="sync_to" id="sync_to" type="text" datepicker datepicker-format="mm/dd/yyyy" datepicker-max-date="{{ now()->format('m/d/Y') }}"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                                    placeholder="Select sync end date" value="{{ request('sync_to', now()->format('m/d/Y')) }}" required>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-4 lg:mt-0 gap-2 flex-wrap">
+                            <button type="submit"
+                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-full sm:w-[145px]">Sync Quotes</button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">Select a date range to sync quote statuses from Syspro for this account.</p>
+                </form>
                 <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <div id="accordion-collapse" data-accordion="collapse">
                         @if (!$quotes->isEmpty())

@@ -978,7 +978,7 @@ class HomeController extends Controller
                     ],
                     [
                         'name' => 'Pediatric Catalog (PDF)',
-                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatrics_Catalog_.pdf',
+                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatrics_Catalog-1.pdf',
                     ],
                     [
                         'name' => 'Pediatric Catalog — Print-Ready Files (ZIP)',
