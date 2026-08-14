@@ -10,6 +10,7 @@ use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Quote\QuoteController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\DashboardController;
 use App\Models\AssociateCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -45,9 +46,7 @@ Route::get('/cron', function () {
     Artisan::call('fetch:order-history');
     return response()->json(['message' => 'Order history command executed successfully!']);
 });
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified.email'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified.email'])->name('dashboard');
 
 Route::middleware(['auth', 'verified.email'])->group(function () {
 
