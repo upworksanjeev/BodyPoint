@@ -3,9 +3,14 @@
     $emCartTooltip = \App\Support\EmergencyOrderMailto::cartDisabledTooltip();
     $emEmptyCartTooltip = \App\Support\EmergencyOrderMailto::emptyCartEmailTooltip();
     $emCartMailto = $emergencyMode ? \App\Support\EmergencyOrderMailto::buildCartMailtoHref($cart) : null;
-    $emCartCopy = ($emergencyMode && \App\Support\EmergencyOrderMailto::cartHasItems($cart))
+    $cartHasItems = \App\Support\EmergencyOrderMailto::cartHasItems($cart);
+    $emCartCopy = ($emergencyMode && $cartHasItems)
         ? \App\Support\EmergencyOrderMailto::buildCartEmailBody($cart)
         : '';
+    // Paths this account may start. A quote-only account gets the quote path only.
+    $checkoutPaths = app(\App\Services\CheckoutIntentService::class)->available();
+    $ctaSecondary = 'py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]';
+    $ctaPrimary = 'py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]';
 @endphp
 <?php $subtotal = 0; ?>
 @if(isset($cart[0]))
@@ -108,17 +113,10 @@
   </td>
   <td class="w-4 p-4" colspan="6">
     <div class="flex flex-wrap items-center justify-end gap-2">
-      @php
-                      // Check PaymentTermCode from session
-                      $customerDetails = session('customer_details', []);
-                      $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
-                      $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
-                    @endphp
-
-                    @if ($emergencyMode)
-                      <x-emergency.faux-button label="Save a Quote" :tooltip="$emCartTooltip" />
-                      <x-emergency.faux-button label="Check Out" :tooltip="$emCartTooltip" primary />
-                      @if (\App\Support\EmergencyOrderMailto::cartHasItems($cart))
+      @if ($emergencyMode)
+                      <x-emergency.faux-button label="Save as Quote" :tooltip="$emCartTooltip" />
+                      <x-emergency.faux-button label="Place Order" :tooltip="$emCartTooltip" primary />
+                      @if ($cartHasItems)
                         @if ($emCartMailto)
                           <a
                             href="{{ $emCartMailto }}"
@@ -138,16 +136,18 @@
                       @else
                         <x-emergency.faux-button label="Send Email Order" :tooltip="$emEmptyCartTooltip" primary />
                       @endif
-                    @else
-                      @if($isCCCustomer)
-                        {{-- CC customers see "Save a Quote" button --}}
-                        <a href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                    @elseif ($cartHasItems)
+                      {{-- The order-or-quote choice is made here and carried through every later screen. --}}
+                      @if (count($checkoutPaths) > 0)
+                        <form method="POST" action="{{ route('checkout.intent') }}" class="flex flex-wrap items-center justify-end gap-2">
+                          @csrf
+                          @foreach ($checkoutPaths as $checkoutPath)
+                            <button type="submit" name="intent" value="{{ $checkoutPath->value }}" class="{{ $checkoutPath->isOrder() ? $ctaPrimary : $ctaSecondary }}">{{ $checkoutPath->ctaLabel() }}</button>
+                          @endforeach
+                        </form>
                       @else
-                        {{-- Non-CC customers see "Save Quote" button --}}
-                        <a href="{{ route('shipping') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]"> Save a Quote</a>
+                        <p class="text-sm text-gray-600">This account is not set up to order or quote online. Please call us at <a href="tel:8005475716" class="text-[#00838f] hover:underline font-medium">800.547.5716</a>.</p>
                       @endif
-
-                      <a class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]" href="{{ route('shipping') }}"> Check Out</a>
                     @endif
                     @if ($emergencyMode)
                       <p class="w-full basis-full text-right text-xs sm:text-sm text-gray-600 mt-3 max-w-2xl ml-auto leading-snug">{!! \App\Support\EmergencyOrderMailto::partnerMailtoHelpHtml() !!}</p>
@@ -163,8 +163,8 @@
   </td>
   <td class="w-4 p-4" colspan="6">
     <div class="flex flex-wrap items-center justify-end gap-2">
-      <x-emergency.faux-button label="Save a Quote" :tooltip="$emCartTooltip" />
-      <x-emergency.faux-button label="Check Out" :tooltip="$emCartTooltip" primary />
+      <x-emergency.faux-button label="Save as Quote" :tooltip="$emCartTooltip" />
+      <x-emergency.faux-button label="Place Order" :tooltip="$emCartTooltip" primary />
       <x-emergency.faux-button label="Send Email Order" :tooltip="$emEmptyCartTooltip" primary />
       <p class="w-full basis-full text-right text-xs sm:text-sm text-gray-600 mt-3 max-w-2xl ml-auto leading-snug">{!! \App\Support\EmergencyOrderMailto::partnerMailtoHelpHtml() !!}</p>
     </div>

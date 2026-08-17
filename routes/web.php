@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CheckoutIntentController;
 use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Quote\QuoteController;
 use App\Http\Controllers\Order\OrderController;
@@ -84,8 +85,15 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
     Route::post('/add-to-cart-attachment', [CartController::class, 'addToCartAttachment'])->name('add-to-cart-attachment');
     Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
-    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('/quote', [CheckoutController::class, 'quote'])->name('quote');
+
+    // Order-or-quote choice: taken at the cart, switched mid-flow, and used to
+    // branch after the payment step.
+    Route::post('/checkout/intent', [CheckoutIntentController::class, 'store'])->name('checkout.intent');
+    Route::post('/checkout/intent/switch', [CheckoutIntentController::class, 'swap'])->name('checkout.intent.switch');
+    Route::get('/checkout/continue', [CheckoutIntentController::class, 'proceed'])->name('checkout.continue');
+
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->middleware('checkout.intent:order')->name('checkout');
+    Route::get('/quote', [CheckoutController::class, 'quote'])->middleware('checkout.intent:quote')->name('quote');
 
     //Quote Routes
     Route::post('/generate-quote',[QuoteController::class, 'store'])->name('generateQuote');
@@ -109,8 +117,8 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     });
     Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
     Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');
-    Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
-    Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
+    Route::get('/payment', [CheckoutController::class, 'payment'])->middleware('checkout.intent')->name('payment');
+    Route::get('/shipping', [CheckoutController::class, 'index'])->middleware('checkout.intent')->name('shipping');
     Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download-get');
     Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
     Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CheckoutIntent;
 use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
 use App\Helpers\FunHelper;
+use App\Services\CheckoutIntentService;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -26,6 +28,10 @@ use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
+    public function __construct(private readonly CheckoutIntentService $intents)
+    {
+    }
+
     /**
      *  Shipping details.
      */
@@ -65,8 +71,15 @@ class CheckoutController extends Controller
         $apiError = null;
         $creditCardDetails = [];
         $paymentTermCode = null;
+        $isCreditCardCustomer = false;
         $shouldShowCreditCards = false;
-        
+
+        // A quote never captures payment, so the card selector belongs to the
+        // order path only. Without this a credit-card dealer saving a quote would
+        // hit a dead end on this step when they have no card on file.
+        $checkoutIntent = $this->intents->current();
+        $isOrderPath = $checkoutIntent === null || $checkoutIntent->isOrder();
+
         try {
             // SysproService::getCustomerDetails returns an array, not a response object
             $customerDetails = SysproService::getCustomerDetails($apiUrl);
@@ -74,7 +87,8 @@ class CheckoutController extends Controller
             if (!empty($customerDetails)) {
                 $apiCustomerDetails = $customerDetails;
                 $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
-                $shouldShowCreditCards = $paymentTermCode === 'CC';
+                $isCreditCardCustomer = $paymentTermCode === 'CC';
+                $shouldShowCreditCards = $isCreditCardCustomer && $isOrderPath;
 
                 if ($shouldShowCreditCards) {
                     // Extract CreditCardDetails from the customer details array
@@ -85,11 +99,13 @@ class CheckoutController extends Controller
                         $creditCardDetails = $customerDetails['Customer']['CreditCardDetails'];
                     }
                 } else {
-                    $this->clearSelectedCardSession();
-                    Log::info('Payment - Customer payment term is not CC; skipping credit card details.', [
-                        'customer_id' => $customer_id,
-                        'payment_term_code' => $paymentTermCode,
-                    ]);
+                    if (!$isCreditCardCustomer) {
+                        $this->clearSelectedCardSession();
+                        Log::info('Payment - Customer payment term is not CC; skipping credit card details.', [
+                            'customer_id' => $customer_id,
+                            'payment_term_code' => $paymentTermCode,
+                        ]);
+                    }
                     $creditCardDetails = [];
                 }
             } else {
@@ -110,6 +126,7 @@ class CheckoutController extends Controller
             'creditCardDetails' => $creditCardDetails,
             'paymentTermCode' => $paymentTermCode,
             'shouldShowCreditCards' => $shouldShowCreditCards,
+            'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
         ));
     }
 
@@ -135,6 +152,7 @@ class CheckoutController extends Controller
                 'user_detail' => $user_detail,
                 'purchase_order_no' => $purchase_order_no,
                 'selectedCard' => $this->getSelectedCardFromSession(),
+                'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
             ));
         }
         return redirect()->route('cart');
@@ -174,6 +192,17 @@ class CheckoutController extends Controller
         if (!$customer->hasPermissionTo('placeOrders')) {
             abort(403);
         }
+
+        // Final gate on the order path: a dealer who chose to quote can never
+        // place an order from this flow, even by replaying this request.
+        $intent = $this->intents->current();
+        if ($intent === null) {
+            return redirect()->route('cart')->with('error', 'Please choose "Place Order" or "Save as Quote" to continue.');
+        }
+        if ($intent->isQuote()) {
+            return redirect()->route('quote');
+        }
+
         $request->validate([
             'customer_po_number' => ['required']
         ], [
@@ -189,13 +218,17 @@ class CheckoutController extends Controller
             return redirect()->route('cart')->with('error', 'Cart ID is missing.');
         }
 
-        $cart = Cart::where('id', $request->cart_id)->first();
+        $cart = Cart::where('id', $request->cart_id)->where('user_id', $user->id)->first();
 
-        if ($cart) {
-            $cart->update(['purchase_order_no' => $request->customer_po_number]);
-        } else {
+        if (!$cart) {
             return redirect()->route('cart')->with('error', 'Cart not found.');
         }
+
+        if (!$cart->hasItems()) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Add an item before placing an order.');
+        }
+
+        $cart->update(['purchase_order_no' => $request->customer_po_number]);
 
         DB::beginTransaction();
         try {

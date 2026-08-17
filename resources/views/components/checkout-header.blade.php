@@ -1,3 +1,10 @@
+@php
+    // Step 3 follows the dealer's order-or-quote choice, so the quote path is
+    // never offered "Confirm Order".
+    $flowIntent = app(\App\Services\CheckoutIntentService::class)->current();
+    $reviewRoute = route(($flowIntent ?? \App\Enums\CheckoutIntent::Order)->reviewRouteName());
+    $reviewLabel = $flowIntent?->isQuote() ? 'Review Quote' : 'Confirm Order';
+@endphp
  <div class="grid grid-cols-1 lg:pb-14 pb-2 sm:pb-6">
           <div class="col-span-2">
             <ul class="flex flex-wrap items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base order-step">
@@ -29,7 +36,7 @@
                 class="{{ ($page=='checkout')?'active':'' }} flex-1 flex flex-col items-center gap-3 relative after:content-[''] after:absolute after:top-[15px] after:left-[50%] after:w-full after:h-[2px] after:bg-gray-200">
 				
                 <div class="z-10">
-				<a href="{{ route('checkout') }}">
+				<a href="{{ $reviewRoute }}">
                   <span
                     class="text-[13px] font-bold text-[#A6A2A2] bg-white w-[30px] min-w-[30px] h-[30px] border-2 border-solid rounded-full flex justify-center items-center">
                     3
@@ -37,7 +44,7 @@
 				  </a>
                 </div>
 				
-                <p class="text-[13px] min-h-[42px] sm:min-h-[auto] font-normal text-[{{ ($page=='checkout')?'#000':'#717171' }}]"><a href="{{ route('checkout') }}">Confirm Order </a></p>
+                <p class="text-[13px] min-h-[42px] sm:min-h-[auto] font-normal text-[{{ ($page=='checkout')?'#000':'#717171' }}]"><a href="{{ $reviewRoute }}">{{ $reviewLabel }} </a></p>
 				
               </li>
               <li class="flex-1 flex flex-col items-center gap-3">

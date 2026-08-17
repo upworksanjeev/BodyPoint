@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Quote;
 
+use App\Enums\CheckoutIntent;
 use App\Events\GenerateQuote;
 use App\Helpers\FunHelper;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\EmergencyModeSetting;
 use App\Models\UserDetails;
+use App\Services\CheckoutIntentService;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,10 @@ use Illuminate\Support\Facades\URL;
 
 class QuoteController extends Controller
 {
+    public function __construct(private readonly CheckoutIntentService $intents)
+    {
+    }
+
     public function index(Request $request)
     {
 
@@ -326,6 +332,14 @@ class QuoteController extends Controller
         if ($cart->isEmpty()) {
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
         }
+        if (!$cart[0]->hasItems()) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Add an item before saving a quote.');
+        }
+
+        // Submitting this form is itself the "save as a quote" decision, so align
+        // the stored choice instead of rejecting a dealer who switched paths.
+        $this->intents->remember($cart[0], CheckoutIntent::Quote);
+
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
         DB::beginTransaction();
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
@@ -1065,6 +1079,10 @@ class QuoteController extends Controller
             // Store quote ID in session so we know it's from a quote
             session()->put('quote_id', $quote_id);
             session()->put('quote_purchase_order_no', $quote->purchase_order_no);
+
+            // Converting a quote starts the order path, so the flow does not stop
+            // to ask for a choice the dealer has already made.
+            $this->intents->remember($cart, CheckoutIntent::Order);
 
             DB::commit();
 

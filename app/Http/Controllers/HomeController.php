@@ -11,6 +11,7 @@ use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Media;
 use App\Models\User;
+use App\Services\CheckoutIntentService;
 use App\Services\SysproService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,7 @@ class HomeController extends Controller
         }
     }
 
-    public function changeCustomer(Request $request)
+    public function changeCustomer(Request $request, CheckoutIntentService $intents)
     {
         $request->validate([
             'customer_id' => [
@@ -71,6 +72,11 @@ class HomeController extends Controller
                 session()->put('customer_id', $request->customer_id);
                 session()->put('customer_details', $get_customer_details);
                 session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
+
+                // Pricing and permissions belong to the account, so any in-progress
+                // order-or-quote choice is reset and taken again at the cart.
+                $intents->forget();
+
                 $customerClass = $get_customer_details['CustomerClass'] ?? '';
 
 

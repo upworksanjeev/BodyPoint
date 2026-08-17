@@ -21,8 +21,13 @@
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <!--
+            Tests that use RefreshDatabase drop and re-migrate every table, so the
+            suite must never point at the working database. Create this schema once:
+            CREATE DATABASE body_point_testing CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            Tests\TestCase refuses to run if this still resolves to DB_DATABASE.
+        -->
+        <env name="DB_DATABASE" value="body_point_testing"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

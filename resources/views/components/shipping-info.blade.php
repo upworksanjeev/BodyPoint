@@ -88,11 +88,13 @@
 
 </div>
 
-         <li class="flex items-start gap-5">
-             <span class="text-sm text-[#000] font-normal leading-[17px]">Carrier:</span>
-         </li>
-         <li class="flex items-start gap-5">
-             <span class="text-[13px] font-normal leading-[19px]">All orders ship within 5 business days after your order is processed. Freight charges are calculated when your order ships. For expedited shipping options, please contact Customer Support at Sales@bodypoint.com or 206.405.4555.</span>
-         </li>
-     </ul>
- </div>
+<div class="card-body px-6 pb-6">
+    <ul class="space-y-2 text-gray-500">
+        <li class="flex items-start gap-5">
+            <span class="text-sm text-[#000] font-normal leading-[17px]">Carrier:</span>
+        </li>
+        <li class="flex items-start gap-5">
+            <span class="text-[13px] font-normal leading-[19px]">All orders ship within 5 business days after your order is processed. Freight charges are calculated when your order ships. For expedited shipping options, please contact Customer Support at Sales@bodypoint.com or 206.405.4555.</span>
+        </li>
+    </ul>
+</div>
