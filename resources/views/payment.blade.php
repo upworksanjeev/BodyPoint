@@ -69,10 +69,9 @@
                 </ul>
 
                 @php
-                  // Check if we should show credit cards based on PaymentTermCode
-                  $shouldShowCreditCards = isset($shouldShowCreditCards) ? $shouldShowCreditCards : false;
-                  $paymentTermIsCC = isset($paymentTermCode) && $paymentTermCode === 'CC';
-                  $showCards = $shouldShowCreditCards || $paymentTermIsCC;
+                  // Decided by the controller: a credit-card payment term *and* the
+                  // order path. A quote captures no payment, so no card is asked for.
+                  $showCards = $shouldShowCreditCards ?? false;
                   
                   // Handle both array of cards and single card object
                   $cards = [];
@@ -157,10 +156,16 @@
             <button id="next-button" type="button" onclick="proceedToCheckout()" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? 'hidden' : '' }}">
               Next
             </button>
-            {{-- Save a Quote Button - shown only when PaymentTermCode is CC and Add New Card is selected --}}
-            <a id="save-quote-button" href="{{ route('quote') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px] float-right {{ ($showCards && !$hasCards) ? '' : 'hidden' }}">
-              Save a Quote
-            </a>
+            {{-- Escape hatch when the order path needs a card the dealer does not have on file. --}}
+            @if ($canSaveAsQuote ?? false)
+            <form id="save-quote-button" method="POST" action="{{ route('checkout.intent.switch') }}" class="float-right {{ ($showCards && !$hasCards) ? '' : 'hidden' }}">
+              @csrf
+              <input type="hidden" name="intent" value="{{ \App\Enums\CheckoutIntent::Quote->value }}">
+              <button type="submit" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">
+                Save as Quote
+              </button>
+            </form>
+            @endif
           </div>
           </div>
          <x-cart.checkout-list :cart="$cart" />
@@ -245,8 +250,9 @@
         sessionStorage.setItem('selected_credit_card', cardData);
       }
       
-      // Redirect to checkout
-      window.location.href = '{{ route("checkout") }}';
+      // Let the server route to the review screen for the stored order-or-quote
+      // choice, so a cached page can never send this down the wrong path.
+      window.location.href = '{{ route("checkout.continue") }}';
     }
   </script>
   @endpush
