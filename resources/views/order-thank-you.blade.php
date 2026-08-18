@@ -6,6 +6,7 @@
   <section class="bg-[#F6F6F6] px-4 py-9">
     <div class="container mx-auto">
       <div class="max-w-screen-xl mx-auto">
+        <x-checkout-header page="complete" :intent="\App\Enums\CheckoutIntent::Order" />
         <div class="">
           <h2 class="font-bold text-[#00707B] mb-5 text-center">Thank You For Your Purchase!</h2>
 

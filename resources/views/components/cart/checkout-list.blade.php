@@ -27,7 +27,10 @@
                         <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
                       </a>
                     </p>
-                     <span class="bg-[#E4E4E4] text-gray-800 text-[11px] leading-[18px] font-medium me-2 px-2.5 py-0.5 rounded-full">Qty:{{ $cartitem['quantity'] }}</span>
+                     <div class="flex items-center gap-3">
+                      <span class="bg-[#E4E4E4] text-gray-800 text-[11px] leading-[18px] font-medium px-2.5 py-0.5 rounded-full">Qty:{{ $cartitem['quantity'] }}</span>
+                      <x-cart.item-actions :cartItem="$cartitem" />
+                    </div>
                    </div>
                  </div>
                </td>

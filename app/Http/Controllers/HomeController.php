@@ -74,8 +74,10 @@ class HomeController extends Controller
                 session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
 
                 // Pricing and permissions belong to the account, so any in-progress
-                // order-or-quote choice is reset and taken again at the cart.
+                // order-or-quote choice is reset and taken again at the cart. The
+                // finished order or quote belongs to the account being left behind.
                 $intents->forget();
+                $intents->forgetCompleted();
 
                 $customerClass = $get_customer_details['CustomerClass'] ?? '';
 

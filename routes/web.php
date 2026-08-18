@@ -104,6 +104,7 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/add-to-quote/{id}', [QuoteController::class, 'addToQuote'])->name('add-to-quote');
     Route::post('/update-quote-item-marked', [QuoteController::class, 'updateQuoteItemMarked'])->name('update-quote-item-marked');
     Route::post('/quotes', [QuoteController::class, 'index'])->name('quote-search');
+    Route::get('/quote-complete/{quote}', [QuoteController::class, 'complete'])->name('quote.complete');
     Route::get('/pdf/{quote_id}', [QuoteController::class, 'pdfDownloadQuote'])->name('pdf-download-quote');
     Route::get('/save-shipping-address', [QuoteController::class, 'saveShippingAddress'])->name('saveShippingAddress');
 
@@ -112,12 +113,17 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');
 
     Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');
+    Route::get('/order-complete/{order}', [CheckoutController::class, 'complete'])->name('order.complete');
     Route::get('/confirm-order', function () {
-        return redirect('/order');
+        $completed = app(\App\Services\CheckoutIntentService::class)->completedUrl();
+
+        return redirect()->to($completed ?? '/order');
     });
     Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
     Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');
-    Route::get('/payment', [CheckoutController::class, 'payment'])->middleware('checkout.intent')->name('payment');
+    // Shipping and payment are one step now; /payment only forwards so existing
+    // links, bookmarks and browser history keep working.
+    Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
     Route::get('/shipping', [CheckoutController::class, 'index'])->middleware('checkout.intent')->name('shipping');
     Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download-get');
     Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');

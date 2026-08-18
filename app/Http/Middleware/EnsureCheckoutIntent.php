@@ -40,8 +40,20 @@ class EnsureCheckoutIntent
         $cart = $this->intents->activeCart();
 
         if ($cart === null || !$cart->hasItems()) {
+            // A finished flow has no cart left. Send the dealer to what they just
+            // created rather than to an empty cart that reads like a failure.
+            $completed = $this->intents->completedUrl();
+
+            if ($completed !== null) {
+                return redirect()->to($completed);
+            }
+
             return $this->backToCart('Your cart is empty. Add an item before continuing.');
         }
+
+        // A cart with items means a new flow, so the previous completion is no
+        // longer where the dealer belongs.
+        $this->intents->forgetCompleted();
 
         $intent = $this->intents->current($cart);
 
