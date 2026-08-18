@@ -33,7 +33,8 @@ class CheckoutController extends Controller
     }
 
     /**
-     *  Shipping details.
+     * Step 1 of the flow: shipping details, payment terms and billing details on
+     * a single screen for both the order and the quote path.
      */
     public function index(Request $request)
     {
@@ -45,27 +46,30 @@ class CheckoutController extends Controller
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-        return view('shipping', array(
+
+        return view('shipping', array_merge([
             'cart' => $cart,
             'user' => $user,
             'userDetail' => $user_detail,
-        ));
+            'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
+        ], $this->paymentContext($customer_id)));
     }
 
     /**
-     * Payment select page.
+     * The payment step now lives on the combined first screen. Kept as a redirect
+     * so bookmarks, browser history and existing redirects keep working.
      */
     public function payment(Request $request)
     {
-        if (EmergencyModeSetting::current()->is_enabled) {
-            return redirect()->route('cart')->with('error', emergencyModeMessage());
-        }
+        return redirect()->route('shipping');
+    }
 
-        $user = Auth::user();
-        $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-
-        // Fetch customer details from the specified API endpoint
-        $customer_id = getCustomerId(); 
+    /**
+     * Payment terms and, for credit-card accounts on the order path, the cards on
+     * file. Shared by the combined first screen.
+     */
+    protected function paymentContext($customer_id): array
+    {
         $apiUrl = 'GetCustomerDetails/' . $customer_id;
         $apiCustomerDetails = null;
         $apiError = null;
@@ -83,7 +87,7 @@ class CheckoutController extends Controller
         try {
             // SysproService::getCustomerDetails returns an array, not a response object
             $customerDetails = SysproService::getCustomerDetails($apiUrl);
-            
+
             if (!empty($customerDetails)) {
                 $apiCustomerDetails = $customerDetails;
                 $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
@@ -119,15 +123,20 @@ class CheckoutController extends Controller
                 'apiUrl' => $apiUrl,
             ]);
         }
-        return view('payment', array(
-            'cart' => $cart,
+
+        // Remembered so switching the choice mid-flow can tell whether a card is
+        // still owed without calling Syspro again.
+        if ($paymentTermCode !== null) {
+            session(['checkout_payment_term_code' => $paymentTermCode]);
+        }
+
+        return [
             'apiCustomerDetails' => $apiCustomerDetails,
             'apiError' => $apiError,
             'creditCardDetails' => $creditCardDetails,
             'paymentTermCode' => $paymentTermCode,
             'shouldShowCreditCards' => $shouldShowCreditCards,
-            'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
-        ));
+        ];
     }
 
     /**
@@ -176,7 +185,46 @@ class CheckoutController extends Controller
             'user' => $user,
             'user_detail' => $user_detail,
             'selectedCard' => $this->getSelectedCardFromSession(),
+            'canPlaceOrder' => $this->intents->allows(CheckoutIntent::Order),
         ));
+    }
+
+    /**
+     * Order variant of the completion screen. Reached after Place Order, and
+     * revisitable afterwards so a refresh does not replay the submit.
+     */
+    public function complete(Order $order)
+    {
+        if ((string) $order->customer_number !== (string) getCustomerId()) {
+            abort(403);
+        }
+
+        $order->load([
+            'OrderItem' => function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
+            },
+            'OrderItem.Product.Media',
+        ]);
+
+        $apiResponse = null;
+        if ($order->purchase_order_no) {
+            try {
+                $apiResponse = SysproService::getOrderDetails('GetOrderDetails/' . $order->purchase_order_no);
+            } catch (\Exception $e) {
+                Log::error('Failed to fetch order details for completion page: ' . $e->getMessage(), [
+                    'order_id' => $order->id,
+                    'purchase_order_no' => $order->purchase_order_no,
+                ]);
+            }
+        }
+
+        return view('order-thank-you', [
+            'order' => $order,
+            'processedItems' => $this->processOrderLinesWithComments($order, $apiResponse),
+        ]);
     }
 
     /**
@@ -193,11 +241,25 @@ class CheckoutController extends Controller
             abort(403);
         }
 
-        // Final gate on the order path: a dealer who chose to quote can never
-        // place an order from this flow, even by replaying this request.
-        $intent = $this->intents->current();
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
+        $cart = $request->filled('cart_id')
+            ? Cart::where('id', $request->cart_id)->where('user_id', $user->id)->first()
+            : $this->intents->activeCart();
+
+        // Placing an order deletes the cart. A refresh, a second click, or the
+        // browser replaying the POST then finds nothing left — that is success,
+        // not a missing choice.
+        if ($cart === null || !$cart->hasItems()) {
+            return $this->redirectIfOrderAlreadyPlaced();
+        }
+
+        // Submitting this form is itself the "place order" decision, matching
+        // quote save. A lost column value must not bounce a dealer off the
+        // review they already reached.
+        $intent = $this->intents->current($cart);
         if ($intent === null) {
-            return redirect()->route('cart')->with('error', 'Please choose "Place Order" or "Save as Quote" to continue.');
+            $this->intents->remember($cart, CheckoutIntent::Order);
+            $intent = CheckoutIntent::Order;
         }
         if ($intent->isQuote()) {
             return redirect()->route('quote');
@@ -208,24 +270,10 @@ class CheckoutController extends Controller
         ], [
             'customer_po_number.required' => 'The PO number is required.',
         ]);
-        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $total = 0;
         $isDuplicate = 'N';
         if ($request->has('agree_duplicate')) {
             $isDuplicate = 'Y';
-        }
-        if (!$request->has('cart_id')) {
-            return redirect()->route('cart')->with('error', 'Cart ID is missing.');
-        }
-
-        $cart = Cart::where('id', $request->cart_id)->where('user_id', $user->id)->first();
-
-        if (!$cart) {
-            return redirect()->route('cart')->with('error', 'Cart not found.');
-        }
-
-        if (!$cart->hasItems()) {
-            return redirect()->route('cart')->with('error', 'Your cart is empty. Add an item before placing an order.');
         }
 
         $cart->update(['purchase_order_no' => $request->customer_po_number]);
@@ -365,14 +413,11 @@ class CheckoutController extends Controller
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
             DB::commit();
-            
-            // Process order lines with comments for thank you page
-            $processedItems = $this->processOrderLinesWithComments($order, $response ?? null);
-            
-            return view('order-thank-you', [
-                'order' => $order,
-                'processedItems' => $processedItems
-            ]);
+
+            $completionUrl = route('order.complete', $order->id);
+            $this->intents->rememberCompleted($completionUrl);
+
+            return redirect()->to($completionUrl);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Order creation failed: ' . $e->getMessage());
@@ -667,5 +712,20 @@ class CheckoutController extends Controller
             'selected_credit_card_holder_name',
             'selected_credit_card_decoded',
         ]);
+    }
+
+    /**
+     * After a successful place, the cart is gone. Replays of Place Order must
+     * land on what was created, not on a "choose again" error.
+     */
+    private function redirectIfOrderAlreadyPlaced()
+    {
+        $completed = $this->intents->completedUrl();
+
+        if ($completed !== null) {
+            return redirect()->to($completed);
+        }
+
+        return redirect()->route('order');
     }
 }

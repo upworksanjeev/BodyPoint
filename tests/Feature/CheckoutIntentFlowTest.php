@@ -127,8 +127,59 @@ class CheckoutIntentFlowTest extends TestCase
     public function test_the_flow_cannot_start_without_a_choice(): void
     {
         $this->actingAs($this->user)->get(route('shipping'))->assertRedirect(route('cart'));
-        $this->actingAs($this->user)->get(route('payment'))->assertRedirect(route('cart'));
         $this->actingAs($this->user)->get(route('checkout.continue'))->assertRedirect(route('cart'));
+    }
+
+    public function test_the_old_payment_step_forwards_to_the_combined_step(): void
+    {
+        $this->chooseAtCart(CheckoutIntent::Order);
+
+        $this->actingAs($this->user)->get(route('payment'))->assertRedirect(route('shipping'));
+    }
+
+    public function test_a_finished_flow_returns_to_what_it_created(): void
+    {
+        $this->chooseAtCart(CheckoutIntent::Quote);
+
+        // Saving a quote clears the cart, so coming back to a checkout screen must
+        // land on the saved quote rather than on an empty cart that reads like the
+        // submission failed.
+        CartItem::where('cart_id', $this->cart->id)->delete();
+
+        $this->actingAs($this->user)
+            ->withSession(['checkout_completed_url' => '/quote-complete/1234'])
+            ->get(route('shipping'))
+            ->assertRedirect('/quote-complete/1234');
+    }
+
+    public function test_a_new_cart_drops_the_old_completion(): void
+    {
+        $this->chooseAtCart(CheckoutIntent::Quote);
+
+        // With items in the cart the dealer is starting again, so the previous
+        // completion must stop capturing them.
+        $this->actingAs($this->user)
+            ->withSession(['checkout_completed_url' => '/quote-complete/1234'])
+            ->get(route('checkout'))
+            ->assertRedirect(route('quote'))
+            ->assertSessionMissing('checkout_completed_url');
+    }
+
+    public function test_replaying_place_order_returns_to_the_completed_order(): void
+    {
+        $this->chooseAtCart(CheckoutIntent::Order);
+        CartItem::where('cart_id', $this->cart->id)->delete();
+        Cart::where('id', $this->cart->id)->delete();
+        $this->cart = null;
+
+        $this->actingAs($this->user)
+            ->withSession(['checkout_completed_url' => '/order-complete/99'])
+            ->post(route('confirm-order'), [
+                'cart_id' => 99,
+                'customer_po_number' => 'PO-1',
+            ])
+            ->assertRedirect('/order-complete/99')
+            ->assertSessionMissing('error');
     }
 
     public function test_the_flow_cannot_start_with_an_empty_cart(): void
@@ -156,7 +207,7 @@ class CheckoutIntentFlowTest extends TestCase
         $this->actingAs($this->user)->get(route('quote'))->assertRedirect(route('checkout'));
     }
 
-    public function test_the_payment_step_branches_on_the_choice(): void
+    public function test_the_combined_step_branches_on_the_choice(): void
     {
         $this->chooseAtCart(CheckoutIntent::Order);
         $this->actingAs($this->user)->get(route('checkout.continue'))->assertRedirect(route('checkout'));
@@ -176,6 +227,33 @@ class CheckoutIntentFlowTest extends TestCase
 
         $this->assertSame(CheckoutIntent::Quote, $this->storedIntent());
         $this->assertSame($itemsBefore, CartItem::where('cart_id', $this->cart->id)->count());
+    }
+
+    public function test_place_order_instead_switches_the_path_and_keeps_the_cart(): void
+    {
+        $this->chooseAtCart(CheckoutIntent::Quote);
+        $itemsBefore = CartItem::where('cart_id', $this->cart->id)->count();
+
+        $this->actingAs($this->user)
+            ->post(route('checkout.intent.switch'), ['intent' => CheckoutIntent::Order->value])
+            ->assertRedirect(route('checkout'));
+
+        $this->assertSame(CheckoutIntent::Order, $this->storedIntent());
+        $this->assertSame($itemsBefore, CartItem::where('cart_id', $this->cart->id)->count());
+    }
+
+    public function test_a_credit_card_account_picks_a_card_before_the_order_review(): void
+    {
+        $this->chooseAtCart(CheckoutIntent::Quote);
+
+        // The quote path never collected a card, so the order review would be
+        // unsubmittable; the dealer is sent back to the combined step instead.
+        $this->actingAs($this->user)
+            ->withSession(['checkout_payment_term_code' => 'CC'])
+            ->post(route('checkout.intent.switch'), ['intent' => CheckoutIntent::Order->value])
+            ->assertRedirect(route('shipping'));
+
+        $this->assertSame(CheckoutIntent::Order, $this->storedIntent());
     }
 
     public function test_the_choice_survives_further_requests(): void

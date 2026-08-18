@@ -15,10 +15,10 @@
     <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
         <div class="container mx-auto">
             <div class="max-w-screen-xl mx-auto">
-                <x-checkout-header page="checkout" />
+                <x-checkout-header page="review" />
 
                 <div class="pb-6">
-                    <p class="text-[13px] font-normal leading-[19px] text-center">Your order summary is provided below. Please review carefully and click confirm order to process your order. Click cancel to return to your shopping cart.</p>
+                    <p class="text-[13px] font-normal leading-[19px] text-center">Your order summary is provided below. Please review carefully and click place order to submit your order. Click cancel to return to your shopping cart.</p>
                 </div>
 
                 <div class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
@@ -37,8 +37,8 @@
                             </li> --}}
                         </ul>
                     </div>
-                    <x-shipping-info :cart="$cart" :user="$user" :userDetail="$user_detail" />
-                    <x-cart.final-checkout-list :cart="$cart" />
+                    <x-shipping-info :cart="$cart" :user="$user" :userDetail="$user_detail" :editRoute="route('shipping')" />
+                    <x-cart.final-checkout-list :cart="$cart" :editable="true" />
                     <div class="card-body p-6 border-t order-buttons">
                         <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
                             @if ($canSaveAsQuote ?? false)
@@ -51,7 +51,7 @@
                             </form>
                             @endif
                             <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                            <button id="confirm-order" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Confirm Order</button>
+                            <button id="confirm-order" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Place Order</button>
                         </div>
                     </div>
                 </div>

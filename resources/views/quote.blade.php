@@ -3,9 +3,9 @@
     <section class="bg-[#F6F6F6] py-9 lg:px-0 px-4">
         <div class="container mx-auto">
             <div class="max-w-screen-xl mx-auto">
-                <x-checkout-header page="checkout" />
+                <x-checkout-header page="review" />
                 <div class="pb-6">
-                    <p class="text-[13px] font-normal leading-[19px] text-center">Your order summary is provided below. Please review carefully and click confirm order to process your order. Click cancel to return to your shopping cart.</p>
+                    <p class="text-[13px] font-normal leading-[19px] text-center">Your quote summary is provided below. Please review carefully and click generate quote to save your quote. Click cancel to return to your shopping cart.</p>
                 </div>
                 <div class="card w-full max-w-[920px] m-auto bg-white border border-gray-200 rounded-2xl shadow mb-4">
                     <div id="quote_print_div">
@@ -24,8 +24,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <x-shipping-info :userDetail="$user_detail" :cart="$cart" :user="$user" />
-                        <x-cart.final-checkout-list :cart="$cart" />
+                        <x-shipping-info :userDetail="$user_detail" :cart="$cart" :user="$user" :editRoute="route('shipping')" />
+                        <x-cart.final-checkout-list :cart="$cart" :editable="true" />
                     </div>
                     <div class="card-body p-6 border-t">
                         <h3 class="mb-4 font-semibold text-gray-900">Select a PDF Quote Option to Save</h3>
@@ -59,12 +59,26 @@
                         <input type="hidden" name="credit_card_holder_name" id="quote_credit_card_holder_name" value="{{ $selectedCard['holder_name'] ?? '' }}" />
                         <input type="hidden" name="price_option" id="quote_price_option" value="all_price" />
                         <div class="card-body p-6 border-t quote-buttons">
-                            <div class="flex items-center justify-end gap-2">
+                            <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
+                                @if ($canPlaceOrder ?? false)
+                                {{-- Submits the form below, which sits outside the quote form so the
+                                     two are never nested. --}}
+                                <button type="submit" form="switch-to-order-form" class="py-2 px-2 text-sm font-medium text-[#00838f] underline decoration-[#00838f] hover:text-[#005f66]">Place order instead</button>
+                                @endif
                                 <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
                                 <button id="generate-quote" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
                             </div>
                         </div>
                     </form>
+                    @if ($canPlaceOrder ?? false)
+                    {{-- Switches the stored choice to Order and continues to the order review.
+                         The cart and shipping selections are carried over; a credit-card account
+                         is sent back a step to pick a card first. --}}
+                    <form id="switch-to-order-form" method="POST" action="{{ route('checkout.intent.switch') }}">
+                        @csrf
+                        <input type="hidden" name="intent" value="{{ \App\Enums\CheckoutIntent::Order->value }}">
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>

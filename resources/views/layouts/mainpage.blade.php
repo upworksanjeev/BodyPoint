@@ -30,6 +30,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Stops Alpine x-show panels from flashing before JS boots. --}}
+    <style>[x-cloak]{display:none!important}</style>
     
 
 <!-- Google tag (gtag.js) -->

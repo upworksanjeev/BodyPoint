@@ -42,11 +42,12 @@ class CheckoutIntentController extends Controller
     }
 
     /**
-     * Mid-flow switch, used by "Save as a quote instead" on the order review.
+     * Mid-flow switch, used by "Save as a quote instead" on the order review and
+     * "Place order instead" on the quote review.
      *
      * Only the stored choice changes: the cart, the selected shipping address
      * and the selected payment details are all untouched, so the dealer lands on
-     * the quote review with nothing to re-enter.
+     * the review with nothing to re-enter.
      */
     public function swap(Request $request): RedirectResponse
     {
@@ -63,7 +64,17 @@ class CheckoutIntentController extends Controller
                 ->with('error', $this->deniedMessage($intent));
         }
 
+        $previous = $this->intents->current($cart);
         $this->intents->remember($cart, $intent);
+
+        // A quote captures no payment, so a credit-card account switching to the
+        // order path has no card selected yet. Send them back to the first step to
+        // choose one rather than to a review they cannot submit.
+        if ($intent->isOrder() && $previous?->isQuote() && $this->isCreditCardAccount()) {
+            return redirect()
+                ->route('shipping')
+                ->with('success', 'Please choose a payment card to continue with your order.');
+        }
 
         return redirect()->route($intent->reviewRouteName());
     }
@@ -126,6 +137,19 @@ class CheckoutIntentController extends Controller
         }
 
         return $cart;
+    }
+
+    /**
+     * Read from what the first step already resolved, falling back to the cached
+     * customer payload, so switching the choice costs no extra Syspro call.
+     */
+    private function isCreditCardAccount(): bool
+    {
+        $termCode = session('checkout_payment_term_code')
+            ?? data_get(session('customer_details', []), 'PaymentTermCode')
+            ?? data_get(session('customer_details', []), 'Customer.PaymentTermCode');
+
+        return $termCode === 'CC';
     }
 
     private function deniedMessage(CheckoutIntent $intent): string

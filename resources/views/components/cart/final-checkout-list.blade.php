@@ -1,4 +1,6 @@
-   <div class="card-body p-0 md:p-6">
+ @props(['cart', 'editable' => false])
+
+  <div class="card-body p-0 md:p-6">
        <div class="relative overflow-x-auto shadow-md sm:rounded-2xl">
            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                <thead class="bg-[#00838f] font-semibold text-sm text-white">
@@ -39,9 +41,14 @@
                    @if (isset($cart[0]))
                    @foreach ($cart[0]['CartItem'] as $cartitem)
                    <tr class="odd:bg-white even:bg-gray-50 border-b">
-                       <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e">
-                          <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
-                       </td>
+                      <td class="px-4 py-4 text-sm leading-[18px] text-[#3E3E3E] whitespace-nowrap border-e">
+                         <span class="inline-flex items-center gap-3">
+                            <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+                            @if ($editable)
+                                <x-cart.item-actions :cartItem="$cartitem" />
+                            @endif
+                         </span>
+                      </td>
                        <td class="px-4 py-4 text-[13px] leading-[18px] text-[#000] border-e">
                            {{ $cartitem['sku'] }}
                        </td>

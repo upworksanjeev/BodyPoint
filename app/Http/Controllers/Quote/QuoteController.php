@@ -282,6 +282,41 @@ class QuoteController extends Controller
             ]);
         }
     }
+    /**
+     * A saved quote stays valid for this long, which is what the completion screen
+     * shows the dealer as the expiry date.
+     */
+    public const QUOTE_VALID_DAYS = 90;
+
+    /**
+     * Quote variant of the completion screen, reached straight after a quote is
+     * saved and revisitable afterwards by URL.
+     */
+    public function complete(Order $quote)
+    {
+        // Scoped the same way the quotes list is, so a dealer only ever sees a quote
+        // belonging to the customer account they are currently working under. Cast
+        // because the stored number is a string and the session value need not be.
+        if ((string) $quote->customer_number !== (string) getCustomerId()) {
+            abort(403);
+        }
+
+        $quote->load([
+            'orderItem' => function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
+            },
+            'orderItem.Product.Media',
+        ]);
+
+        return view('quotes.complete', [
+            'quote' => $quote,
+            'expiresAt' => $quote->created_at?->copy()->addDays(self::QUOTE_VALID_DAYS),
+        ]);
+    }
+
     public function store(Request $request)
     {
         if (EmergencyModeSetting::current()->is_enabled) {
@@ -341,6 +376,7 @@ class QuoteController extends Controller
         $this->intents->remember($cart[0], CheckoutIntent::Quote);
 
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
+        $order = null;
         DB::beginTransaction();
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
         Storage::disk('public')->delete($filePath);
@@ -467,6 +503,20 @@ class QuoteController extends Controller
             CartItem::where('cart_id', $cart[0]->id)->delete();
             Cart::where('user_id', $user->id)->delete();
             DB::commit();
+
+            // Land on the quote's own completion screen. Falls back to the list when
+            // no quote was created here, which happens if one already existed.
+            if ($order) {
+                $completionUrl = route('quote.complete', $order->id);
+                $this->intents->rememberCompleted($completionUrl);
+
+                // The completion screen offers the PDF on demand, so the pending
+                // auto-download meant for the quotes list is no longer wanted.
+                session()->forget('downloadFile');
+
+                return redirect()->to($completionUrl);
+            }
+
             return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
         } catch (\Exception $e) {
             DB::rollBack();

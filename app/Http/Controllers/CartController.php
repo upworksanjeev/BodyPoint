@@ -107,7 +107,9 @@ class CartController extends Controller
         if ($request->has('cart_item_id')) {
             $cartitems = CartItem::where('id', $request->cart_item_id)->first();
             if ($cartitems) {
-                $cart = Cart::where('id', $cartitems->cart_id)->first();
+                // Scoped to the signed-in user so one dealer can never change or
+                // remove a line item from another dealer's cart.
+                $cart = Cart::where('id', $cartitems->cart_id)->where('user_id', $user->id)->first();
                 if ($cart) {
 
                     if ($request->option == "increment") {

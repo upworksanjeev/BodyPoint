@@ -1,3 +1,5 @@
+@props(['editRoute' => null])
+
 @php
     $customerDetails = session('customer_details') ?? [];
     $customerAddress = session('customer_address') ?? [];
@@ -55,7 +57,16 @@
         <div class="card-header px-6 py-2 bg-[#00838f]">
             <h4 class="text-[#fff]">Bill To:</h4>
         </div>
-        <div class="card-body p-6">
+        <div class="card-body p-6 relative">
+            {{-- Back to the first step to change the address, terms or card. The
+                 choice and the cart are kept, so nothing is re-entered. --}}
+            @if ($editRoute)
+                <a href="{{ $editRoute }}" title="Edit shipping and payment"
+                    class="absolute top-3 right-4 text-[#00838f] hover:text-[#005f66]">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <span class="sr-only">Edit shipping and payment</span>
+                </a>
+            @endif
             <ul class="max-w-md space-y-5 text-gray-500 list-disc list-inside">
                 <li class="flex items-start gap-5">
                     <span class="text-sm text-[#000] font-normal leading-[17px] w-[55px]">Name:</span>

@@ -18,6 +18,12 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 class CheckoutIntentService
 {
     /**
+     * Where a dealer belongs once the flow has finished. Session-scoped, because
+     * it describes this visit rather than the cart, which no longer exists.
+     */
+    private const COMPLETED_KEY = 'checkout_completed_url';
+
+    /**
      * The cart the checkout flow is currently operating on.
      *
      * Reads the collection and takes the first row so this always resolves to
@@ -69,6 +75,31 @@ class CheckoutIntentService
         }
 
         $cart->forceFill(['checkout_intent' => null])->save();
+    }
+
+    /**
+     * Remember the screen that shows what the dealer just created.
+     *
+     * Placing an order or saving a quote clears the cart, which leaves every
+     * checkout screen with nothing to show. Without this, a refresh or a browser
+     * back lands on the cart reading "your cart is empty", as though the
+     * submission had failed.
+     */
+    public function rememberCompleted(string $url): void
+    {
+        session([self::COMPLETED_KEY => $url]);
+    }
+
+    public function completedUrl(): ?string
+    {
+        $url = session(self::COMPLETED_KEY);
+
+        return is_string($url) && $url !== '' ? $url : null;
+    }
+
+    public function forgetCompleted(): void
+    {
+        session()->forget(self::COMPLETED_KEY);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EmergencyModeSetting;
 use App\Events\OrderPlaced;
 use App\Models\Order;
+use App\Services\CheckoutIntentService;
 use App\Services\SysproService;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,10 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function __construct(private readonly CheckoutIntentService $intents)
+    {
+    }
+
     public function PlaceOrder(Request $request, $order_id)
     {
         if (EmergencyModeSetting::current()->is_enabled) {
@@ -133,8 +138,15 @@ class OrderController extends Controller
                 'purchase_order_no' => $order_id,
                 'customer' => $customer,
             ]);
-            //return redirect()->route('order')->with('success','Order Placed Successfully');
-            return view('order-thank-you', ['order' => $order ?? null]);
+
+            if ($order) {
+                $completionUrl = route('order.complete', $order->id);
+                $this->intents->rememberCompleted($completionUrl);
+
+                return redirect()->to($completionUrl);
+            }
+
+            return redirect()->route('order')->with('success', 'Order Placed Successfully');
         }
         catch(Exception $e){
             DB::rollBack();
