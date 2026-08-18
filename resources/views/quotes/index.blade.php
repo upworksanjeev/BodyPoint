@@ -26,18 +26,18 @@
             <div class="lg:max-w-screen-xl mx-auto">
                 <form action="{{ route('quote-search') }}" method="post">
                     @csrf
-                    <div class="lg:grid gap-6 mb-6 lg:grid-cols-3">
+                    <div class="grid gap-4 sm:gap-6 mb-4 lg:grid-cols-2">
                         <div>
                             <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Search By:</label>
                             <input type="text" id="search_input" name="search_input"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 placeholder="Quote No/ BP Number" value="{{ $search ?? '' }}" />
                         </div>
-                        <div class="mt-4 lg:mt-0">
-                            <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date:
-                            </label>
-                            <div date-rangepicker datepicker-max-date="{{ now()->format('m/d/Y') }}" class="lg:flex items-center">
-                                <div class="relative">
+                        <div>
+                            <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Date:</label>
+                            <div date-rangepicker datepicker-max-date="{{ now()->format('m/d/Y') }}"
+                                class="flex items-center gap-3 sm:gap-0 flex-wrap lg:flex-nowrap">
+                                <div class="relative w-full sm:w-auto flex-1 min-w-[140px]">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
@@ -45,8 +45,8 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                                         placeholder="Select date start" value="{{ $start_date ?? '' }}">
                                 </div>
-                                <span class="sm:mx-4 text-gray-500 text-center my-2 inline-block sm:my-0">to</span>
-                                <div class="relative">
+                                <span class="sm:mx-4 text-gray-500 my-1 sm:my-0 inline-block">to</span>
+                                <div class="relative w-full sm:w-auto flex-1 min-w-[140px]">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <x-icons.date />
                                     </div>
@@ -56,50 +56,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="flex items-baseline md:items-center flex-wrap xl:flex-nowrap mt-4 md:mt-5 gap-4 sm:gap-2">
-                            <button type="submit" name="search_quote"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-[145px]">Search
-                                Quote</button>
-                            <a href="{{ route('quotes') }}"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[145px]">Clear
-                                Search</a>
-                            <button type="submit" name="download"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-[145px]">Download</button>
-
-                        </div>
                     </div>
-                </form>
-                <form action="{{ route('sync-account', getCustomerId()) }}" method="get" class="mt-4 mb-2">
-                    <div class="lg:grid gap-6 mb-4 lg:grid-cols-3 items-end">
-                        <div>
-                            <label for="sync_from" class="block mb-2 text-sm font-medium text-gray-900">Sync From Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <x-icons.date />
-                                </div>
-                                <input name="sync_from" id="sync_from" type="text" datepicker datepicker-format="mm/dd/yyyy" datepicker-max-date="{{ now()->format('m/d/Y') }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                                    placeholder="Select sync start date" value="{{ request('sync_from', now()->subDay()->format('m/d/Y')) }}" required>
-                            </div>
-                        </div>
-                        <div class="mt-4 lg:mt-0">
-                            <label for="sync_to" class="block mb-2 text-sm font-medium text-gray-900">Sync To Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <x-icons.date />
-                                </div>
-                                <input name="sync_to" id="sync_to" type="text" datepicker datepicker-format="mm/dd/yyyy" datepicker-max-date="{{ now()->format('m/d/Y') }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                                    placeholder="Select sync end date" value="{{ request('sync_to', now()->format('m/d/Y')) }}" required>
-                            </div>
-                        </div>
-                        <div class="flex items-center mt-4 lg:mt-0 gap-2 flex-wrap">
-                            <button type="submit"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-full sm:w-[145px]">Sync Quotes</button>
-                        </div>
+                    <div class="flex flex-wrap items-center justify-start lg:justify-end gap-2 mb-6">
+                        <button type="submit" name="search_quote"
+                            class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 inline-flex items-center justify-center whitespace-nowrap">
+                            Search Quote
+                        </button>
+                        <x-sync-date-range-button :url="route('sync-account', getCustomerId())" label="Sync Quotes" />
+                        <a href="{{ route('quotes') }}"
+                            class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 inline-flex items-center justify-center whitespace-nowrap">
+                            Clear Search
+                        </a>
+                        <button type="submit" name="download"
+                            class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 inline-flex items-center justify-center whitespace-nowrap">
+                            Download
+                        </button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2">Select a date range to sync quote statuses from Syspro for this account.</p>
                 </form>
                 <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <div id="accordion-collapse" data-accordion="collapse">

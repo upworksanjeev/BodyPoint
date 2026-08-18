@@ -52,8 +52,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware(['auth', 'verified.email'])->group(function () {
 
     Route::get('/run-history/{customer?}', function ($customer = null) {
-        $from = request('sync_from');
-        $to = request('sync_to');
+        $from = request('sync_from') ?? request('start_date');
+        $to = request('sync_to') ?? request('end_date');
 
         $params = ['customer' => $customer];
         if (!empty($from) && !empty($to)) {

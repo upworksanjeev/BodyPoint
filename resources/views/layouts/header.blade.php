@@ -68,15 +68,14 @@
                 $('#app-site-header').removeClass('header-small');
             }
         });
-        
-    });
 
-    $(".slick-slider").slick({
+        $('.page-load-two').slick({
             autoplay: true,
             dots: false,
             arrows: false,
             speed: 2000,
         });
+    });
 </script>
 
 
