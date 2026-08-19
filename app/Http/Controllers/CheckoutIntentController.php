@@ -6,6 +6,7 @@ use App\Enums\CheckoutIntent;
 use App\Models\Cart;
 use App\Models\EmergencyModeSetting;
 use App\Services\CheckoutIntentService;
+use App\Services\QuoteConvertService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,8 +17,10 @@ use Illuminate\Validation\Rule;
  */
 class CheckoutIntentController extends Controller
 {
-    public function __construct(private readonly CheckoutIntentService $intents)
-    {
+    public function __construct(
+        private readonly CheckoutIntentService $intents,
+        private readonly QuoteConvertService $quoteConvert,
+    ) {
     }
 
     /**
@@ -37,6 +40,7 @@ class CheckoutIntentController extends Controller
         }
 
         $this->intents->remember($cart, $intent);
+        $this->quoteConvert->forget();
 
         return redirect()->route('shipping');
     }
@@ -66,6 +70,10 @@ class CheckoutIntentController extends Controller
 
         $previous = $this->intents->current($cart);
         $this->intents->remember($cart, $intent);
+
+        if ($intent->isQuote()) {
+            $this->quoteConvert->forget();
+        }
 
         // A quote captures no payment, so a credit-card account switching to the
         // order path has no card selected yet. Send them back to the first step to

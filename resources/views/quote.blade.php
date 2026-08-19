@@ -18,14 +18,10 @@
                                     <span class="text-sm text-[#000] font-normal leading-[17px]">Quote No.:</span>
                                     <span class="text-sm text-[#000] font-normal leading-[17px]"></span>
                                 </li>
-                                <li class="flex items-center gap-5">
-                                    <span class="text-sm text-[#000] font-normal leading-[17px]">Your Purchase Order No.:</span>
-                                    <span class="py-[2px] px-5 text-sm text-white focus:outline-none bg-[#31BA32] rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center font-bold">Quote</span>
-                                </li>
                             </ul>
                         </div>
                         <x-shipping-info :userDetail="$user_detail" :cart="$cart" :user="$user" :editRoute="route('shipping')" />
-                        <x-cart.final-checkout-list :cart="$cart" :editable="true" />
+                        <x-cart.final-checkout-list :cart="$cart" :editable="true" :hidePoSummary="true" />
                     </div>
                     <div class="card-body p-6 border-t">
                         <h3 class="mb-4 font-semibold text-gray-900">Select a PDF Quote Option to Save</h3>
@@ -58,6 +54,16 @@
                         <input type="hidden" name="credit_card_type" id="quote_credit_card_type" value="{{ $selectedCard['type'] ?? '' }}" />
                         <input type="hidden" name="credit_card_holder_name" id="quote_credit_card_holder_name" value="{{ $selectedCard['holder_name'] ?? '' }}" />
                         <input type="hidden" name="price_option" id="quote_price_option" value="all_price" />
+
+                        <div class="border-t">
+                            <x-checkout.inline-po-field
+                                id="customer-po-number-quote"
+                                name="customer_po_number"
+                                :value="$cart[0]['purchase_order_no'] ?? ''"
+                                :required="false"
+                            />
+                        </div>
+
                         <div class="card-body p-6 border-t quote-buttons">
                             <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
                                 @if ($canPlaceOrder ?? false)
@@ -66,7 +72,7 @@
                                 <button type="submit" form="switch-to-order-form" class="py-2 px-2 text-sm font-medium text-[#00838f] underline decoration-[#00838f] hover:text-[#005f66]">Place order instead</button>
                                 @endif
                                 <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                                <button id="generate-quote" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
+                                <button id="generate-quote" type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Generate Quote</button>
                             </div>
                         </div>
                     </form>
@@ -84,27 +90,8 @@
         </div>
     </section>
 
-   <x-modals.po-number
-    save="save-po-number-quote"
-    cross="close-cross-po-modal-quote"
-    name="customer-po-number-quote"
-    id="po-number-modal-quote"
-    class="close-po-number-modal-quote"
-    form="generate-quote-form"
-    action="{{ route('generateQuote') }}"
-    :selectedCardJson="$selectedCard['json'] ?? ''"
-    :selectedCardLastFour="$selectedCard['last_four'] ?? ''"
-    :selectedCardExpiry="$selectedCard['expiry'] ?? ''"
-    :selectedCardType="$selectedCard['type'] ?? ''"
-    :selectedCardHolderName="$selectedCard['holder_name'] ?? ''"/>
-
     @push('other-scripts')
     <script>
-        function print_window() {
-            window.print();
-        }
-
-        // Function to retrieve and add credit card last 4 digits to quote form
         function syncQuotePriceOption() {
             const selectedPriceOption = $('.quote-price-option:checked').val();
             if (selectedPriceOption) {
@@ -118,55 +105,12 @@
             syncQuotePriceOption();
         });
 
-        $(document).on('click', '#generate-quote', function(event) {
-            event.preventDefault();
+        $('#generate-quote-form').on('submit', function() {
             syncQuotePriceOption();
-            $('#generate-quote-form').submit();
-            // if (po_number !== "" && po_number !== null) {
-            //     $('#generate-quote-form').submit();
-            // }else{
-            //     $('#po-number-modal-quote').show();
-            //     $('#po-number-modal-quote').css({
-            //         'display': 'flex',
-            //         'background-color': 'rgb(0 0 0 / 56%)'
-            //     });
-            // }
         });
-
-        $(document).on('click','#save-po-number-quote',function(){
-            const po_number = $('#customer-po-number-quote').val();
-            if (po_number == "" || po_number == null) {
-                toastr.error('Customer PO Number is Required');
-            }else {
-                $('.po-number-div').remove();
-                $('.quote-buttons').before('<div class="po-number-div flex justify-end gap-3 flex-wrap px-6 pb-6">' +
-                    '<div class="min-w-[250px]">' +
-                        '<span class="text-sm text-[#000] font-bold leading-[17px]">Your PO Number Is:</span>' +
-                    '</div>' +
-                    '<div class="min-w-[100px] text-right">' +
-                        '<span class="font-bold mr-2">' + po_number + '</span> ' +
-                        '<button data-modal-target="po-number-modal-quote" data-modal-toggle="po-number-modal-quote" class="edit-customer-po-number-quote" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>' +
-                    '</div>' +
-                '</div>');
-                $('#po-number-modal-quote').hide();
-                syncQuotePriceOption();
-            }
-        });
-
-
-        $(document).on('click', '.edit-customer-po-number-quote', function() {
-            $('#po-number-modal-quote').show();
-            $('#po-number-modal-quote').css({
-                'display': 'flex',
-                'background-color': 'rgb(0 0 0 / 56%)'
-            });
-        });
-
-        $(document).on('click', '.close-po-number-modal-quote, .close-cross-po-modal-quote', function() {
-            $('#po-number-modal-quote').hide();
-        });
-
     </script>
     @endpush
+
+    <x-checkout.review-form-scripts formId="generate-quote-form" poFieldId="customer-po-number-quote" :requirePo="false" />
 
 </x-mainpage-layout>

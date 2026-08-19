@@ -203,35 +203,24 @@
 
                                     @php
                                     $customer = getCustomer();
-                                    $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
                                     @endphp
 
                                     {{-- PDFs + Edit Quote: always full links; emergency mode never removes these. --}}
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only"
-                                        class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-auto">Download MSRP</a>
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary"
-                                        class="py-2.5 px-5 text-sm font-medium justify-center w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
-                                        ">Download MSRP and Primary Price</a>
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price"
-                                        class="py-2.5 px-5 text-sm font-medium justify-center items-left w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
-                                        ">Download All Pricing</a>
-                                    
+                                    <x-quote.pdf-download-control :quoteId="$quote->id" />
+
                                     <a href="{{ route('quote.edit', $quote->id) }}"
-                                        class="py-2.5 px-5 text-sm font-medium w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
-                                        ">
+                                        class="py-2.5 px-5 text-sm font-medium w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center">
                                         Edit Quote</a>
 
-                                    {{-- Place Order is disabled (same visible slot) during emergency; Email Order appears only then as the alternate path. --}}
                                     @php
                                         $quoteMailtoHref = $emergencyModeQuotes ? \App\Support\EmergencyOrderMailto::buildQuoteMailtoHref($quote) : null;
                                         $quotePoTip = \App\Support\EmergencyOrderMailto::quotePlaceOrderDisabledTooltip((string) ($quote->purchase_order_no ?? ''));
                                         $quoteCopyText = $emergencyModeQuotes ? \App\Support\EmergencyOrderMailto::buildQuoteEmailBody($quote) : '';
                                     @endphp
 
-                                    @if($isCCCustomer)
-                                        {{-- CC customers see "Place Order" button --}}
+                                    @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
                                         @if ($emergencyModeQuotes)
-                                            <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary wide />
+                                            <x-emergency.faux-button label="Convert to order" :tooltip="$quotePoTip" primary wide />
                                             @if ($quoteMailtoHref)
                                                 <a href="{{ $quoteMailtoHref }}"
                                                     class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-auto sm:min-w-[200px] items-center text-center whitespace-nowrap">
@@ -245,42 +234,9 @@
                                             @endif
                                         @else
                                             <a href="{{ route('place-order-from-quote', $quote->id) }}"
-                                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left">
-                                                Place Order
+                                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-center">
+                                                Convert to order
                                             </a>
-                                        @endif
-                                    @else
-                                        {{-- Non-CC customers see "Place Order" button --}}
-                                        @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
-                                            @if ($emergencyModeQuotes)
-                                                <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary wide />
-                                                @if ($quoteMailtoHref)
-                                                    <a href="{{ $quoteMailtoHref }}"
-                                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-auto sm:min-w-[200px] items-center text-center whitespace-nowrap">
-                                                        Email Order from this Quote
-                                                    </a>
-                                                @else
-                                                    <x-emergency.faux-button label="Email Order from this Quote" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary wide />
-                                                @endif
-                                                @if ($quoteCopyText !== '')
-                                                    <button type="button" class="py-2 text-sm font-medium text-[#00838f] underline" data-bp-quote-copy="{{ base64_encode($quoteCopyText) }}" onclick="(function(b){var t=atob(b.getAttribute('data-bp-quote-copy'));navigator.clipboard.writeText(t).then(function(){if(window.toastr){toastr.success('Quote text copied');}}).catch(function(){});})(this)">Copy quote text</button>
-                                                @endif
-                                            @else
-                                                <form method="POST" id="form_1{{ $quote->purchase_order_no }}"
-                                                    action="{{ route('place-order', $quote->purchase_order_no) }}"
-                                                    class="place_order_form w-full sm:w-auto">
-                                                    @csrf
-                                                    <input type="hidden" name="customer_po_number"
-                                                        id="p_o_1{{ $quote->purchase_order_no }}">
-                                                    <input type="hidden" name="is_duplicate"
-                                                        id="is_duplicate_1{{ $quote->purchase_order_no }}">
-                                                    {{ request('customer_po_number') }}
-                                                    <button
-                                                        onclick="popOpen(event, {{ '1' . $quote->purchase_order_no }})"
-                                                        class="place_order_button py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left"
-                                                        type="button">Place Order</button>
-                                                </form>
-                                            @endif
                                         @endif
                                     @endif
 
@@ -312,81 +268,6 @@
                 </div>
             </div>
     </section>
-
-    <x-modals.po-number
-        save="save-po-number"
-        cross="close-cross-po-modal"
-        name="customer-po-number"
-        id="po-number-modal"
-        class="close-po-number-modal"
-        form="confirm-order-form"
-        :cart=[]
-        action="{{ route('confirm-order') }}" />
-
-    @push('other-scripts')
-    <script>
-        var orderID = '';
-        var customerPoNumber = @json(session('customer_po_number'));
-        var error = @json(session('error'));
-        orderID = '1' + @json(session('order_id'));
-
-        var showPoModal = false;
-        if (error && typeof error === "string" && error.includes('Duplicate')) {
-            showPoModal = true;
-        }
-        if (showPoModal) {
-            $('#error_alert_po').text(error);
-            $('#error_alert_po').show();
-            $('#po-number-modal').show();
-            $('#customer-po-number').val(customerPoNumber);
-            $('#duplicate-confirmation').show();
-            $('#po-number-modal').css({
-                'display': 'flex',
-                'background-color': 'rgb(0 0 0 / 56%)'
-            });
-        }
-
-
-        function popOpen(e, order_id) {
-            e.preventDefault();
-            orderID = order_id;
-            $('.place_order_button').prop('disabled', true);
-            const po_number = $('#customer-po-number').val();
-            if (po_number !== "" && po_number !== null) {
-                $('#form_' + orderID).submit();
-                $("#fullLoader").css("display", "flex");
-            } else {
-                $("#fullLoader").css("display", "none");
-                $('.place_order_button').prop('disabled', false);
-                $('#po-number-modal').show();
-                $('#po-number-modal').css({
-                    'display': 'flex',
-                    'background-color': 'rgb(0 0 0 / 56%)'
-                });
-            }
-        }
-        $(document).on('click', '#save-po-number', function(event) {
-            event.preventDefault();
-            $('.place_order_button').prop('disabled', true);
-            const po_number = $('#customer-po-number').val();
-            const isDuplicate = $('#agree-duplicate').is(":visible") ? $('#agree-duplicate').val() : null;
-            if (po_number == "" || po_number == null) {
-                toastr.error('Customer PO Number is Required');
-                $('.place_order_button').prop('disabled', false);
-                $("#fullLoader").css("display", "none");
-            } else {
-                $('#po-number-modal').hide();
-                $('#p_o_' + orderID).val(po_number);
-                $('#is_duplicate_' + orderID).val(isDuplicate);
-                $('#form_' + orderID).submit();
-                $("#fullLoader").css("display", "flex");
-            }
-        });
-        $(document).on('click', '.close-po-number-modal, .close-cross-po-modal', function() {
-            $('#po-number-modal').hide();
-        });
-    </script>
-    @endpush
 </x-mainpage-layout>
 @if (session('downloadFile'))
 @php

@@ -146,4 +146,41 @@ class QuoteCompletionTest extends TestCase
             ->get(route('quote.complete', $this->quote->id))
             ->assertForbidden();
     }
+
+    public function test_it_offers_convert_to_order_when_the_account_can_place_orders(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('quote.complete', $this->quote->id));
+
+        $response->assertOk();
+        $response->assertSee('Convert to order');
+        $response->assertSee(route('place-order-from-quote', $this->quote->id), false);
+    }
+
+    public function test_it_hides_convert_to_order_for_quote_only_accounts(): void
+    {
+        $this->user->revokePermissionTo('placeOrders');
+
+        $response = $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('quote.complete', $this->quote->id));
+
+        $response->assertOk();
+        $response->assertDontSee('Convert to order');
+    }
+
+    public function test_revisiting_the_completion_url_still_works(): void
+    {
+        $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('quote.complete', $this->quote->id))
+            ->assertOk();
+
+        $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('quote.complete', $this->quote->id))
+            ->assertOk()
+            ->assertSee($this->quote->purchase_order_no);
+    }
 }

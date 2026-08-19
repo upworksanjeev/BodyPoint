@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\EmergencyModeSetting;
 use App\Models\UserDetails;
 use App\Services\CheckoutIntentService;
+use App\Services\QuoteConvertService;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +28,10 @@ use Illuminate\Support\Facades\URL;
 
 class QuoteController extends Controller
 {
-    public function __construct(private readonly CheckoutIntentService $intents)
-    {
+    public function __construct(
+        private readonly CheckoutIntentService $intents,
+        private readonly QuoteConvertService $quoteConvert,
+    ) {
     }
 
     public function index(Request $request)
@@ -314,6 +317,7 @@ class QuoteController extends Controller
         return view('quotes.complete', [
             'quote' => $quote,
             'expiresAt' => $quote->created_at?->copy()->addDays(self::QUOTE_VALID_DAYS),
+            'canConvertToOrder' => getCustomer()->hasPermissionTo('placeOrders'),
         ]);
     }
 
@@ -1054,19 +1058,32 @@ class QuoteController extends Controller
             return redirect()->route('quotes')->with('error', emergencyModeMessage());
         }
 
+        $customer = getCustomer();
+        if (!$customer->hasPermissionTo('placeOrders')) {
+            return redirect()->route('quotes')->with('error', 'You do not have permission to place orders.');
+        }
+
         $user = Auth::user();
+        $customerNumber = getCustomerId();
         $quote = Order::with([
-            'OrderItem' => function ($query) {
+            'orderItem' => function ($query) {
                 $query->where(function ($q) {
                     $q->whereNull('action')
                         ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
                 });
             },
-            'OrderItem.Product.Media'
-        ])->where('id', $quote_id)->first();
+            'orderItem.Product.Media',
+        ])
+            ->where('id', $quote_id)
+            ->where('customer_number', $customerNumber)
+            ->first();
 
         if (!$quote) {
             return redirect()->route('quotes')->with('error', 'Quote not found.');
+        }
+
+        if ($blocked = $this->quoteConvert->blockedReason($quote)) {
+            return redirect()->route('quotes')->with('error', $blocked);
         }
 
         if (!empty($quote->purchase_order_no)) {
@@ -1078,40 +1095,22 @@ class QuoteController extends Controller
             return $this->redirectQuotesSysproUnavailable();
         }
 
-        // Check if user has permission
-        $customer = getCustomer();
-        if (!$customer->hasPermissionTo('placeOrders')) {
-            return redirect()->route('quotes')->with('error', 'You do not have permission to place orders.');
-        }
-
-        // Check if customer is CC customer - for CC customers, don't pre-populate PO number
-        // so they are prompted to enter their customer PO number on checkout page
-        $customerDetails = session('customer_details', []);
-        $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
-        $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
-
         try {
             DB::beginTransaction();
 
-            // Delete existing cart items for this user
             $existingCart = Cart::where('user_id', $user->id)->first();
             if ($existingCart) {
                 CartItem::where('cart_id', $existingCart->id)->delete();
                 $existingCart->delete();
             }
 
-            // Create a new cart
-            // For CC customers, set purchase_order_no to null so they are prompted to enter
-            // their customer PO number on the checkout page (like normal orders)
             $cart = Cart::create([
                 'user_id' => $user->id,
                 'total_items' => $quote->total_items,
-                'purchase_order_no' => $isCCCustomer ? null : ($quote->purchase_order_no ?? null),
+                'purchase_order_no' => $quote->customer_po_number ?? '',
             ]);
 
-            // Convert quote items to cart items
-            $quoteItems = $quote->OrderItem;
-            foreach ($quoteItems as $quoteItem) {
+            foreach ($quote->orderItem as $quoteItem) {
                 CartItem::create([
                     'cart_id' => $cart->id,
                     'product_id' => $quoteItem->product_id,
@@ -1126,21 +1125,16 @@ class QuoteController extends Controller
                 ]);
             }
 
-            // Store quote ID in session so we know it's from a quote
-            session()->put('quote_id', $quote_id);
-            session()->put('quote_purchase_order_no', $quote->purchase_order_no);
-
-            // Converting a quote starts the order path, so the flow does not stop
-            // to ask for a choice the dealer has already made.
+            $this->quoteConvert->remember($quote->id, $quote->purchase_order_no);
             $this->intents->remember($cart, CheckoutIntent::Order);
 
             DB::commit();
 
-            // Redirect to shipping page
             return redirect()->route('shipping');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error converting quote to cart: ' . $e->getMessage());
+
             return redirect()->route('quotes')->with('error', 'An error occurred while processing your order. Please try again.');
         }
     }
