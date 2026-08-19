@@ -119,4 +119,52 @@ class OrderCompletionTest extends TestCase
             ->get(route('order.complete', $this->order->id))
             ->assertForbidden();
     }
+
+    public function test_it_shows_the_order_status_chip(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('order.complete', $this->order->id));
+
+        $response->assertOk();
+        $response->assertSee('Open Order');
+    }
+
+    public function test_it_offers_a_track_this_order_link(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('order.complete', $this->order->id));
+
+        $response->assertOk();
+        $response->assertSee('Track this order');
+        $response->assertSee(route('order', ['search_input' => $this->order->purchase_order_no]), false);
+    }
+
+    public function test_it_shows_converted_from_quote_note_when_lineage_exists(): void
+    {
+        $this->order->update(['converted_from_quote_no' => 'Q-SOURCE-123']);
+
+        $response = $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('order.complete', $this->order->id));
+
+        $response->assertOk();
+        $response->assertSee('converted from quote');
+        $response->assertSee('Q-SOURCE-123');
+    }
+
+    public function test_revisiting_the_completion_url_still_works(): void
+    {
+        $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('order.complete', $this->order->id))
+            ->assertOk();
+
+        $this->actingAs($this->user)
+            ->withSession(['customer_id' => self::CUSTOMER_NUMBER])
+            ->get(route('order.complete', $this->order->id))
+            ->assertOk()
+            ->assertSee($this->order->purchase_order_no);
+    }
 }

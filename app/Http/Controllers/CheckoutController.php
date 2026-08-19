@@ -412,6 +412,14 @@ class CheckoutController extends Controller
             OrderPlaced::dispatch($order, $pdfContent);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
+
+            if (session()->has('quote_purchase_order_no')) {
+                $order->update([
+                    'converted_from_quote_no' => session('quote_purchase_order_no'),
+                ]);
+                session()->forget(['quote_id', 'quote_purchase_order_no']);
+            }
+
             DB::commit();
 
             $completionUrl = route('order.complete', $order->id);

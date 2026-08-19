@@ -120,9 +120,14 @@ class OrderController extends Controller
                 if ($order) {
                 $url = 'GetOrderDetails/' . $order->purchase_order_no;
                 $get_order_details = SysproService::getOrderDetails($url);
-                $order->update(['status' => $get_order_details['response']['Status'],
-                    'customer_po_number' => $get_order_details['response']['CustomerPONumber']
-                ]);
+                $updateData = [
+                    'status' => $get_order_details['response']['Status'],
+                    'customer_po_number' => $get_order_details['response']['CustomerPONumber'],
+                ];
+                if ($existingOrder->status === 'F') {
+                    $updateData['converted_from_quote_no'] = $order_id;
+                }
+                $order->update($updateData);
 
                     // Dispatch OrderPlaced event to trigger confirmation email
                     OrderPlaced::dispatch($order);

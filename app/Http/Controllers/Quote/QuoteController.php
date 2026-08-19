@@ -314,6 +314,7 @@ class QuoteController extends Controller
         return view('quotes.complete', [
             'quote' => $quote,
             'expiresAt' => $quote->created_at?->copy()->addDays(self::QUOTE_VALID_DAYS),
+            'canConvertToOrder' => getCustomer()->hasPermissionTo('placeOrders'),
         ]);
     }
 
