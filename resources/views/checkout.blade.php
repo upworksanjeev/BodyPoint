@@ -18,6 +18,11 @@
                 <x-checkout-header page="review" />
 
                 <div class="pb-6">
+                    @if (!empty($convertingQuoteNo))
+                        <p class="text-[13px] font-normal leading-[19px] text-center mb-2 text-gray-700">
+                            Converting quote <span class="font-semibold">{{ $convertingQuoteNo }}</span> to an order.
+                        </p>
+                    @endif
                     <p class="text-[13px] font-normal leading-[19px] text-center">Your order summary is provided below. Please review carefully and click place order to submit your order. Click cancel to return to your shopping cart.</p>
                 </div>
 

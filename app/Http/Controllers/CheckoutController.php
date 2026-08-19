@@ -7,6 +7,7 @@ use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
 use App\Helpers\FunHelper;
 use App\Services\CheckoutIntentService;
+use App\Services\QuoteConvertService;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -28,8 +29,10 @@ use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
-    public function __construct(private readonly CheckoutIntentService $intents)
-    {
+    public function __construct(
+        private readonly CheckoutIntentService $intents,
+        private readonly QuoteConvertService $quoteConvert,
+    ) {
     }
 
     /**
@@ -162,6 +165,7 @@ class CheckoutController extends Controller
                 'purchase_order_no' => $purchase_order_no,
                 'selectedCard' => $this->getSelectedCardFromSession(),
                 'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
+                'convertingQuoteNo' => $this->quoteConvert->purchaseOrderNo(),
             ));
         }
         return redirect()->route('cart');
@@ -277,6 +281,10 @@ class CheckoutController extends Controller
         }
 
         $cart->update(['purchase_order_no' => $request->customer_po_number]);
+
+        if ($this->quoteConvert->isConverting()) {
+            return $this->completeQuoteConversion($request, $user, $cart, $isDuplicate);
+        }
 
         DB::beginTransaction();
         try {
@@ -412,13 +420,6 @@ class CheckoutController extends Controller
             OrderPlaced::dispatch($order, $pdfContent);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
-
-            if (session()->has('quote_purchase_order_no')) {
-                $order->update([
-                    'converted_from_quote_no' => session('quote_purchase_order_no'),
-                ]);
-                session()->forget(['quote_id', 'quote_purchase_order_no']);
-            }
 
             DB::commit();
 
@@ -720,6 +721,96 @@ class CheckoutController extends Controller
             'selected_credit_card_holder_name',
             'selected_credit_card_decoded',
         ]);
+    }
+
+    /**
+     * Finish converting a saved quote through the order review screen using the
+     * same Syspro document number, then land on the order completion page.
+     */
+    private function completeQuoteConversion(Request $request, $user, Cart $cart, string $isDuplicate)
+    {
+        $quoteNumber = $this->quoteConvert->purchaseOrderNo();
+        $customerId = getCustomerId();
+
+        $order = Order::where('purchase_order_no', $quoteNumber)
+            ->where('customer_number', $customerId)
+            ->first();
+
+        if ($order === null) {
+            return redirect()->route('quotes')->with('error', 'Quote not found.');
+        }
+
+        if ($blocked = $this->quoteConvert->blockedReason($order)) {
+            $this->quoteConvert->forget();
+
+            return redirect()->route('quotes')->with('error', $blocked);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $orderDetails = SysproService::getOrderDetails('GetOrderDetails/' . $quoteNumber);
+            if (empty($orderDetails['response']) || !empty($orderDetails['response']['Error'])) {
+                DB::rollBack();
+
+                return redirect()->back()->withInput()->with('error', 'Order details are not available in the system. Please contact support.');
+            }
+
+            $response = SysproService::placeOrder('PlaceOrder', $quoteNumber, $request->customer_po_number, $isDuplicate);
+
+            $errorMessage = null;
+            if (!empty($response['response']['Error'])) {
+                $errorMessage = $response['response']['Message'] ?? $response['response']['Error'];
+            } elseif (!empty($response['response']['Message']) &&
+                (stripos($response['response']['Message'], 'not permitted') !== false ||
+                 stripos($response['response']['Message'], 'error') !== false ||
+                 stripos($response['response']['Message'], 'failed') !== false)) {
+                $errorMessage = $response['response']['Message'];
+            } elseif (!empty($response['code']) && $response['code'] >= 400) {
+                $errorMessage = $response['response']['Message'] ?? 'API request failed';
+            }
+
+            if ($errorMessage) {
+                DB::rollBack();
+
+                if (stripos($errorMessage, 'Change not permitted') !== false) {
+                    $errorMessage = 'This quote cannot be converted to an order. It may have already been placed or is in a state that prevents changes. Please contact support if you believe this is an error.';
+                }
+
+                return redirect()->back()->withInput()->with('error', $errorMessage);
+            }
+
+            if (empty($response['response']['OrderNumber'])) {
+                DB::rollBack();
+
+                return redirect()->back()->withInput()->with('error', 'Unable to convert this quote to an order. Please try again.');
+            }
+
+            $details = SysproService::getOrderDetails('GetOrderDetails/' . $quoteNumber);
+            $order->update([
+                'status' => $details['response']['Status'] ?? $order->status,
+                'customer_po_number' => $details['response']['CustomerPONumber'] ?? $request->customer_po_number,
+                'converted_from_quote_no' => $quoteNumber,
+            ]);
+
+            OrderPlaced::dispatch($order);
+
+            CartItem::where('cart_id', $cart->id)->delete();
+            $cart->delete();
+            $this->quoteConvert->forget();
+
+            DB::commit();
+
+            $completionUrl = route('order.complete', $order->id);
+            $this->intents->rememberCompleted($completionUrl);
+
+            return redirect()->to($completionUrl);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Quote conversion failed: ' . $e->getMessage());
+
+            return redirect()->back()->withInput()->with('error', 'An error occurred while converting your quote. Please try again.');
+        }
     }
 
     /**
