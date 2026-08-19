@@ -1,4 +1,4 @@
- @props(['cart', 'editable' => false])
+ @props(['cart', 'editable' => false, 'hidePoSummary' => false])
 
   <div class="card-body p-0 md:p-6">
        <div class="relative overflow-x-auto shadow-md sm:rounded-2xl">
@@ -95,7 +95,7 @@
            <span class="font-bold">${{ number_format($subtotal + $tax, 2, '.', ',') }}</span>
        </div>
    </div>
-   @if($cart[0]->purchase_order_no != '')
+   @if(!$hidePoSummary && $cart[0]->purchase_order_no != '')
    <div class="po-number-div flex justify-end gap-3 flex-wrap px-6 pb-6">
        <div class="min-w-[250px]"><span class="text-sm text-[#000] font-bold leading-[17px]">Your PO Number Is:</span>
        </div>

@@ -31,169 +31,50 @@
                                 <span class="text-sm text-[#000] font-normal leading-[17px]">Account</span>
                                 <span class="text-sm text-[#000] font-normal leading-[17px]">{{ $user->email }}</span>
                             </li>
-                            {{-- <li class="flex items-center gap-5">
-                <span class="text-sm text-[#000] font-normal leading-[17px]">Purchase Order #:</span>
-                <input class="py-[2px] px-5 text-sm font-medium focus:outline-none rounded-full border border-[#31BA32] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center" value="" name="purchase_no" id="purchase_no" onchange="changePurchaseNo({{ $cart[0]['id'] }})">
-                            </li> --}}
                         </ul>
                     </div>
                     <x-shipping-info :cart="$cart" :user="$user" :userDetail="$user_detail" :editRoute="route('shipping')" />
-                    <x-cart.final-checkout-list :cart="$cart" :editable="true" />
-                    <div class="card-body p-6 border-t order-buttons">
-                        <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
-                            @if ($canSaveAsQuote ?? false)
-                            {{-- Switches the stored choice to Quote and continues to the quote review.
-                                 Cart, shipping and payment are carried over, so nothing is re-entered. --}}
-                            <form method="POST" action="{{ route('checkout.intent.switch') }}">
-                                @csrf
-                                <input type="hidden" name="intent" value="{{ \App\Enums\CheckoutIntent::Quote->value }}">
-                                <button type="submit" class="py-2 px-2 text-sm font-medium text-[#00838f] underline decoration-[#00838f] hover:text-[#005f66]">Save as a quote instead</button>
-                            </form>
-                            @endif
-                            <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
-                            <button id="confirm-order" type="button" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Place Order</button>
+                    <x-cart.final-checkout-list :cart="$cart" :editable="true" :hidePoSummary="true" />
+
+                    <form id="confirm-order-form" action="{{ route('confirm-order') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="cart_id" value="{{ $cart[0]['id'] ?? '' }}">
+                        <input type="hidden" name="selected_credit_card" id="form_credit_card_data" value="{{ $selectedCard['json'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_last_four" id="form_credit_card_last_four" value="{{ $selectedCard['last_four'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_expiry" id="form_credit_card_expiry" value="{{ $selectedCard['expiry'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_type" id="form_credit_card_type" value="{{ $selectedCard['type'] ?? '' }}" />
+                        <input type="hidden" name="credit_card_holder_name" id="form_credit_card_holder_name" value="{{ $selectedCard['holder_name'] ?? '' }}" />
+
+                        <div class="border-t">
+                            <x-checkout.inline-po-field
+                                :value="$cart[0]['purchase_order_no'] ?? ''"
+                                :required="true"
+                            />
                         </div>
-                    </div>
+
+                        <div class="card-body p-6 border-t order-buttons">
+                            <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
+                                @if ($canSaveAsQuote ?? false)
+                                <button type="submit" form="switch-to-quote-form" class="py-2 px-2 text-sm font-medium text-[#00838f] underline decoration-[#00838f] hover:text-[#005f66]">Save as a quote instead</button>
+                                @endif
+                                <a href="{{ route('cart') }}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-[160px]">Cancel</a>
+                                <button id="confirm-order" type="submit" class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 items-center hover:bg-[#FF9119]/80 justify-center w-[160px]">Place Order</button>
+                            </div>
+                        </div>
+                    </form>
+                    @if ($canSaveAsQuote ?? false)
+                    {{-- Switches the stored choice to Quote and continues to the quote review.
+                         Cart, shipping and payment are carried over, so nothing is re-entered. --}}
+                    <form id="switch-to-quote-form" method="POST" action="{{ route('checkout.intent.switch') }}">
+                        @csrf
+                        <input type="hidden" name="intent" value="{{ \App\Enums\CheckoutIntent::Quote->value }}">
+                    </form>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Modal -->
-    <x-modals.po-number
-    save="save-po-number"
-    cross="close-cross-po-modal"
-    name="customer-po-number"
-    id="po-number-modal"
-    class="close-po-number-modal"
-    form="confirm-order-form"
-    :cart="$cart"
-    action="{{ route('confirm-order') }}"
-    :selectedCardJson="$selectedCard['json'] ?? ''"
-    :selectedCardLastFour="$selectedCard['last_four'] ?? ''"
-    :selectedCardExpiry="$selectedCard['expiry'] ?? ''"
-    :selectedCardType="$selectedCard['type'] ?? ''"
-    :selectedCardHolderName="$selectedCard['holder_name'] ?? ''"/>
-
-    @push('other-scripts')
-    <script>
-        var error =  @json(session('error'));
-        
-        var showPoModal = false;
-        if (error && typeof error === "string" && error.includes('Duplicate Purchase Order')) {
-            showPoModal = true;
-        }
-        console.log(showPoModal);
-        function changePurchaseNo(cart_id) {
-            var p_num = $("#purchase_no").val();
-            $("#purchase_order_no").val(p_num);
-            $.ajax({
-                url: "{{ route('update-purchase-no') }}",
-                type: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    cart_id: cart_id,
-                    purchase_order_no: p_num,
-                },
-                success: function(response) {
-
-                }
-            });
-        }
-        if(showPoModal){
-            $('#error_alert_po').text(error);
-            $('#error_alert_po').show();
-            //var confirmationBox = document.getElementById("duplicate-confirmation");
-            //confirmationBox.style.display = "block";
-            $('#po-number-modal').show();
-            $('#duplicate-confirmation').show();
-                $('#po-number-modal').css({
-                    'display': 'flex',
-                    'background-color': 'rgb(0 0 0 / 56%)'
-                });
-        }
-        // Function to retrieve and add credit card last 4 digits to form
-        function addCreditCardToForm(formId) {
-            const selectedCard = localStorage.getItem('selected_credit_card') || sessionStorage.getItem('selected_credit_card');
-            if (selectedCard) {
-                try {
-                    const cardData = JSON.parse(selectedCard);
-                    const form = $('#' + formId);
-                    
-                    // Only send last 4 digits - add as credit_card_last_four for backend extraction
-                    if (cardData.CreditCardLastFourDigit) {
-                        if (!form.find('input[name="credit_card_last_four"]').length) {
-                            form.append('<input type="hidden" name="credit_card_last_four" value="" />');
-                        }
-                        form.find('input[name="credit_card_last_four"]').val(cardData.CreditCardLastFourDigit);
-                        
-                        // Also keep selected_credit_card for backward compatibility
-                        form.find('#form_credit_card_data').val(selectedCard);
-                    }
-                } catch (e) {
-                    console.error('Error parsing credit card data:', e);
-                }
-            }
-        }
-
-        $(document).on('click', '#confirm-order', function(event) {
-            event.preventDefault();
-            const po_number = $('#customer-po-number').val();
-            $('#confirm-order').prop('disabled', true);
-            if (po_number !== "" && po_number !== null) {
-                addCreditCardToForm('confirm-order-form');
-                $('#confirm-order-form').submit();
-                $("#fullLoader").css("display", "flex");
-            }else{
-                $("#fullLoader").css("display", "none");
-                $('#confirm-order').prop('disabled', false);
-                $('#po-number-modal').show();
-                $('#po-number-modal').css({
-                    'display': 'flex',
-                    'background-color': 'rgb(0 0 0 / 56%)'
-                });
-            }
-        });
-
-        $(document).on('click','#save-po-number',function(){
-            const po_number = $('#customer-po-number').val();
-            $('#confirm-order').prop('disabled', true);
-            if (po_number == "" || po_number == null) {
-                $("#fullLoader").css("display", "none");
-                toastr.error('Customer PO Number is Required');
-                $('#confirm-order').prop('disabled', false);
-            }else {
-                $('.po-number-div').remove();
-                $('.order-buttons').before('<div class="po-number-div flex justify-end gap-3 flex-wrap px-6 pb-6">' +
-                    '<div class="min-w-[80px] text-right sm:min-w-[250px]">' +
-                        '<span class="text-sm text-[#000] font-bold leading-[17px]">Your PO Number Is:</span>' +
-                    '</div>' +
-                    '<div class="min-w-[50px] sm:min-w-[100px] text-right">' +
-                        '<span class="font-bold mr-2">' + po_number + '</span> ' +
-                        '<button data-modal-target="po-number-modal" data-modal-toggle="po-number-modal" class="edit-customer-po-number" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>' +
-                    '</div>' +
-                '</div>');
-                $('#po-number-modal').hide();
-                addCreditCardToForm('confirm-order-form');
-                $('#confirm-order-form').submit();
-                $("#fullLoader").css("display", "flex");
-            }
-        });
-
-
-        $(document).on('click', '.edit-customer-po-number', function() {
-            $('#po-number-modal').show();
-            $('#po-number-modal').css({
-                'display': 'flex',
-                'background-color': 'rgb(0 0 0 / 56%)'
-            });
-        });
-
-        $(document).on('click', '.close-po-number-modal, .close-cross-po-modal', function() {
-            $('#po-number-modal').hide();
-        });
-
-    </script>
-    @endpush
+    <x-checkout.review-form-scripts formId="confirm-order-form" />
 
 </x-mainpage-layout>
