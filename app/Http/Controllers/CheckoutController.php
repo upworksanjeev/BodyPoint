@@ -21,6 +21,7 @@ use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
 use App\Models\OrderAttribute;
 use App\Models\EmergencyModeSetting;
+use App\Support\LookupDateRange;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -471,75 +472,37 @@ class CheckoutController extends Controller
         // }
 
         $query = Order::with('User', 'OrderItem.Product.Media')
-            //->where('user_id', $user->id)
             ->where('customer_number', $customer_number)
             ->where('status', '!=', 'D')
             ->where('status', '!=', 'F');
 
-        // Apply start date filter
-        if (!empty($request->start_date)) {
-            $start_date = date('Y-m-d 00:00:00', strtotime($request->start_date));
-            $query->where('created_at', '>=', $start_date);
+        $startDate = LookupDateRange::parseStart($request->start_date);
+        if ($startDate !== null) {
+            $query->where('created_at', '>=', $startDate);
         }
 
-        // Apply end date filter
-        if (!empty($request->end_date)) {
-            $end_date = date('Y-m-d 23:59:59', strtotime($request->end_date));
-            $query->where('created_at', '<=', $end_date);
+        $endDate = LookupDateRange::parseEnd($request->end_date);
+        if ($endDate !== null) {
+            $query->where('created_at', '<=', $endDate);
         }
 
-        // Apply search input filter
         if (!empty($request->search_input)) {
             $search = $request->search_input;
             $query->where(function ($q) use ($search) {
-                $q->where('purchase_order_no', 'like', "%$search%")
-                    ->orWhere('bp_number', 'like', "%$search%")
-                    ->orWhere('customer_po_number', 'like', "%$search%");
+                $q->where('purchase_order_no', 'like', "%{$search}%")
+                    ->orWhere('bp_number', 'like', "%{$search}%")
+                    ->orWhere('customer_po_number', 'like', "%{$search}%");
             });
         }
 
-        // If both start and end date are set but no status, check for null status optionally
-        if (!empty($request->start_date) && !empty($request->end_date) && empty($request->search_input)) {
-            $query->orWhereNull('status');
-        }
-        $order = $query->orderBy('created_at', 'desc')->get();
         $order = $query->orderBy('created_at', 'desc')->paginate(10);
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
-        if ($request->has('download')) {
-            // Process each order with comments
-            $ordersWithComments = [];
-            foreach ($order as $ord) {
-                $ord = Order::with('User', 'OrderItem.Product.Media')->where('id', $ord->id)->first();
-                $apiResponse = null;
-                if ($ord->purchase_order_no) {
-                    try {
-                        $url = 'GetOrderDetails/' . $ord->purchase_order_no;
-                        $apiResponse = SysproService::getOrderDetails($url);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to fetch order details for all-order-receipt: ' . $e->getMessage());
-                    }
-                }
-                $processedItems = $this->processOrderLinesWithComments($ord, $apiResponse);
-                $ordersWithComments[] = [
-                    'order' => $ord,
-                    'processedItems' => $processedItems
-                ];
-            }
-            $pdf = Pdf::loadView('all-order-receipt', [
-                'orders' => $order, 
-                'user' => $user, 
-                'userDetail' => $user_detail,
-                'ordersWithComments' => $ordersWithComments
-            ]);
-            return $pdf->download();
-        } else {
-            return view('order', array(
-                'order' => $order,
-                'start_date' => $request->start_date ?? '',
-                'end_date' => $request->end_date ?? '',
-                'search' => $request->search_input ?? '',
-            ));
-        }
+
+        return view('order', [
+            'order' => $order,
+            'start_date' => $request->start_date ?? '',
+            'end_date' => $request->end_date ?? '',
+            'search' => $request->search_input ?? '',
+        ]);
     }
 
     /**
@@ -634,8 +597,16 @@ class CheckoutController extends Controller
         set_time_limit(3600);
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $request->order_id)->first();
+
+        if (!$order || (string) $order->customer_number !== (string) getCustomerId()) {
+            abort(403);
+        }
+
         $customer_id = getCustomerId();
-        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+        $this->ensureCustomerDetailsInSessionForPdf($customer_id);
+
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first()
+            ?? $user->getUserDetails;
         
         // Fetch API response to get comments
         $apiResponse = null;
@@ -657,6 +628,26 @@ class CheckoutController extends Controller
             'processedItems' => $processedItems
         ]);
         return $pdf->download();
+    }
+
+    private function ensureCustomerDetailsInSessionForPdf(string $customerId): void
+    {
+        if (session()->has('customer_details') && session()->has('customer_address')) {
+            return;
+        }
+
+        try {
+            $customerDetails = SysproService::getCustomerDetails('GetCustomerDetails/' . $customerId);
+            if (!empty($customerDetails)) {
+                session()->put('customer_details', $customerDetails);
+
+                if (!session()->has('customer_address') && !empty($customerDetails['ShipToAddresses'][0])) {
+                    session()->put('customer_address', $customerDetails['ShipToAddresses'][0]);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch customer details for receipt PDF: ' . $e->getMessage());
+        }
     }
 
     /**

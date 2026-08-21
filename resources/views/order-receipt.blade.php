@@ -123,13 +123,13 @@
                                 </td>
                                 <td><span
                                         style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">
-                                        {{ session('customer_address')['AddressLine2'] ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '') . ',' }}
-                                        {{ session('customer_address')['AddressLine1'] ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '') . ',' }}
-                                        {{ session('customer_address')['AddressLine3'] ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ?? '') . ',' }}
+                                        {{ !empty(session('customer_address')['AddressLine2']) ? session('customer_address')['AddressLine2'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine2'] ?? '') . ',' }}
+                                        {{ !empty(session('customer_address')['AddressLine1']) ? session('customer_address')['AddressLine1'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine1'] ?? '') . ',' }}
+                                        {{ !empty(session('customer_address')['AddressLine3']) ? session('customer_address')['AddressLine3'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine3'] ?? '') . ',' }}
                                         <br>
-                                        {{ session('customer_address')['AddressLine4'] ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ?? '') . ',' }}
-                                        {{ session('customer_address')['PostalCode'] ?? session('customer_details')['ShipToAddresses'][0]['PostalCode'] }},
-                                        {{ session('customer_address')['AddressLine5'] ?? session('customer_details')['ShipToAddresses'][0]['AddressLine5'] }}
+                                        {{ !empty(session('customer_address')['AddressLine4']) ? session('customer_address')['AddressLine4'] . ',' : (session('customer_details')['ShipToAddresses'][0]['AddressLine4'] ?? '') . ',' }}
+                                        {{ session('customer_address')['PostalCode'] ?? (session('customer_details')['ShipToAddresses'][0]['PostalCode'] ?? '') }},
+                                        {{ session('customer_address')['AddressLine5'] ?? (session('customer_details')['ShipToAddresses'][0]['AddressLine5'] ?? '') }}
                                     </span></td>
                             </tr>
                             <tr>
@@ -137,11 +137,11 @@
                                         style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400; min-width: 55px;">Country:</span>
                                 </td>
                                 <td><span
-                                        style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
+                                        style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? (session('customer_address')['AddressLine5'] ?? '') }}</span>
                                 </td>
                             </tr>
                             @php
-                            $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                            $phone = $userDetail->primary_phone ?? $user->getUserDetails?->primary_phone;
                             @endphp
 
                             @if(!empty($phone))
@@ -185,14 +185,14 @@
 
                                 <td>
                                     <span
-                                        style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ session('customer_details')['billAddressLine2'] ? session('customer_details')['billAddressLine2'] . ',' : '' }}
+                                        style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ !empty(session('customer_details')['billAddressLine2']) ? session('customer_details')['billAddressLine2'] . ',' : '' }}
                                         <br>
-                                        {{ session('customer_details')['billAddressLine4'] ? session('customer_details')['billAddressLine4'] . ',' : '' }}
-                                        {{ session('customer_details')['billAddressLine1'] ? session('customer_details')['billAddressLine1'] . ',' : '' }}
-                                        @if (session('customer_details')['billAddressLine5'] || !empty(session('customer_details')['billAddressLine5']))
-                                        {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
+                                        {{ !empty(session('customer_details')['billAddressLine4']) ? session('customer_details')['billAddressLine4'] . ',' : '' }}
+                                        {{ !empty(session('customer_details')['billAddressLine1']) ? session('customer_details')['billAddressLine1'] . ',' : '' }}
+                                        @if (!empty(session('customer_details')['billAddressLine5']))
+                                        {{ !empty(session('customer_details')['billAddressPostalCode']) ? session('customer_details')['billAddressPostalCode'] . ',' : '' }}
                                         @else
-                                        {{ session('customer_details')['billAddressPostalCode'] ? session('customer_details')['billAddressPostalCode'] : '' }}
+                                        {{ session('customer_details')['billAddressPostalCode'] ?? '' }}
                                         @endif
                                         {{ session('customer_details')['billAddressLine5'] ?? '' }}
                                     </span>
@@ -207,12 +207,12 @@
 
                                 <td>
                                     <span
-                                        style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? session('customer_address')['AddressLine5'] }}</span>
+                                        style="line-height: 17px; color: #000; font-size: 14px; font-weight: 400;">{{ $userDetail->country ?? (session('customer_address')['AddressLine5'] ?? '') }}</span>
 
                                 </td>
                             </tr>
                             @php
-                            $phone = $userDetail->primary_phone ?? $user->getUserDetails->primary_phone;
+                            $phone = $userDetail->primary_phone ?? $user->getUserDetails?->primary_phone;
                             @endphp
 
                             @if(!empty($phone))
@@ -306,7 +306,7 @@
                                 <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
                                     <td
                                         style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                        <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+                                        <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="data_get($cartitem, 'Product.name', '')" />
                                     </td>
                                     <td
                                         style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
@@ -348,7 +348,7 @@
                             <tr style="border-bottom: 1px solid rgb(104 104 104 / 28%);">
                                 <td
                                     style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
-                                    <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="$cartitem['Product']['name'] ?? ''" />
+                                    <x-syspro-product-name :sku="$cartitem['sku'] ?? null" :fallback="data_get($cartitem, 'Product.name', '')" />
                                 </td>
                                 <td
                                     style="padding: 12px; font-size: 14px; font-weight: 400; color: #000; border-right: 1px solid rgb(104 104 104 / 28%);">
