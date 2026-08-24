@@ -67,7 +67,17 @@ div#cart_count_div a {
     color: #fff;
 }
 
-.page-load-two {
+/*
+ * Header tagline carousel: before Slick initialises, every slide is plain HTML
+ * and stacks above the logo for a moment. Keep only the first line visible
+ * until .slick-initialized is applied.
+ */
+.page-load-two:not(.slick-initialized) {
+    overflow: hidden;
+    max-height: 43px;
+}
+
+.page-load-two:not(.slick-initialized) > div:not(:first-child) {
     display: none;
 }
 

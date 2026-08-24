@@ -6,10 +6,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CheckoutIntentController;
 use App\Http\Controllers\Import\ImportController;
 use App\Http\Controllers\Quote\QuoteController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\DashboardController;
 use App\Models\AssociateCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -45,15 +47,13 @@ Route::get('/cron', function () {
     Artisan::call('fetch:order-history');
     return response()->json(['message' => 'Order history command executed successfully!']);
 });
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified.email'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified.email'])->name('dashboard');
 
 Route::middleware(['auth', 'verified.email'])->group(function () {
 
     Route::get('/run-history/{customer?}', function ($customer = null) {
-        $from = request('sync_from');
-        $to = request('sync_to');
+        $from = request('sync_from') ?? request('start_date');
+        $to = request('sync_to') ?? request('end_date');
 
         $params = ['customer' => $customer];
         if (!empty($from) && !empty($to)) {
@@ -85,8 +85,15 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
     Route::post('/add-to-cart-attachment', [CartController::class, 'addToCartAttachment'])->name('add-to-cart-attachment');
     Route::get('/get-cart-count', [CartController::class, 'getCartCount'])->name('get-cart-count');
-    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('/quote', [CheckoutController::class, 'quote'])->name('quote');
+
+    // Order-or-quote choice: taken at the cart, switched mid-flow, and used to
+    // branch after the payment step.
+    Route::post('/checkout/intent', [CheckoutIntentController::class, 'store'])->name('checkout.intent');
+    Route::post('/checkout/intent/switch', [CheckoutIntentController::class, 'swap'])->name('checkout.intent.switch');
+    Route::get('/checkout/continue', [CheckoutIntentController::class, 'proceed'])->name('checkout.continue');
+
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->middleware('checkout.intent:order')->name('checkout');
+    Route::get('/quote', [CheckoutController::class, 'quote'])->middleware('checkout.intent:quote')->name('quote');
 
     //Quote Routes
     Route::post('/generate-quote',[QuoteController::class, 'store'])->name('generateQuote');
@@ -97,6 +104,7 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/add-to-quote/{id}', [QuoteController::class, 'addToQuote'])->name('add-to-quote');
     Route::post('/update-quote-item-marked', [QuoteController::class, 'updateQuoteItemMarked'])->name('update-quote-item-marked');
     Route::post('/quotes', [QuoteController::class, 'index'])->name('quote-search');
+    Route::get('/quote-complete/{quote}', [QuoteController::class, 'complete'])->name('quote.complete');
     Route::get('/pdf/{quote_id}', [QuoteController::class, 'pdfDownloadQuote'])->name('pdf-download-quote');
     Route::get('/save-shipping-address', [QuoteController::class, 'saveShippingAddress'])->name('saveShippingAddress');
 
@@ -105,13 +113,18 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/place-order/{order_id}',[OrderController::class,'PlaceOrder'])->name('place-order');
 
     Route::post('/confirm-order', [CheckoutController::class, 'saveOrder'])->name('confirm-order');
+    Route::get('/order-complete/{order}', [CheckoutController::class, 'complete'])->name('order.complete');
     Route::get('/confirm-order', function () {
-        return redirect('/order');
+        $completed = app(\App\Services\CheckoutIntentService::class)->completedUrl();
+
+        return redirect()->to($completed ?? '/order');
     });
     Route::get('/order', [CheckoutController::class, 'myOrder'])->name('order');
     Route::post('/order', [CheckoutController::class, 'myOrder'])->name('order-search');
+    // Shipping and payment are one step now; /payment only forwards so existing
+    // links, bookmarks and browser history keep working.
     Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
-    Route::get('/shipping', [CheckoutController::class, 'index'])->name('shipping');
+    Route::get('/shipping', [CheckoutController::class, 'index'])->middleware('checkout.intent')->name('shipping');
     Route::get('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download-get');
     Route::post('/pdf', [CheckoutController::class, 'pdfDownload'])->name('pdf-download');
     Route::post('/receipt-download', [CheckoutController::class, 'receiptDownload'])->name('receipt-download');

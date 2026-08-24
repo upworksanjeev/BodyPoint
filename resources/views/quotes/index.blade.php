@@ -10,7 +10,7 @@
     @endif
     @section('title', 'Quotes - ' . config('app.name', 'Bodypoint'))
     <x-cart-nav />
-    <section class="bg-[#fdffff] py-6 md:py-9 px-4">
+    <section class="bg-[#F6F6F6] py-9 px-4">
         <header>
             <h2 class="text-lg text-[#00838f] font-bold text-center">
                 All Quotes
@@ -23,84 +23,20 @@
             </p>
         </header>
         <div class="container mx-auto mt-9">
-            <div class="lg:max-w-screen-xl mx-auto">
-                <form action="{{ route('quote-search') }}" method="post">
-                    @csrf
-                    <div class="lg:grid gap-6 mb-6 lg:grid-cols-3">
-                        <div>
-                            <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Search By:</label>
-                            <input type="text" id="search_input" name="search_input"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Quote No/ BP Number" value="{{ $search ?? '' }}" />
-                        </div>
-                        <div class="mt-4 lg:mt-0">
-                            <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900">Order Date:
-                            </label>
-                            <div date-rangepicker datepicker-max-date="{{ now()->format('m/d/Y') }}" class="lg:flex items-center">
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <x-icons.date />
-                                    </div>
-                                    <input name="start_date" id="start_date" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                                        placeholder="Select date start" value="{{ $start_date ?? '' }}">
-                                </div>
-                                <span class="sm:mx-4 text-gray-500 text-center my-2 inline-block sm:my-0">to</span>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <x-icons.date />
-                                    </div>
-                                    <input name="end_date" id="end_date" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                                        placeholder="Select date end" value="{{ $end_date ?? '' }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            class="flex items-baseline md:items-center flex-wrap xl:flex-nowrap mt-4 md:mt-5 gap-4 sm:gap-2">
-                            <button type="submit" name="search_quote"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-[145px]">Search
-                                Quote</button>
-                            <a href="{{ route('quotes') }}"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-right justify-center w-full sm:w-[145px]">Clear
-                                Search</a>
-                            <button type="submit" name="download"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-[145px]">Download</button>
-
-                        </div>
-                    </div>
-                </form>
-                <form action="{{ route('sync-account', getCustomerId()) }}" method="get" class="mt-4 mb-2">
-                    <div class="lg:grid gap-6 mb-4 lg:grid-cols-3 items-end">
-                        <div>
-                            <label for="sync_from" class="block mb-2 text-sm font-medium text-gray-900">Sync From Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <x-icons.date />
-                                </div>
-                                <input name="sync_from" id="sync_from" type="text" datepicker datepicker-format="mm/dd/yyyy" datepicker-max-date="{{ now()->format('m/d/Y') }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                                    placeholder="Select sync start date" value="{{ request('sync_from', now()->subDay()->format('m/d/Y')) }}" required>
-                            </div>
-                        </div>
-                        <div class="mt-4 lg:mt-0">
-                            <label for="sync_to" class="block mb-2 text-sm font-medium text-gray-900">Sync To Date:</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <x-icons.date />
-                                </div>
-                                <input name="sync_to" id="sync_to" type="text" datepicker datepicker-format="mm/dd/yyyy" datepicker-max-date="{{ now()->format('m/d/Y') }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                                    placeholder="Select sync end date" value="{{ request('sync_to', now()->format('m/d/Y')) }}" required>
-                            </div>
-                        </div>
-                        <div class="flex items-center mt-4 lg:mt-0 gap-2 flex-wrap">
-                            <button type="submit"
-                                class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-center justify-center w-full sm:w-[145px]">Sync Quotes</button>
-                        </div>
-                    </div>
-                    <p class="text-xs text-gray-500 mb-2">Select a date range to sync quote statuses from Syspro for this account.</p>
-                </form>
+            <div class="max-w-screen-xl mx-auto px-4">
+                <x-lookup.search-form
+                    :action="route('quote-search')"
+                    :clear-url="route('quotes')"
+                    :sync-url="route('sync-account', getCustomerId())"
+                    sync-label="Sync Quotes"
+                    search-label="Search Quotes"
+                    search-button-name="search_quote"
+                    placeholder="Quote No/ BP Number"
+                    :search="$search ?? ''"
+                    :start-date="$start_date ?? ''"
+                    :end-date="$end_date ?? ''"
+                    :min-date="now()->subDays(\App\Http\Controllers\Quote\QuoteController::QUOTE_VALID_DAYS)->format('m/d/Y')"
+                />
                 <div class="relative overflow-x-auto sm:rounded-2xl mt-5 md:mt-10" id="order_list">
                     <div id="accordion-collapse" data-accordion="collapse">
                         @if (!$quotes->isEmpty())
@@ -231,35 +167,24 @@
 
                                     @php
                                     $customer = getCustomer();
-                                    $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
                                     @endphp
 
                                     {{-- PDFs + Edit Quote: always full links; emergency mode never removes these. --}}
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_only"
-                                        class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center w-full sm:w-auto">Download MSRP</a>
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=msrp_primary"
-                                        class="py-2.5 px-5 text-sm font-medium justify-center w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
-                                        ">Download MSRP and Primary Price</a>
-                                    <a href="{{ route('pdf-download-quote', $quote->id) }}?price_option=all_price"
-                                        class="py-2.5 px-5 text-sm font-medium justify-center items-left w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
-                                        ">Download All Pricing</a>
-                                    
+                                    <x-quote.pdf-download-control :quoteId="$quote->id" />
+
                                     <a href="{{ route('quote.edit', $quote->id) }}"
-                                        class="py-2.5 px-5 text-sm font-medium w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center
-                                        ">
+                                        class="py-2.5 px-5 text-sm font-medium w-full sm:w-auto text-gray-900 focus:outline-none bg-white rounded-full border border-[#000000] hover:bg-[#00838f] hover:border-[#027480] hover:text-[#fff] focus:z-10 focus:ring-4 focus:ring-gray-100 flex gap-3 items-left justify-center">
                                         Edit Quote</a>
 
-                                    {{-- Place Order is disabled (same visible slot) during emergency; Email Order appears only then as the alternate path. --}}
                                     @php
                                         $quoteMailtoHref = $emergencyModeQuotes ? \App\Support\EmergencyOrderMailto::buildQuoteMailtoHref($quote) : null;
                                         $quotePoTip = \App\Support\EmergencyOrderMailto::quotePlaceOrderDisabledTooltip((string) ($quote->purchase_order_no ?? ''));
                                         $quoteCopyText = $emergencyModeQuotes ? \App\Support\EmergencyOrderMailto::buildQuoteEmailBody($quote) : '';
                                     @endphp
 
-                                    @if($isCCCustomer)
-                                        {{-- CC customers see "Place Order" button --}}
+                                    @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
                                         @if ($emergencyModeQuotes)
-                                            <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary wide />
+                                            <x-emergency.faux-button label="Convert to order" :tooltip="$quotePoTip" primary wide />
                                             @if ($quoteMailtoHref)
                                                 <a href="{{ $quoteMailtoHref }}"
                                                     class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-auto sm:min-w-[200px] items-center text-center whitespace-nowrap">
@@ -273,42 +198,9 @@
                                             @endif
                                         @else
                                             <a href="{{ route('place-order-from-quote', $quote->id) }}"
-                                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left">
-                                                Place Order
+                                                class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-center">
+                                                Convert to order
                                             </a>
-                                        @endif
-                                    @else
-                                        {{-- Non-CC customers see "Place Order" button --}}
-                                        @if (!empty($quote->purchase_order_no) && $customer->hasPermissionTo('placeOrders'))
-                                            @if ($emergencyModeQuotes)
-                                                <x-emergency.faux-button label="Place Order" :tooltip="$quotePoTip" primary wide />
-                                                @if ($quoteMailtoHref)
-                                                    <a href="{{ $quoteMailtoHref }}"
-                                                        class="py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-auto sm:min-w-[200px] items-center text-center whitespace-nowrap">
-                                                        Email Order from this Quote
-                                                    </a>
-                                                @else
-                                                    <x-emergency.faux-button label="Email Order from this Quote" :tooltip="\App\Support\EmergencyOrderMailto::emailOrderUnavailableTooltip()" primary wide />
-                                                @endif
-                                                @if ($quoteCopyText !== '')
-                                                    <button type="button" class="py-2 text-sm font-medium text-[#00838f] underline" data-bp-quote-copy="{{ base64_encode($quoteCopyText) }}" onclick="(function(b){var t=atob(b.getAttribute('data-bp-quote-copy'));navigator.clipboard.writeText(t).then(function(){if(window.toastr){toastr.success('Quote text copied');}}).catch(function(){});})(this)">Copy quote text</button>
-                                                @endif
-                                            @else
-                                                <form method="POST" id="form_1{{ $quote->purchase_order_no }}"
-                                                    action="{{ route('place-order', $quote->purchase_order_no) }}"
-                                                    class="place_order_form w-full sm:w-auto">
-                                                    @csrf
-                                                    <input type="hidden" name="customer_po_number"
-                                                        id="p_o_1{{ $quote->purchase_order_no }}">
-                                                    <input type="hidden" name="is_duplicate"
-                                                        id="is_duplicate_1{{ $quote->purchase_order_no }}">
-                                                    {{ request('customer_po_number') }}
-                                                    <button
-                                                        onclick="popOpen(event, {{ '1' . $quote->purchase_order_no }})"
-                                                        class="place_order_button py-2.5 px-5 text-sm font-medium text-white focus:outline-none bg-[#FF9119] rounded-full border border-[#FF9119] focus:z-10 focus:ring-4 focus:ring-[#FF9119]/40 flex gap-3 hover:bg-[#FF9119]/80 justify-center w-full sm:w-[160px] items-left"
-                                                        type="button">Place Order</button>
-                                                </form>
-                                            @endif
                                         @endif
                                     @endif
 
@@ -340,81 +232,6 @@
                 </div>
             </div>
     </section>
-
-    <x-modals.po-number
-        save="save-po-number"
-        cross="close-cross-po-modal"
-        name="customer-po-number"
-        id="po-number-modal"
-        class="close-po-number-modal"
-        form="confirm-order-form"
-        :cart=[]
-        action="{{ route('confirm-order') }}" />
-
-    @push('other-scripts')
-    <script>
-        var orderID = '';
-        var customerPoNumber = @json(session('customer_po_number'));
-        var error = @json(session('error'));
-        orderID = '1' + @json(session('order_id'));
-
-        var showPoModal = false;
-        if (error && typeof error === "string" && error.includes('Duplicate')) {
-            showPoModal = true;
-        }
-        if (showPoModal) {
-            $('#error_alert_po').text(error);
-            $('#error_alert_po').show();
-            $('#po-number-modal').show();
-            $('#customer-po-number').val(customerPoNumber);
-            $('#duplicate-confirmation').show();
-            $('#po-number-modal').css({
-                'display': 'flex',
-                'background-color': 'rgb(0 0 0 / 56%)'
-            });
-        }
-
-
-        function popOpen(e, order_id) {
-            e.preventDefault();
-            orderID = order_id;
-            $('.place_order_button').prop('disabled', true);
-            const po_number = $('#customer-po-number').val();
-            if (po_number !== "" && po_number !== null) {
-                $('#form_' + orderID).submit();
-                $("#fullLoader").css("display", "flex");
-            } else {
-                $("#fullLoader").css("display", "none");
-                $('.place_order_button').prop('disabled', false);
-                $('#po-number-modal').show();
-                $('#po-number-modal').css({
-                    'display': 'flex',
-                    'background-color': 'rgb(0 0 0 / 56%)'
-                });
-            }
-        }
-        $(document).on('click', '#save-po-number', function(event) {
-            event.preventDefault();
-            $('.place_order_button').prop('disabled', true);
-            const po_number = $('#customer-po-number').val();
-            const isDuplicate = $('#agree-duplicate').is(":visible") ? $('#agree-duplicate').val() : null;
-            if (po_number == "" || po_number == null) {
-                toastr.error('Customer PO Number is Required');
-                $('.place_order_button').prop('disabled', false);
-                $("#fullLoader").css("display", "none");
-            } else {
-                $('#po-number-modal').hide();
-                $('#p_o_' + orderID).val(po_number);
-                $('#is_duplicate_' + orderID).val(isDuplicate);
-                $('#form_' + orderID).submit();
-                $("#fullLoader").css("display", "flex");
-            }
-        });
-        $(document).on('click', '.close-po-number-modal, .close-cross-po-modal', function() {
-            $('#po-number-modal').hide();
-        });
-    </script>
-    @endpush
 </x-mainpage-layout>
 @if (session('downloadFile'))
 @php

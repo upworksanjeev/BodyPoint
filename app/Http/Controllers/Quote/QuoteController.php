@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Quote;
 
+use App\Enums\CheckoutIntent;
 use App\Events\GenerateQuote;
 use App\Helpers\FunHelper;
 use App\Http\Controllers\Controller;
@@ -13,7 +14,10 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\EmergencyModeSetting;
 use App\Models\UserDetails;
+use App\Services\CheckoutIntentService;
+use App\Services\QuoteConvertService;
 use App\Services\SysproService;
+use App\Support\LookupDateRange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -25,6 +29,12 @@ use Illuminate\Support\Facades\URL;
 
 class QuoteController extends Controller
 {
+    public function __construct(
+        private readonly CheckoutIntentService $intents,
+        private readonly QuoteConvertService $quoteConvert,
+    ) {
+    }
+
     public function index(Request $request)
     {
 
@@ -35,169 +45,43 @@ class QuoteController extends Controller
 
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $customer_number = session()->get('customer_id') ?? auth()->user()->default_customer_id;
-        if ($request->start_date != '') {
-            $start_date = date('y-m-d 00:00:01', strtotime($request->start_date));
-        }
-        if ($request->end_date != '') {
-            $end_date = date('y-m-d 23:59:59', strtotime($request->end_date));
-        }
-        if ($request->search_input != '' && $request->start_date != '' && $request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('created_at', '>=', $start_date)
-                ->where('created_at', '<=', $end_date)
-                ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
-                ->orderBy('created_at', 'desc')
-                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
-                //->get();
-                ->paginate(10);
-        } elseif ($request->search_input != '' && $request->start_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('created_at', '>=', $start_date)
-                ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
-                ->orderBy('created_at', 'desc')
-                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
-                //->get();
-                ->paginate(10);
-        } elseif ($request->start_date != '' && $request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('created_at', '>=', $start_date)
-                ->where('created_at', '<=', $end_date)
-                ->orderBy('created_at', 'desc')
-                //->get();
-                ->paginate(10);
-        } elseif ($request->search_input != '' && $request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('created_at', '<=', $end_date)
-                ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
-                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
-                ->orderBy('created_at', 'desc')
-                //->get();
-                ->paginate(10);
-        } elseif ($request->search_input != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('purchase_order_no', 'like', "%" . $request->search_input . "%")
-                ->orWhere('bp_number', 'like', "%" . $request->search_input . "%")
-                ->orderBy('created_at', 'desc')
-                //->get();
-                ->paginate(10);
-        } elseif ($request->start_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('created_at', '>=', $start_date)
-                ->orderBy('created_at', 'desc')
-                //->get();
-                ->paginate(10);
-        } elseif ($request->end_date != '') {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->where('created_at', '<=', $end_date)
-                ->orderBy('created_at', 'desc')
-                //->get();
-                ->paginate(10);
-        } else {
-            $quotes = Order::with([
-                'User',
-                'OrderItem' => function ($query) {
-                    $query->where(function ($q) {
-                        $q->whereNull('action')
-                            ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
-                    });
-                },
-                'OrderItem.Product.Media'
-            ])
-                //->where('user_id', $user->id)
-                ->where('customer_number', $customer_number)
-                ->where('status', 'F')
-                ->orderBy('created_at', 'desc')
-                //->get();
-                ->paginate(10);
-        }
-        $customer_id = getCustomerId();
-        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+        $quoteLookbackStart = now()->subDays(self::QUOTE_VALID_DAYS)->startOfDay();
 
-        $quotesWithComments = [];
+        $query = Order::with([
+            'User',
+            'OrderItem' => function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
+            },
+            'OrderItem.Product.Media',
+        ])
+            ->where('customer_number', $customer_number)
+            ->where('status', 'F')
+            ->where('created_at', '>=', $quoteLookbackStart);
+
+        $startDate = LookupDateRange::parseStart($request->start_date, $quoteLookbackStart);
+        if ($startDate !== null) {
+            $query->where('created_at', '>=', $startDate);
+        }
+
+        $endDate = LookupDateRange::parseEnd($request->end_date);
+        if ($endDate !== null) {
+            $query->where('created_at', '<=', $endDate);
+        }
+
+        if (!empty($request->search_input)) {
+            $search = $request->search_input;
+            $query->where(function ($q) use ($search) {
+                $q->where('purchase_order_no', 'like', "%{$search}%")
+                    ->orWhere('bp_number', 'like', "%{$search}%");
+            });
+        }
+
+        $quotes = $query->orderBy('created_at', 'desc')->paginate(10);
+        $customer_id = getCustomerId();
+
         $quotesComments = [];
         foreach ($quotes as $quote) {
             $apiResponse = null;
@@ -230,12 +114,6 @@ class QuoteController extends Controller
 
             $processedItems = $this->processOrderLinesWithComments($quote, $isSysproAvailable ? $apiResponse : null);
 
-            // Store for PDFs (structure similar to ordersWithComments)
-            $quotesWithComments[] = [
-                'quote' => $quote,
-                'processedItems' => $processedItems,
-            ];
-
             // Store simple map for listing view (quote_id -> order_item_id -> comment)
             $itemComments = [];
             foreach ($processedItems as $processedItem) {
@@ -258,15 +136,10 @@ class QuoteController extends Controller
         }
         
         if ($request->has('download')) {
-            $pdf = Pdf::loadView('quotes.all-quotes-pdf', [
-                'quotes' => $quotes,
-                'user' => $user,
-                'userDetail' => $user_detail,
-                'quotesWithComments' => $quotesWithComments,
-            ]);
-            return $pdf->download();
-        } else {
-            return view('quotes.index', [
+            abort(404);
+        }
+
+        return view('quotes.index', [
                 'quotes' => $quotes,
                 'start_date' => $request->start_date ?? '',
                 'end_date' => $request->end_date ?? '',
@@ -274,8 +147,43 @@ class QuoteController extends Controller
                 'paymentTermCode' => $paymentTermCode,
                 'quotesComments' => $quotesComments,
             ]);
-        }
     }
+    /**
+     * A saved quote stays valid for this long, which is what the completion screen
+     * shows the dealer as the expiry date.
+     */
+    public const QUOTE_VALID_DAYS = 90;
+
+    /**
+     * Quote variant of the completion screen, reached straight after a quote is
+     * saved and revisitable afterwards by URL.
+     */
+    public function complete(Order $quote)
+    {
+        // Scoped the same way the quotes list is, so a dealer only ever sees a quote
+        // belonging to the customer account they are currently working under. Cast
+        // because the stored number is a string and the session value need not be.
+        if ((string) $quote->customer_number !== (string) getCustomerId()) {
+            abort(403);
+        }
+
+        $quote->load([
+            'orderItem' => function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
+            },
+            'orderItem.Product.Media',
+        ]);
+
+        return view('quotes.complete', [
+            'quote' => $quote,
+            'expiresAt' => $quote->created_at?->copy()->addDays(self::QUOTE_VALID_DAYS),
+            'canConvertToOrder' => getCustomer()->hasPermissionTo('placeOrders'),
+        ]);
+    }
+
     public function store(Request $request)
     {
         if (EmergencyModeSetting::current()->is_enabled) {
@@ -326,7 +234,16 @@ class QuoteController extends Controller
         if ($cart->isEmpty()) {
             return redirect()->route('quotes')->with('error', 'Quote Already Generated');
         }
+        if (!$cart[0]->hasItems()) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Add an item before saving a quote.');
+        }
+
+        // Submitting this form is itself the "save as a quote" decision, so align
+        // the stored choice instead of rejecting a dealer who switched paths.
+        $this->intents->remember($cart[0], CheckoutIntent::Quote);
+
         $cartitems = CartItem::where('cart_id', $cart[0]->id)->get();
+        $order = null;
         DB::beginTransaction();
         $filePath = 'quotes/quote-generate' . $user->id . '.pdf';
         Storage::disk('public')->delete($filePath);
@@ -453,6 +370,20 @@ class QuoteController extends Controller
             CartItem::where('cart_id', $cart[0]->id)->delete();
             Cart::where('user_id', $user->id)->delete();
             DB::commit();
+
+            // Land on the quote's own completion screen. Falls back to the list when
+            // no quote was created here, which happens if one already existed.
+            if ($order) {
+                $completionUrl = route('quote.complete', $order->id);
+                $this->intents->rememberCompleted($completionUrl);
+
+                // The completion screen offers the PDF on demand, so the pending
+                // auto-download meant for the quotes list is no longer wanted.
+                session()->forget('downloadFile');
+
+                return redirect()->to($completionUrl);
+            }
+
             return redirect()->route('quotes')->with('success', 'Quote Created Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -990,19 +921,32 @@ class QuoteController extends Controller
             return redirect()->route('quotes')->with('error', emergencyModeMessage());
         }
 
+        $customer = getCustomer();
+        if (!$customer->hasPermissionTo('placeOrders')) {
+            return redirect()->route('quotes')->with('error', 'You do not have permission to place orders.');
+        }
+
         $user = Auth::user();
+        $customerNumber = getCustomerId();
         $quote = Order::with([
-            'OrderItem' => function ($query) {
+            'orderItem' => function ($query) {
                 $query->where(function ($q) {
                     $q->whereNull('action')
                         ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
                 });
             },
-            'OrderItem.Product.Media'
-        ])->where('id', $quote_id)->first();
+            'orderItem.Product.Media',
+        ])
+            ->where('id', $quote_id)
+            ->where('customer_number', $customerNumber)
+            ->first();
 
         if (!$quote) {
             return redirect()->route('quotes')->with('error', 'Quote not found.');
+        }
+
+        if ($blocked = $this->quoteConvert->blockedReason($quote)) {
+            return redirect()->route('quotes')->with('error', $blocked);
         }
 
         if (!empty($quote->purchase_order_no)) {
@@ -1014,40 +958,22 @@ class QuoteController extends Controller
             return $this->redirectQuotesSysproUnavailable();
         }
 
-        // Check if user has permission
-        $customer = getCustomer();
-        if (!$customer->hasPermissionTo('placeOrders')) {
-            return redirect()->route('quotes')->with('error', 'You do not have permission to place orders.');
-        }
-
-        // Check if customer is CC customer - for CC customers, don't pre-populate PO number
-        // so they are prompted to enter their customer PO number on checkout page
-        $customerDetails = session('customer_details', []);
-        $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
-        $isCCCustomer = isset($paymentTermCode) && $paymentTermCode === 'CC';
-
         try {
             DB::beginTransaction();
 
-            // Delete existing cart items for this user
             $existingCart = Cart::where('user_id', $user->id)->first();
             if ($existingCart) {
                 CartItem::where('cart_id', $existingCart->id)->delete();
                 $existingCart->delete();
             }
 
-            // Create a new cart
-            // For CC customers, set purchase_order_no to null so they are prompted to enter
-            // their customer PO number on the checkout page (like normal orders)
             $cart = Cart::create([
                 'user_id' => $user->id,
                 'total_items' => $quote->total_items,
-                'purchase_order_no' => $isCCCustomer ? null : ($quote->purchase_order_no ?? null),
+                'purchase_order_no' => $quote->customer_po_number ?? '',
             ]);
 
-            // Convert quote items to cart items
-            $quoteItems = $quote->OrderItem;
-            foreach ($quoteItems as $quoteItem) {
+            foreach ($quote->orderItem as $quoteItem) {
                 CartItem::create([
                     'cart_id' => $cart->id,
                     'product_id' => $quoteItem->product_id,
@@ -1062,17 +988,16 @@ class QuoteController extends Controller
                 ]);
             }
 
-            // Store quote ID in session so we know it's from a quote
-            session()->put('quote_id', $quote_id);
-            session()->put('quote_purchase_order_no', $quote->purchase_order_no);
+            $this->quoteConvert->remember($quote->id, $quote->purchase_order_no);
+            $this->intents->remember($cart, CheckoutIntent::Order);
 
             DB::commit();
 
-            // Redirect to shipping page
             return redirect()->route('shipping');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error converting quote to cart: ' . $e->getMessage());
+
             return redirect()->route('quotes')->with('error', 'An error occurred while processing your order. Please try again.');
         }
     }

@@ -11,6 +11,7 @@ use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\Media;
 use App\Models\User;
+use App\Services\CheckoutIntentService;
 use App\Services\SysproService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,7 @@ class HomeController extends Controller
         }
     }
 
-    public function changeCustomer(Request $request)
+    public function changeCustomer(Request $request, CheckoutIntentService $intents)
     {
         $request->validate([
             'customer_id' => [
@@ -71,6 +72,13 @@ class HomeController extends Controller
                 session()->put('customer_id', $request->customer_id);
                 session()->put('customer_details', $get_customer_details);
                 session()->put('customer_address', $get_customer_details['ShipToAddresses'][0]);
+
+                // Pricing and permissions belong to the account, so any in-progress
+                // order-or-quote choice is reset and taken again at the cart. The
+                // finished order or quote belongs to the account being left behind.
+                $intents->forget();
+                $intents->forgetCompleted();
+
                 $customerClass = $get_customer_details['CustomerClass'] ?? '';
 
 
@@ -978,11 +986,11 @@ class HomeController extends Controller
                     ],
                     [
                         'name' => 'Pediatric Catalog (PDF)',
-                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatrics_Catalog-1.pdf',
+                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/08/BMM003_2026.1.pdf',
                     ],
                     [
                         'name' => 'Pediatric Catalog — Print-Ready Files (ZIP)',
-                        'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Catalog_Print_Assets.zip',
+                        'url' =>  vault_link('BMM003_2026.1.indd')
                     ],
 
                 ],
@@ -1114,7 +1122,7 @@ class HomeController extends Controller
         return [
             [
                 'image' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Catalog_Cover.png',
-                'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
+                'url' => vault_link('Pediatrics_Catalog_BMM003_2026.1.zip'),
             ],
         ];
     }

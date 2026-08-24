@@ -23,6 +23,7 @@ class Order extends Model
         'associate_customer_id',
         'OrderFromWebsite',
         'customer_po_number',
+        'converted_from_quote_no',
         'created_at'
     ];
 

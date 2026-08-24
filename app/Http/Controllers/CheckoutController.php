@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CheckoutIntent;
 use App\Events\GenerateQuote;
 use App\Events\OrderPlaced;
 use App\Helpers\FunHelper;
+use App\Services\CheckoutIntentService;
+use App\Services\QuoteConvertService;
 use App\Services\SysproService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -18,6 +21,7 @@ use App\Models\ProductAttribute;
 use App\Models\CartAttribute;
 use App\Models\OrderAttribute;
 use App\Models\EmergencyModeSetting;
+use App\Support\LookupDateRange;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -26,8 +30,15 @@ use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
+    public function __construct(
+        private readonly CheckoutIntentService $intents,
+        private readonly QuoteConvertService $quoteConvert,
+    ) {
+    }
+
     /**
-     *  Shipping details.
+     * Step 1 of the flow: shipping details, payment terms and billing details on
+     * a single screen for both the order and the quote path.
      */
     public function index(Request $request)
     {
@@ -39,42 +50,53 @@ class CheckoutController extends Controller
         $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
         $customer_id = getCustomerId();
         $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
-        return view('shipping', array(
+
+        return view('shipping', array_merge([
             'cart' => $cart,
             'user' => $user,
             'userDetail' => $user_detail,
-        ));
+            'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
+        ], $this->paymentContext($customer_id)));
     }
 
     /**
-     * Payment select page.
+     * The payment step now lives on the combined first screen. Kept as a redirect
+     * so bookmarks, browser history and existing redirects keep working.
      */
     public function payment(Request $request)
     {
-        if (EmergencyModeSetting::current()->is_enabled) {
-            return redirect()->route('cart')->with('error', emergencyModeMessage());
-        }
+        return redirect()->route('shipping');
+    }
 
-        $user = Auth::user();
-        $cart = Cart::with('User', 'CartItem.Product.Media')->where('user_id', $user->id)->get();
-
-        // Fetch customer details from the specified API endpoint
-        $customer_id = getCustomerId(); 
+    /**
+     * Payment terms and, for credit-card accounts on the order path, the cards on
+     * file. Shared by the combined first screen.
+     */
+    protected function paymentContext($customer_id): array
+    {
         $apiUrl = 'GetCustomerDetails/' . $customer_id;
         $apiCustomerDetails = null;
         $apiError = null;
         $creditCardDetails = [];
         $paymentTermCode = null;
+        $isCreditCardCustomer = false;
         $shouldShowCreditCards = false;
-        
+
+        // A quote never captures payment, so the card selector belongs to the
+        // order path only. Without this a credit-card dealer saving a quote would
+        // hit a dead end on this step when they have no card on file.
+        $checkoutIntent = $this->intents->current();
+        $isOrderPath = $checkoutIntent === null || $checkoutIntent->isOrder();
+
         try {
             // SysproService::getCustomerDetails returns an array, not a response object
             $customerDetails = SysproService::getCustomerDetails($apiUrl);
-            
+
             if (!empty($customerDetails)) {
                 $apiCustomerDetails = $customerDetails;
                 $paymentTermCode = data_get($customerDetails, 'PaymentTermCode') ?? data_get($customerDetails, 'Customer.PaymentTermCode');
-                $shouldShowCreditCards = $paymentTermCode === 'CC';
+                $isCreditCardCustomer = $paymentTermCode === 'CC';
+                $shouldShowCreditCards = $isCreditCardCustomer && $isOrderPath;
 
                 if ($shouldShowCreditCards) {
                     // Extract CreditCardDetails from the customer details array
@@ -85,11 +107,13 @@ class CheckoutController extends Controller
                         $creditCardDetails = $customerDetails['Customer']['CreditCardDetails'];
                     }
                 } else {
-                    $this->clearSelectedCardSession();
-                    Log::info('Payment - Customer payment term is not CC; skipping credit card details.', [
-                        'customer_id' => $customer_id,
-                        'payment_term_code' => $paymentTermCode,
-                    ]);
+                    if (!$isCreditCardCustomer) {
+                        $this->clearSelectedCardSession();
+                        Log::info('Payment - Customer payment term is not CC; skipping credit card details.', [
+                            'customer_id' => $customer_id,
+                            'payment_term_code' => $paymentTermCode,
+                        ]);
+                    }
                     $creditCardDetails = [];
                 }
             } else {
@@ -103,14 +127,20 @@ class CheckoutController extends Controller
                 'apiUrl' => $apiUrl,
             ]);
         }
-        return view('payment', array(
-            'cart' => $cart,
+
+        // Remembered so switching the choice mid-flow can tell whether a card is
+        // still owed without calling Syspro again.
+        if ($paymentTermCode !== null) {
+            session(['checkout_payment_term_code' => $paymentTermCode]);
+        }
+
+        return [
             'apiCustomerDetails' => $apiCustomerDetails,
             'apiError' => $apiError,
             'creditCardDetails' => $creditCardDetails,
             'paymentTermCode' => $paymentTermCode,
             'shouldShowCreditCards' => $shouldShowCreditCards,
-        ));
+        ];
     }
 
     /**
@@ -135,6 +165,8 @@ class CheckoutController extends Controller
                 'user_detail' => $user_detail,
                 'purchase_order_no' => $purchase_order_no,
                 'selectedCard' => $this->getSelectedCardFromSession(),
+                'canSaveAsQuote' => $this->intents->allows(CheckoutIntent::Quote),
+                'convertingQuoteNo' => $this->quoteConvert->purchaseOrderNo(),
             ));
         }
         return redirect()->route('cart');
@@ -158,7 +190,46 @@ class CheckoutController extends Controller
             'user' => $user,
             'user_detail' => $user_detail,
             'selectedCard' => $this->getSelectedCardFromSession(),
+            'canPlaceOrder' => $this->intents->allows(CheckoutIntent::Order),
         ));
+    }
+
+    /**
+     * Order variant of the completion screen. Reached after Place Order, and
+     * revisitable afterwards so a refresh does not replay the submit.
+     */
+    public function complete(Order $order)
+    {
+        if ((string) $order->customer_number !== (string) getCustomerId()) {
+            abort(403);
+        }
+
+        $order->load([
+            'OrderItem' => function ($query) {
+                $query->where(function ($q) {
+                    $q->whereNull('action')
+                        ->orWhere('action', '!=', OrderItem::ACTION_DELETE);
+                });
+            },
+            'OrderItem.Product.Media',
+        ]);
+
+        $apiResponse = null;
+        if ($order->purchase_order_no) {
+            try {
+                $apiResponse = SysproService::getOrderDetails('GetOrderDetails/' . $order->purchase_order_no);
+            } catch (\Exception $e) {
+                Log::error('Failed to fetch order details for completion page: ' . $e->getMessage(), [
+                    'order_id' => $order->id,
+                    'purchase_order_no' => $order->purchase_order_no,
+                ]);
+            }
+        }
+
+        return view('order-thank-you', [
+            'order' => $order,
+            'processedItems' => $this->processOrderLinesWithComments($order, $apiResponse),
+        ]);
     }
 
     /**
@@ -174,27 +245,46 @@ class CheckoutController extends Controller
         if (!$customer->hasPermissionTo('placeOrders')) {
             abort(403);
         }
+
+        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
+        $cart = $request->filled('cart_id')
+            ? Cart::where('id', $request->cart_id)->where('user_id', $user->id)->first()
+            : $this->intents->activeCart();
+
+        // Placing an order deletes the cart. A refresh, a second click, or the
+        // browser replaying the POST then finds nothing left — that is success,
+        // not a missing choice.
+        if ($cart === null || !$cart->hasItems()) {
+            return $this->redirectIfOrderAlreadyPlaced();
+        }
+
+        // Submitting this form is itself the "place order" decision, matching
+        // quote save. A lost column value must not bounce a dealer off the
+        // review they already reached.
+        $intent = $this->intents->current($cart);
+        if ($intent === null) {
+            $this->intents->remember($cart, CheckoutIntent::Order);
+            $intent = CheckoutIntent::Order;
+        }
+        if ($intent->isQuote()) {
+            return redirect()->route('quote');
+        }
+
         $request->validate([
             'customer_po_number' => ['required']
         ], [
             'customer_po_number.required' => 'The PO number is required.',
         ]);
-        $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $total = 0;
         $isDuplicate = 'N';
         if ($request->has('agree_duplicate')) {
             $isDuplicate = 'Y';
         }
-        if (!$request->has('cart_id')) {
-            return redirect()->route('cart')->with('error', 'Cart ID is missing.');
-        }
 
-        $cart = Cart::where('id', $request->cart_id)->first();
+        $cart->update(['purchase_order_no' => $request->customer_po_number]);
 
-        if ($cart) {
-            $cart->update(['purchase_order_no' => $request->customer_po_number]);
-        } else {
-            return redirect()->route('cart')->with('error', 'Cart not found.');
+        if ($this->quoteConvert->isConverting()) {
+            return $this->completeQuoteConversion($request, $user, $cart, $isDuplicate);
         }
 
         DB::beginTransaction();
@@ -331,15 +421,13 @@ class CheckoutController extends Controller
             OrderPlaced::dispatch($order, $pdfContent);
             CartItem::where('cart_id', $cart->id)->delete();
             $cart->delete();
+
             DB::commit();
-            
-            // Process order lines with comments for thank you page
-            $processedItems = $this->processOrderLinesWithComments($order, $response ?? null);
-            
-            return view('order-thank-you', [
-                'order' => $order,
-                'processedItems' => $processedItems
-            ]);
+
+            $completionUrl = route('order.complete', $order->id);
+            $this->intents->rememberCompleted($completionUrl);
+
+            return redirect()->to($completionUrl);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Order creation failed: ' . $e->getMessage());
@@ -384,75 +472,37 @@ class CheckoutController extends Controller
         // }
 
         $query = Order::with('User', 'OrderItem.Product.Media')
-            //->where('user_id', $user->id)
             ->where('customer_number', $customer_number)
             ->where('status', '!=', 'D')
             ->where('status', '!=', 'F');
 
-        // Apply start date filter
-        if (!empty($request->start_date)) {
-            $start_date = date('Y-m-d 00:00:00', strtotime($request->start_date));
-            $query->where('created_at', '>=', $start_date);
+        $startDate = LookupDateRange::parseStart($request->start_date);
+        if ($startDate !== null) {
+            $query->where('created_at', '>=', $startDate);
         }
 
-        // Apply end date filter
-        if (!empty($request->end_date)) {
-            $end_date = date('Y-m-d 23:59:59', strtotime($request->end_date));
-            $query->where('created_at', '<=', $end_date);
+        $endDate = LookupDateRange::parseEnd($request->end_date);
+        if ($endDate !== null) {
+            $query->where('created_at', '<=', $endDate);
         }
 
-        // Apply search input filter
         if (!empty($request->search_input)) {
             $search = $request->search_input;
             $query->where(function ($q) use ($search) {
-                $q->where('purchase_order_no', 'like', "%$search%")
-                    ->orWhere('bp_number', 'like', "%$search%")
-                    ->orWhere('customer_po_number', 'like', "%$search%");
+                $q->where('purchase_order_no', 'like', "%{$search}%")
+                    ->orWhere('bp_number', 'like', "%{$search}%")
+                    ->orWhere('customer_po_number', 'like', "%{$search}%");
             });
         }
 
-        // If both start and end date are set but no status, check for null status optionally
-        if (!empty($request->start_date) && !empty($request->end_date) && empty($request->search_input)) {
-            $query->orWhereNull('status');
-        }
-        $order = $query->orderBy('created_at', 'desc')->get();
         $order = $query->orderBy('created_at', 'desc')->paginate(10);
-        $user_detail = UserDetails::where('user_id', $user->id)->first();
-        if ($request->has('download')) {
-            // Process each order with comments
-            $ordersWithComments = [];
-            foreach ($order as $ord) {
-                $ord = Order::with('User', 'OrderItem.Product.Media')->where('id', $ord->id)->first();
-                $apiResponse = null;
-                if ($ord->purchase_order_no) {
-                    try {
-                        $url = 'GetOrderDetails/' . $ord->purchase_order_no;
-                        $apiResponse = SysproService::getOrderDetails($url);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to fetch order details for all-order-receipt: ' . $e->getMessage());
-                    }
-                }
-                $processedItems = $this->processOrderLinesWithComments($ord, $apiResponse);
-                $ordersWithComments[] = [
-                    'order' => $ord,
-                    'processedItems' => $processedItems
-                ];
-            }
-            $pdf = Pdf::loadView('all-order-receipt', [
-                'orders' => $order, 
-                'user' => $user, 
-                'userDetail' => $user_detail,
-                'ordersWithComments' => $ordersWithComments
-            ]);
-            return $pdf->download();
-        } else {
-            return view('order', array(
-                'order' => $order,
-                'start_date' => $request->start_date ?? '',
-                'end_date' => $request->end_date ?? '',
-                'search' => $request->search_input ?? '',
-            ));
-        }
+
+        return view('order', [
+            'order' => $order,
+            'start_date' => $request->start_date ?? '',
+            'end_date' => $request->end_date ?? '',
+            'search' => $request->search_input ?? '',
+        ]);
     }
 
     /**
@@ -547,8 +597,16 @@ class CheckoutController extends Controller
         set_time_limit(3600);
         $user = Auth::user()->load(['associateCustomers', 'getUserDetails']);
         $order = Order::with('User', 'OrderItem.Product.Media')->where('id', $request->order_id)->first();
+
+        if (!$order || (string) $order->customer_number !== (string) getCustomerId()) {
+            abort(403);
+        }
+
         $customer_id = getCustomerId();
-        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first();
+        $this->ensureCustomerDetailsInSessionForPdf($customer_id);
+
+        $user_detail = $user->associateCustomers()->where('customer_id', $customer_id)->first()
+            ?? $user->getUserDetails;
         
         // Fetch API response to get comments
         $apiResponse = null;
@@ -570,6 +628,26 @@ class CheckoutController extends Controller
             'processedItems' => $processedItems
         ]);
         return $pdf->download();
+    }
+
+    private function ensureCustomerDetailsInSessionForPdf(string $customerId): void
+    {
+        if (session()->has('customer_details') && session()->has('customer_address')) {
+            return;
+        }
+
+        try {
+            $customerDetails = SysproService::getCustomerDetails('GetCustomerDetails/' . $customerId);
+            if (!empty($customerDetails)) {
+                session()->put('customer_details', $customerDetails);
+
+                if (!session()->has('customer_address') && !empty($customerDetails['ShipToAddresses'][0])) {
+                    session()->put('customer_address', $customerDetails['ShipToAddresses'][0]);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch customer details for receipt PDF: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -634,5 +712,110 @@ class CheckoutController extends Controller
             'selected_credit_card_holder_name',
             'selected_credit_card_decoded',
         ]);
+    }
+
+    /**
+     * Finish converting a saved quote through the order review screen using the
+     * same Syspro document number, then land on the order completion page.
+     */
+    private function completeQuoteConversion(Request $request, $user, Cart $cart, string $isDuplicate)
+    {
+        $quoteNumber = $this->quoteConvert->purchaseOrderNo();
+        $customerId = getCustomerId();
+
+        $order = Order::where('purchase_order_no', $quoteNumber)
+            ->where('customer_number', $customerId)
+            ->first();
+
+        if ($order === null) {
+            return redirect()->route('quotes')->with('error', 'Quote not found.');
+        }
+
+        if ($blocked = $this->quoteConvert->blockedReason($order)) {
+            $this->quoteConvert->forget();
+
+            return redirect()->route('quotes')->with('error', $blocked);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $orderDetails = SysproService::getOrderDetails('GetOrderDetails/' . $quoteNumber);
+            if (empty($orderDetails['response']) || !empty($orderDetails['response']['Error'])) {
+                DB::rollBack();
+
+                return redirect()->back()->withInput()->with('error', 'Order details are not available in the system. Please contact support.');
+            }
+
+            $response = SysproService::placeOrder('PlaceOrder', $quoteNumber, $request->customer_po_number, $isDuplicate);
+
+            $errorMessage = null;
+            if (!empty($response['response']['Error'])) {
+                $errorMessage = $response['response']['Message'] ?? $response['response']['Error'];
+            } elseif (!empty($response['response']['Message']) &&
+                (stripos($response['response']['Message'], 'not permitted') !== false ||
+                 stripos($response['response']['Message'], 'error') !== false ||
+                 stripos($response['response']['Message'], 'failed') !== false)) {
+                $errorMessage = $response['response']['Message'];
+            } elseif (!empty($response['code']) && $response['code'] >= 400) {
+                $errorMessage = $response['response']['Message'] ?? 'API request failed';
+            }
+
+            if ($errorMessage) {
+                DB::rollBack();
+
+                if (stripos($errorMessage, 'Change not permitted') !== false) {
+                    $errorMessage = 'This quote cannot be converted to an order. It may have already been placed or is in a state that prevents changes. Please contact support if you believe this is an error.';
+                }
+
+                return redirect()->back()->withInput()->with('error', $errorMessage);
+            }
+
+            if (empty($response['response']['OrderNumber'])) {
+                DB::rollBack();
+
+                return redirect()->back()->withInput()->with('error', 'Unable to convert this quote to an order. Please try again.');
+            }
+
+            $details = SysproService::getOrderDetails('GetOrderDetails/' . $quoteNumber);
+            $order->update([
+                'status' => $details['response']['Status'] ?? $order->status,
+                'customer_po_number' => $details['response']['CustomerPONumber'] ?? $request->customer_po_number,
+                'converted_from_quote_no' => $quoteNumber,
+            ]);
+
+            OrderPlaced::dispatch($order);
+
+            CartItem::where('cart_id', $cart->id)->delete();
+            $cart->delete();
+            $this->quoteConvert->forget();
+
+            DB::commit();
+
+            $completionUrl = route('order.complete', $order->id);
+            $this->intents->rememberCompleted($completionUrl);
+
+            return redirect()->to($completionUrl);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Quote conversion failed: ' . $e->getMessage());
+
+            return redirect()->back()->withInput()->with('error', 'An error occurred while converting your quote. Please try again.');
+        }
+    }
+
+    /**
+     * After a successful place, the cart is gone. Replays of Place Order must
+     * land on what was created, not on a "choose again" error.
+     */
+    private function redirectIfOrderAlreadyPlaced()
+    {
+        $completed = $this->intents->completedUrl();
+
+        if ($completed !== null) {
+            return redirect()->to($completed);
+        }
+
+        return redirect()->route('order');
     }
 }
