@@ -21,5 +21,5 @@ yarn-error.log
 /lang/vendor/nova
 /html
 /storage/app/public/vault-photo
-/public/vault/links/*
-!/public/vault/links/.gitkeep
+/public/vaults/links/*
+!/public/vaults/links/.gitkeep
