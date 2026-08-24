@@ -50,7 +50,7 @@ if (!function_exists('vault_link')) {
      */
     function vault_link(string $filename): string
     {
-        return asset('vault/links/'.$filename);
+        return asset('vaults/links/'.$filename);
     }
 }
 
