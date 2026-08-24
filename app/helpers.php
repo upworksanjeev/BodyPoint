@@ -42,6 +42,18 @@ if (!function_exists('getCustomer')) {
     }
 }
 
+if (!function_exists('vault_link')) {
+    /**
+     * Public file under public/vault/links. APP_URL makes this work on
+     * local, staging, and production. The files themselves are gitignored
+     * and must be uploaded to that folder on each server.
+     */
+    function vault_link(string $filename): string
+    {
+        return asset('vault/links/'.$filename);
+    }
+}
+
 if (!function_exists('calculateDiscountPercentage')) {
     function calculateDiscountPercentage($msrp, $dealerPrice)
     {
