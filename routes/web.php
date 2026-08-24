@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\VaultController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
@@ -137,8 +138,13 @@ Route::middleware(['auth', 'verified.email'])->group(function () {
     Route::post('/import-csv', [ImportController::class, 'importCustomers'])->name('import-customers');
 
     Route::post('/change-customer', [HomeController::class,'changeCustomer'])->name('change-customer');
-    Route::get('/vault', [HomeController::class,'vault'])->name('vault');
-    Route::post('/vault', [HomeController::class,'postVault'])->name('post-vault');
+
+    Route::middleware('vault.access')->group(function () {
+        Route::get('/vault', [VaultController::class, 'index'])->name('vault');
+        Route::post('/vault', [VaultController::class, 'submitReview'])->name('post-vault');
+        Route::get('/vault/tour', [VaultController::class, 'tour'])->name('vault.tour');
+        Route::get('/vault/category/{category}', [VaultController::class, 'category'])->name('vault.category');
+    });
 
     Route::prefix('photos')->group(function () {
         Route::get('/lifestyle-photos', [PhotoController::class, 'lifeStyle'])->name('photos.lifestyle');

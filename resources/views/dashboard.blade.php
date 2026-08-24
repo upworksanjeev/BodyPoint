@@ -55,7 +55,7 @@
                         @endif
 
                         @if ($canAccessVault)
-                            <a href="{{ url('/vault/') }}" class="order-4 h-full block rounded-xl p-5 bg-[#eee8f6] border border-[#ddd4ee] hover:brightness-[0.98] transition">
+                            <a href="{{ route('vault') }}" class="order-4 h-full block rounded-xl p-5 bg-[#eee8f6] border border-[#ddd4ee] hover:brightness-[0.98] transition">
                                 <span class="block text-[26px] leading-none mb-4">🔒</span>
                                 <p class="text-[17px] font-bold text-[#1a1a1a]">Partner Vault</p>
                                 <p class="mt-1 text-[13px] leading-5 text-[#5c5c5c] flex items-start gap-2">
@@ -147,7 +147,7 @@
 
                     <div class="border-t border-[#E5E5E5] pt-5">
                         <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 text-[14px] text-[#3a3a3a]">
-                            <a href="{{ url('/vault/') }}#pricing-guide" class="inline-flex items-center gap-2 hover:text-[#00838f]">
+                            <a href="{{ route('vault.category', 'pricing-guide') }}" class="inline-flex items-center gap-2 hover:text-[#00838f]">
                                 <span>📥</span>
                                 <span>Price lists</span>
                             </a>

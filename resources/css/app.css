@@ -548,6 +548,109 @@ th.px-4.py-3.font-bold {
     box-shadow: none !important;
 }
 
+/* vault search — unlayered so it wins over Flowbite CDN + Tailwind @layer */
+.vault-search {
+    display: flex;
+    align-items: stretch;
+    box-sizing: border-box;
+    width: 100%;
+    height: 48px;
+    border: 1px solid #d4d4d4;
+    border-radius: 9999px;
+    background: #fff;
+    padding: 5px 6px 5px 16px;
+    overflow: hidden;
+    min-height: 48px;
+    max-height: 48px;
+}
+
+.vault-search *,
+.vault-search *::before,
+.vault-search *::after {
+    box-sizing: border-box;
+}
+
+.vault-search:focus-within {
+    border-color: #00838f;
+    box-shadow: 0 0 0 1px #00838f;
+}
+
+.vault-search__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    align-self: center;
+    pointer-events: none;
+}
+
+.vault-search input[type="search"],
+.vault-search input[type="text"] {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    line-height: 40px !important;
+    color: #1a1a1a;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.vault-search input[type="search"]::-webkit-search-decoration,
+.vault-search input[type="search"]::-webkit-search-cancel-button,
+.vault-search input[type="search"]::-webkit-search-results-button,
+.vault-search input[type="search"]::-webkit-search-results-decoration,
+.vault-search input[type="text"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+.vault-search input[type="search"]::placeholder,
+.vault-search input[type="text"]::placeholder {
+    color: #8a8a8a;
+}
+
+.vault-search input[type="search"]:focus,
+.vault-search input[type="text"]:focus {
+    outline: none;
+    box-shadow: none !important;
+}
+
+.vault-search button[type="submit"] {
+    flex: 0 0 auto;
+    align-self: stretch;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    border: 0 !important;
+    border-radius: 9999px;
+    background: #00838f;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1 !important;
+    position: static;
+    top: auto;
+    transform: none;
+}
+
+.vault-search button[type="submit"]:hover {
+    background: #006d76;
+}
+
 /* vault page */
 .accordion-item-headers.active {
     background: #00838f;
