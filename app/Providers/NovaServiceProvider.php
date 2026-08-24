@@ -77,7 +77,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Partner Vault', [
                     MenuItem::resource(VaultAsset::class),
-                    MenuItem::externalLink('Seed catalog', '/admin/seed-vault-catalog'),
                 ])->icon('folder')->collapsable(),
 
                 MenuSection::make('Operations', [
