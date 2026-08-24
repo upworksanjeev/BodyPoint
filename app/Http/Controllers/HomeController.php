@@ -986,11 +986,11 @@ class HomeController extends Controller
                     ],
                     [
                         'name' => 'Pediatric Catalog (PDF)',
-                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatrics_Catalog-1.pdf',
+                        'url' => 'https://www.bodypoint.com/wp-content/uploads/2026/08/BMM003_2026.1.pdf',
                     ],
                     [
                         'name' => 'Pediatric Catalog — Print-Ready Files (ZIP)',
-                        'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Catalog_Print_Assets.zip',
+                        'url' =>  vault_link('BMM003_2026.1.indd')
                     ],
 
                 ],
@@ -1122,7 +1122,7 @@ class HomeController extends Controller
         return [
             [
                 'image' => 'https://www.bodypoint.com/wp-content/uploads/2026/07/Bodypoint_Pediatric_Catalog_Cover.png',
-                'url' => 'https://yellowgreen-goat-520708.hostingersite.com/Bodypoint_Pediatric_Campaign_Kit_2026.zip',
+                'url' => vault_link('Pediatrics_Catalog_BMM003_2026.1.zip'),
             ],
         ];
     }
