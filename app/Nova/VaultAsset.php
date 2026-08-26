@@ -16,7 +16,6 @@ use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -183,8 +182,6 @@ class VaultAsset extends Resource
             Boolean::make('Newly Added', 'is_newly_added')->sortable(),
             Boolean::make('Tour Starter', 'is_tour_starter')->hideFromIndex(),
             Boolean::make('Active', 'is_active')->sortable(),
-
-            Number::make('Sort Order', 'sort_order')->min(0)->step(1)->hideFromIndex(),
         ];
     }
 

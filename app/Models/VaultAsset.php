@@ -51,6 +51,13 @@ class VaultAsset extends Model
 
     protected static function booted(): void
     {
+        static::creating(function (self $asset) {
+            $raw = $asset->getAttributes()['sort_order'] ?? null;
+            if ($raw === null || $raw === '') {
+                $asset->sort_order = (int) static::query()->max('sort_order') + 1;
+            }
+        });
+
         static::saving(function (self $asset) {
             if (blank($asset->slug)) {
                 $asset->slug = Str::slug((string) $asset->title).'-'.Str::lower(Str::random(8));
