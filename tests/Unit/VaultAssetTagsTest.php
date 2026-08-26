@@ -49,4 +49,31 @@ class VaultAssetTagsTest extends TestCase
         $this->assertSame('multiselect-field', $tags->component);
         $this->assertTrue($tags->meta['taggable'] ?? false);
     }
+
+    public function test_sort_order_is_assigned_when_omitted_on_create(): void
+    {
+        $expected = (int) VaultAsset::query()->max('sort_order') + 1;
+
+        $asset = VaultAsset::factory()->make();
+        unset($asset['sort_order']);
+        $asset->save();
+
+        $this->assertSame($expected, $asset->sort_order);
+
+        $asset->delete();
+    }
+
+    public function test_nova_create_form_does_not_include_sort_order(): void
+    {
+        $request = NovaRequest::create('/nova-api/vault-assets', 'GET', [
+            'editing' => 'true',
+            'editMode' => 'create',
+        ]);
+
+        $sortOrder = (new VaultAssetResource(new VaultAsset()))
+            ->creationFields($request)
+            ->firstWhere('attribute', 'sort_order');
+
+        $this->assertNull($sortOrder);
+    }
 }
