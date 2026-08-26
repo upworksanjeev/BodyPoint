@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
@@ -111,13 +110,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function routes()
     {
-        Route::middleware('web')
-            ->prefix(trim((string) config('nova.path'), '/'))
-            ->group(function () {
-                Route::get('/seed-vault-catalog', [\App\Http\Controllers\VaultController::class, 'seedCatalog'])
-                    ->name('vault.seed-catalog');
-            });
-
         Nova::routes()
             ->withAuthenticationRoutes()
             ->withPasswordResetRoutes()

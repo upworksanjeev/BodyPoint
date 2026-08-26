@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/seed-vault-catalog', [VaultController::class, 'seedCatalog'])->name('vault.seed-catalog');
+
 // Test route for file manager
 Route::get('/test-filemanager', function () {
     return redirect('/filemanager');
