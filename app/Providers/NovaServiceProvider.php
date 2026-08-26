@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
@@ -21,6 +22,7 @@ use App\Nova\Quote;
 use App\Nova\Role;
 use App\Nova\Permission;
 use App\Nova\EmergencyModeSetting;
+use App\Nova\VaultAsset;
 
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -73,6 +75,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->icon('list')
                     ->collapsable(),
 
+                MenuSection::make('Partner Vault', [
+                    MenuItem::resource(VaultAsset::class),
+                ])->icon('folder')->collapsable(),
+
                 MenuSection::make('Operations', [
                     MenuItem::resource(EmergencyModeSetting::class),
                 ])->icon('exclamation-circle')->collapsable()->canSee(function (NovaRequest $request) {
@@ -105,6 +111,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function routes()
     {
+        Route::middleware('web')
+            ->prefix(trim((string) config('nova.path'), '/'))
+            ->group(function () {
+                Route::get('/seed-vault-catalog', [\App\Http\Controllers\VaultController::class, 'seedCatalog'])
+                    ->name('vault.seed-catalog');
+            });
+
         Nova::routes()
             ->withAuthenticationRoutes()
             ->withPasswordResetRoutes()
