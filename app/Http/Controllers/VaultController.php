@@ -62,7 +62,7 @@ class VaultController extends Controller
 
     /**
      * Browser-hit replacement for `php artisan migrate` + VaultAssetSeeder
-     * when SSH is not available. Lives under /admin so a Nova login counts.
+     * when SSH is not available. Same session as Nova (web guard).
      * Safe to re-run: existing marketing tags and shelf flags are left alone.
      */
     public function seedCatalog(Request $request): JsonResponse|RedirectResponse
