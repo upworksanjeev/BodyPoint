@@ -248,6 +248,34 @@ class ProductController extends Controller
         }
 
         // Added a static condition to display the correct sizes. This function needs a complete rewrite in the future.
+        // Bath Belt (product 5): next-attribute lookup ignores prior pad/strap picks, so hide options that are not manufactured.
+        if ($request->product_id == 5) {
+            $sizesToRemove = [];
+
+            if ($request->index == 0) {
+                if ($request->product_att_id == 1272) {
+                    $sizesToRemove = ['Slider', 'Plastic Slides'];
+                } elseif ($request->product_att_id == 1273) {
+                    $sizesToRemove = ['Slider'];
+                }
+            }
+
+            if ($request->index == 1) {
+                if ($request->rootAttributeId == 1273) {
+                    $sizesToRemove = ['Medium (2-piece only)'];
+                } elseif ($request->rootAttributeId == 1272) {
+                    $sizesToRemove = ['X-Large'];
+                    if (in_array((int) $request->product_att_id, [1275, 1300])) {
+                        $sizesToRemove = ['Medium (2-piece only)', 'Large', 'X-Large'];
+                    }
+                }
+            }
+
+            if (!empty($sizesToRemove)) {
+                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
+            }
+        }
+
         if ($request->product_id == 230 && $request->index == 1) {
             $sizesToRemove = [];
 
