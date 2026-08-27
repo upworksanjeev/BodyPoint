@@ -11,13 +11,6 @@
                             class="text-base font-medium text-center text-[#000] overflow-y-hidden overflow-x-auto lg:whitespace-pre-wrap whitespace-nowrap lg:mb-0 mb-4 flex-auto lg:flex-1">
                             <ul class="flex -mb-px">
                                 <li class="me-2">
-                                    <a href="{{ route('dashboard') }}" class="inline-block p-4 rounded-t-lg <?php if (Request::is('dashboard')) {
-                                        echo 'text-[#000] border-b-[3px] active border-[#00838f]';
-                                    } else {
-                                        echo 'border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300';
-                                    } ?>">Home</a>
-                                </li>
-                                <li class="me-2">
                                     <a href="{{ route('cart') }}" class="inline-block p-4 rounded-t-lg <?php if (Request::is('cart')) {
                                         echo 'text-[#000] border-b-[3px] active border-[#00838f]';
                                     } else {
