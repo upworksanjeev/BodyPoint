@@ -2,6 +2,7 @@
     @section('title', 'Home - ' . config('app.name', 'Bodypoint'))
     <x-cart-nav />
 
+    @if (1 == 2)
     <section class="bg-[#f4f4f4] py-8 md:py-10 px-4 min-h-[62vh]">
         <div class="container mx-auto">
             <div class="max-w-screen-xl mx-auto">
@@ -173,4 +174,15 @@
             </div>
         </div>
     </section>
+    @else
+    <div class="py-12 min-h-[62vh] ">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-[#f6f6f6] overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    {{ __("You're logged in!") }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </x-mainpage-layout>
