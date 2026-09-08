@@ -183,6 +183,17 @@
                  });
              } else {
                  $('#variation_price_div').html('');
+                 var nextIndex = index + 1;
+                 for (var i = nextIndex; i < total_category; i++) {
+                     $('#product_att_' + i).html('');
+                 }
+                 var selectedAttrIds = [];
+                 for (var s = 0; s <= k; s++) {
+                     var selectedVal = $('#pro_att_' + s).val();
+                     if (selectedVal) {
+                         selectedAttrIds.push(selectedVal);
+                     }
+                 }
                  $.ajax({
                      url: "{{ route('product-next-attribute') }}",
                      type: 'POST',
@@ -193,7 +204,8 @@
                          index: index,
                          rootAttributeId:rootAttributeId,
                          attr_count:attr_count,
-                         rootAttributeIdChild:rootAttributeIdChild
+                         rootAttributeIdChild:rootAttributeIdChild,
+                         selected_attr_ids: selectedAttrIds
                      },
                      success: function(response) {
                          var j = index + 1;
@@ -201,11 +213,7 @@
                              $('#product_att_' + i).html('');
                          }
                          // Check if response has actual content (buttons or input fields), not just empty divs
-                         var hasContent = response && response.trim() !== '' && (
-                             response.includes('button') || 
-                             response.includes('input') || 
-                             response.includes('Select')
-                         );
+                         var hasContent = response && response.includes('changeAttribute');
                          if (hasContent) {
                              $('#product_att_' + j).html(response);
                          } else {

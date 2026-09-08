@@ -199,212 +199,138 @@ class ProductController extends Controller
     }
 
     /**
+     * Product attribute IDs for the current step and earlier ones only.
+     * Later-step leftovers (e.g. a previous pull style after changing buckle)
+     * must not be included, or intersection hides valid next options.
+     */
+    private function selectedProductAttributeIds(Request $request): array
+    {
+        $index = (int) $request->index;
+        $ids = [(int) $request->product_att_id];
+
+        if ($index >= 1) {
+            $ids[] = (int) $request->rootAttributeId;
+        }
+
+        if ($index >= 2) {
+            $ids[] = (int) $request->rootAttributeIdChild;
+        }
+
+        $fromClient = $request->input('selected_attr_ids', []);
+        if (!is_array($fromClient)) {
+            $fromClient = ($fromClient === null || $fromClient === '') ? [] : [$fromClient];
+        }
+        $fromClient = array_values(array_filter(array_map('intval', $fromClient)));
+        if ($fromClient !== [] && $index >= 1) {
+            $ids = array_merge($ids, array_slice($fromClient, 0, $index + 1));
+        }
+
+        return collect($ids)->filter()->unique()->values()->all();
+    }
+
+    /**
+     * Group product attributes in first-page category order, optionally limited to IDs
+     * that still exist on matching variations.
+     */
+    private function attributeGroupsForProduct(int $productId, ?array $allowedProductAttrIds = null): array
+    {
+        $productattr = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
+            ->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
+            ->where('prod_id', $productId)
+            ->orderby('product_attributes.attr_order')
+            ->get();
+
+        $allowed = $allowedProductAttrIds === null
+            ? null
+            : array_flip(array_map('intval', $allowedProductAttrIds));
+
+        $category = [];
+        $attribute = [];
+
+        foreach ($productattr as $v) {
+            if (!in_array($v['category'], $category, true)) {
+                $category[] = $v['category'];
+                $attribute[] = [];
+            }
+
+            if ($allowed !== null && !isset($allowed[(int) $v['id']])) {
+                continue;
+            }
+
+            $key = array_search($v['category'], $category, true);
+            $attribute[$key][] = [
+                'id' => $v['attr_id'],
+                'product_attr_id' => $v['id'],
+                'attribute' => $v['attribute'],
+                'small_description' => $v['small_description'],
+                'image' => $v['image'],
+            ];
+        }
+
+        return [$category, $attribute];
+    }
+
+    /**
+     * Drop groups with no remaining options so the next step is not an empty heading
+     * (e.g. Monoflex Underarm has no buckle — skip to size).
+     */
+    private function removeEmptyAttributeGroups(array $category, array $attribute): array
+    {
+        $filteredCategory = [];
+        $filteredAttribute = [];
+
+        foreach ($category as $key => $catName) {
+            if (empty($attribute[$key])) {
+                continue;
+            }
+
+            $filteredCategory[] = $catName;
+            $filteredAttribute[] = array_values($attribute[$key]);
+        }
+
+        return [$filteredCategory, $filteredAttribute];
+    }
+
+    /**
+     * Variations that include every selected product_attribute_id.
+     */
+    private function variationIdsMatchingAllAttributes(int $productId, array $productAttributeIds): array
+    {
+        if ($productAttributeIds === []) {
+            return [];
+        }
+
+        return VariationAttribute::query()
+            ->select('variation_id')
+            ->whereIn('product_attribute_id', $productAttributeIds)
+            ->whereIn('variation_id', Variation::query()->where('product_id', $productId)->select('id'))
+            ->groupBy('variation_id')
+            ->havingRaw('COUNT(DISTINCT product_attribute_id) = ?', [count($productAttributeIds)])
+            ->pluck('variation_id')
+            ->all();
+    }
+
+    /**
      * return new attribute according to available variation list for a product
      */
     public function getNextAttribute(Request $request)
     {
         $product = Product::with(['media'])->where('id', $request->product_id)->first();
-        $var_att_ids = VariationAttribute::select('variation_id')->where('product_attribute_id', $request->product_att_id)->get();
-        $attr = [];
-        $productattr = [];
+        $variationIds = $this->variationIdsMatchingAllAttributes(
+            (int) $request->product_id,
+            $this->selectedProductAttributeIds($request)
+        );
+        $productAttributeIds = VariationAttribute::query()
+            ->whereIn('variation_id', $variationIds)
+            ->pluck('product_attribute_id')
+            ->unique()
+            ->all();
 
-        foreach ($var_att_ids as $k => $v) {
-            $var_att = VariationAttribute::select('product_attribute_id')->where('variation_id', $v->variation_id)->get()->toArray();
-            foreach ($var_att as $k1 => $v1) {
-                if (!in_array($v1['product_attribute_id'], $attr)) {
-                    $attr[] = $v1['product_attribute_id'];
-                    $productattr[] = AttributeCategory::leftjoin('attributes', 'attribute_categories.id', '=', 'att_cat_id')
-                        ->leftjoin('product_attributes', 'attributes.id', '=', 'attr_id')
-                        ->where('product_attributes.id', $v1['product_attribute_id'])->first();
-                }
-            }
-        }
-        $i = 0;
-        $category = [];
-        $attribute = [];
-        /* attributes and their categories name for this product */
-        $j = 0;
-
-        $productattr = collect($productattr)->sortBy('attr_order')->values();
-        foreach ($productattr as $k => $v) {
-            if (in_array($v['category'], $category)) {
-                $key = array_search($v['category'], $category);
-                $j++;
-                $attribute[$key][$j]['id'] = $v['attr_id'];
-                $attribute[$key][$j]['product_attr_id'] = $v['id'];
-                $attribute[$key][$j]['attribute'] = $v['attribute'];
-                $attribute[$key][$j]['small_description'] = $v['small_description'];
-                $attribute[$key][$j]['image'] = $v['image'];
-            } else {
-                $j = 0;
-                $category[$i] = $v['category'];
-                $attribute[$i][$j]['id'] = $v['attr_id'];
-                $attribute[$i][$j]['product_attr_id'] = $v['id'];
-                $attribute[$i][$j]['attribute'] = $v['attribute'];
-                $attribute[$i][$j]['small_description'] = $v['small_description'];
-                $attribute[$i][$j]['image'] = $v['image'];
-                $i++;
-            }
-        }
-
-        // Added a static condition to display the correct sizes. This function needs a complete rewrite in the future.
-        // Bath Belt (product 5): next-attribute lookup ignores prior pad/strap picks, so hide options that are not manufactured.
-        if ($request->product_id == 5) {
-            $sizesToRemove = [];
-
-            if ($request->index == 0) {
-                if ($request->product_att_id == 1272) {
-                    $sizesToRemove = ['Slider', 'Plastic Slides'];
-                } elseif ($request->product_att_id == 1273) {
-                    $sizesToRemove = ['Slider'];
-                }
-            }
-
-            if ($request->index == 1) {
-                if ($request->rootAttributeId == 1273) {
-                    $sizesToRemove = ['Medium (2-piece only)'];
-                } elseif ($request->rootAttributeId == 1272) {
-                    $sizesToRemove = ['X-Large'];
-                    if (in_array((int) $request->product_att_id, [1275, 1300])) {
-                        $sizesToRemove = ['Medium (2-piece only)', 'Large', 'X-Large'];
-                    }
-                }
-            }
-
-            if (!empty($sizesToRemove)) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 230 && $request->index == 1) {
-            $sizesToRemove = [];
-
-            if ($request->product_att_id == 1429 && in_array($request->rootAttributeId, [1427, 1436])) {
-                $sizesToRemove = ($request->attr_count == 1) ? ['S32', 'M36', 'L62'] : ['S32', 'S38'];
-            } elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1427) {
-                $sizesToRemove = ['S38'];
-            } elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1497) {
-                $sizesToRemove = ['M40', 'M46'];
-            } elseif ($request->product_att_id == 1429 && $request->rootAttributeId == 1497) {
-                $sizesToRemove = ['M36', 'M46', 'L62'];
-            } elseif ($request->product_att_id == 1430 && $request->rootAttributeId == 1426) {
-                $sizesToRemove = ['S38'];
-            } elseif ($request->product_att_id == 1429 && $request->rootAttributeId == 1426) {
-                $sizesToRemove = ['S32', 'S38'];
-            }
-
-
-            if (!empty($sizesToRemove)) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 223 && $request->index == 1) {
-            $sizesToRemove = [];
-
-            if ($request->product_att_id == 1400 && $request->rootAttributeId == 1495 && $request->attr_count == 2 || $request->product_att_id == 1401 && $request->rootAttributeId == 1495 && $request->attr_count == 2) {
-                $sizesToRemove = ['M36', 'M40', 'M46', 'L62', 'L82', 'L92'];
-            } else if ($request->product_att_id == 1400 && $request->rootAttributeId == 1396 && $request->attr_count == 2 || $request->product_att_id == 1401 && $request->rootAttributeId == 1396 && $request->attr_count == 2) {
-                $sizesToRemove = ['S32', 'S38'];
-            } else if ($request->product_att_id == 1400 && $request->rootAttributeId == 1397 && $request->attr_count == 3 || $request->product_att_id == 1401 && $request->rootAttributeId == 1397 && $request->attr_count == 3 || $request->product_att_id == 1402 && $request->rootAttributeId == 1397 && $request->attr_count == 3) {
-                $sizesToRemove = ['L82', 'L92'];
-            } else if ($request->product_att_id == 1400 && $request->rootAttributeId == 1398 && $request->attr_count == 2 || $request->product_att_id == 1401 && $request->rootAttributeId == 1398 && $request->attr_count == 2) {
-                $sizesToRemove = ['S32', 'S38', 'L82', 'L92'];
-            } else if ($request->product_att_id == 1400 && $request->rootAttributeId == 1399 && $request->attr_count == 1) {
-                $sizesToRemove = ['L62', 'L82', 'L92'];
-            }
-
-
-
-            if ($sizesToRemove) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-  
-        if ($request->product_id == 1 && $request->index == 1) {
-            $sizesToRemove = [];
-            
-            if ($request->product_att_id == 1471 && $request->rootAttributeId == 1464 && $request->attr_count == 2 || $request->product_att_id == 1472 && $request->rootAttributeId == 1464 && $request->attr_count == 2) {
-                $sizesToRemove = ['Extra Small', 'Small'];
-            } 
-
-            if ($sizesToRemove) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 238 && $request->index == 2) {
-            $sizesToRemove = [];
-
-            $validProductAttIds = [1284, 1285];
-
-            if ($request->product_att_id == 1284 && $request->rootAttributeId == 1289 && $request->attr_count == 1) {
-                $sizesToRemove = ['M46', 'L62'];
-            } elseif (
-                in_array($request->product_att_id, $validProductAttIds) &&
-                $request->rootAttributeId == 1291 &&
-                $request->attr_count == 2
-            ) {
-
-                if (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1294) {
-                    $sizesToRemove = ['S38', 'L62'];
-                } else {
-                    $sizesToRemove = ['S38'];
-                }
-            } elseif (
-                in_array($request->product_att_id, $validProductAttIds) &&
-                $request->rootAttributeId == 1292 &&
-                $request->attr_count == 2
-            ) {
-
-                if (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1293) {
-                    $sizesToRemove = ['S38'];
-                } elseif (isset($request->rootAttributeIdChild) && $request->rootAttributeIdChild == 1294) {
-                    $sizesToRemove = ['S38', 'L62'];
-                }
-            }
-
-            if (!empty($sizesToRemove)) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 213 && $request->index == 1) {
-            $sizesToRemove = match (true) {
-                in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 625 && $request->attr_count == 2 => ['S38'],
-                in_array($request->product_att_id, [1306, 1307]) && $request->rootAttributeId == 1304 && $request->attr_count == 2 => ['M36'],
-                default => []
-            };
-
-            if ($sizesToRemove) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-
-
-        if ($request->product_id == 179 && $request->index == 1) {
-            $sizesToRemove = match (true) {
-                in_array($request->product_att_id, [546, 1280]) && $request->rootAttributeId == 544 && $request->attr_count == 2 => ['S38'],
-                in_array($request->product_att_id, [546, 1280]) && $request->rootAttributeId == 554 && $request->attr_count == 2 => ['S38'],
-                in_array($request->product_att_id, [546, 1280]) && $request->rootAttributeId == 1496 && $request->attr_count == 2 => ['M46', 'L62'],
-                in_array($request->product_att_id, [546, 1280]) && $request->rootAttributeId == 560 && $request->attr_count == 2 => ['L62'],
-                default => []
-            };
-
-            if ($sizesToRemove) {
-                $attribute = $this->filterAttributes($attribute, $sizesToRemove);
-            }
-        }
-
-        if ($request->product_id == 336 && (int) $request->rootAttributeId === 1453) {
-            [$category, $attribute] = $this->removeCategoryByKeyword($category, $attribute, 'buckle');
-        }
-
-        // For Monoflex center release, do not show Grommet Strap (-B3) in attachments.
-        if ($request->product_id == 336 && (int) $request->rootAttributeId === 1454) {
-            $attribute = $this->removeAttachmentOptions($category, $attribute, 1462, ['grommet strap', '-b3']);
-        }
+        [$category, $attribute] = $this->attributeGroupsForProduct(
+            (int) $request->product_id,
+            $productAttributeIds
+        );
+        [$category, $attribute] = $this->removeEmptyAttributeGroups($category, $attribute);
 
         return view('components.attribute', [
             'index' => $request->index + 1,
